@@ -181,7 +181,7 @@ const seguimientoplan = () => {
 
     document.body.innerHTML = contenidoOrg;
 
-    window.location.replace("/gestion/werchow/servicios/seguimientoplan");
+    window.location.replace("/servicios/seguimientoplan");
   };
 
   let token = jsCookie.get("token");
