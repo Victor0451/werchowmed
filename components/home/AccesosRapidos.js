@@ -25,6 +25,18 @@ const AccesosRapidos = ({ user }) => {
               </p>
             </div>
           </div>{" "}
+          <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
+            <div className="card-header">Listado Ordenes Emitidas.</div>
+            <div className="card-body">
+              <a
+                className="btn btn-primary btn-block "
+                href="/servicios/listadoordenes"
+              >
+                Ver Listado
+              </a>
+              <p className="card-text mt-2">Listado de Ordenes Generadas</p>
+            </div>
+          </div>
           <div className="card col-md-3 text-dark bg-ligth border border-dark  ml-2 mb-3 ">
             <div className="card-header">Gestion Turnos Medicos</div>
             <div className="card-body">
@@ -67,18 +79,6 @@ const AccesosRapidos = ({ user }) => {
           </div>
           {user === 1 || user === 3 ? (
             <>
-              <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
-                <div className="card-header">Listado Ordenes Emitidas.</div>
-                <div className="card-body">
-                  <a
-                    className="btn btn-primary btn-block "
-                    href="/servicios/listadoordenes"
-                  >
-                    Ver Listado
-                  </a>
-                  <p className="card-text mt-2">Listado de Ordenes Generadas</p>
-                </div>
-              </div>
               <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
                 <div className="card-header">Generar Caja Admin.</div>
                 <div className="card-body">

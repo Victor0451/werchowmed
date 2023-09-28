@@ -10,13 +10,11 @@ const LoginUsuario = ({
   contrasena,
   errores,
   error,
+  alertas,
 }) => {
   return (
     <div className="container border border-dark mt-4  p-5 col-md-4 list">
-      <form
-        className="  "
-        onSubmit={handleSubmit}
-      >
+      <form className="  " onSubmit={handleSubmit}>
         <h1 className="mb-4">
           <u>Login</u>
         </h1>
@@ -63,8 +61,14 @@ const LoginUsuario = ({
             </button>
 
             {error && (
-              <div className="mt-2 form-group text-center alert alert-danger">
+              <div className="mt-4 form-group text-center alert alert-danger border border-dark text-center text-uppercase">
                 {error}
+              </div>
+            )}
+
+            {alertas && (
+              <div className="mt-4 form-group text-center alert alert-info border border-dark text-center text-uppercase">
+                {alertas}
               </div>
             )}
           </div>

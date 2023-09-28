@@ -81,6 +81,16 @@ const FormAdministracion = ({
           </div>
         </div>
       </div>
+
+      <div className="mt-4 border border-dark p-4">
+        <h4>
+          <strong>
+            <u>Datos del Prestador</u>
+          </strong>
+        </h4>
+
+        <div></div>
+      </div>
     </div>
   );
 };

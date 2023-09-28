@@ -9,7 +9,7 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import { ip } from "../../config/config";
 import BuscarSocio from "../../components/servicios/BuscarSocio";
 import EmitirServicio from "../../components/servicios/EmitirServicio";
-import { registrarHistoria } from "../../utils/funciones";
+import { registrarHistoria, p1, p2 } from "../../utils/funciones";
 
 const Emision = () => {
   let contratoRef = React.createRef();
@@ -804,7 +804,7 @@ const Emision = () => {
           if (detalleMed.COD_PRES === "C_CRI") {
             uso.IMPORTE = 3000;
           } else {
-            uso.IMPORTE = 1000;
+            uso.IMPORTE = p1;
           }
         }
       } else if (priUso === 1) {
@@ -812,13 +812,13 @@ const Emision = () => {
           if (detalleMed.COD_PRES === "C_CRI") {
             uso.IMPORTE = 3500 - 350;
           } else {
-            uso.IMPORTE = 1500 - 350;
+            uso.IMPORTE = p2 - 350;
           }
         } else {
           if (detalleMed.COD_PRES === "C_CRI") {
             uso.IMPORTE = 3500;
           } else {
-            uso.IMPORTE = 1500;
+            uso.IMPORTE = p2;
           }
         }
       } else if (priUso >= 2) {
@@ -837,11 +837,7 @@ const Emision = () => {
           regOrdenConsulta(uso.ORDEN);
 
           setTimeout(() => {
-            push(
-              "/servicios/orden",
-              res.data.iduso,
-              res.data.NRO_DOC
-            );
+            push("/servicios/orden", res.data.iduso, res.data.NRO_DOC);
           }, 500);
         }
       })
@@ -1868,7 +1864,7 @@ const Emision = () => {
 
             return importe;
           } else {
-            const importe = 950;
+            const importe = p1;
 
             return importe;
           }
@@ -1879,7 +1875,7 @@ const Emision = () => {
 
           return importe;
         } else {
-          const importe = 1500;
+          const importe = p2;
 
           return importe;
         }

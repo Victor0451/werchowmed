@@ -97,7 +97,7 @@ const home = () => {
 
   return (
     <Layout>
-       <div className="container p-4 border border-dark list mt-4">
+      <div className="container p-4 border border-dark list mt-4">
         <div className="row">
           <div className="col-md-8">
             <h2 className="mt-2 mb-4">
@@ -115,7 +115,7 @@ const home = () => {
           <div className="row d-flex justify-content-center">
             <div className="col-md-6">
               <h4>
-                <u>Calendario de visitas - PLan Ortodoncia</u>
+                <u>Calendario de visitas - Plan Ortodoncia</u>
               </h4>
             </div>
 

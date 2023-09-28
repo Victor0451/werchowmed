@@ -10,6 +10,14 @@ const Adimn = ({ userData }) => {
         </a>
       </li>
       <li>
+        <a
+          href="/servicios/listadoordenes"
+          className="nav-link dropdown-toggle"
+        >
+          List. Ordenes
+        </a>
+      </li>
+      <li>
         <a href="/servicios/gestionturnos" className="nav-link dropdown-toggle">
           Gestion Turnos
         </a>
@@ -22,17 +30,8 @@ const Adimn = ({ userData }) => {
           Seg. Plan Ortodoncia
         </a>
       </li>
-
       {userData.perfil === 1 || userData.perfil === 3 ? (
         <>
-          <li>
-            <a
-              href="/servicios/listadoordenes"
-              className="nav-link dropdown-toggle"
-            >
-              List. Ordenes
-            </a>
-          </li>
           <li>
             <a href="/servicios/caja" className="nav-link dropdown-toggle">
               Gen. Caja Admin
