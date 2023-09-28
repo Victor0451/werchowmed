@@ -316,7 +316,7 @@ const EmisionNoSocio = () => {
 
     document.body.innerHTML = contenidoOrg;
 
-    window.location.replace("/gestion/werchow/servicios/emision");
+    window.location.replace("/servicios/emision");
   };
 
   let router = useRouter();
@@ -378,13 +378,13 @@ const EmisionNoSocio = () => {
                 </button>
                 <a
                   className="ml-1 btn btn-secondary "
-                  href="/gestion/werchow/servicios/listadoordenes"
+                  href="/servicios/listadoordenes"
                 >
                   Listado De Ordenes
                 </a>
                 <a
                   className="ml-1 btn btn-success "
-                  href="/gestion/werchow/servicios/emision"
+                  href="/servicios/emision"
                 >
                   Generar Orden
                 </a>

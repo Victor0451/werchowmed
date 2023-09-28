@@ -838,7 +838,7 @@ const Emision = () => {
 
           setTimeout(() => {
             push(
-              "/gestion/werchow/servicios/orden",
+              "/servicios/orden",
               res.data.iduso,
               res.data.NRO_DOC
             );
@@ -1035,7 +1035,7 @@ const Emision = () => {
 
           setTimeout(() => {
             push(
-              "/gestion/werchow/servicios/orden",
+              "/servicios/orden",
               res.data.iduso,
               res.data.NRO_DOC,
               res.data.ORDEN
@@ -1198,7 +1198,7 @@ const Emision = () => {
 
           setTimeout(() => {
             push(
-              "/gestion/werchow/servicios/orden",
+              "/servicios/orden",
               res.data.iduso,
               res.data.NRO_DOC,
               res.data.ORDEN,
@@ -1335,7 +1335,7 @@ const Emision = () => {
 
           setTimeout(() => {
             push(
-              "/gestion/werchow/servicios/orden",
+              "/servicios/orden",
               res.data.iduso,
               res.data.NRO_DOC,
               res.data.ORDEN,
@@ -1491,7 +1491,7 @@ const Emision = () => {
 
                 setTimeout(() => {
                   Router.push({
-                    pathname: "/gestion/werchow/servicios/reciboplan",
+                    pathname: "/servicios/reciboplan",
                     query: {
                       id: res2.data.idplansocio,
                     },
@@ -1573,7 +1573,7 @@ const Emision = () => {
 
                 setTimeout(() => {
                   Router.push({
-                    pathname: "/gestion/werchow/servicios/reciboplan",
+                    pathname: "/servicios/reciboplan",
                     query: {
                       id: res2.data.idplansocio,
                     },
@@ -1911,7 +1911,7 @@ const Emision = () => {
               );
 
               Router.push({
-                pathname: "/gestion/werchow/servicios/emisionnosocio",
+                pathname: "/servicios/emisionnosocio",
                 query: {
                   dni: res.data.dni,
                 },
