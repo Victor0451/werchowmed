@@ -1,0 +1,402 @@
+/* WERCHOW && MUTUAL LOGO */
+
+/* @page {
+  size: auto !important;
+} */
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  /* background: radial-gradient(#EFEFEF 0%, #C1C1C1 100%); */
+}
+
+.certFondo {
+
+  background-image: url("../public/img/certificado.jpg");
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position: center center;
+
+}
+
+
+.doc {
+  width: 500px;
+  height: 500px;
+}
+
+.movil-sorteo {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.sr-only {
+  color: #333 !important;
+}
+
+.cardetalle {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.carqr {
+  margin-top: 50%;
+  margin-left: 20%;
+  width: 120% !important;
+  height: 60% !important;
+}
+
+.card-img-top {
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
+
+.ruleta {
+  transform: rotate(720deg);
+  transition: transform 0.5s;
+}
+
+.ruleta:active {
+  transform: rotate(0deg);
+  transition: 0s;
+}
+
+.container {
+  box-shadow: 1px 1px 39px 6px rgba(0, 0, 0, 0.39);
+  -webkit-box-shadow: 1px 1px 39px 6px rgba(0, 0, 0, 0.39);
+  -moz-box-shadow: 1px 1px 39px 6px rgba(0, 0, 0, 0.39);
+}
+
+.btn {
+  border-radius: 15px !important;
+  opacity: 1;
+  transition: opacity 0.5s ease 0s;
+}
+
+.btn:hover {
+  opacity: 0.6;
+  color: black;
+}
+
+.containerImp {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 768px) {
+  .containerImp {
+    width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .containerImp {
+    width: 970px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .containerImp {
+    width: 1170px;
+  }
+}
+
+
+.borderImp {
+  border-style: solid !important;
+  border-width: 1px !important;
+}
+
+.border {
+  border-radius: 15px !important;
+
+
+
+}
+
+.verticalScroll {
+  height: 500px !important;
+  overflow-y: scroll !important;
+}
+
+.werchowlogo {
+  width: 75px;
+  height: 65px;
+}
+
+.mutuallogo {
+  width: 150px !important;
+  height: 50px !important;
+}
+
+.clublogo {
+  width: 150px !important;
+  height: 80px !important;
+}
+
+.table {
+  font-size: 10px !important;
+}
+
+.tenca {
+  background: steelblue !important;
+  color: black;
+  font-size: 10px !important;
+}
+
+tr {
+  line-height: 10px !important;
+}
+
+.legales {
+  width: 100%;
+  height: 270px !important;
+}
+
+.solic {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.descr {
+  font-size: small !important;
+}
+
+/* @media print  {
+  @page {
+    size: auto;
+    size: 287mm 210mm;
+  }
+} */
+
+.premios {
+  width: 95% !important;
+  height: 95% !important;
+  position: absolute !important;
+}
+
+.faccontainer {
+  padding: 4rem !important;
+  width: 100%;
+}
+
+.list {
+  background: white;
+}
+
+.listcw {
+  background: rgba(42, 76, 143, 0.76);
+}
+
+
+input:read-only {
+  background: rgb(151, 148, 148) !important;
+  color: black !important;
+}
+
+input {
+  background: white !important;
+  color: black !important;
+}
+
+/* MENU Y SUB MENU */
+.navbar {
+  font-size: small !important;
+  height: 50px;
+
+}
+
+.dropdown-submenu {
+  position: relative;
+  font-size: small !important;
+}
+
+
+.dropdown-item {
+  font-size: small !important;
+}
+
+
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  -webkit-border-radius: 0 6px 6px 6px;
+  -moz-border-radius: 0 6px 6px;
+  border-radius: 0 6px 6px 6px;
+  font-size: small !important;
+
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #ccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+  border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+  float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  -webkit-border-radius: 6px 0 6px 6px;
+  -moz-border-radius: 6px 0 6px 6px;
+  border-radius: 6px 0 6px 6px;
+}
+
+/* SPINNER */
+
+.spinner {
+  margin: 100px auto 0;
+  width: 70px;
+  text-align: center;
+}
+
+.spinner>div {
+  width: 18px;
+  height: 18px;
+  background-color: #333;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+  }
+
+  40% {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+
+  40% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+.print-soli {
+  size: A4 !important;
+  margin-top: 50pt;
+}
+
+.print-leg {
+  size: A4 !important;
+  margin-top: 50pt;
+}
+
+.print-estadistica {
+  size: A4;
+  size: 1in 1in;
+  margin: 20pt 20pt 20pt;
+  -webkit-print-color-adjust: exact;
+}
+
+.print-notrehab {
+  size: A4;
+  size: 1in 1in;
+  /* margin: 5pt 5pt 5pt; */
+  -webkit-print-color-adjust: exact;
+}
+
+.print-solserv {
+  size: A4 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.logerr {
+  width: 600px;
+}
+
+/* IMAGENES ARCHIVO */
+
+.archivos {
+  padding: 50px;
+  transition: transform 0.5s;
+  /* Animation */
+  width: 380px;
+  height: 380px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.archivos:hover {
+  transform: scale(2.5);
+  /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.archimodal {
+  padding: 50px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  align-items: center !important;
+  justify-items: center !important;
+}
+
+.conform {
+  font-size: 1.2em !important;
+  /* 40px/16=2.5em */
+  font-weight: bold !important;
+  line-height: 30px !important;
+}
+
+.conformnovell {
+  font-size: 1em !important;
+  /* 40px/16=2.5em */
+  font-weight: bold !important;
+  line-height: 30px !important;
+}
+
+@media (max-width: 580px) {
+  .navbar {
+    text-transform: uppercase;
+    font-weight: 20px;
+    font-size: 0.7rem;
+    height: 100%;
+    /* background: rgba(3, 36, 66, 0.685) !important; */
+  }
+}
