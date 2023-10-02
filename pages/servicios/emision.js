@@ -781,7 +781,7 @@ const Emision = () => {
       FEC_CAJA: moment().format("YYYY-MM-DD"),
       HORA: moment().format("HH:mm"),
       SERVICIO: "ORDE",
-      IMPORTE: detalleMed.MAX_DESC,
+      IMPORTE: 0,
       IMP_LIQ: detalleMed.CON_PAGA,
       VALOR: 0,
       PUESTO: "",
@@ -834,7 +834,7 @@ const Emision = () => {
       .post(`${ip}api/sgi/servicios/regusos`, uso)
       .then((res) => {
         if (res.status === 200) {
-          regOrdenConsulta(uso.ORDEN);
+          regOrdenConsulta(uso.ORDEN, uso);
 
           setTimeout(() => {
             push("/servicios/orden", res.data.iduso, res.data.NRO_DOC);
@@ -850,7 +850,7 @@ const Emision = () => {
       });
   };
 
-  const regOrdenConsulta = async (orden) => {
+  const regOrdenConsulta = async (orden, uso) => {
     const consul = {
       CONTRATO: socio.CONTRATO,
       FECHA: moment().format("YYYY-MM-DD"),
@@ -858,7 +858,7 @@ const Emision = () => {
       NRO_ORDEN: orden,
       DESTINO: "",
       COD_PRES: detalleMed.COD_PRES,
-      IMPORTE: detalleMed.PRECIO_99,
+      IMPORTE: uso.IMPORTE,
       ANULADO: 0,
       OPERADOR: user,
       OPE_ANU: 0,
@@ -877,7 +877,7 @@ const Emision = () => {
             "ATENCION"
           );
 
-          let accion = `Se registro una orden de consulta ID: ${consul.NRO_ORDEN}, para el socio: ${socio.APELLIDOS}, ${socio.NOMBRES}, contrato: ${socio.CONTRATO}, para el medico: ${detalleMed.NOMBRE}. Coseguro a pagar: ${detalleMed.MAX_DESC}`;
+          let accion = `Se registro una orden de consulta ID: ${consul.NRO_ORDEN}, para el socio: ${socio.APELLIDOS}, ${socio.NOMBRES}, contrato: ${socio.CONTRATO}, para el medico: ${detalleMed.NOMBRE}. Coseguro a pagar: ${consul.IMPORTE}`;
 
           registrarHistoria(accion, user);
         }
