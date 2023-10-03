@@ -1137,27 +1137,9 @@ const Emision = () => {
     let flag = modalidadRef.current.value;
     let desc = [];
 
-    if (flag === "1" && cod === "F_JAV") {
-      desc = [
-        { value: 20, label: "20%" },
-        { value: 30, label: "30%" },
-        { value: 35, label: "35%" },
-      ];
+    desc = [{ value: 10, label: "10%" }];
 
-      guardarDescFarma(desc);
-    } else if (flag === "1" && cod !== "F_JAV") {
-      (desc = [
-        { value: 20, label: "20%" },
-        { value: 30, label: "30%" },
-      ]),
-        guardarDescFarma(desc);
-    } else if (flag === "2") {
-      desc = [{ value: 20, label: "20%" }];
-
-      guardarDescFarma(desc);
-    } else if (flag === "no") {
-      guardarDescFarma(null);
-    }
+    guardarDescFarma(desc);
   };
 
   const registrarFarmaciaUso = async () => {
