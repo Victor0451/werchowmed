@@ -79,8 +79,8 @@ const listadoordenes = () => {
     }
   };
 
-  const generarImpresion = (iduso, doc, orden) => {
-    push("/servicios/orden", iduso, doc, orden);
+  const generarImpresion = (iduso, doc, orden, flag) => {
+    push("/servicios/orden", iduso, doc, orden, flag);
   };
 
   const anularOrdenes = (orden, servicio) => {

@@ -14,6 +14,7 @@ const Orden = () => {
   const [medico, guardarMedico] = useState(null);
   const [practicas, guardarPracticas] = useState([]);
   const [farmacia, guardarFarmacia] = useState([]);
+  const [farmaNom, guardarFarmaNom] = useState([]);
   const [enfermeria, guardarEnfermeria] = useState([]);
 
   let token = jsCookie.get("token");
@@ -148,11 +149,34 @@ const Orden = () => {
       });
   };
 
+  const tarerFarmaNom = async (farma) => {
+    await axios
+      .get(`${ip}api/sgi/servicios/traerfarnom`, {
+        params: {
+          farma: farma,
+        },
+      })
+      .then((res) => {
+        guardarFarmaNom(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error(
+          "Ocurrio un error al traer la orden de farmacia",
+          "ATENCION"
+        );
+      });
+  };
+
   const traerFarmacia = async (orden) => {
     await axios
       .get(`${ip}api/sgi/servicios/traerfarmacia/${orden}`)
       .then((res) => {
         guardarFarmacia(res.data);
+
+        if (res.data[0].DESTINO) {
+          tarerFarmaNom(res.data[0].DESTINO);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -167,7 +191,6 @@ const Orden = () => {
     await axios
       .get(`${ip}api/sgi/servicios/traerenfermeria/${orden}`)
       .then((res) => {
-        console.log(res.data);
         guardarEnfermeria(res.data);
       })
       .catch((error) => {
@@ -196,16 +219,25 @@ const Orden = () => {
       let dni = router.query.dni;
       let iduso = router.query.iduso;
       let orden = router.query.orden;
+      let f = router.query.flag;
 
       traerSocio(dni);
       traerOrden(iduso);
 
       if (orden) {
-        setTimeout(() => {
-          traerPracticas(orden);
-          traerFarmacia(orden);
-          traerEnfermeria(orden);
-        }, 1000);
+        if (f && f === "F") {
+          setTimeout(() => {
+            traerFarmacia(orden);
+          }, 500);
+        } else if (f && f === "E") {
+          setTimeout(() => {
+            traerEnfermeria(orden);
+          }, 500);
+        } else if (f && f === "P") {
+          setTimeout(() => {
+            traerPracticas(orden);
+          }, 500);
+        }
       }
     }
   }, []);
@@ -219,6 +251,7 @@ const Orden = () => {
           medico={medico}
           practicas={practicas}
           farmacia={farmacia}
+          farmaNom={farmaNom}
           enfermeria={enfermeria}
           calcularTotalPracticas={calcularTotalPracticas}
           flag={router.query.flag}

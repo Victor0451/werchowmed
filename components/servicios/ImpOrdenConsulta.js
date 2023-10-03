@@ -8,6 +8,7 @@ const ImpOrdenConsulta = ({
   medico,
   practicas,
   farmacia,
+  farmaNom,
   enfermeria,
   calcularTotalPracticas,
   flag,
@@ -128,7 +129,9 @@ const ImpOrdenConsulta = ({
               </div>
             ) : null}
 
-            <div className="col-4">FARMACIAS ADHERIDAS</div>
+            {farmaNom.length > 0 ? (
+              <div className="col-4">FARMACIA {farmaNom[0].NOMBRE}</div>
+            ) : null}
           </div>
         </>
       ) : flag && flag === "E" ? (

@@ -100,13 +100,15 @@ const ListadoOrdenesEmitidas = ({
                             e.preventDefault();
                             generarImpresion(
                               row.original.iduso,
-                              row.original.NRO_DOC
+                              row.original.NRO_DOC,
+                              row.original.ORDEN,
+                              "O"
                             );
                           }}
                         >
                           Imprimir
                         </button>
-                      ) : row.original.SERVICIO === "FARMA" ? (
+                      ) : row.original.SERVICIO === "FARM" ? (
                         <button
                           className="btn btn-primary btn-sm"
                           onClick={(e) => {
@@ -145,7 +147,8 @@ const ListadoOrdenesEmitidas = ({
                               generarImpresion(
                                 row.original.iduso,
                                 row.original.NRO_DOC,
-                                row.original.ORDEN
+                                row.original.ORDEN,
+                                "P"
                               );
                             }}
                           >
