@@ -69,6 +69,8 @@ const EmitirServicio = ({
   infoAdh,
   planImp,
   registrarPlanImp,
+  usosFarm,
+  selDescuento
 }) => {
   if (!ficha) return <Spinner />;
 
@@ -392,6 +394,8 @@ const EmitirServicio = ({
             arancel={arancel}
             planImp={planImp}
             registrarPlanImp={registrarPlanImp}
+            usosFarm={usosFarm}
+            selDescuento={selDescuento}
           />
         </>
       )}

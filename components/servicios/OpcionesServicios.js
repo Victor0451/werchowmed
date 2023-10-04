@@ -3,7 +3,7 @@ import ModalConsulta from "./ModalConsulta";
 import ModalEnfermeria from "./ModalEnfermeria";
 import ModalFarmacia from "./ModalFarmacia";
 import ModalPractica from "./ModalPracticas";
-import ModalPlanOdontologico from './ModalPlanOdontologico'
+import ModalPlanOdontologico from "./ModalPlanOdontologico";
 
 const OpcionesServicios = ({
   socio,
@@ -56,7 +56,9 @@ const OpcionesServicios = ({
   registrarPlanOrto,
   arancel,
   planImp,
-  registrarPlanImp
+  registrarPlanImp,
+  usosFarm,
+  selDescuento
 }) => {
   return (
     <div className="mt-4 border border-dark p-4">
@@ -77,15 +79,23 @@ const OpcionesServicios = ({
             <div className="card-body">
               <h5 className="card-title">Farmacia</h5>
               <p className="card-text">Emitir Orden de Farmacia</p>
-              <button className="btn btn-primary btn-sm rounded"
-                data-toggle="modal" data-target="#modalFarmacia"
-              >Generar</button>
+              <button
+                className="btn btn-primary btn-sm rounded"
+                data-toggle="modal"
+                data-target="#modalFarmacia"
+              >
+                Generar
+              </button>
             </div>
           </div>
         </div>
         <div className="col mb-4">
           <div className="card border border-dark">
-            <img src="/img/emision/consulta.jpg" className="card-img-top" alt="..." />
+            <img
+              src="/img/emision/consulta.jpg"
+              className="card-img-top"
+              alt="..."
+            />
             <div className="card-body">
               <h5 className="card-title">Consultas</h5>
               <p className="card-text">Emitir Consulta Medica</p>
@@ -94,13 +104,19 @@ const OpcionesServicios = ({
                 data-toggle="modal"
                 data-target="#modalConsulta"
                 onClick={() => verificarUso("C", socio.GRUPO, socio.CONTRATO)}
-              >Generar</button>
+              >
+                Generar
+              </button>
             </div>
           </div>
         </div>
         <div className="col mb-4">
           <div className="card border border-dark">
-            <img src="/img/emision/practicas.jpg" className="card-img-top" alt="..." />
+            <img
+              src="/img/emision/practicas.jpg"
+              className="card-img-top"
+              alt="..."
+            />
             <div className="card-body">
               <h5 className="card-title">Practicas</h5>
               <p className="card-text">Emitir Orden de Practicas</p>
@@ -109,38 +125,56 @@ const OpcionesServicios = ({
                 data-toggle="modal"
                 data-target="#modalPractica"
                 onClick={() => verificarUso("P", socio.GRUPO, socio.CONTRATO)}
-              >Generar</button>
+              >
+                Generar
+              </button>
             </div>
           </div>
         </div>
         <div className="col mb-4">
           <div className="card border border-dark">
-            <img src="/img/emision/enfermeria.jpg" className="card-img-top" alt="..." />
+            <img
+              src="/img/emision/enfermeria.jpg"
+              className="card-img-top"
+              alt="..."
+            />
             <div className="card-body">
               <h5 className="card-title">Enfermeria</h5>
               <p className="card-text">Emitir Orden de Enfermeria</p>
-              <button className="btn btn-primary btn-sm rounded"
-                data-toggle="modal" data-target="#modalEnfermeria"
-              >Generar</button>
+              <button
+                className="btn btn-primary btn-sm rounded"
+                data-toggle="modal"
+                data-target="#modalEnfermeria"
+              >
+                Generar
+              </button>
             </div>
           </div>
         </div>
 
         <div className="col mb-4 ">
           <div className="card border border-dark">
-            <img src="/img/emision/ortodoncia.png" className="card-img-top" alt="..." />
+            <img
+              src="/img/emision/ortodoncia.png"
+              className="card-img-top"
+              alt="..."
+            />
             <div className="card-body">
               <h5 className="card-title">Plan Odontologicos</h5>
-              <p className="card-text">Registro de planes de ortodoncia e implantes dentales</p>
-              <button className="btn btn-primary btn-sm rounded"
-                data-toggle="modal" data-target="#modalPlanOrtodoncia"
-              >Generar</button>
+              <p className="card-text">
+                Registro de planes de ortodoncia e implantes dentales
+              </p>
+              <button
+                className="btn btn-primary btn-sm rounded"
+                data-toggle="modal"
+                data-target="#modalPlanOrtodoncia"
+              >
+                Generar
+              </button>
             </div>
           </div>
         </div>
-
       </div>
-
 
       {/* MODALES */}
 
@@ -154,6 +188,8 @@ const OpcionesServicios = ({
         descFarma={descFarma}
         registrarFarmaciaUso={registrarFarmaciaUso}
         priUso={priUso}
+        usosFarm={usosFarm}
+        selDescuento={selDescuento}
       />
 
       <ModalConsulta
@@ -195,7 +231,6 @@ const OpcionesServicios = ({
         priUso={priUso}
         nFisio={nFisio}
       />
-
 
       <ModalEnfermeria
         socio={socio}
@@ -241,7 +276,6 @@ const OpcionesServicios = ({
       />
 
       {/* --------------------------- */}
-
     </div>
   );
 };

@@ -9,6 +9,8 @@ const ModalFarmacia = ({
   gestionDescuento,
   descFarma,
   registrarFarmaciaUso,
+  usosFarm,
+  selDescuento,
 }) => {
   return (
     <div
@@ -34,27 +36,42 @@ const ModalFarmacia = ({
             </button>
           </div>
           <div className="modal-body p-4">
+            <div className="alert alert-info border border-dark mt-4 mb-4 text-center text-uppercase">
+              Este es el uso <strong>N°{usosFarm + 1}</strong> del socio para
+              el prestador de farmacia seleccionado
+            </div>
+
             <div className="row border border-dark list p-4">
               {farmacias ? (
-                <div className="col-md-4">
-                  <label>Farmacias:</label>
+                <>
+                  <div className="col-md-4">
+                    <label>Farmacias:</label>
 
-                  <select
-                    className="custom-select"
-                    ref={farmaciaRef}
-                    onChange={(value) => gestionDescuento(value)}
-                  >
-                    <option selected value="no">
-                      Selecciona una opcion
-                    </option>
-
-                    {farmacias.map((f, index) => (
-                      <option key={index} value={`${f.CODIGO}-${f.DESC}`}>
-                        {f.NOMBRE}
+                    <select
+                      className="custom-select"
+                      ref={farmaciaRef}
+                      onChange={(value) => gestionDescuento(value)}
+                    >
+                      <option selected value="no">
+                        Selecciona una opcion
                       </option>
-                    ))}
-                  </select>
-                </div>
+
+                      {farmacias.map((f, index) => (
+                        <option key={index} value={`${f.CODIGO}-${f.DESC}`}>
+                          {f.NOMBRE}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="d-flex justify-content-end">
+                      <button
+                        className="mt-2 btn btn-primary btn-sm "
+                        onClick={selDescuento}
+                      >
+                        Calc. Descuento
+                      </button>
+                    </div>
+                  </div>
+                </>
               ) : (
                 <div className="alert alert-info border border-dark col-md-4 text-center text-uppercase">
                   Cargando las farmacias..
@@ -80,14 +97,15 @@ const ModalFarmacia = ({
                   <input
                     type="text"
                     className="form-control"
-                    value={`${descFarma}%`}
+                    value={`${descFarma}`}
                     ref={descuentoRef}
                     readOnly
                   />
                 </div>
               ) : (
                 <div className="alert alert-info border border-dark col-md-4 text-center text-uppercase">
-                  Selecciones una modalidad para generar los descuentos
+                  Haz Click en "Dalc. Sescuento", para ver que tipo de descuento
+                  le corresponde al afiliado con este prestador.
                 </div>
               )}
             </div>

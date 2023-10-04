@@ -13,6 +13,13 @@ import FormAdministracion from "../../components/servicios/FormAdministracion";
 function Administracion(props) {
   let medicoRef = React.createRef();
   let consultaRef = React.createRef();
+  let especialidadRef = React.createRef();
+  let nombreRef = React.createRef();
+  let matriculaRef = React.createRef();
+  let direccionRef = React.createRef();
+  let horario1Ref = React.createRef();
+  let horario2Ref = React.createRef();
+  let sucRef = React.createRef();
 
   const [user, guardarUsuario] = useState(null);
   const [usuc, guardarUsuc] = useState(null);
@@ -56,6 +63,9 @@ function Administracion(props) {
   };
 
   const handleChange = async () => {
+    guardarPracticasPres([]);
+    guardarPrestador([]);
+
     let ref = medicoRef.current.value;
 
     guardarCodPres(ref.substr(0, 5));
@@ -152,6 +162,81 @@ function Administracion(props) {
     }
   };
 
+  const updatePrestador = async () => {
+    await confirmAlert({
+      title: "ATENCION",
+      message: "¿Seguro quieres modificar los datos del prestador?",
+      buttons: [
+        {
+          label: "Si",
+          onClick: () => {
+            let data = {
+              LIS_ESPE: especialidadRef.current.value,
+              NOMBRE: nombreRef.current.value,
+              MATRICULA: matriculaRef.current.value,
+              DIRECCION: direccionRef.current.value,
+              HORARIO1: horario1Ref.current.value,
+              HORARIO2: horario2Ref.current.value,
+              SUC: "",
+              LOCALIDAD: "",
+              OTERO: 0,
+            };
+
+            if (sucRef.current.value === "S.S. DE JUJUY") {
+              data.SUC = "W";
+              data.LOCALIDAD = sucRef.current.value;
+            } else if (sucRef.current.value === "OTERO") {
+              data.SUC = "W";
+              data.LOCALIDAD = sucRef.current.value;
+              data.OTERO = 1;
+            } else if (sucRef.current.value === "PALPALA") {
+              data.SUC = "L";
+              data.LOCALIDAD = sucRef.current.value;
+            } else if (sucRef.current.value === "PERICO") {
+              data.SUC = "R";
+              data.LOCALIDAD = sucRef.current.value;
+            } else if (sucRef.current.value === "EL CARMEN") {
+              data.SUC = "C";
+              data.LOCALIDAD = sucRef.current.value;
+            } else if (sucRef.current.value === "SAN PEDRO") {
+              data.SUC = "P";
+              data.LOCALIDAD = sucRef.current.value;
+            }
+
+            axios
+              .put(`${ip}api/sgi/servicios/updateprestado`, data)
+              .then((res) => {
+                console.log(res);
+                if (res.status === 200) {
+                  toastr.success(
+                    "Los datos del prestador se modificaron con exito"
+                  );
+
+                  let accion = `Se actualizaron datos del prestador ${prestador.CODIGO}.`;
+
+                  registrarHistoria(accion, user);
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+                toastr.error(
+                  "Ocurrio un error al actualizar el valor de la consulta"
+                );
+              });
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {
+            toastr.info(
+              "Los datos del prestador seleccionado, no fueron modificados"
+            );
+          },
+        },
+      ],
+    });
+  };
+
   let token = jsCookie.get("token");
 
   useEffect(() => {
@@ -181,6 +266,13 @@ function Administracion(props) {
         consultaRef={consultaRef}
         prestador={prestador}
         practicasPres={practicasPres}
+        especialidadRef={especialidadRef}
+        nombreRef={nombreRef}
+        matriculaRef={matriculaRef}
+        direccionRef={direccionRef}
+        horario1Ref={horario1Ref}
+        horario2Ref={horario2Ref}
+        sucRef={sucRef}
       />
     </Layout>
   );

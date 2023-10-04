@@ -67,12 +67,11 @@ const Emision = () => {
   const [isj, guardarISJ] = useState(false);
   const [planOrto, guardarPlanOrto] = useState(null);
   const [planImp, guardarPlanImp] = useState(null);
-  const [visitas, guardarVisitas] = useState([]);
-  const [detVisi, guardarDetVisi] = useState(null);
   const [arancel, guardarArancel] = useState(0);
   const [habilita, guardarHabilita] = useState(false);
   const [infoAdh, guardarInfoAdh] = useState([]);
-  const [listTurno, guardarListTurno] = useState([]);
+  const [usosFarm, guardarUsosFarm] = useState(0);
+  const [farmaDescReg, guardarFarmaDescReg] = useState([]);
 
   // FUNCIONES SOCIO
 
@@ -1143,60 +1142,76 @@ const Emision = () => {
     let ref = value.target.value;
     let codigo = ref.substr(0, 5);
     let desc = ref.substr(6, 20);
+    guardarDescFarma("");
+    conteoUsosFarm(ficha[0].CONTRATO, codigo);
+  };
 
-    guardarDescFarma(desc);
+  const selDescuento = () => {
+    if (usosFarm <= 1) {
+      guardarDescFarma(farmaDescReg.DESC);
+    } else if (usosFarm > 1) {
+      guardarDescFarma(farmaDescReg.DESC2);
+    }
   };
 
   const registrarFarmaciaUso = async () => {
-    const uso = {
-      SUC: usuc,
-      ORDEN: nOrden,
-      CONTRATO: socio.CONTRATO,
-      NRO_ADH: socio.ADHERENTES,
-      NRO_DOC: socio.NRO_DOC,
-      PLAN: socio.PLAN,
-      EDAD: socio.EDAD,
-      SEXO: socio.SEXO,
-      OBRA_SOC: socio.COD_OBRA,
-      FECHA: moment().format("YYYY-MM-DD"),
-      FEC_CAJA: moment().format("YYYY-MM-DD"),
-      HORA: moment().format("HH:mm"),
-      VALOR: parseFloat(descuentoRef.current.value),
-      SERVICIO: `FARM`,
-      IMPORTE: 0,
-      IMP_LIQ: 0,
-      PUESTO: "",
-      PRESTADO: farmaciaRef.current.value,
-      OPERADOR: user,
-      EMPRESA: "W",
-      RENDIDO: 0,
-      ANULADO: 0,
-    };
+    if (descFarma === "") {
+      toastr.info(
+        "Debes calcular el descuento del prestador primero",
+        "ATENCION"
+      );
+    } else {
+      const uso = {
+        SUC: usuc,
+        ORDEN: nOrden,
+        CONTRATO: socio.CONTRATO,
+        NRO_ADH: socio.ADHERENTES,
+        NRO_DOC: socio.NRO_DOC,
+        PLAN: socio.PLAN,
+        EDAD: socio.EDAD,
+        SEXO: socio.SEXO,
+        OBRA_SOC: socio.COD_OBRA,
+        FECHA: moment().format("YYYY-MM-DD"),
+        FEC_CAJA: moment().format("YYYY-MM-DD"),
+        HORA: moment().format("HH:mm"),
+        VALOR: parseFloat(descuentoRef.current.value),
+        SERVICIO: `FARM`,
+        IMPORTE: 0,
+        IMP_LIQ: 0,
+        PUESTO: "",
+        PRESTADO: farmaciaRef.current.value.substr(0, 5),
+        OPERADOR: user,
+        EMPRESA: "W",
+        NUSOS: usosFarm + 1,
+        RENDIDO: 0,
+        ANULADO: 0,
+      };
 
-    await axios
-      .post(`${ip}api/sgi/servicios/regusos`, uso)
-      .then((res) => {
-        if (res.status === 200) {
-          regFarmacia(uso.ORDEN);
+      await axios
+        .post(`${ip}api/sgi/servicios/regusos`, uso)
+        .then((res) => {
+          if (res.status === 200) {
+            regFarmacia(uso.ORDEN);
 
-          setTimeout(() => {
-            push(
-              "/servicios/orden",
-              res.data.iduso,
-              res.data.NRO_DOC,
-              res.data.ORDEN,
-              "F"
-            );
-          }, 500);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toastr.error(
-          "Ocurrio un error al registrar la orden de farmacia",
-          "ATENCION"
-        );
-      });
+            setTimeout(() => {
+              push(
+                "/servicios/orden",
+                res.data.iduso,
+                res.data.NRO_DOC,
+                res.data.ORDEN,
+                "F"
+              );
+            }, 500);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toastr.error(
+            "Ocurrio un error al registrar la orden de farmacia",
+            "ATENCION"
+          );
+        });
+    }
   };
 
   let regFarmacia = async (orden) => {
@@ -1206,8 +1221,8 @@ const Emision = () => {
       HORA: moment().format("HH:mm"),
       NRO_DOC: socio.NRO_DOC,
       NRO_ORDEN: orden,
-      DESTINO: farmaciaRef.current.value,
-      MODO: `${descuentoRef.current.value}%`,
+      DESTINO: farmaciaRef.current.value.substr(0, 5),
+      MODO: `${descuentoRef.current.value}`,
       IMPORTE: 0,
       ANULADO: 0,
       OPERADOR: user,
@@ -1237,6 +1252,45 @@ const Emision = () => {
         console.log(error);
         toastr.error(
           "Ocurrio un error al registrar la orden de farmacia",
+          "ATENCION"
+        );
+      });
+  };
+
+  let conteoUsosFarm = async (contrato, prestado) => {
+    await axios
+      .get(`${ip}api/sgi/servicios/traerusosfarm`, {
+        params: {
+          contrato: contrato,
+          prestado: prestado,
+        },
+      })
+      .then((res) => {
+        guardarUsosFarm(res.data[0].usos);
+      })
+      .catch((error) => {
+        console.log(error);
+
+        toastr.error(
+          "Ocurrio un error al verificar la cantidad de usos de farmacia",
+          "ATENCION"
+        );
+      });
+
+    await axios
+      .get(`${ip}api/sgi/servicios/traerdescfarmsel`, {
+        params: {
+          prestado: prestado,
+        },
+      })
+      .then((res) => {
+        guardarFarmaDescReg(res.data[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+
+        toastr.error(
+          "Ocurrio un error al verificar la cantidad de usos de farmacia",
           "ATENCION"
         );
       });
@@ -2029,6 +2083,8 @@ const Emision = () => {
               infoAdh={infoAdh}
               planImp={planImp}
               registrarPlanImp={registrarPlanImp}
+              usosFarm={usosFarm}
+              selDescuento={selDescuento}
             />
           ) : null}
         </>
