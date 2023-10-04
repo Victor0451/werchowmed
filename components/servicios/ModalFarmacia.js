@@ -39,13 +39,17 @@ const ModalFarmacia = ({
                 <div className="col-md-4">
                   <label>Farmacias:</label>
 
-                  <select className="custom-select" ref={farmaciaRef}>
+                  <select
+                    className="custom-select"
+                    ref={farmaciaRef}
+                    onChange={(value) => gestionDescuento(value)}
+                  >
                     <option selected value="no">
                       Selecciona una opcion
                     </option>
 
                     {farmacias.map((f, index) => (
-                      <option key={index} value={f.CODIGO}>
+                      <option key={index} value={`${f.CODIGO}-${f.DESC}`}>
                         {f.NOMBRE}
                       </option>
                     ))}
@@ -60,11 +64,7 @@ const ModalFarmacia = ({
               <div className="col-md-4">
                 <label>Modalidad:</label>
 
-                <select
-                  className="custom-select"
-                  ref={modalidadRef}
-                  onChange={gestionDescuento}
-                >
+                <select className="custom-select" ref={modalidadRef}>
                   <option selected value="no">
                     Selecciona una opcion
                   </option>
@@ -77,13 +77,13 @@ const ModalFarmacia = ({
                 <div className="col-md-4">
                   <label>Descuento:</label>
 
-                  <select className="custom-select" ref={descuentoRef}>
-                    {descFarma.map((d, index) => (
-                      <option key={index} value={d.value}>
-                        {d.label}
-                      </option>
-                    ))}
-                  </select>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={`${descFarma}%`}
+                    ref={descuentoRef}
+                    readOnly
+                  />
                 </div>
               ) : (
                 <div className="alert alert-info border border-dark col-md-4 text-center text-uppercase">

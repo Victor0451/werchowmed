@@ -58,7 +58,7 @@ const Emision = () => {
   const [pracSocio, guardarPracSocio] = useState([]);
   const [listado, guardarListSocios] = useState([]);
   const [farmacias, guardarFarmacias] = useState(null);
-  const [descFarma, guardarDescFarma] = useState(null);
+  const [descFarma, guardarDescFarma] = useState("");
   const [enfer, guadrarEnfer] = useState(null);
   const [detEnf, guardarDetalleEnfer] = useState(null);
   const [practEnfer, guadrarPractEnfer] = useState(null);
@@ -837,7 +837,13 @@ const Emision = () => {
           regOrdenConsulta(uso.ORDEN, uso);
 
           setTimeout(() => {
-            push("/servicios/orden", res.data.iduso, res.data.NRO_DOC);
+            push(
+              "/servicios/orden",
+              res.data.iduso,
+              res.data.NRO_DOC,
+              res.data.ORDEN,
+              "O"
+            );
           }, 500);
         }
       })
@@ -1034,7 +1040,8 @@ const Emision = () => {
               "/servicios/orden",
               res.data.iduso,
               res.data.NRO_DOC,
-              res.data.ORDEN
+              res.data.ORDEN,
+              "P"
             );
           }, 5000);
         }
@@ -1132,12 +1139,10 @@ const Emision = () => {
       });
   };
 
-  const gestionDescuento = () => {
-    let cod = farmaciaRef.current.value;
-    let flag = modalidadRef.current.value;
-    let desc = [];
-
-    desc = [{ value: 10, label: "10%" }];
+  const gestionDescuento = (value) => {
+    let ref = value.target.value;
+    let codigo = ref.substr(0, 5);
+    let desc = ref.substr(6, 20);
 
     guardarDescFarma(desc);
   };
