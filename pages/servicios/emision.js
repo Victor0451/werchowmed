@@ -9,7 +9,7 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import { ip } from "../../config/config";
 import BuscarSocio from "../../components/servicios/BuscarSocio";
 import EmitirServicio from "../../components/servicios/EmitirServicio";
-import { registrarHistoria, p1, p2 } from "../../utils/funciones";
+import { registrarHistoria } from "../../utils/funciones";
 
 const Emision = () => {
   let contratoRef = React.createRef();
@@ -72,6 +72,7 @@ const Emision = () => {
   const [infoAdh, guardarInfoAdh] = useState([]);
   const [usosFarm, guardarUsosFarm] = useState(0);
   const [farmaDescReg, guardarFarmaDescReg] = useState([]);
+  const [promos, guardarPromociones] = useState([]);
 
   // FUNCIONES SOCIO
 
@@ -793,9 +794,27 @@ const Emision = () => {
       OPERADOR: user,
     };
 
-    if (detalleMed.PROMO === 0) {
-      uso.IMPORTE = detalleMed.CON_PAGA;
-    } else {
+    if (detalleMed.PROMO === 1 && detalleMed.OTERO === 0) {
+      if (priUso === 0) {
+        if (socio.GRUPO === 55 || socio.GRUPO === 66) {
+          uso.IMPORTE = 0;
+        } else {
+          uso.IMPORTE = promos.pint1;
+        }
+      } else if (priUso === 1) {
+        if (isj === true) {
+          uso.IMPORTE = promos.pint2 - 350;
+        } else {
+          uso.IMPORTE = promos.pint2;
+        }
+      } else if (priUso >= 2) {
+        if (isj === true) {
+          uso.IMPORTE = parseFloat(detalleMed.CON_PAGA) - 350;
+        } else {
+          uso.IMPORTE = detalleMed.CON_PAGA;
+        }
+      }
+    } else if (detalleMed.PROMO === 1 && detalleMed.OTERO === 1) {
       if (priUso === 0) {
         if (socio.GRUPO === 55 || socio.GRUPO === 66) {
           uso.IMPORTE = 0;
@@ -803,7 +822,7 @@ const Emision = () => {
           if (detalleMed.COD_PRES === "C_CRI") {
             uso.IMPORTE = 3000;
           } else {
-            uso.IMPORTE = p1;
+            uso.IMPORTE = promos.pot1;
           }
         }
       } else if (priUso === 1) {
@@ -811,13 +830,13 @@ const Emision = () => {
           if (detalleMed.COD_PRES === "C_CRI") {
             uso.IMPORTE = 3500 - 350;
           } else {
-            uso.IMPORTE = p2 - 350;
+            uso.IMPORTE = promos.pot2 - 350;
           }
         } else {
           if (detalleMed.COD_PRES === "C_CRI") {
             uso.IMPORTE = 3500;
           } else {
-            uso.IMPORTE = p2;
+            uso.IMPORTE = promos.pot2;
           }
         }
       } else if (priUso >= 2) {
@@ -827,6 +846,8 @@ const Emision = () => {
           uso.IMPORTE = detalleMed.CON_PAGA;
         }
       }
+    } else if (detalleMed.PROMO === 0 && detalleMed.OTERO === 0) {
+      uso.IMPORTE = detalleMed.CON_PAGA;
     }
 
     await axios
@@ -1887,13 +1908,27 @@ const Emision = () => {
   };
 
   const importeOrden = () => {
-    if (detalleMed.PROMO === 0) {
-      let importe = "";
+    if (detalleMed.PROMO === 1 && detalleMed.OTERO === 0) {
+      if (priUso === 0) {
+        if (socio.GRUPO === 55 || socio.GRUPO === 66) {
+          const importe = 0;
 
-      importe = detalleMed.CON_PAGA;
+          return importe;
+        } else {
+          const importe = promos.pint1;
 
-      return importe;
-    } else if (detalleMed.PROMO === 1) {
+          return importe;
+        }
+      } else if (priUso === 1) {
+        const importe = promos.pint2;
+
+        return importe;
+      } else if (priUso >= 2) {
+        const importe = detalleMed.CON_PAGA;
+
+        return importe;
+      }
+    } else if (detalleMed.PROMO === 1 && detalleMed.OTERO === 1) {
       if (priUso === 0) {
         if (socio.GRUPO === 55 || socio.GRUPO === 66) {
           const importe = 0;
@@ -1905,7 +1940,7 @@ const Emision = () => {
 
             return importe;
           } else {
-            const importe = p1;
+            const importe = promos.pot1;
 
             return importe;
           }
@@ -1916,7 +1951,7 @@ const Emision = () => {
 
           return importe;
         } else {
-          const importe = p2;
+          const importe = promos.pot2;
 
           return importe;
         }
@@ -1925,6 +1960,10 @@ const Emision = () => {
 
         return importe;
       }
+    } else if (detalleMed.PROMO === 0 && detalleMed.OTERO === 0) {
+      const importe = detalleMed.CON_PAGA;
+
+      return importe;
     }
   };
 
@@ -1970,6 +2009,17 @@ const Emision = () => {
     }
   };
 
+  const traerPromociones = async () => {
+    await axios
+      .get(`${ip}api/sgi/servicios/promociones`)
+      .then((res) => {
+        guardarPromociones(res.data[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error al traer las promociones", "ATENCION");
+      });
+  };
   // ----------------------------------------------
 
   let token = jsCookie.get("token");
@@ -1991,6 +2041,7 @@ const Emision = () => {
       traerFarmacias();
       traerPlanesOrto();
       traerPlanesImp();
+      traerPromociones();
     }
   }, []);
 

@@ -180,6 +180,7 @@ function Administracion(props) {
               SUC: "",
               LOCALIDAD: "",
               OTERO: 0,
+              COD_PRES: prestador.COD_PRES,
             };
 
             if (sucRef.current.value === "S.S. DE JUJUY") {
@@ -206,13 +207,12 @@ function Administracion(props) {
             axios
               .put(`${ip}api/sgi/servicios/updateprestado`, data)
               .then((res) => {
-                console.log(res);
                 if (res.status === 200) {
                   toastr.success(
                     "Los datos del prestador se modificaron con exito"
                   );
 
-                  let accion = `Se actualizaron datos del prestador ${prestador.CODIGO}.`;
+                  let accion = `Se actualizaron datos del prestador ${prestador.COD_PRES}.`;
 
                   registrarHistoria(accion, user);
                 }
@@ -273,6 +273,7 @@ function Administracion(props) {
         horario1Ref={horario1Ref}
         horario2Ref={horario2Ref}
         sucRef={sucRef}
+        updatePrestador={updatePrestador}
       />
     </Layout>
   );

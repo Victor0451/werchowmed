@@ -18,6 +18,7 @@ const FormAdministracion = ({
   horario1Ref,
   horario2Ref,
   sucRef,
+  updatePrestador,
 }) => {
   return (
     <div className="container border border-dark p-4 mt-4 list">
@@ -189,7 +190,9 @@ const FormAdministracion = ({
               </div>
             </div>
             <div className="d-flex justify-content-end mt-5">
-              <button className="btn btn-primary">Actualizar</button>
+              <button className="btn btn-primary" onClick={updatePrestador}>
+                Actualizar
+              </button>
             </div>
           </div>
 
