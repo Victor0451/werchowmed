@@ -846,7 +846,10 @@ const Emision = () => {
           uso.IMPORTE = detalleMed.CON_PAGA;
         }
       }
-    } else if (detalleMed.PROMO === 0 && detalleMed.OTERO === 0) {
+    } else if (
+      (detalleMed.PROMO === 0 && detalleMed.OTERO === 0) ||
+      detalleMed.OTERO === 1
+    ) {
       uso.IMPORTE = detalleMed.CON_PAGA;
     }
 
@@ -1960,7 +1963,10 @@ const Emision = () => {
 
         return importe;
       }
-    } else if (detalleMed.PROMO === 0 && detalleMed.OTERO === 0) {
+    } else if (
+      (detalleMed.PROMO === 0 && detalleMed.OTERO === 0) ||
+      detalleMed.OTERO === 1
+    ) {
       const importe = detalleMed.CON_PAGA;
 
       return importe;
