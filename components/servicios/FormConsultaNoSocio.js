@@ -14,7 +14,7 @@ const FormConsultaNoSocio = ({
   registrarOrdenUsos,
 }) => {
   return (
-    <div className="container border border-dark p-4 mt-4 mb-4 list">
+    <div className="container border border-dark p-4 mt-4 mb-4 list ">
       <div className="row">
         <div className="col-md-8">
           <h2 className="mt-2 mb-4">
@@ -28,7 +28,7 @@ const FormConsultaNoSocio = ({
         </div>
       </div>
 
-      <div className="row border border-dark list p-4">
+      <div className="row border border-dark list p-4 mt-4">
         {!sucursales ? (
           <div className="alert alert-info border border-dark col-md-4 text-center text-uppercase">
             Cargando Sucursales...
@@ -223,10 +223,7 @@ const FormConsultaNoSocio = ({
           >
             Generar Orden
           </button>
-          <a
-            className="ml-1 btn btn-danger "
-            href="/gestion/werchow/servicios/emision"
-          >
+          <a className="ml-1 btn btn-danger " href="/servicios/emision">
             Cancelar
           </a>
         </div>

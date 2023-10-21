@@ -70,7 +70,7 @@ const EmitirServicio = ({
   planImp,
   registrarPlanImp,
   usosFarm,
-  selDescuento
+  selDescuento,
 }) => {
   if (!ficha) return <Spinner />;
 

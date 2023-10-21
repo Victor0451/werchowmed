@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../components/layout/Layout";
+import { Skeleton } from "../../components/layout/Skeleton";
+import useUser from "../../hook/useUser";
+import useWerchow from "../../hook/useWerchow";
+import useSWR from "swr";
+import Redirect from "../../components/auth/RedirectToLogin";
 import moment from "moment-timezone";
 import axios from "axios";
-import jsCookie from "js-cookie";
 import toastr from "toastr";
 import Router from "next/router";
-import { ip } from "../../config/config";
 import { registrarHistoria } from "../../utils/funciones";
 import NuevaCaja from "../../components/caja/NuevaCaja";
 import FormCajaPato from "../../components/caja/FormCajaPato";
@@ -18,8 +21,6 @@ const CajaPato = () => {
   let cantidadERef = React.createRef();
   let importeERef = React.createRef();
 
-  const [user, guardarUsuario] = useState(null);
-  const [usuc, guardarUsuc] = useState(null);
   const [ordenes, guardarOrdenes] = useState(null);
   const [ingresos, guardarIngresos] = useState([]);
   const [egresos, guardarEgresos] = useState([]);
@@ -27,12 +28,17 @@ const CajaPato = () => {
   const [fechaOrd, guadrarFechaOrd] = useState(null);
   const [flag, guardarFlag] = useState(false);
 
+  const { usu } = useWerchow();
+
+  const { isLoading } = useUser();
+
   const traerOrdenesSinRendir = async (user, suc) => {
     await axios
-      .get(`${ip}api/sgi/servicios/ordenessinrendir`, {
+      .get(`/api/caja`, {
         params: {
           suc: suc,
           user: user,
+          f: "ordenes sin rendir",
         },
       })
       .then((res) => {
@@ -49,14 +55,16 @@ const CajaPato = () => {
 
   const traerOrdenesPorDia = async (fecha) => {
     await axios
-      .get(`${ip}api/sgi/servicios/ordenespordia`, {
+      .get(`/api/caja`, {
         params: {
-          suc: usuc,
+          suc: usu.sucursal,
           fecha: fecha,
-          user: user,
+          user: usu.usuario,
+          f: "ordenes por dia",
         },
       })
       .then((res) => {
+        console.log(res.data);
         let ing = [];
 
         let arr = res.data;
@@ -151,7 +159,7 @@ const CajaPato = () => {
       let totE = 0;
 
       let caja = {
-        SUCURSAL: usuc,
+        SUCURSAL: usu.sucursal,
         PUESTO: 30,
         CODIGO: 0,
         MOVIM: "",
@@ -167,12 +175,13 @@ const CajaPato = () => {
         FEC_COMP: "",
         HORA: moment().format("HH:mm"),
         ORIGEN: "",
-        OPERADOR: user,
+        OPERADOR: usu.usuario,
         ASIENTO: 0,
         EXENTO: "",
         CANT_AFIL: 0,
         CAE: "",
         VTO_CAE: "",
+        f: "reg caja",
       };
 
       for (let i = 0; i < ingresos.length; i++) {
@@ -234,7 +243,7 @@ const CajaPato = () => {
 
   const postCaja = async (caja, f) => {
     await axios
-      .post(`${ip}api/sgi/servicios/regmovimcaja`, caja)
+      .post(`/api/caja`, caja)
       .then((res) => {
         if (f === 1 && res.status === 200) {
           toastr.success(
@@ -244,12 +253,13 @@ const CajaPato = () => {
 
           updateRendido();
 
-          let accion = `El operador ${user} cerro caja de la otero con fecha: ${caja.FECHA}`;
+          let accion = `El operador ${usu.usuario} cerro caja de la otero con fecha: ${caja.FECHA}`;
 
-          registrarHistoria(accion, user);
+          registrarHistoria(accion, usu.usuario);
 
           setTimeout(() => {
-            Router.push(`/gestion/werchow/servicios/emision`);
+            // Router.push(`/servicios/emision`);
+            Router.reload();
           }, 500);
         }
       })
@@ -260,8 +270,13 @@ const CajaPato = () => {
   };
 
   const updateRendido = async () => {
+    let data = {
+      f: "puntear rendido",
+      fecha: fechaOrd,
+    };
+
     await axios
-      .put(`${ip}api/sgi/servicios/updaterendido/${fechaOrd}`)
+      .put(`/api/caja`, data)
       .then((res) => {
         if (res.data) {
           toastr.info(
@@ -288,10 +303,11 @@ const CajaPato = () => {
     let fecha = moment().format("YYYY-MM-DD");
 
     await axios
-      .get(`${ip}api/sgi/servicios/chekcaja`, {
+      .get(`/api/caja`, {
         params: {
           fecha: fecha,
           user: user,
+          f: "check caja",
         },
       })
       .then((res) => {
@@ -305,70 +321,72 @@ const CajaPato = () => {
       });
   };
 
-  let token = jsCookie.get("token");
+  const traerInfo = () => {
+    traerOrdenesSinRendir(usu.usuario, usu.sucursal);
+    chekCaja(usu.usuario);
+  };
 
-  useEffect(() => {
-    if (!token) {
-      Router.push("/redirect");
-    } else {
-      let usuario = jsCookie.get("usuario");
+  useSWR("/api/caja", traerInfo);
 
-      if (usuario) {
-        let userData = JSON.parse(usuario);
-        guardarUsuario(userData.usuario);
-        guardarUsuc(userData.sucursal);
-
-        traerOrdenesSinRendir(userData.usuario, userData.sucursal);
-
-        chekCaja(userData.usuario);
-      }
-    }
-  }, []);
+  if (isLoading === true) return <Skeleton />;
 
   return (
-    <Layout>
-      <NuevaCaja
-        listado={ordenes}
-        traerOrdenesPorDia={traerOrdenesPorDia}
-        flag={flag}
-      />
-
-      {ingresos ? (
+    <>
+      {!usu ? (
+        <Layout>
+          <Redirect />
+        </Layout>
+      ) : usu ? (
         <>
-          <div id="caja">
-            <FormCajaPato
-              ingresos={ingresos}
-              errores={errores}
-              egresos={egresos}
-              descripcionIRef={descripcionIRef}
-              cantidadIRef={cantidadIRef}
-              importeIRef={importeIRef}
-              descripcionERef={descripcionERef}
-              cantidadERef={cantidadERef}
-              importeERef={importeERef}
-              regEgreso={regEgreso}
-              regIngreso={regIngreso}
-              calcTotalMovimientos={calcTotalMovimientos}
+          <Layout>
+            <NuevaCaja
+              listado={ordenes}
+              traerOrdenesPorDia={traerOrdenesPorDia}
+              flag={flag}
             />
-          </div>
 
-          <div className=" container list mt-4 border border-dark p-4">
-            <h3>
-              <strong>
-                <u>Opciones</u>
-              </strong>
-            </h3>
-            <div className="row border border-dark p-4 mt-4">
-              <div className="col-md-12 d-flex justify-content-center">
-                <button className=" btn btn-success mr-1 " onClick={regCaja}>
-                  Registar Movimientos
-                </button>
-              </div>
-            </div>
-          </div>
+            {ingresos ? (
+              <>
+                <div id="caja">
+                  <FormCajaPato
+                    ingresos={ingresos}
+                    errores={errores}
+                    egresos={egresos}
+                    descripcionIRef={descripcionIRef}
+                    cantidadIRef={cantidadIRef}
+                    importeIRef={importeIRef}
+                    descripcionERef={descripcionERef}
+                    cantidadERef={cantidadERef}
+                    importeERef={importeERef}
+                    regEgreso={regEgreso}
+                    regIngreso={regIngreso}
+                    calcTotalMovimientos={calcTotalMovimientos}
+                  />
+                </div>
+
+                <div className=" container list mt-4 border border-dark p-4">
+                  <h3>
+                    <strong>
+                      <u>Opciones</u>
+                    </strong>
+                  </h3>
+                  <div className="row border border-dark p-4 mt-4">
+                    <div className="col-md-12 d-flex justify-content-center">
+                      <button
+                        className=" btn btn-success mr-1 "
+                        onClick={regCaja}
+                      >
+                        Registar Movimientos
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : null}
+          </Layout>
         </>
       ) : null}
-    </Layout>
+    </>
   );
 };
 

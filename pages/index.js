@@ -4,63 +4,65 @@ import LoginUsuario from "../components/auth/LoginUsuario";
 import axios from "axios";
 import Router from "next/router";
 import jsCookie from "js-cookie";
-import { ip } from "../config/config";
 import toastr from "toastr";
 
-// Validaciones
-import useValidacion from "../hooks/useValidacion";
-import validarIniciarSession from "../validacion/validarIniciarSession";
-
-const STATE_INICIAL = {
-  usuario: "",
-  contrasena: "",
-};
-
 const Login = () => {
-  const [error, guardarError] = useState(false);
+  let usuarioRef = React.createRef();
+  let contrasenaRef = React.createRef();
+
+  const [errores, guardarErrores] = useState(false);
   const [alertas, guardarAlertas] = useState(null);
 
-  const { valores, errores, handleChange, handleSubmit, handleBlur } =
-    useValidacion(STATE_INICIAL, validarIniciarSession, iniciarSession);
+  const iniciarSesion = async () => {
+    guardarErrores(null);
+    let usuario = usuarioRef.current.value;
+    let contrasena = contrasenaRef.current.value;
 
-  const { usuario, contrasena } = valores;
+    if (usuario === "") {
+      guardarErrores("Debes ingresar un nombre de usuario");
+    } else if (contrasena === "") {
+      guardarErrores("Debes ingresar una contraseña");
+    } else {
+      try {
+        //headers
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
 
-  async function iniciarSession() {
-    try {
-      //headers
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
+        //Req body
 
-      //Req body
+        const body = {
+          usuario: usuario,
+          contrasena: contrasena,
+          f: "login",
+        };
 
-      const body = JSON.stringify({ usuario, contrasena });
-
-      await axios.post(`${ip}api/sgi/auth/auth`, body, config).then((res) => {
-        const usuario = res.data.user;
-
-        if (usuario.medicos === 1) {
-          jsCookie.set("token", res.data.token);
-          jsCookie.set("usuario", usuario);
-
-          Router.push("/home");
-        } else if (usuario.medicos === 0) {
-          toastr.info(
-            "No tienes autorizacion para acceder al sistema de servicios medicos"
-          );
-          guardarAlertas(
-            "No tienes autorizacion para acceder al sistema de servicios medicos"
-          );
+        await axios.post(`/api/auth`, body, config).then((res) => {
+          if (res.data.user.medicos === true) {
+            let user = JSON.stringify(res.data.user);
+            jsCookie.set("token", res.data.token);
+            jsCookie.set("usuario", user);
+            Router.push("/home");
+          } else if (res.data.user.medicos === false) {
+            toastr.info(
+              "No tienes autorizacion para acceder al sistema de servicios medicos"
+            );
+            guardarAlertas(
+              "No tienes autorizacion para acceder al sistema de servicios medicos"
+            );
+          }
+        });
+      } catch (error) {
+        if (error.response.status && error.response.status === 400) {
+          guardarErrores(error.response.data.msg);
+        } else {
+          console.log(error, "LOGIN_FAIL");
         }
-      });
-    } catch (error) {
-      console.log(error, error.response.status, "LOGIN_FAIL");
-      guardarError(error.response.data.msg);
+      }
     }
-  }
-
+  };
   let token = jsCookie.get("token");
 
   if (token) {
@@ -70,13 +72,10 @@ const Login = () => {
   return (
     <Layout>
       <LoginUsuario
-        usuario={usuario}
-        contrasena={contrasena}
+        usuarioRef={usuarioRef}
+        contrasenaRef={contrasenaRef}
         errores={errores}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        handleBlur={handleBlur}
-        error={error}
+        iniciarSesion={iniciarSesion}
         alertas={alertas}
       />
     </Layout>

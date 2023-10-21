@@ -1,7 +1,7 @@
 import React from "react";
 
-const AccesosRapidos = ({ user }) => {
-  if (!user) return null;
+const AccesosRapidos = ({ usu }) => {
+  if (!usu) return null;
 
   return (
     <>
@@ -77,7 +77,7 @@ const AccesosRapidos = ({ user }) => {
               <p className="card-text mt-2">Generar Caja Diaria</p>
             </div>
           </div>
-          {user === 1 || user === 3 ? (
+          {usu.perfil === 1 || usu.perfil === 3 ? (
             <>
               <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
                 <div className="card-header">Generar Caja Admin.</div>

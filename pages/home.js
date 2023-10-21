@@ -1,22 +1,30 @@
 import React, { useContext, useEffect, useState } from "react";
+import useUser from "../hook/useUser";
+import useWerchow from "../hook/useWerchow";
+import useSWR from "swr";
+import { Skeleton } from "../components/layout/Skeleton";
 import Layout from "../components/layout/Layout";
-import jsCookie from "js-cookie";
-import Router from "next/router";
+import Redirect from "../components/auth/RedirectToLogin";
 import axios from "axios";
-import { ip } from "../config/config";
 import AccesosRapidos from "../components/home/AccesosRapidos";
 import Calendario from "../components/servicios/Calendario";
 import TurnosMedicosDelDia from "../components/servicios/TurnosMedicosDelDia";
+import moment from "moment";
 
 const home = () => {
+  const { usu } = useWerchow();
+  const { isLoading } = useUser();
   const [listTurno, guardarListTurno] = useState([]);
   const [visitas, guardarVisitas] = useState([]);
   const [detVisi, guardarDetVisi] = useState(null);
-  const [user, guardarUsuario] = useState(null);
 
-  const traerTurnosDelDia = async () => {
+  const traerInfo = async () => {
     await axios
-      .get(`${ip}api/sgi/servicios/turnosdeldia`)
+      .get(`/api/turnos`, {
+        params: {
+          f: "turnos del dia",
+        },
+      })
       .then((res) => {
         if (res.data.length > 0) {
           guardarListTurno(res.data);
@@ -34,35 +42,39 @@ const home = () => {
           "ATENCION"
         );
       });
-  };
 
-  const traerVisitas = async () => {
     await axios
-      .get(` ${ip}api/sgi/servicios/traervisitas`)
+      .get(`/api/turnos`, {
+        params: {
+          f: "traer visitas planes",
+        },
+      })
       .then((res) => {
-        let evs = res.data;
+        if (res.data.length > 0) {
+          let evs = res.data;
 
-        let arr = [];
+          let arr = [];
 
-        for (let i = 0; i < evs.length; i++) {
-          let evarr = {
-            title: evs[i].title,
-            allDay: evs[i].allDay,
-            start: new Date(evs[i].start),
-            end: new Date(evs[i].end),
-            nvisita: evs[i].nvisita,
-            pago: evs[i].pago,
-          };
+          for (let i = 0; i < evs.length; i++) {
+            let evarr = {
+              title: evs[i].title,
+              allDay: evs[i].allDay,
+              start: moment(evs[i].start).format("YYYY-MM-DD"),
+              end: moment(evs[i].end).format("YYYY-MM-DD"),
+              nvisita: evs[i].nvisita,
+              pago: evs[i].pago,
+            };
 
-          if (evarr.allDay === 1) {
-            evarr.allDay = true;
-          } else if (evarr.allDay === 0) {
-            evarr.allDay = false;
+            if (evarr.allDay === 1) {
+              evarr.allDay = true;
+            } else if (evarr.allDay === 0) {
+              evarr.allDay = false;
+            }
+
+            arr.push(evarr);
+
+            guardarVisitas(arr);
           }
-
-          arr.push(evarr);
-
-          guardarVisitas(arr);
         }
       })
       .catch((error) => {
@@ -77,90 +89,86 @@ const home = () => {
     myModal.show();
   };
 
-  let token = jsCookie.get("token");
+  useSWR("/api/turnos", traerInfo);
 
-  useEffect(() => {
-    if (!token) {
-      Router.push("/redirect");
-    } else {
-      let usuario = jsCookie.get("usuario");
-
-      if (usuario) {
-        let userData = JSON.parse(usuario);
-        guardarUsuario(userData.perfil);
-      }
-
-      traerTurnosDelDia();
-      traerVisitas();
-    }
-  }, []);
+  if (isLoading === true) return <Skeleton />;
 
   return (
-    <Layout>
-      <div className="container p-4 border border-dark list mt-4">
-        <div className="row">
-          <div className="col-md-8">
-            <h2 className="mt-2 mb-4">
-              <strong>
-                <u>Sistema de Servicios Medicos</u>
-              </strong>
-            </h2>
-          </div>
-          <div className="col-md-4 d-flex justify-content-end">
-            <img src="/img/logo.png" className="mt-2 werchowlogo" />
-          </div>
-        </div>
+    <>
+      {!usu ? (
+        <Layout>
+          <Redirect />
+        </Layout>
+      ) : usu ? (
+        <>
+          <Layout>
+            <div className="container p-4 border border-dark list mt-4">
+              <div className="row">
+                <div className="col-md-8">
+                  <h2 className="mt-2 mb-4">
+                    <strong>
+                      <u>Sistema de Servicios Medicos</u>
+                    </strong>
+                  </h2>
+                </div>
+                <div className="col-md-4 d-flex justify-content-end">
+                  <img src="/img/logo.png" className="mt-2 werchowlogo" />
+                </div>
+              </div>
 
-        <div className="border border-dark mt-4 mb-4 p-2">
-          <div className="row d-flex justify-content-center">
-            <div className="col-md-6">
-              <h4>
-                <u>Calendario de visitas - Plan Ortodoncia</u>
-              </h4>
+              <div className="border border-dark mt-4 mb-4 p-2">
+                <div className="row d-flex justify-content-center">
+                  <div className="col-md-6">
+                    <h4>
+                      <u>Calendario de visitas - Plan Ortodoncia</u>
+                    </h4>
+                  </div>
+
+                  <div className="col-md-4">
+                    <button
+                      className="btn btn-block btn-primary mt-1"
+                      data-toggle="collapse"
+                      data-target="#collapseWidthExample"
+                    >
+                      Ver Turnos
+                    </button>
+                  </div>
+                </div>
+
+                <Calendario
+                  eventSelected={eventSelected}
+                  visitas={visitas}
+                  detVisi={detVisi}
+                />
+              </div>
+
+              <div className="border border-dark mt-4 mb-4 p-2">
+                <div className="row d-flex justify-content-center">
+                  <div className="col-md-6">
+                    <h4>
+                      <u>Turnos Medicos del Dia</u>
+                    </h4>
+                  </div>
+
+                  <div className="col-md-4">
+                    <button
+                      className="btn btn-block btn-primary mt-1"
+                      data-toggle="collapse"
+                      data-target="#collapseTurnosMedicos"
+                    >
+                      Ver Turnos
+                    </button>
+                  </div>
+                  <TurnosMedicosDelDia listTurno={listTurno} />
+                </div>
+              </div>
             </div>
 
-            <div className="col-md-4">
-              <button
-                className="btn btn-block btn-primary mt-1"
-                data-toggle="collapse"
-                data-target="#collapseWidthExample"
-              >
-                Ver Turnos
-              </button>
-            </div>
-          </div>
-
-          <Calendario
-            eventSelected={eventSelected}
-            visitas={visitas}
-            detVisi={detVisi}
-          />
-        </div>
-
-        <div className="border border-dark mt-4 mb-4 p-2">
-          <div className="row d-flex justify-content-center">
-            <div className="col-md-6">
-              <h4>
-                <u>Turnos Medicos del Dia</u>
-              </h4>
-            </div>
-
-            <div className="col-md-4">
-              <button
-                className="btn btn-block btn-primary mt-1"
-                data-toggle="collapse"
-                data-target="#collapseTurnosMedicos"
-              >
-                Ver Turnos
-              </button>
-            </div>
-            <TurnosMedicosDelDia listTurno={listTurno} />
-          </div>
-        </div>
-      </div>
-
-      <AccesosRapidos user={user} />
-    </Layout>
+            <AccesosRapidos usu={usu} />
+          </Layout>
+        </>
+      ) : null}
+    </>
   );
 };
 

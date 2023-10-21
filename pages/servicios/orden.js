@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../components/layout/Layout";
-import moment from "moment-timezone";
 import axios from "axios";
 import jsCookie from "js-cookie";
 import toastr from "toastr";
 import Router, { useRouter } from "next/router";
-import { ip } from "../../config/config";
 import ImpOrdenConsulta from "../../components/servicios/ImpOrdenConsulta";
 
 const Orden = () => {
@@ -22,33 +20,56 @@ const Orden = () => {
 
   const traerSocio = async (dni) => {
     await axios
-      .get(`${ip}api/werchow/maestro/titulardni/${dni}`)
+      .get(`/api/socios`, {
+        params: {
+          f: "maestro",
+          dni: dni,
+        },
+      })
       .then((res) => {
-        if (res.data[0][0]) {
-          guardarSocio(res.data[0][0]);
-        } else if (!res.data[0][0]) {
+        if (res.data[0]) {
+          guardarSocio(res.data[0]);
+        } else if (!res.data[0]) {
           axios
-            .get(`${ip}api/werchow/maestro/titulardnim/${dni}`)
+            .get(`/api/socios`, {
+              params: {
+                f: "mutual",
+                dni: dni,
+              },
+            })
             .then((resM) => {
-              if (resM.data[0][0]) {
-                guardarSocio(resM.data[0][0]);
-              } else if (!resM.data[0][0]) {
+              if (resM.data[0]) {
+                guardarSocio(resM.data[0]);
+              } else if (!resM.data[0]) {
                 axios
-                  .get(`${ip}api/werchow/maestro/adherente/${dni}`)
+                  .get(`/api/socios`, {
+                    params: {
+                      f: "mae adh",
+                      dni: dni,
+                    },
+                  })
                   .then((resA) => {
-                    if (resA.data[0][0]) {
-                      guardarSocio(resA.data[0][0]);
-                    } else if (!resA.data[0][0]) {
+                    if (resA.data[0]) {
+                      guardarSocio(resA.data[0]);
+                    } else if (!resA.data[0]) {
                       axios
-                        .get(`${ip}api/werchow/maestro/adherentem/${dni}`)
+                        .get(`/api/socios`, {
+                          params: {
+                            f: "mut adh",
+                            dni: dni,
+                          },
+                        })
                         .then((resAM) => {
-                          if (resAM.data[0][0]) {
-                            guardarSocio(resAM.data[0][0]);
-                          } else if (!resAM.data[0][0]) {
+                          if (resAM.data[0]) {
+                            guardarSocio(resAM.data[0]);
+                          } else if (!resAM.data[0]) {
                             axios
-                              .get(
-                                `${ip}api/sgi/servicios/traeradhprovidni/${dni}`
-                              )
+                              .get(`/api/servicios`, {
+                                params: {
+                                  f: "traer adh provi dni",
+                                  dni: dni,
+                                },
+                              })
                               .then((resAP) => {
                                 if (resAP.data.length > 0) {
                                   guardarSocio(resAP.data[0]);
@@ -100,11 +121,18 @@ const Orden = () => {
 
   const traerOrden = async (iduso) => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerordenusos/${iduso}`)
+      .get(`/api/servicios`, {
+        params: {
+          iduso: iduso,
+          f: "traer uso",
+        },
+      })
       .then((res) => {
-        guardarOrden(res.data);
+        if (res.data[0]) {
+          guardarOrden(res.data[0]);
 
-        traerMedico(res.data.PRESTADO);
+          traerMedico(res.data[0].PRESTADO);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -114,9 +142,14 @@ const Orden = () => {
 
   const traerMedico = async (id) => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerdetallemedico/${id}`)
+      .get(`/api/servicios`, {
+        params: {
+          prestado: id,
+          f: "traer detalle medico",
+        },
+      })
       .then((res) => {
-        guardarMedico(res.data);
+        guardarMedico(res.data[0]);
       })
       .catch((error) => {
         console.log(error);
@@ -139,7 +172,12 @@ const Orden = () => {
 
   const traerPracticas = async (orden) => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerpracticas/${orden}`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer practicas",
+          orden: orden,
+        },
+      })
       .then((res) => {
         guardarPracticas(res.data);
       })
@@ -151,9 +189,10 @@ const Orden = () => {
 
   const tarerFarmaNom = async (farma) => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerfarnom`, {
+      .get(`/api/servicios`, {
         params: {
           farma: farma,
+          f: "traer nombre farmacia",
         },
       })
       .then((res) => {
@@ -170,7 +209,12 @@ const Orden = () => {
 
   const traerFarmacia = async (orden) => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerfarmacia/${orden}`)
+      .get(`/api/servicios`, {
+        params: {
+          orden: orden,
+          f: "traer farmacia",
+        },
+      })
       .then((res) => {
         guardarFarmacia(res.data);
 
@@ -189,8 +233,14 @@ const Orden = () => {
 
   const traerEnfermeria = async (orden) => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerenfermeria/${orden}`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer enfermeria orden",
+          orden: orden,
+        },
+      })
       .then((res) => {
+        console.log(res.data);
         guardarEnfermeria(res.data);
       })
       .catch((error) => {
@@ -212,14 +262,21 @@ const Orden = () => {
     return total.toFixed(2);
   };
 
+  if (router.query.dni) {
+    jsCookie.set("dnio", router.query.dni);
+    jsCookie.set("idusoo", router.query.iduso);
+    jsCookie.set("ordeno", router.query.orden);
+    jsCookie.set("fo", router.query.f);
+  }
+
   useEffect(() => {
     if (!token) {
       Router.push("/redirect");
     } else {
-      let dni = router.query.dni;
-      let iduso = router.query.iduso;
-      let orden = router.query.orden;
-      let f = router.query.flag;
+      let dni = jsCookie.get("dnio");
+      let iduso = jsCookie.get("idusoo");
+      let orden = jsCookie.get("ordeno");
+      let f = jsCookie.get("fo");
 
       traerSocio(dni);
       traerOrden(iduso);

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../components/layout/Layout";
+import useUser from "../../hook/useUser";
+import useWerchow from "../../hook/useWerchow";
+import useSWR from "swr";
+import Redirect from "../../components/auth/RedirectToLogin";
+import { Skeleton } from "../../components/layout/Skeleton";
 import moment from "moment-timezone";
 import axios from "axios";
 import jsCookie from "js-cookie";
 import toastr from "toastr";
 import Router, { useRouter } from "next/router";
-import { confirmAlert } from "react-confirm-alert"; // Import
-import { ip } from "../../config/config";
 import FormConsultaNoSocio from "../../components/servicios/FormConsultaNoSocio";
 import ImpOrdenConsultaNoSocio from "../../components/servicios/ImpOrdenConsultaNoSocio";
 import { registrarHistoria } from "../../utils/funciones";
@@ -16,8 +19,6 @@ const EmisionNoSocio = () => {
   let sucursalRef = React.createRef();
   let medicoRef = React.createRef();
 
-  const [user, guardarUsuario] = useState(null);
-  const [usuc, guardarUsuc] = useState(null);
   const [nosocio, guardarNoSocio] = useState(null);
   const [sucursales, guardarSucursales] = useState(null);
   const [espec, guardarEspec] = useState(null);
@@ -27,11 +28,17 @@ const EmisionNoSocio = () => {
   const [orden, guardarOrden] = useState(null);
   const [f, guardarFlag] = useState(false);
 
-  let token = jsCookie.get("token");
+  const { usu } = useWerchow();
+
+  const { isLoading } = useUser();
 
   const traerSucursales = async () => {
     await axios
-      .get(`${ip}api/sgi/servicios/traersucursales`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer sucursales",
+        },
+      })
       .then((res) => {
         guardarSucursales(res.data);
       })
@@ -46,7 +53,11 @@ const EmisionNoSocio = () => {
 
   const traerEspecialidades = async () => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerespecialidades`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer especialidades",
+        },
+      })
       .then((res) => {
         guardarEspec(res.data);
       })
@@ -60,12 +71,51 @@ const EmisionNoSocio = () => {
   };
 
   const traerMedicosPorSuc = async (f) => {
-    if (especialidadRef.current.value !== null) {
+    if (f === "C" && especialidadRef.current.value !== null) {
       await axios
-        .get(`${ip}api/sgi/servicios/traermedporsuc`, {
+        .get(`/api/servicios`, {
           params: {
             suc: sucursalRef.current.value,
             esp: especialidadRef.current.value,
+            f: "traer medicos por suc",
+          },
+        })
+        .then((res) => {
+          guardarMedicos(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          toastr.error(
+            "Ocurrio un error al traer el listado de Especialidades",
+            "ATENCION"
+          );
+        });
+    } else if (f === "P" && especialidadRefP.current.value !== null) {
+      await axios
+        .get(`/api/servicios`, {
+          params: {
+            suc: sucursalRefP.current.value,
+            esp: especialidadRefP.current.value,
+            f: "traer medicos por suc",
+          },
+        })
+        .then((res) => {
+          guardarMedicos(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          toastr.error(
+            "Ocurrio un error al traer el listado de Especialidades",
+            "ATENCION"
+          );
+        });
+    } else if (f === "Pl" && especialidadRefPl.current.value !== null) {
+      await axios
+        .get(`/api/servicios`, {
+          params: {
+            suc: sucursalRefPl.current.value,
+            esp: especialidadRefPl.current.value,
+            f: "traer medicos por suc",
           },
         })
         .then((res) => {
@@ -84,11 +134,14 @@ const EmisionNoSocio = () => {
   const traerDetalleMedSelec = async (f) => {
     if (f === "C" && medicoRef.current.value !== null) {
       await axios
-        .get(
-          `${ip}api/sgi/servicios/traerdetallemedico/${medicoRef.current.value}`
-        )
+        .get(`/api/servicios`, {
+          params: {
+            prestado: medicoRef.current.value,
+            f: "traer detalle medico",
+          },
+        })
         .then((res) => {
-          guardarDetalleMed(res.data);
+          guardarDetalleMed(res.data[0]);
         })
         .catch((error) => {
           console.log(error);
@@ -101,13 +154,16 @@ const EmisionNoSocio = () => {
       let id = medicoRefP.current.value;
 
       await axios
-        .get(
-          `${ip}api/sgi/servicios/traerdetallemedico/${medicoRefP.current.value}`
-        )
+        .get(`/api/servicios`, {
+          params: {
+            prestado: medicoRefP.current.value,
+            f: "traer detalle medico",
+          },
+        })
         .then((res) => {
-          guardarDetalleMed(res.data);
+          guardarDetalleMed(res.data[0]);
 
-          traerPracticasPrest(id, res.data.LUGAR);
+          traerPracticasPrest(id, res.data[0].LUGAR);
         })
         .catch((error) => {
           console.log(error);
@@ -118,11 +174,14 @@ const EmisionNoSocio = () => {
         });
     } else if (f === "E" && medicoRefE.current.value !== null) {
       await axios
-        .get(
-          `${ip}api/sgi/servicios/traerdetallemedico/${medicoRefE.current.value}`
-        )
+        .get(`/api/servicios`, {
+          params: {
+            prestado: medicoRefE.current.value,
+            f: "traer detalle medico",
+          },
+        })
         .then((res) => {
-          guardarDetalleEnfer(res.data);
+          guardarDetalleEnfer(res.data[0]);
 
           traerPractEnfer();
         })
@@ -135,11 +194,14 @@ const EmisionNoSocio = () => {
         });
     } else if (f === "Pl" && medicoRefPl.current.value !== null) {
       await axios
-        .get(
-          `${ip}api/sgi/servicios/traerdetallemedico/${medicoRefPl.current.value}`
-        )
+        .get(`/api/servicios`, {
+          params: {
+            prestado: medicoRefPl.current.value,
+            f: "traer detalle medico",
+          },
+        })
         .then((res) => {
-          guardarDetalleMed(res.data);
+          guardarDetalleMed(res.data[0]);
         })
         .catch((error) => {
           console.log(error);
@@ -153,7 +215,12 @@ const EmisionNoSocio = () => {
 
   const traerNoSocio = async (dni) => {
     await axios
-      .get(`${ip}api/sgi/servicios/verificarnosocio/${dni}`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer no socio",
+          dni: dni,
+        },
+      })
       .then((res) => {
         guardarNoSocio(res.data);
 
@@ -169,7 +236,7 @@ const EmisionNoSocio = () => {
 
   const registrarOrdenUsos = async () => {
     const uso = {
-      SUC: usuc,
+      SUC: usu.sucursal,
       ORDEN: nOrden,
       CONTRATO: 0,
       NRO_ADH: 0,
@@ -184,15 +251,16 @@ const EmisionNoSocio = () => {
       SERVICIO: "ORDE",
       IMPORTE: detalleMed.MAX_DESC,
       IMP_LIQ: detalleMed.CON_PAGA,
-      VALOR: 0,
+      VALOR: "0",
       PUESTO: "",
       PRESTADO: detalleMed.COD_PRES,
-      OPERADOR: user.codigo,
+      OPERADOR: usu.codigo,
       EMPRESA: "W",
       RENDIDO: 0,
       ANULADO: 0,
       NUSOS: 1,
-      OPERADOR: user,
+      OPERADOR: usu.usuario,
+      f: "reg uso",
     };
 
     if (detalleMed.CON_PAGA >= 1500) {
@@ -202,8 +270,7 @@ const EmisionNoSocio = () => {
     }
 
     await axios
-      .post(`${ip}api/sgi/servicios/regusos`, uso)
-
+      .post(`/api/servicios`, uso)
       .then((res) => {
         if (res.status === 200) {
           guardarOrden(uso);
@@ -212,7 +279,7 @@ const EmisionNoSocio = () => {
 
           regOrdenConsulta(uso.ORDEN);
 
-          puntearCodigo(nosocio.dni);
+          puntearCodigo(nosocio.idnosocio);
         }
       })
       .catch((error) => {
@@ -234,12 +301,13 @@ const EmisionNoSocio = () => {
       COD_PRES: detalleMed.COD_PRES,
       IMPORTE: 0,
       ANULADO: 0,
-      OPERADOR: user,
+      OPERADOR: usu.usuario,
       OPE_ANU: 0,
       DIAGNOSTIC: "",
       ATENCION: 0,
       NRO_DNI: nosocio.dni,
-      SUC: usuc,
+      SUC: usu.sucursal,
+      f: "reg consul",
     };
 
     if (detalleMed.CON_PAGA < 1500) {
@@ -249,7 +317,7 @@ const EmisionNoSocio = () => {
     }
 
     await axios
-      .post(`${ip}api/sgi/servicios/regconsulta`, consul)
+      .post(`/api/servicios`, consul)
       .then((res) => {
         if (res.status === 200) {
           toastr.success(
@@ -259,7 +327,7 @@ const EmisionNoSocio = () => {
 
           let accion = `Se registro una orden de consulta ID: ${consul.NRO_ORDEN}, para el paciente: ${nosocio.nosocio} por pormocion de consulta sin cargo para no afiliados, para el medico: ${detalleMed.NOMBRE}. Coseguro a pagar: ${consul.IMPORTE}`;
 
-          registrarHistoria(accion, user);
+          registrarHistoria(accion, usu, usuario);
         }
       })
       .catch((error) => {
@@ -273,13 +341,16 @@ const EmisionNoSocio = () => {
 
   const traerNOrden = async () => {
     await axios
-      .get(`${ip}api/sgi/servicios/norden`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer norden",
+        },
+      })
       .then((res) => {
         setTimeout(() => {
-          if (!res.data) {
-            guardarNorden(1);
+          if (!res.data[0]) {
           } else {
-            guardarNorden(`PROM-${res.data.iduso + 1}`);
+            guardarNorden(`PROM-${res.data[0].iduso + 1}`);
           }
         }, 500);
       })
@@ -289,9 +360,14 @@ const EmisionNoSocio = () => {
       });
   };
 
-  const puntearCodigo = async (dni) => {
+  const puntearCodigo = async (id) => {
+    let data = {
+      f: "puntear codigo",
+      idnosocio: id,
+    };
+
     await axios
-      .put(`${ip}api/sgi/servicios/puntearcodigo/${dni}`)
+      .put(`/api/servicios`, data)
       .then((res) => {
         if (res.status === 200) {
           toastr.info(
@@ -321,79 +397,83 @@ const EmisionNoSocio = () => {
 
   let router = useRouter();
 
-  useEffect(() => {
-    if (!token) {
-      Router.push("/redirect");
-    } else {
-      let usuario = jsCookie.get("usuario");
+  const traerInfo = () => {
+    traerSucursales();
+    traerEspecialidades();
+    traerNoSocio(router.query.dni);
+  };
 
-      if (usuario) {
-        let userData = JSON.parse(usuario);
-        guardarUsuario(userData.usuario);
-        guardarUsuc(userData.sucursal);
-      }
+  // ----------------------------------------------
 
-      traerSucursales();
-      traerEspecialidades();
-      traerNoSocio(router.query.dni);
-    }
-  }, []);
+  useSWR("/api/servicios", traerInfo);
+
+  if (isLoading === true) return <Skeleton />;
 
   return (
-    <Layout>
-      {f === false ? (
-        <FormConsultaNoSocio
-          nosocio={nosocio}
-          sucursales={sucursales}
-          espec={espec}
-          medicos={medicos}
-          detalleMed={detalleMed}
-          sucursalRef={sucursalRef}
-          especialidadRef={especialidadRef}
-          medicoRef={medicoRef}
-          traerMedicosPorSuc={traerMedicosPorSuc}
-          traerDetalleMedSelec={traerDetalleMedSelec}
-          registrarOrdenUsos={registrarOrdenUsos}
-        />
-      ) : f === true ? (
+    <>
+      {!usu ? (
+        <Layout>
+          <Redirect />
+        </Layout>
+      ) : usu ? (
         <>
-          <div id="orden">
-            <ImpOrdenConsultaNoSocio
-              nosocio={nosocio}
-              orden={orden}
-              medico={detalleMed}
-            />
-          </div>
+          <Layout>
+            {f === false ? (
+              <FormConsultaNoSocio
+                nosocio={nosocio}
+                sucursales={sucursales}
+                espec={espec}
+                medicos={medicos}
+                detalleMed={detalleMed}
+                sucursalRef={sucursalRef}
+                especialidadRef={especialidadRef}
+                medicoRef={medicoRef}
+                traerMedicosPorSuc={traerMedicosPorSuc}
+                traerDetalleMedSelec={traerDetalleMedSelec}
+                registrarOrdenUsos={registrarOrdenUsos}
+              />
+            ) : f === true ? (
+              <>
+                <div id="orden">
+                  <ImpOrdenConsultaNoSocio
+                    nosocio={nosocio}
+                    orden={orden}
+                    medico={detalleMed}
+                  />
+                </div>
 
-          <div className=" container list mt-4 border border-dark p-4">
-            <h3>
-              <strong>
-                <u>Opciones</u>
-              </strong>
-            </h3>
-            <div className="row border border-dark p-4 mt-4">
-              <div className="col-md-12 d-flex justify-content-center">
-                <button className=" btn btn-primary " onClick={imprimir}>
-                  Imprimir
-                </button>
-                <a
-                  className="ml-1 btn btn-secondary "
-                  href="/servicios/listadoordenes"
-                >
-                  Listado De Ordenes
-                </a>
-                <a
-                  className="ml-1 btn btn-success "
-                  href="/servicios/emision"
-                >
-                  Generar Orden
-                </a>
-              </div>
-            </div>
-          </div>
+                <div className=" container list mt-4 border border-dark p-4">
+                  <h3>
+                    <strong>
+                      <u>Opciones</u>
+                    </strong>
+                  </h3>
+                  <div className="row border border-dark p-4 mt-4">
+                    <div className="col-md-12 d-flex justify-content-center">
+                      <button className=" btn btn-primary " onClick={imprimir}>
+                        Imprimir
+                      </button>
+                      <a
+                        className="ml-1 btn btn-secondary "
+                        href="/servicios/listadoordenes"
+                      >
+                        Listado De Ordenes
+                      </a>
+                      <a
+                        className="ml-1 btn btn-success "
+                        href="/servicios/emision"
+                      >
+                        Generar Orden
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : null}
+          </Layout>
         </>
       ) : null}
-    </Layout>
+    </>
   );
 };
 

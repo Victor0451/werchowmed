@@ -1,384 +1,327 @@
 import React, { useState, useEffect } from "react";
+import useUser from "../../hook/useUser";
+import useWerchow from "../../hook/useWerchow";
+import useSWR from "swr";
+import { Skeleton } from "../../components/layout/Skeleton";
+import Redirect from "../../components/auth/RedirectToLogin";
 import Layout from "../../components/layout/Layout";
 import moment from "moment-timezone";
 import axios from "axios";
-import jsCookie from "js-cookie";
 import toastr from "toastr";
 import Router from "next/router";
-import { ip } from "../../config/config";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import ModalNuevoMensaje from "../../components/mensajeria/ModalNuevoMensaje";
 import ModalLeerMensaje from "../../components/mensajeria/ModalLeerMensaje";
 import CentroDeMensajeria from "../../components/mensajeria/CentroDeMensajeria";
-import { registrarHistoria } from '../../utils/funciones'
+import { registrarHistoria } from "../../utils/funciones";
 
 const Nuevo = () => {
+  let destinatarioRef = React.createRef();
+  let urlRef = React.createRef();
+  let asuntoRef = React.createRef();
 
-    let destinatarioRef = React.createRef()
-    let urlRef = React.createRef()
-    let asuntoRef = React.createRef()
+  const [errores, guardarErrores] = useState(null);
+  const [descrip, guardarDescrip] = useState(null);
+  const [user, guardarUser] = useState(null);
+  const [operadores, guardarOperadores] = useState(null);
+  const [codmail, guardarCodmail] = useState(null);
+  const [mensajes, guardarMensajes] = useState(null);
+  const [mensajesEnv, guardarMensajesEnv] = useState(null);
+  const [msj, guardarMensaje] = useState(null);
+  const [archivos, guardarArchivos] = useState(null);
+  const [destino, guardarDestino] = useState([]);
+  const [cajas, guardarCajas] = useState([]);
+  const [url, guardarUrl] = useState([]);
 
-    const [errores, guardarErrores] = useState(null)
-    const [descrip, guardarDescrip] = useState(null)
-    const [user, guardarUser] = useState(null);
-    const [operadores, guardarOperadores] = useState(null);
-    const [codmail, guardarCodmail] = useState(null)
-    const [mensajes, guardarMensajes] = useState(null)
-    const [mensajesEnv, guardarMensajesEnv] = useState(null)
-    const [msj, guardarMensaje] = useState(null)
-    const [archivos, guardarArchivos] = useState(null)
-    const [destino, guardarDestino] = useState([])
-    const [cajas, guardarCajas] = useState([])
-    const [url, guardarUrl] = useState([])
+  const { usu } = useWerchow();
+  const { isLoading } = useUser();
 
-
-    let token = jsCookie.get("token");
-    let usuario = jsCookie.get("usuario");
-
-    useEffect(() => {
-        if (!token) {
-            Router.push("/redirect");
-        } else {
-            if (usuario) {
-                let user = JSON.parse(usuario);
-                guardarUser(user.usuario);
-                traerMensajes(user.usuario)
-                traerMensajesEnviados(user.usuario)
-                traerCajas(user.usuario)
-
-            }
-
-            listadoOperadores()
-            guardarCodmail(uuidv4())
-
-
+  const traerMSJ = async () => {
+    await axios
+      .get(`/api/mails`, {
+        params: {
+          usuario: usu.usuario,
+          f: "mails recibidos",
+        },
+      })
+      .then((res) => {
+        if (res.data) {
+          guardarMensajes(res.data);
         }
-    }, []);
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error al traer los mensajes", "ATENCION");
+      });
 
-
-    const traerMensajes = async (id) => {
-
-        await axios.get(`${ip}api/sgi/mails/listmsj/${id}`)
-            .then(res => {
-
-                if (res.data) {
-
-                    guardarMensajes(res.data)
-
-                }
-
-            })
-            .catch(error => {
-
-                console.log(error)
-                toastr.error("Ocurrio un error al traer los mensajes", "ATENCION")
-
-            })
-
-    }
-
-    const traerMensajesEnviados = async (id) => {
-
-        await axios.get(`${ip}api/sgi/mails/listmsjenv/${id}`)
-            .then(res => {
-
-                if (res.status === 200) {
-
-                    guardarMensajesEnv(res.data)
-
-                }
-
-            })
-            .catch(error => {
-
-                console.log(error)
-                toastr.error("Ocurrio un error al traer los mensajes", "ATENCION")
-
-            })
-
-    }
-
-    const registrarMsg = async () => {
-
-        guardarErrores(null)
-
-        if (destinatarioRef.current.value === 'no') {
-
-            guardarErrores("Debes elegir un destinatario")
-
-        } else if (asuntoRef.current.value === "") {
-
-            guardarErrores("Debes ingresar un asunto")
-
-        } else {
-
-            const mail = {
-                fecha: moment().format('YYYY-MM-DD HH:mm:ss'),
-                envia: user,
-                recibe: "",
-                descrip: descrip,
-                codmail: codmail,
-                asunto: asuntoRef.current.value,
-                leido: 0,
-                fecha_leido: null,
-                url_caja: url[0]
-            }
-
-            if (destino.length > 0) {
-
-                for (let i = 0; i < destino.length; i++) {
-
-                    mail.recibe = destino[i]
-
-                    postMSJ(mail)
-
-                    let accion = `${mail.envia} envio un mail interno al destinatario ${destino[i]} el dia ${moment(mail.fecha).format('DD/MM/YYYY HH:mm:ss')}.`
-
-                    registrarHistoria(accion, user)
-
-                }
-
-            } else {
-
-                toastr.error("Debes seleccionar al menos un destinatario", "ATENCION")
-                guardarErrores("Debes seleccionar al menos un destinatario")
-
-            }
-
+    await axios
+      .get(`/api/mails`, {
+        params: {
+          usuario: usu.usuario,
+          f: "mails enviados",
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          guardarMensajesEnv(res.data);
         }
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error al traer los mensajes", "ATENCION");
+      });
 
+    await axios
+      .get(`/api/auth`, {
+        params: {
+          f: "operadores",
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          guardarOperadores(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error al traer los operadores", "ATENCION");
+      });
+
+    await axios
+      .get(`/api/mails`, {
+        params: {
+          f: "cajas mails",
+          op: usu.usuario,
+        },
+      })
+      .then((res) => {
+        guardarCajas(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error al generar el listado", "ATENCION");
+      });
+  };
+
+  const registrarMsg = async () => {
+    guardarErrores(null);
+
+    if (destinatarioRef.current.value === "no") {
+      guardarErrores("Debes elegir un destinatario");
+    } else if (asuntoRef.current.value === "") {
+      guardarErrores("Debes ingresar un asunto");
+    } else {
+      const mail = {
+        fecha: moment().format("YYYY-MM-DD HH:mm:ss"),
+        envia: user,
+        recibe: "",
+        descrip: descrip,
+        codmail: codmail,
+        asunto: asuntoRef.current.value,
+        leido: false,
+        url_caja: url[0],
+        f: "nuevo mail",
+      };
+
+      if (destino.length > 0) {
+        for (let i = 0; i < destino.length; i++) {
+          mail.recibe = destino[i];
+
+          postMSJ(mail);
+
+          let accion = `${mail.envia} envio un mail interno al destinatario ${
+            destino[i]
+          } el dia ${moment(mail.fecha).format("DD/MM/YYYY HH:mm:ss")}.`;
+
+          registrarHistoria(accion, user);
+        }
+      } else {
+        toastr.error("Debes seleccionar al menos un destinatario", "ATENCION");
+        guardarErrores("Debes seleccionar al menos un destinatario");
+      }
     }
+  };
 
-    const postMSJ = async (mail) => {
+  const postMSJ = async (mail) => {
+    await axios
+      .post(`/api/mails/`, mail)
+      .then((res) => {
+        if (res.status === 200) {
+          toastr.info("Se envio el mail correctamente", "ATENCION");
 
-        await axios.post(`${ip}api/sgi/mails/nuevomail`, mail)
-            .then(res => {
+          setTimeout(() => {
+            Router.reload();
+          }, 500);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error al enviar el mail", "ATENCION");
+      });
+  };
 
-                if (res.status === 200) {
-
-                    toastr.info("Se envio el mail correctamente", "ATENCION");
-
-                    setTimeout(() => {
-                        Router.reload()
-                    }, 500);
-                }
-
-            })
-            .catch(error => {
-
-                console.log(error)
-                toastr.error("Ocurrio un error al enviar el mail", "ATENCION")
-
-            })
-
-    }
-
-    const listadoOperadores = async () => {
-
-        await axios.get(`${ip}api/sgi/mails/listadoops`)
-            .then(res => {
-
-                if (res.status === 200) {
-
-                    guardarOperadores(res.data)
-
-                }
-
-            })
-            .catch(error => {
-
-                console.log(error)
-                toastr.error("Ocurrio un error al traer los operadores", "ATENCION")
-
-            })
-
-    }
-
-    const msjLeido = async (id) => {
-        await axios.put(`${ip}api/sgi/mails/leermsj/${id}`)
-            .then(res => {
-
-                if (res.status === 200) {
-
-                    traerMensajes(user)
-
-                }
-
-            })
-            .catch(error => {
-
-                console.log(error)
-                toastr.error("Ocurrio un error", "ATENCION")
-
-            })
-    }
-
-    const traerAchivos = async (id) => {
-        await axios
-            .get(`${ip}api/archivos/mails/listaarchivos/${id}`)
-            .then((res) => {
-                let archivos = res.data;
-
-                guardarArchivos(archivos);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+  const msjLeido = async (id) => {
+    let data = {
+      idmail: id,
+      leido: true,
+      fecha_leido: moment().format("YYYY-MM-DD"),
+      f: "leer mail",
     };
 
-    const agregarDestino = () => {
-
-        let dest = destinatarioRef.current.value
-
-        if (dest === "no") {
-
-            guardarErrores("Debes elegir un destinatario")
-
-        } else {
-
-            let encontrado = false
-
-            for (let i = 0; i < destino.length; i++) {
-                if (destino[i] === dest) {
-                    encontrado = true;
-                }
-            }
-            if (encontrado === true) {
-
-                toastr.warning("Este destinatario ya fue agregado", "ATENCION");
-
-            } else if (encontrado === false) {
-
-                guardarDestino([...destino, dest])
-
-            }
-
+    await axios
+      .put(`/api/mails`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          traerMSJ();
         }
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error", "ATENCION");
+      });
+  };
 
-    }
+  const traerAchivos = async (id) => {
+    await axios
+      .get(`/api/mails`, {
+        params: {
+          f: "traer archivos",
+          codmail: id,
+        },
+      })
+      .then((res) => {
+        let archivos = res.data;
 
-    const eliminarDestino = (index) => {
+        guardarArchivos(archivos);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-        destino.splice(index, 1);
+  const agregarDestino = () => {
+    let dest = destinatarioRef.current.value;
 
-        guardarDestino([...destino])
+    if (dest === "no") {
+      guardarErrores("Debes elegir un destinatario");
+    } else {
+      let encontrado = false;
 
-        toastr.success("El destinatario fue eliminado", "ATENCION");
-
-    }
-
-    const agregarURL = () => {
-
-        let url1 = urlRef.current.value
-
-        if (url1 === "no") {
-
-            guardarErrores("Debes elegir una caja")
-
-        } else {
-
-            if (url.length > 0) {
-
-                toastr.warning("Solo puedes adjuntar una caja por mail", "ATENCION")
-
-            } else {
-
-                guardarUrl([...url, url1])
-
-            }
-
+      for (let i = 0; i < destino.length; i++) {
+        if (destino[i] === dest) {
+          encontrado = true;
         }
+      }
+      if (encontrado === true) {
+        toastr.warning("Este destinatario ya fue agregado", "ATENCION");
+      } else if (encontrado === false) {
+        guardarDestino([...destino, dest]);
+      }
+    }
+  };
 
+  const eliminarDestino = (index) => {
+    destino.splice(index, 1);
 
+    guardarDestino([...destino]);
 
+    toastr.success("El destinatario fue eliminado", "ATENCION");
+  };
 
-        // CODIGO PARA CARGAR VARIAS CAJAS 
+  const agregarURL = () => {
+    let url1 = urlRef.current.value;
 
-        // else {
-
-        //     let encontrado = false
-
-        //     for (let i = 0; i < url1.length; i++) {
-        //         if (url1[i] === url1) {
-        //             encontrado = true;
-        //         }
-        //     }
-        //     if (encontrado === true) {
-
-        //         toastr.warning("Esta caja ya fue agregado", "ATENCION");
-
-        //     } else if (encontrado === false) {
-
-        //         guardarUrl([...url, url1])
-
-        //     }
-
-        // }
-
+    if (url1 === "no") {
+      guardarErrores("Debes elegir una caja");
+    } else {
+      if (url.length > 0) {
+        toastr.warning("Solo puedes adjuntar una caja por mail", "ATENCION");
+      } else {
+        guardarUrl([...url, url1]);
+      }
     }
 
-    const eliminarURL = (index) => {
+    // CODIGO PARA CARGAR VARIAS CAJAS
 
-        url.splice(index, 1);
+    // else {
 
-        guardarUrl([...url])
+    //     let encontrado = false
 
-        toastr.success("La caja fue eliminado", "ATENCION");
+    //     for (let i = 0; i < url1.length; i++) {
+    //         if (url1[i] === url1) {
+    //             encontrado = true;
+    //         }
+    //     }
+    //     if (encontrado === true) {
 
-    }
+    //         toastr.warning("Esta caja ya fue agregado", "ATENCION");
 
-    const traerCajas = async (id) => {
+    //     } else if (encontrado === false) {
 
-        await axios.get(`${ip}api/sgi/cajasucursales/traercajasmail/${id}`)
-            .then(res => {
+    //         guardarUrl([...url, url1])
 
-                guardarCajas(res.data)
+    //     }
 
-            })
-            .catch(error => {
-                console.log(error)
-                toastr.error("Ocurrio un error al generar el listado", "ATENCION")
-            })
+    // }
+  };
 
-    }
+  const eliminarURL = (index) => {
+    url.splice(index, 1);
 
-    return (
+    guardarUrl([...url]);
+
+    toastr.success("La caja fue eliminado", "ATENCION");
+  };
+
+  useSWR("/api/mails", traerMSJ);
+
+  useEffect(() => {
+    guardarCodmail(uuidv4());
+  }, []);
+
+  if (isLoading === true) return <Skeleton />;
+
+  return (
+    <>
+      {!usu ? (
         <Layout>
-
+          <Redirect />
+        </Layout>
+      ) : usu ? (
+        <>
+          <Layout>
             <CentroDeMensajeria
-                mensajes={mensajes}
-                guardarMensaje={guardarMensaje}
-                msjLeido={msjLeido}
-                traerAchivos={traerAchivos}
-                mensajesEnv={mensajesEnv}
+              mensajes={mensajes}
+              guardarMensaje={guardarMensaje}
+              msjLeido={msjLeido}
+              traerAchivos={traerAchivos}
+              mensajesEnv={mensajesEnv}
             />
 
             <ModalNuevoMensaje
-                guardarDescrip={guardarDescrip}
-                registrarMsg={registrarMsg}
-                errores={errores}
-                destinatarioRef={destinatarioRef}
-                asuntoRef={asuntoRef}
-                operadores={operadores}
-                codmail={codmail}
-                agregarDestino={agregarDestino}
-                destino={destino}
-                eliminarDestino={eliminarDestino}
-                cajas={cajas}
-                url={url}
-                urlRef={urlRef}
-                agregarURL={agregarURL}
-                eliminarURL={eliminarURL}
+              guardarDescrip={guardarDescrip}
+              registrarMsg={registrarMsg}
+              errores={errores}
+              destinatarioRef={destinatarioRef}
+              asuntoRef={asuntoRef}
+              operadores={operadores}
+              codmail={codmail}
+              agregarDestino={agregarDestino}
+              destino={destino}
+              eliminarDestino={eliminarDestino}
+              cajas={cajas}
+              url={url}
+              urlRef={urlRef}
+              agregarURL={agregarURL}
+              eliminarURL={eliminarURL}
             />
 
-            <ModalLeerMensaje
-                msj={msj}
-                archivos={archivos}
-                url={url}
-            />
+            <ModalLeerMensaje msj={msj} archivos={archivos} url={url} />
+          </Layout>
+        </>
+      ) : null}
+    </>
+  );
+};
 
-        </Layout>
-    )
-}
-
-export default Nuevo
+export default Nuevo;

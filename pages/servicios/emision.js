@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
+import useUser from "../../hook/useUser";
+import useWerchow from "../../hook/useWerchow";
+import useSWR from "swr";
+import { Skeleton } from "../../components/layout/Skeleton";
 import Layout from "../../components/layout/Layout";
+import Redirect from "../../components/auth/RedirectToLogin";
 import moment from "moment-timezone";
 import axios from "axios";
-import jsCookie from "js-cookie";
 import toastr from "toastr";
 import Router from "next/router";
 import { confirmAlert } from "react-confirm-alert"; // Import
-import { ip } from "../../config/config";
 import BuscarSocio from "../../components/servicios/BuscarSocio";
 import EmitirServicio from "../../components/servicios/EmitirServicio";
 import { registrarHistoria, p1, p2 } from "../../utils/funciones";
@@ -43,8 +46,6 @@ const Emision = () => {
 
   const [errores, guardarErrores] = useState(null);
   const [flag, guardarFlag] = useState(false);
-  const [user, guardarUsuario] = useState(null);
-  const [usuc, guardarUsuc] = useState(null);
   const [socio, guardarSocio] = useState(null);
   const [ficha, guardarFicha] = useState(null);
   const [pagos, guardarPagos] = useState(null);
@@ -72,6 +73,11 @@ const Emision = () => {
   const [infoAdh, guardarInfoAdh] = useState([]);
   const [usosFarm, guardarUsosFarm] = useState(0);
   const [farmaDescReg, guardarFarmaDescReg] = useState([]);
+  const [promos, guardarPromociones] = useState([]);
+
+  const { usu } = useWerchow();
+
+  const { isLoading } = useUser();
 
   // FUNCIONES SOCIO
 
@@ -93,9 +99,14 @@ const Emision = () => {
       guardarErrores("Debes Ingresar Un Numero De Contrato");
     } else {
       await axios
-        .get(`${ip}api/werchow/maestro/titular/${contrato}`)
+        .get(`/api/socios`, {
+          params: {
+            f: "maestro contrato",
+            ficha: contrato,
+          },
+        })
         .then((res) => {
-          if (res.data[0].length === 0) {
+          if (res.data.length === 0) {
             toastr.error(
               "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
               "ATENCION"
@@ -106,10 +117,10 @@ const Emision = () => {
             guardarFlag(true);
 
             setInterval(() => {
-              traerNOrden();
+              traerNOrden(usu.sucursal);
             }, 1000);
 
-            let ficha = res.data[0];
+            let ficha = res.data;
 
             guardarFicha(ficha);
 
@@ -193,9 +204,14 @@ const Emision = () => {
       let dni = dniRef.current.value;
 
       await axios
-        .get(`${ip}api/werchow/maestro/titulardni/${dni}`)
+        .get(`/api/socios`, {
+          params: {
+            f: "maestro",
+            dni: dni,
+          },
+        })
         .then((res) => {
-          if (res.data[0].length === 0) {
+          if (res.data.length === 0) {
             toastr.error(
               "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
               "ATENCION"
@@ -206,10 +222,10 @@ const Emision = () => {
             guardarFlag(true);
 
             setInterval(() => {
-              traerNOrden();
+              traerNOrden(usu.sucursal);
             }, 1000);
 
-            let ficha = res.data[0];
+            let ficha = res.data;
 
             guardarFicha(ficha);
 
@@ -297,9 +313,14 @@ const Emision = () => {
       guardarErrores("Debes Ingresar Un Numero De Contrato");
     } else {
       await axios
-        .get(`${ip}api/werchow/maestro/titularm/${contrato}`)
+        .get(`/api/socios`, {
+          params: {
+            f: "mutual contrato",
+            ficha: contrato,
+          },
+        })
         .then((res) => {
-          if (res.data[0].length === 0) {
+          if (res.data.length === 0) {
             toastr.error(
               "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
               "ATENCION"
@@ -310,10 +331,10 @@ const Emision = () => {
             guardarFlag(true);
 
             setInterval(() => {
-              traerNOrden();
+              traerNOrden(usu.sucursal);
             }, 1000);
 
-            let ficha = res.data[0];
+            let ficha = res.data;
 
             guardarFicha(ficha);
 
@@ -395,9 +416,14 @@ const Emision = () => {
       let dni = dniRef.current.value;
 
       await axios
-        .get(`${ip}api/werchow/maestro/titulardnim/${dni}`)
+        .get(`/api/socios`, {
+          params: {
+            f: "mutual",
+            dni: dni,
+          },
+        })
         .then((res) => {
-          if (res.data[0].length === 0) {
+          if (res.data.length === 0) {
             toastr.error(
               "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
               "ATENCION"
@@ -408,10 +434,10 @@ const Emision = () => {
             guardarFlag(true);
 
             setInterval(() => {
-              traerNOrden();
+              traerNOrden(usu.sucursal);
             }, 1000);
 
-            let ficha = res.data[0];
+            let ficha = res.data;
 
             guardarFicha(ficha);
 
@@ -478,7 +504,13 @@ const Emision = () => {
 
   const traerPagos = async (contrato) => {
     await axios
-      .get(`${ip}api/werchow/pagos/pagos/${contrato}`)
+      .get(`/api/socios`, {
+        params: {
+          f: "traer pagos",
+          ficha: contrato,
+          empre: "WERCHOW",
+        },
+      })
       .then((res) => {
         guardarPagos(res.data);
       })
@@ -490,7 +522,13 @@ const Emision = () => {
 
   const traerPagosM = async (contrato) => {
     await axios
-      .get(`${ip}api/werchow/pagos/pagosmutual/${contrato}`)
+      .get(`/api/socios`, {
+        params: {
+          f: "traer pagos",
+          ficha: contrato,
+          empre: "MUTUAL",
+        },
+      })
       .then((res) => {
         guardarPagos(res.data);
       })
@@ -502,7 +540,13 @@ const Emision = () => {
 
   const traerPagosBco = async (contrato) => {
     await axios
-      .get(`${ip}api/werchow/pagobco/pagobco/${contrato}`)
+      .get(`/api/socios`, {
+        params: {
+          f: "traer pagosb",
+          ficha: contrato,
+          empre: "WERCHOW",
+        },
+      })
       .then((res) => {
         guardarPagos(res.data);
       })
@@ -514,7 +558,13 @@ const Emision = () => {
 
   const traerPagosBcoM = async (contrato) => {
     await axios
-      .get(`${ip}api/werchow/pagobco/pagobcom/${contrato}`)
+      .get(`/api/socios`, {
+        params: {
+          f: "traer pagosb",
+          ficha: contrato,
+          empre: "MUTUAL",
+        },
+      })
       .then((res) => {
         guardarPagos(res.data);
       })
@@ -526,11 +576,16 @@ const Emision = () => {
 
   const traerAdhs = async (contrato) => {
     await axios
-      .get(`${ip}api/werchow/maestro/adherentes/${contrato}`)
+      .get(`/api/socios`, {
+        params: {
+          ficha: contrato,
+          f: "adh",
+        },
+      })
       .then((res) => {
-        guardarAdhs(res.data[0]);
+        guardarAdhs(res.data);
 
-        traerAdhProvi(contrato, res.data[0]);
+        traerAdhProvi(contrato, res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -539,11 +594,16 @@ const Emision = () => {
 
   const traerAdhsM = async (contrato) => {
     await axios
-      .get(`${ip}api/werchow/maestro/adherentesm/${contrato}`)
+      .get(`/api/socios`, {
+        params: {
+          f: "mutual adh",
+          contrato: contrato,
+        },
+      })
       .then((res) => {
-        guardarAdhs(res.data[0]);
+        guardarAdhs(res.data);
 
-        traerAdhProvi(contrato, res.data[0]);
+        traerAdhProvi(contrato, res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -558,9 +618,13 @@ const Emision = () => {
 
   const listSocios = async () => {
     await axios
-      .get(`${ip}api/werchow/maestro/titulares`)
+      .get(`/api/socios`, {
+        params: {
+          f: "werchow titulares",
+        },
+      })
       .then((res) => {
-        guardarListSocios(res.data[0]);
+        guardarListSocios(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -573,9 +637,13 @@ const Emision = () => {
 
   const listSociosM = async () => {
     await axios
-      .get(`${ip}api/werchow/maestro/titularesm`)
+      .get(`/api/socios`, {
+        params: {
+          f: "mutual titulares",
+        },
+      })
       .then((res) => {
-        guardarListSocios(res.data[0]);
+        guardarListSocios(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -596,7 +664,12 @@ const Emision = () => {
 
   const contarFisios = async (contrato) => {
     await axios
-      .get(`${ip}api/sgi/servicios/contarfisio/${contrato}`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "contar fisio",
+          contrato: contrato,
+        },
+      })
       .then((res) => {
         console.log(res.data[0].N);
         guardarNFisio(parseInt(res.data[0].N));
@@ -614,9 +687,14 @@ const Emision = () => {
   const verificarUso = async (f, grupo, contrato) => {
     if (f === "C") {
       await axios
-        .get(`${ip}api/sgi/servicios/verificarconsultas/${contrato}`)
+        .get(`/api/servicios`, {
+          params: {
+            f: "verificar consultas",
+            contrato: contrato,
+          },
+        })
         .then((res) => {
-          guardarPriUso(res.data.orde);
+          guardarPriUso(parseInt(res.data[0].orde));
         })
         .catch((error) => {
           console.log(error);
@@ -625,9 +703,14 @@ const Emision = () => {
         });
     } else if (f === "P") {
       await axios
-        .get(`${ip}api/sgi/servicios/verificarpracticas/${contrato}`)
+        .get(`/api/servicios`, {
+          params: {
+            f: "verificar practicas",
+            contrato: contrato,
+          },
+        })
         .then((res) => {
-          guardarPriUso(res.data.orde);
+          guardarPriUso(parseInt(res.data[0].orde));
 
           if (grupo === 66 || grupo === 55) {
             contarFisios(contrato);
@@ -650,7 +733,8 @@ const Emision = () => {
       NOMBRES: nombreRef.current.value,
       NACIMIENTO: nacimientoRef.current.value,
       EMPRESA: ficha[0].EMPRESA,
-      ESTADO: 1,
+      ESTADO: true,
+      f: "reg adh provisorio",
     };
 
     if (adh.NRO_DOC === "") {
@@ -663,14 +747,14 @@ const Emision = () => {
       toastr.warning("Debes ingresar un nombre", "ATENCION");
     } else {
       await axios
-        .post(`${ip}api/sgi/servicios/regadhprovi`, adh)
+        .post(`/api/servicios`, adh)
         .then((res) => {
           if (res.status === 200) {
             toastr.success("Adhrente registrado con exito", "ATENCION");
 
-            if (adh.EMPRESA === "W") {
+            if (adh.EMPRESA === "WERCHOW") {
               traerAdhs(adh.CONTRATO);
-            } else if (adh.EMPRESA === "M") {
+            } else if (adh.EMPRESA === "MAESTRO") {
               traerAdhsM(adh.CONTRATO);
             }
           }
@@ -691,18 +775,24 @@ const Emision = () => {
 
     let dni = nroDocRef.current.value;
 
-    if (ficha[0].EMPRESA === "W") {
+    if (ficha[0].EMPRESA === "WERCHOW") {
       await axios
-        .get(`${ip}api/werchow/maestro/adherente/${dni}`)
+        .get(`/api/socios`, {
+          params: {
+            f: "mae adh",
+            dni: dni,
+          },
+        })
         .then((res) => {
-          if (res.data[0].length > 0) {
+          console.log(res.data);
+          if (res.data.length > 0) {
             toastr.warning(
               "El adherente ya esta cargado provisoriamente",
               "ATENCION"
             );
 
-            guardarInfoAdh(res.data[0]);
-          } else if (res.data[0].length === 0) {
+            guardarInfoAdh(res.data);
+          } else if (res.data.length === 0) {
             toastr.info(
               "El DNI ingresado no esta registrado, puede cargar provisoriamente al adherente",
               "ATENCION"
@@ -715,18 +805,23 @@ const Emision = () => {
           console.log(error);
           toastr.error("Ocurrio un error al checkear el adherente", "ATENCION");
         });
-    } else if (ficha[0].EMPRESA === "M") {
+    } else if (ficha[0].EMPRESA === "MUTUAL") {
       await axios
-        .get(`${ip}api/werchow/maestro/adherentem/${dni}`)
+        .get(`/api/socios`, {
+          params: {
+            f: "mut adh",
+            dni: dni,
+          },
+        })
         .then((res) => {
-          if (res.data[0].length > 0) {
+          if (res.data.length > 0) {
             toastr.warning(
               "El adherente ya esta cargado provisoriamente",
               "ATENCION"
             );
 
-            guardarInfoAdh(res.data[0]);
-          } else if (res.data[0].length === 0) {
+            guardarInfoAdh(res.data);
+          } else if (res.data.length === 0) {
             toastr.info(
               "El DNI ingresado no esta registrado, puede cargar provisoriamente al adherente",
               "ATENCION"
@@ -744,7 +839,12 @@ const Emision = () => {
 
   const traerAdhProvi = async (contrato, ad) => {
     await axios
-      .get(`${ip}api/sgi/servicios/traeradhprovi/${contrato}`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer adh provi",
+          contrato: contrato,
+        },
+      })
       .then((res) => {
         if (res.data.length > 0) {
           let adAll = ad.concat(res.data);
@@ -767,7 +867,7 @@ const Emision = () => {
 
   const registrarOrdenUsos = async () => {
     const uso = {
-      SUC: usuc,
+      SUC: usu.sucursal,
       ORDEN: nOrden,
       CONTRATO: socio.CONTRATO,
       NRO_ADH: socio.ADHERENTES,
@@ -775,27 +875,46 @@ const Emision = () => {
       PLAN: socio.PLAN,
       EDAD: socio.EDAD,
       SEXO: socio.SEXO,
-      OBRA_SOC: socio.COD_OBRA,
+      OBRA_SOC: `${socio.COD_OBRA}`,
       FECHA: moment().format("YYYY-MM-DD"),
       FEC_CAJA: moment().format("YYYY-MM-DD"),
       HORA: moment().format("HH:mm"),
       SERVICIO: "ORDE",
       IMPORTE: 0,
       IMP_LIQ: detalleMed.CON_PAGA,
-      VALOR: 0,
+      VALOR: "0",
       PUESTO: "",
       PRESTADO: detalleMed.COD_PRES,
-      OPERADOR: user.codigo,
+      OPERADOR: usu.codigo,
       EMPRESA: "W",
       RENDIDO: 0,
       ANULADO: 0,
       NUSOS: priUso + 1,
-      OPERADOR: user,
+      OPERADOR: usu.usuario,
+      f: "reg uso",
     };
 
-    if (detalleMed.PROMO === 0) {
-      uso.IMPORTE = detalleMed.CON_PAGA;
-    } else {
+    if (detalleMed.PROMO === 1 && detalleMed.OTERO === 0) {
+      if (priUso === 0) {
+        if (socio.GRUPO === 55 || socio.GRUPO === 66) {
+          uso.IMPORTE = 0;
+        } else {
+          uso.IMPORTE = promos.pint1;
+        }
+      } else if (priUso === 1) {
+        if (isj === true) {
+          uso.IMPORTE = promos.pint2 - 350;
+        } else {
+          uso.IMPORTE = promos.pint2;
+        }
+      } else if (priUso >= 2) {
+        if (isj === true) {
+          uso.IMPORTE = parseFloat(detalleMed.CON_PAGA) - 350;
+        } else {
+          uso.IMPORTE = detalleMed.CON_PAGA;
+        }
+      }
+    } else if (detalleMed.PROMO === 1 && detalleMed.OTERO === 1) {
       if (priUso === 0) {
         if (socio.GRUPO === 55 || socio.GRUPO === 66) {
           uso.IMPORTE = 0;
@@ -803,7 +922,7 @@ const Emision = () => {
           if (detalleMed.COD_PRES === "C_CRI") {
             uso.IMPORTE = 3000;
           } else {
-            uso.IMPORTE = p1;
+            uso.IMPORTE = promos.pot1;
           }
         }
       } else if (priUso === 1) {
@@ -811,13 +930,13 @@ const Emision = () => {
           if (detalleMed.COD_PRES === "C_CRI") {
             uso.IMPORTE = 3500 - 350;
           } else {
-            uso.IMPORTE = p2 - 350;
+            uso.IMPORTE = promos.pot2 - 350;
           }
         } else {
           if (detalleMed.COD_PRES === "C_CRI") {
             uso.IMPORTE = 3500;
           } else {
-            uso.IMPORTE = p2;
+            uso.IMPORTE = promos.pot2;
           }
         }
       } else if (priUso >= 2) {
@@ -827,10 +946,12 @@ const Emision = () => {
           uso.IMPORTE = detalleMed.CON_PAGA;
         }
       }
+    } else if (detalleMed.PROMO === 0 && detalleMed.OTERO === 0) {
+      uso.IMPORTE = detalleMed.CON_PAGA;
     }
 
     await axios
-      .post(`${ip}api/sgi/servicios/regusos`, uso)
+      .post(`/api/servicios`, uso)
       .then((res) => {
         if (res.status === 200) {
           regOrdenConsulta(uso.ORDEN, uso);
@@ -864,17 +985,18 @@ const Emision = () => {
       DESTINO: "",
       COD_PRES: detalleMed.COD_PRES,
       IMPORTE: uso.IMPORTE,
-      ANULADO: 0,
-      OPERADOR: user,
+      ANULADO: false,
+      OPERADOR: usu.usuario,
       OPE_ANU: 0,
       DIAGNOSTIC: "",
       ATENCION: 0,
       NRO_DNI: socio.NRO_DOC,
-      SUC: usuc,
+      SUC: usu.sucursal,
+      f: "reg consul",
     };
 
     await axios
-      .post(`${ip}api/sgi/servicios/regconsulta`, consul)
+      .post(`/api/servicios`, consul)
       .then((res) => {
         if (res.status === 200) {
           toastr.success(
@@ -884,7 +1006,7 @@ const Emision = () => {
 
           let accion = `Se registro una orden de consulta ID: ${consul.NRO_ORDEN}, para el socio: ${socio.APELLIDOS}, ${socio.NOMBRES}, contrato: ${socio.CONTRATO}, para el medico: ${detalleMed.NOMBRE}. Coseguro a pagar: ${consul.IMPORTE}`;
 
-          registrarHistoria(accion, user);
+          registrarHistoria(accion, usu.usuario);
         }
       })
       .catch((error) => {
@@ -903,9 +1025,10 @@ const Emision = () => {
   const traerPracticasPrest = async (id, lug) => {
     if (!lug) {
       toastr.info(
-        "Selecciona un prestador para traer sus practicas",
+        "El prestador seleccionado, no tiene practicas registradas en el sistema.",
         "ATENCION"
       );
+      guardarPracticas([]);
     } else {
       let lugar = "";
 
@@ -916,9 +1039,11 @@ const Emision = () => {
       }
 
       await axios
-        .get(`${ip}api/sgi/servicios/traerpracticaspresador/${id}`, {
+        .get(`/api/servicios`, {
           params: {
+            id: id,
             lugar: lugar,
+            f: "traer prac prest",
           },
         })
         .then((res) => {
@@ -979,7 +1104,7 @@ const Emision = () => {
 
   const registrarPracticaUso = async () => {
     const uso = {
-      SUC: usuc,
+      SUC: usu.sucursal,
       ORDEN: nOrden,
       CONTRATO: socio.CONTRATO,
       NRO_ADH: socio.ADHERENTES,
@@ -987,22 +1112,23 @@ const Emision = () => {
       PLAN: socio.PLAN,
       EDAD: socio.EDAD,
       SEXO: socio.SEXO,
-      OBRA_SOC: socio.COD_OBRA,
+      OBRA_SOC: `${socio.COD_OBRA}`,
       FECHA: moment().format("YYYY-MM-DD"),
       FEC_CAJA: moment().format("YYYY-MM-DD"),
       HORA: moment().format("HH:mm"),
       SERVICIO: `P${detalleMed.SERVICIO}`,
       IMPORTE: calcularTotalPracticas(pracSocio),
       IMP_LIQ: calcularTotalPracticas(pracSocio),
-      VALOR: 0,
+      VALOR: "0",
       PUESTO: "",
       PRESTADO: detalleMed.COD_PRES,
-      OPERADOR: user.codigo,
+      OPERADOR: usu.codigo,
       EMPRESA: "W",
       RENDIDO: 0,
       ANULADO: 0,
       NUSOS: priUso + 1,
-      OPERADOR: user,
+      OPERADOR: usu.usuario,
+      f: "reg uso",
     };
 
     if (
@@ -1029,7 +1155,7 @@ const Emision = () => {
     // --------------------------------------------
 
     await axios
-      .post(`${ip}api/sgi/servicios/regusos`, uso)
+      .post(`/api/servicios`, uso)
       .then((res) => {
         if (res.status === 200) {
           regPractica(uso.ORDEN);
@@ -1057,7 +1183,7 @@ const Emision = () => {
   let regPractica = async (orden) => {
     for (let i = 0; i < pracSocio.length; i++) {
       const practi = {
-        SUC_PRA: usuc,
+        SUC_PRA: usu.sucursal,
         CONTRATO: socio.CONTRATO,
         NRO_DNI: socio.NRO_DOC,
         FECHA: moment().format("YYYY-MM-DD"),
@@ -1067,10 +1193,11 @@ const Emision = () => {
         CANT_PRA: pracSocio[i].CANTIDAD,
         IMPORTE: pracSocio[i].IMPORTE,
         ANULADO: 0,
-        OPERADOR: user,
+        OPERADOR: usu.usuario,
         OPE_ANU: 0,
         COD_PRAC: pracSocio[i].CODIGOS,
         DESCRIP: pracSocio[i].DESCRIP,
+        f: "reg practica",
       };
 
       if (
@@ -1096,7 +1223,7 @@ const Emision = () => {
       // -----------------------------------------
 
       await axios
-        .post(`${ip}api/sgi/servicios/regpractica`, practi)
+        .post(`/api/servicios`, practi)
         .then((res) => {
           if (res.status === 200) {
             toastr.success(
@@ -1106,7 +1233,7 @@ const Emision = () => {
 
             let accion = `Se registro una orden de practica ID: ${practi.NRO_ORDEN}, para el socio: ${socio.APELLIDOS}, ${socio.NOMBRES}, contrato: ${socio.CONTRATO}, para el medico: ${detalleMed.NOMBRE}. Codigo de Practica: ${practi.COD_PRAC} , coseguro a pagar: ${practi.IMPORTE}`;
 
-            registrarHistoria(accion, user);
+            registrarHistoria(accion, usu.usuario);
           }
         })
         .catch((error) => {
@@ -1125,7 +1252,11 @@ const Emision = () => {
 
   const traerFarmacias = async () => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerfarmacias`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer farmacias",
+        },
+      })
       .then((res) => {
         guardarFarmacias(res.data);
       })
@@ -1162,7 +1293,7 @@ const Emision = () => {
       );
     } else {
       const uso = {
-        SUC: usuc,
+        SUC: usu.sucursal,
         ORDEN: nOrden,
         CONTRATO: socio.CONTRATO,
         NRO_ADH: socio.ADHERENTES,
@@ -1170,25 +1301,26 @@ const Emision = () => {
         PLAN: socio.PLAN,
         EDAD: socio.EDAD,
         SEXO: socio.SEXO,
-        OBRA_SOC: socio.COD_OBRA,
+        OBRA_SOC: `${socio.COD_OBRA}`,
         FECHA: moment().format("YYYY-MM-DD"),
         FEC_CAJA: moment().format("YYYY-MM-DD"),
         HORA: moment().format("HH:mm"),
-        VALOR: parseFloat(descuentoRef.current.value),
+        VALOR: `${parseFloat(descuentoRef.current.value)}`,
         SERVICIO: `FARM`,
         IMPORTE: 0,
         IMP_LIQ: 0,
         PUESTO: "",
         PRESTADO: farmaciaRef.current.value.substr(0, 5),
-        OPERADOR: user,
+        OPERADOR: usu.usuario,
         EMPRESA: "W",
         NUSOS: usosFarm + 1,
         RENDIDO: 0,
         ANULADO: 0,
+        f: "reg uso",
       };
 
       await axios
-        .post(`${ip}api/sgi/servicios/regusos`, uso)
+        .post(`/api/servicios`, uso)
         .then((res) => {
           if (res.status === 200) {
             regFarmacia(uso.ORDEN);
@@ -1225,17 +1357,18 @@ const Emision = () => {
       MODO: `${descuentoRef.current.value}`,
       IMPORTE: 0,
       ANULADO: 0,
-      OPERADOR: user,
+      OPERADOR: usu.usuario,
       OPE_ANU: 0,
       FEC_USO: moment().format("YYYY-MM-DD"),
       CAN_MEDI: 2,
       MATRICULA: 0,
       HABILITA: 1,
-      SUC: usuc,
+      SUC: usu.sucursal,
+      f: "reg farmacia",
     };
 
     await axios
-      .post(`${ip}api/sgi/servicios/regfarmacia`, farma)
+      .post(`/api/servicios`, farma)
       .then((res) => {
         if (res.status === 200) {
           toastr.success(
@@ -1245,7 +1378,7 @@ const Emision = () => {
 
           let accion = `Se registro una orden de farmacia ID:${farma.NRO_ORDEN}, para el socio: ${socio.APELLIDOS}, ${socio.NOMBRES}, contrato: ${socio.CONTRATO}, para la farmacia: ${farma.DESTINO}, porcentale de descuento: ${farma.MODO} `;
 
-          registrarHistoria(accion, user);
+          registrarHistoria(accion, usu.usuario);
         }
       })
       .catch((error) => {
@@ -1259,14 +1392,15 @@ const Emision = () => {
 
   let conteoUsosFarm = async (contrato, prestado) => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerusosfarm`, {
+      .get(`/api/servicios`, {
         params: {
           contrato: contrato,
           prestado: prestado,
+          f: "usos farmacia",
         },
       })
       .then((res) => {
-        guardarUsosFarm(res.data[0].usos);
+        guardarUsosFarm(parseInt(res.data[0].usos));
       })
       .catch((error) => {
         console.log(error);
@@ -1278,9 +1412,10 @@ const Emision = () => {
       });
 
     await axios
-      .get(`${ip}api/sgi/servicios/traerdescfarmsel`, {
+      .get(`/api/servicios`, {
         params: {
           prestado: prestado,
+          f: "traer farma desc",
         },
       })
       .then((res) => {
@@ -1302,9 +1437,10 @@ const Emision = () => {
 
   const traerEnfer = async () => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerefermporsuc`, {
+      .get(`/api/servicios`, {
         params: {
           suc: sucursalRefE.current.value,
+          f: "traer enfermeria",
         },
       })
       .then((res) => {
@@ -1321,7 +1457,11 @@ const Emision = () => {
 
   const traerPractEnfer = async () => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerpractenfer`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer pract enfermeria",
+        },
+      })
       .then((res) => {
         guadrarPractEnfer(res.data);
       })
@@ -1336,7 +1476,7 @@ const Emision = () => {
 
   const registrarEnfermeriaUso = async () => {
     const uso = {
-      SUC: usuc,
+      SUC: usu.sucursal,
       ORDEN: nOrden,
       CONTRATO: socio.CONTRATO,
       NRO_ADH: socio.ADHERENTES,
@@ -1344,20 +1484,21 @@ const Emision = () => {
       PLAN: socio.PLAN,
       EDAD: socio.EDAD,
       SEXO: socio.SEXO,
-      OBRA_SOC: socio.COD_OBRA,
+      OBRA_SOC: `${socio.COD_OBRA}`,
       FECHA: moment().format("YYYY-MM-DD"),
       FEC_CAJA: moment().format("YYYY-MM-DD"),
       HORA: moment().format("HH:mm"),
-      VALOR: 0,
+      VALOR: "0",
       SERVICIO: `ENFE`,
       IMPORTE: 0,
       IMP_LIQ: 0,
       PUESTO: "",
       PRESTADO: detEnf.COD_PRES,
-      OPERADOR: user,
+      OPERADOR: usu.usuario,
       EMPRESA: "W",
       RENDIDO: 0,
       ANULADO: 0,
+      f: "reg uso",
     };
 
     if (detEnf.COD_PRES === "E_NOE") {
@@ -1365,7 +1506,7 @@ const Emision = () => {
     }
 
     await axios
-      .post(`${ip}api/sgi/servicios/regusos`, uso)
+      .post(`/api/servicios`, uso)
       .then((res) => {
         if (res.status === 200) {
           regEnfermeria(uso.ORDEN);
@@ -1392,7 +1533,7 @@ const Emision = () => {
 
   let regEnfermeria = async (orden) => {
     const enfer = {
-      SUC: usuc,
+      SUC: usu.sucursal,
       CONTRATO: socio.CONTRATO,
       FECHA: moment().format("YYYY-MM-DD"),
       HORA: moment().format("HH:mm"),
@@ -1402,9 +1543,10 @@ const Emision = () => {
       ANULADO: 0,
       PRACTICA: prestacionRefE.current.value,
       CANTIDAD: cantidadRefE.current.value,
-      OPERADOR: user,
+      OPERADOR: usu.usuario,
       OPE_ANU: 0,
       NRO_DNI: socio.NRO_DOC,
+      f: "reg enfermeria",
     };
 
     if (detEnf.COD_PRES === "E_NOE") {
@@ -1412,7 +1554,7 @@ const Emision = () => {
     }
 
     await axios
-      .post(`${ip}api/sgi/servicios/regenfermeria`, enfer)
+      .post(`/api/servicios`, enfer)
       .then((res) => {
         if (res.status === 200) {
           toastr.success(
@@ -1422,7 +1564,7 @@ const Emision = () => {
 
           let accion = `Se registro una orden de enfermeria ID:${enfer.NRO_ORDEN}, para el socio: ${socio.APELLIDOS}, ${socio.NOMBRES}, contrato: ${socio.CONTRATO}, para el prestador: ${enfer.DESTINO} `;
 
-          registrarHistoria(accion, user);
+          registrarHistoria(accion, usu.usuario);
         }
       })
       .catch((error) => {
@@ -1436,7 +1578,12 @@ const Emision = () => {
 
   const arancelEnfDomi = async (contrato) => {
     await axios
-      .get(`${ip}api/sgi/servicios/arancelenfdomi/${contrato}`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "arancel enfe domicilio",
+          contrato: contrato,
+        },
+      })
       .then((res) => {
         if (res.data.length > 0) {
           if (priUso === 0) {
@@ -1444,7 +1591,7 @@ const Emision = () => {
           } else {
             guardarArancel(600);
           }
-        } else {
+        } else if (res.data.length === 0) {
           if (priUso === 0) {
             guardarArancel(600);
           } else {
@@ -1464,9 +1611,13 @@ const Emision = () => {
 
   const traerPlanesOrto = async () => {
     await axios
-      .get(`${ip}api/sgi/servicios/planesorto`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer planes ortodoncia",
+        },
+      })
       .then((res) => {
-        guardarPlanOrto(res.data);
+        guardarPlanOrto(res.data[0]);
       })
       .catch((error) => {
         console.log(error);
@@ -1476,9 +1627,13 @@ const Emision = () => {
 
   const traerPlanesImp = async () => {
     await axios
-      .get(`${ip}api/sgi/servicios/planesimp`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer planes implante",
+        },
+      })
       .then((res) => {
-        guardarPlanImp(res.data);
+        guardarPlanImp(res.data[0]);
       })
       .catch((error) => {
         console.log(error);
@@ -1495,21 +1650,26 @@ const Emision = () => {
       total: planOrto.total,
       pagado: planOrto.pago_inicial,
       saldo: parseFloat(planOrto.total) - parseFloat(planOrto.pago_inicial),
-      estado: 1,
+      estado: true,
       prestador: detalleMed.COD_PRES,
       prestador_nombre: detalleMed.NOMBRE,
-      operador: user,
-      sucursal: usuc,
+      operador: usu.usuario,
+      sucursal: usu.sucursal,
       plan: "ORTO",
+      f: "reg plan odontologico",
     };
 
     await axios
-      .get(`${ip}api/sgi/servicios/traerplandni/${plan.dni}`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer plan dni",
+          dni: plan.dni,
+        },
+      })
       .then((res1) => {
-        console.log(res1.data.dni, plan.dni);
         if (!res1.data || res1.data.dni !== plan.dni) {
           axios
-            .post(`${ip}api/sgi/servicios/nuevoplanorto`, plan)
+            .post(`/api/servicios`, plan)
             .then((res2) => {
               if (res2.status === 200) {
                 toastr.success("Plan registrado correctamente", "ATENCION");
@@ -1524,7 +1684,7 @@ const Emision = () => {
 
                 let accion = `Se registro plan implante dental ID: ${res2.data.idplansocio}, para el socio: ${plan.contrato} - ${plan.socio}, dni: ${plan.dni}. Con un monto de ${plan.total}`;
 
-                registrarHistoria(accion, user);
+                registrarHistoria(accion, usu.usuario);
 
                 setTimeout(() => {
                   Router.push({
@@ -1577,21 +1737,26 @@ const Emision = () => {
       total: planImp.total,
       pagado: planImp.pago_inicial,
       saldo: parseFloat(planImp.total) - parseFloat(planImp.pago_inicial),
-      estado: 1,
+      estado: true,
       prestador: detalleMed.COD_PRES,
       prestador_nombre: detalleMed.NOMBRE,
-      operador: user,
-      sucursal: usuc,
+      operador: usu.usuario,
+      sucursal: usu.sucursal,
       plan: "IMP",
+      f: "reg plan odontologico",
     };
 
     await axios
-      .get(`${ip}api/sgi/servicios/traerplandni/${plan.dni}`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer plan dni",
+          dni: plan.dni,
+        },
+      })
       .then((res1) => {
-        console.log(res1.data.dni, plan.dni);
         if (!res1.data || res1.data.dni !== plan.dni) {
           axios
-            .post(`${ip}api/sgi/servicios/nuevoplanorto`, plan)
+            .post(`/api/servicios`, plan)
             .then((res2) => {
               if (res2.status === 200) {
                 toastr.success("Plan registrado correctamente", "ATENCION");
@@ -1606,7 +1771,7 @@ const Emision = () => {
 
                 let accion = `Se registro plan implante dental ID: ${res2.data.idplansocio}, para el socio: ${plan.contrato} - ${plan.socio}, dni: ${plan.dni}. Con un monto de ${plan.total}`;
 
-                registrarHistoria(accion, user);
+                registrarHistoria(accion, usu.usuario);
 
                 setTimeout(() => {
                   Router.push({
@@ -1656,9 +1821,10 @@ const Emision = () => {
       nvisita: "",
       pago: 0,
       fecha: moment().format("YYYY-MM-DD"),
-      pagado: 0,
-      operador: user,
+      pagado: false,
+      operador: usu.usuario,
       plan: tiPla,
+      f: "reg plan visitas",
     };
 
     for (let i = 1; i < visitas; i++) {
@@ -1672,7 +1838,7 @@ const Emision = () => {
         visi.fecha = moment().add(i, "months").format("YYYY-MM-DD");
       }
 
-      await axios.post(`${ip}api/sgi/servicios/nuevoplanvisita`, visi);
+      await axios.post(`/api/servicios`, visi);
     }
   };
 
@@ -1702,27 +1868,36 @@ const Emision = () => {
     }
   };
 
-  const traerNOrden = async () => {
-    await axios
-      .get(`${ip}api/sgi/servicios/norden`)
-      .then((res) => {
-        setTimeout(() => {
-          if (!res.data) {
-            guardarNorden(1);
-          } else {
-            guardarNorden(`${usuc}-${res.data.iduso + 1}`);
-          }
-        }, 500);
-      })
-      .catch((error) => {
-        console.log(error);
-        toastr.error("Ocurrio un error al traer el N° de Orden", "ATENCION");
-      });
+  const traerNOrden = async (suc) => {
+    if (suc) {
+      await axios
+        .get(`/api/servicios`, {
+          params: {
+            f: "traer norden",
+          },
+        })
+        .then((res) => {
+          setTimeout(() => {
+            if (!res.data[0]) {
+            } else {
+              guardarNorden(`${suc}-${res.data[0].iduso + 1}`);
+            }
+          }, 500);
+        })
+        .catch((error) => {
+          console.log(error);
+          toastr.error("Ocurrio un error al traer el N° de Orden", "ATENCION");
+        });
+    }
   };
 
   const traerSucursales = async () => {
     await axios
-      .get(`${ip}api/sgi/servicios/traersucursales`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer sucursales",
+        },
+      })
       .then((res) => {
         guardarSucursales(res.data);
       })
@@ -1737,7 +1912,11 @@ const Emision = () => {
 
   const traerEspecialidades = async () => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerespecialidades`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer especialidades",
+        },
+      })
       .then((res) => {
         guardarEspec(res.data);
       })
@@ -1753,10 +1932,11 @@ const Emision = () => {
   const traerMedicosPorSuc = async (f) => {
     if (f === "C" && especialidadRef.current.value !== null) {
       await axios
-        .get(`${ip}api/sgi/servicios/traermedporsuc`, {
+        .get(`/api/servicios`, {
           params: {
             suc: sucursalRef.current.value,
             esp: especialidadRef.current.value,
+            f: "traer medicos por suc",
           },
         })
         .then((res) => {
@@ -1771,10 +1951,11 @@ const Emision = () => {
         });
     } else if (f === "P" && especialidadRefP.current.value !== null) {
       await axios
-        .get(`${ip}api/sgi/servicios/traermedporsuc`, {
+        .get(`/api/servicios`, {
           params: {
             suc: sucursalRefP.current.value,
             esp: especialidadRefP.current.value,
+            f: "traer medicos por suc",
           },
         })
         .then((res) => {
@@ -1789,10 +1970,11 @@ const Emision = () => {
         });
     } else if (f === "Pl" && especialidadRefPl.current.value !== null) {
       await axios
-        .get(`${ip}api/sgi/servicios/traermedporsuc`, {
+        .get(`/api/servicios`, {
           params: {
             suc: sucursalRefPl.current.value,
             esp: especialidadRefPl.current.value,
+            f: "traer medicos por suc",
           },
         })
         .then((res) => {
@@ -1811,11 +1993,14 @@ const Emision = () => {
   const traerDetalleMedSelec = async (f) => {
     if (f === "C" && medicoRef.current.value !== null) {
       await axios
-        .get(
-          `${ip}api/sgi/servicios/traerdetallemedico/${medicoRef.current.value}`
-        )
+        .get(`/api/servicios`, {
+          params: {
+            prestado: medicoRef.current.value,
+            f: "traer detalle medico",
+          },
+        })
         .then((res) => {
-          guardarDetalleMed(res.data);
+          guardarDetalleMed(res.data[0]);
         })
         .catch((error) => {
           console.log(error);
@@ -1828,13 +2013,16 @@ const Emision = () => {
       let id = medicoRefP.current.value;
 
       await axios
-        .get(
-          `${ip}api/sgi/servicios/traerdetallemedico/${medicoRefP.current.value}`
-        )
+        .get(`/api/servicios`, {
+          params: {
+            prestado: medicoRefP.current.value,
+            f: "traer detalle medico",
+          },
+        })
         .then((res) => {
-          guardarDetalleMed(res.data);
+          guardarDetalleMed(res.data[0]);
 
-          traerPracticasPrest(id, res.data.LUGAR);
+          traerPracticasPrest(id, res.data[0].LUGAR);
         })
         .catch((error) => {
           console.log(error);
@@ -1845,11 +2033,14 @@ const Emision = () => {
         });
     } else if (f === "E" && medicoRefE.current.value !== null) {
       await axios
-        .get(
-          `${ip}api/sgi/servicios/traerdetallemedico/${medicoRefE.current.value}`
-        )
+        .get(`/api/servicios`, {
+          params: {
+            prestado: medicoRefE.current.value,
+            f: "traer detalle medico",
+          },
+        })
         .then((res) => {
-          guardarDetalleEnfer(res.data);
+          guardarDetalleEnfer(res.data[0]);
 
           traerPractEnfer();
         })
@@ -1862,11 +2053,14 @@ const Emision = () => {
         });
     } else if (f === "Pl" && medicoRefPl.current.value !== null) {
       await axios
-        .get(
-          `${ip}api/sgi/servicios/traerdetallemedico/${medicoRefPl.current.value}`
-        )
+        .get(`/api/servicios`, {
+          params: {
+            prestado: medicoRefPl.current.value,
+            f: "traer detalle medico",
+          },
+        })
         .then((res) => {
-          guardarDetalleMed(res.data);
+          guardarDetalleMed(res.data[0]);
         })
         .catch((error) => {
           console.log(error);
@@ -1887,13 +2081,27 @@ const Emision = () => {
   };
 
   const importeOrden = () => {
-    if (detalleMed.PROMO === 0) {
-      let importe = "";
+    if (detalleMed.PROMO === 1 && detalleMed.OTERO === 0) {
+      if (priUso === 0) {
+        if (socio.GRUPO === 55 || socio.GRUPO === 66) {
+          const importe = 0;
 
-      importe = detalleMed.CON_PAGA;
+          return importe;
+        } else {
+          const importe = promos.pint1;
 
-      return importe;
-    } else if (detalleMed.PROMO === 1) {
+          return importe;
+        }
+      } else if (priUso === 1) {
+        const importe = promos.pint2;
+
+        return importe;
+      } else if (priUso >= 2) {
+        const importe = detalleMed.CON_PAGA;
+
+        return importe;
+      }
+    } else if (detalleMed.PROMO === 1 && detalleMed.OTERO === 1) {
       if (priUso === 0) {
         if (socio.GRUPO === 55 || socio.GRUPO === 66) {
           const importe = 0;
@@ -1905,7 +2113,7 @@ const Emision = () => {
 
             return importe;
           } else {
-            const importe = p1;
+            const importe = promos.pot1;
 
             return importe;
           }
@@ -1916,7 +2124,7 @@ const Emision = () => {
 
           return importe;
         } else {
-          const importe = p2;
+          const importe = promos.pot2;
 
           return importe;
         }
@@ -1925,6 +2133,10 @@ const Emision = () => {
 
         return importe;
       }
+    } else if (detalleMed.PROMO === 0 && detalleMed.OTERO === 0) {
+      const importe = detalleMed.CON_PAGA;
+
+      return importe;
     }
   };
 
@@ -1938,10 +2150,15 @@ const Emision = () => {
       );
     } else {
       await axios
-        .get(`${ip}api/sgi/servicios/verifcodnosoc/${codNoSoc}`)
+        .get(`/api/servicios`, {
+          params: {
+            f: "codigo no socio",
+            codNoSoc: codNoSoc,
+          },
+        })
         .then((res) => {
           if (res.data) {
-            if (res.data.estado === 1) {
+            if (res.data.estado === true) {
               toastr.success(
                 "Codigo valido, puedes generar la orden medica",
                 "ATENCION"
@@ -1953,7 +2170,7 @@ const Emision = () => {
                   dni: res.data.dni,
                 },
               });
-            } else if (res.data.estado === 0) {
+            } else if (res.data.estado === false) {
               toastr.info("El codigo generado, ya fue utilizado.", "ATENCION");
             }
           } else {
@@ -1970,126 +2187,145 @@ const Emision = () => {
     }
   };
 
+  const traerPromociones = async () => {
+    await axios
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer promociones",
+        },
+      })
+      .then((res) => {
+        guardarPromociones(res.data[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error al traer las promociones", "ATENCION");
+      });
+  };
+
+  const traerInfo = () => {
+    traerSucursales();
+    traerEspecialidades();
+    traerFarmacias();
+    traerPlanesOrto();
+    traerPlanesImp();
+    traerPromociones();
+  };
+
   // ----------------------------------------------
 
-  let token = jsCookie.get("token");
+  useSWR("/api/servicios", traerInfo);
 
-  useEffect(() => {
-    if (!token) {
-      Router.push("/redirect");
-    } else {
-      let usuario = jsCookie.get("usuario");
-
-      if (usuario) {
-        let userData = JSON.parse(usuario);
-        guardarUsuario(userData.usuario);
-        guardarUsuc(userData.sucursal);
-      }
-
-      traerSucursales();
-      traerEspecialidades();
-      traerFarmacias();
-      traerPlanesOrto();
-      traerPlanesImp();
-    }
-  }, []);
+  if (isLoading === true) return <Skeleton />;
 
   return (
-    <Layout>
-      {flag === false ? (
-        <BuscarSocio
-          ficha={ficha}
-          contratoRef={contratoRef}
-          dniRef={dniRef}
-          buscarTitularM={buscarTitularM}
-          buscarTitularDniM={buscarTitularDniM}
-          buscarTitular={buscarTitular}
-          buscarTitularDni={buscarTitularDni}
-          errores={errores}
-          titulo={"Ordenes, consultas y farmacia"}
-          emp={"W"}
-          listSocios={listSocios}
-          listSociosM={listSociosM}
-          listado={listado}
-          Seleccionar={Seleccionar}
-          SeleccionarM={SeleccionarM}
-          codNoSocioRef={codNoSocioRef}
-          consultarCodigo={consultarCodigo}
-        />
-      ) : flag === true ? (
-        <>
-          {ficha ? (
-            <EmitirServicio
-              adhs={adhs}
-              pagos={pagos}
-              ficha={ficha}
-              selectSocio={selectSocio}
-              socio={socio}
-              farmaciaRef={farmaciaRef}
-              modalidadRef={modalidadRef}
-              descuentoRef={descuentoRef}
-              especialidadRef={especialidadRef}
-              especialidadRefP={especialidadRefP}
-              especialidadRefPl={especialidadRefPl}
-              sucursalRef={sucursalRef}
-              sucursalRefP={sucursalRefP}
-              sucursalRefPl={sucursalRefPl}
-              medicoRef={medicoRef}
-              medicoRefP={medicoRefP}
-              medicoRefPl={medicoRefPl}
-              traerDetalleMedSelec={traerDetalleMedSelec}
-              detalleMed={detalleMed}
-              sucursales={sucursales}
-              espec={espec}
-              medicos={medicos}
-              traerMedicosPorSuc={traerMedicosPorSuc}
-              registrarOrdenUsos={registrarOrdenUsos}
-              practicas={practicas}
-              agregarPractica={agregarPractica}
-              pracSocio={pracSocio}
-              eliminarPracticaPrecargado={eliminarPracticaPrecargado}
-              calcularTotalPracticas={calcularTotalPracticas}
-              registrarPracticaUso={registrarPracticaUso}
-              farmacias={farmacias}
-              gestionDescuento={gestionDescuento}
-              descFarma={descFarma}
-              registrarFarmaciaUso={registrarFarmaciaUso}
-              enfer={enfer}
-              sucursalRefE={sucursalRefE}
-              traerEnfer={traerEnfer}
-              detEnf={detEnf}
-              medicoRefE={medicoRefE}
-              practEnfer={practEnfer}
-              prestacionRefE={prestacionRefE}
-              cantidadRefE={cantidadRefE}
-              registrarEnfermeriaUso={registrarEnfermeriaUso}
-              cantidadRefP={cantidadRefP}
-              priUso={priUso}
-              nFisio={nFisio}
-              selector={selector}
-              isj={isj}
-              importeOrden={importeOrden}
-              verificarUso={verificarUso}
-              planOrto={planOrto}
-              registrarPlanOrto={registrarPlanOrto}
-              arancel={arancel}
-              nacimientoRef={nacimientoRef}
-              nombreRef={nombreRef}
-              apellidoRef={apellidoRef}
-              nroDocRef={nroDocRef}
-              regAdhProvi={regAdhProvi}
-              checkAdhProvi={checkAdhProvi}
-              habilita={habilita}
-              infoAdh={infoAdh}
-              planImp={planImp}
-              registrarPlanImp={registrarPlanImp}
-              usosFarm={usosFarm}
-              selDescuento={selDescuento}
-            />
-          ) : null}
-        </>
-      ) : null}
-    </Layout>
+    <>
+      <>
+        {!usu ? (
+          <Layout>
+            <Redirect />
+          </Layout>
+        ) : usu ? (
+          <>
+            <Layout>
+              {flag === false ? (
+                <BuscarSocio
+                  ficha={ficha}
+                  contratoRef={contratoRef}
+                  dniRef={dniRef}
+                  buscarTitularM={buscarTitularM}
+                  buscarTitularDniM={buscarTitularDniM}
+                  buscarTitular={buscarTitular}
+                  buscarTitularDni={buscarTitularDni}
+                  errores={errores}
+                  titulo={"Ordenes, consultas y farmacia"}
+                  emp={"W"}
+                  listSocios={listSocios}
+                  listSociosM={listSociosM}
+                  listado={listado}
+                  Seleccionar={Seleccionar}
+                  SeleccionarM={SeleccionarM}
+                  codNoSocioRef={codNoSocioRef}
+                  consultarCodigo={consultarCodigo}
+                />
+              ) : flag === true ? (
+                <>
+                  {ficha ? (
+                    <EmitirServicio
+                      adhs={adhs}
+                      pagos={pagos}
+                      ficha={ficha}
+                      selectSocio={selectSocio}
+                      socio={socio}
+                      farmaciaRef={farmaciaRef}
+                      modalidadRef={modalidadRef}
+                      descuentoRef={descuentoRef}
+                      especialidadRef={especialidadRef}
+                      especialidadRefP={especialidadRefP}
+                      especialidadRefPl={especialidadRefPl}
+                      sucursalRef={sucursalRef}
+                      sucursalRefP={sucursalRefP}
+                      sucursalRefPl={sucursalRefPl}
+                      medicoRef={medicoRef}
+                      medicoRefP={medicoRefP}
+                      medicoRefPl={medicoRefPl}
+                      traerDetalleMedSelec={traerDetalleMedSelec}
+                      detalleMed={detalleMed}
+                      sucursales={sucursales}
+                      espec={espec}
+                      medicos={medicos}
+                      traerMedicosPorSuc={traerMedicosPorSuc}
+                      registrarOrdenUsos={registrarOrdenUsos}
+                      practicas={practicas}
+                      agregarPractica={agregarPractica}
+                      pracSocio={pracSocio}
+                      eliminarPracticaPrecargado={eliminarPracticaPrecargado}
+                      calcularTotalPracticas={calcularTotalPracticas}
+                      registrarPracticaUso={registrarPracticaUso}
+                      farmacias={farmacias}
+                      gestionDescuento={gestionDescuento}
+                      descFarma={descFarma}
+                      registrarFarmaciaUso={registrarFarmaciaUso}
+                      enfer={enfer}
+                      sucursalRefE={sucursalRefE}
+                      traerEnfer={traerEnfer}
+                      detEnf={detEnf}
+                      medicoRefE={medicoRefE}
+                      practEnfer={practEnfer}
+                      prestacionRefE={prestacionRefE}
+                      cantidadRefE={cantidadRefE}
+                      registrarEnfermeriaUso={registrarEnfermeriaUso}
+                      cantidadRefP={cantidadRefP}
+                      priUso={priUso}
+                      nFisio={nFisio}
+                      selector={selector}
+                      isj={isj}
+                      importeOrden={importeOrden}
+                      verificarUso={verificarUso}
+                      planOrto={planOrto}
+                      registrarPlanOrto={registrarPlanOrto}
+                      arancel={arancel}
+                      nacimientoRef={nacimientoRef}
+                      nombreRef={nombreRef}
+                      apellidoRef={apellidoRef}
+                      nroDocRef={nroDocRef}
+                      regAdhProvi={regAdhProvi}
+                      checkAdhProvi={checkAdhProvi}
+                      habilita={habilita}
+                      infoAdh={infoAdh}
+                      planImp={planImp}
+                      registrarPlanImp={registrarPlanImp}
+                      usosFarm={usosFarm}
+                      selDescuento={selDescuento}
+                    />
+                  ) : null}
+                </>
+              ) : null}
+            </Layout>
+          </>
+        ) : null}
+      </>
+    </>
   );
 };
 

@@ -1,51 +1,33 @@
 import React, { useState, useEffect } from "react";
+import useUser from "../../hook/useUser";
+import useWerchow from "../../hook/useWerchow";
+import useSWR from "swr";
+import Redirect from "../../components/auth/RedirectToLogin";
+import { Skeleton } from "../../components/layout/Skeleton";
 import Layout from "../../components/layout/Layout";
-import moment from "moment-timezone";
 import axios from "axios";
-import jsCookie from "js-cookie";
 import toastr from "toastr";
 import Router, { useRouter } from "next/router";
-import { ip } from "../../config/config";
 import ListadoOrdenesEmitidas from "../../components/servicios/ListadoOrdenesEmitidas";
 import { confirmAlert } from "react-confirm-alert";
 
 const listadoordenes = () => {
-  const [user, guardarUsuario] = useState(null);
-  const [perfil, guardarPerfil] = useState(null);
   const [listado, guardarListado] = useState(null);
 
-  let token = jsCookie.get("token");
+  const { usu } = useWerchow();
 
-  useEffect(() => {
-    if (!token) {
-      Router.push("/redirect");
-    } else {
-      let usuario = jsCookie.get("usuario");
+  const { isLoading } = useUser();
 
-      if (usuario) {
-        let userData = JSON.parse(usuario);
-        guardarUsuario(userData.usuario);
-        guardarPerfil(userData.perfil);
-        traerOrdenesEmitidas(userData.perfil, userData.usuario);
-      }
-    }
-  }, []);
-
-  const traerOrdenesEmitidas = async (perfil, usu) => {
-    if (perfil === 1 || perfil === 3) {
+  const traerOrdenesEmitidas = async () => {
+    if (usu) {
       await axios
-        .get(`${ip}api/sgi/servicios/traerordenesemitidas`)
-        .then((res) => {
-          guardarListado(res.data);
-          //toastr.success("Se trajeron las ordenes con exito", "ATENCION")
+        .get(`/api/servicios`, {
+          params: {
+            f: "listar ordenes",
+            perfil: usu.perfil,
+            usu: usu.usuario,
+          },
         })
-        .catch((error) => {
-          console.log(error);
-          toastr.error("Ocurrio un error al traer las ordenes", "ATENCION");
-        });
-    } else {
-      await axios
-        .get(`${ip}api/sgi/servicios/traerordenesemitidasusuario/${usu}`)
         .then((res) => {
           guardarListado(res.data);
           //toastr.success("Se trajeron las ordenes con exito", "ATENCION")
@@ -83,7 +65,7 @@ const listadoordenes = () => {
     push("/servicios/orden", iduso, doc, orden, flag);
   };
 
-  const anularOrdenes = (orden, servicio) => {
+  const anularOrdenes = (orden, servicio, id) => {
     confirmAlert({
       title: "ANULACION DE ORDEN",
       message: "¿Estas seguro de anular esta orden?",
@@ -91,7 +73,7 @@ const listadoordenes = () => {
         {
           label: "Si",
           onClick: () => {
-            putAnuUso(orden, servicio);
+            putAnuUso(orden, id);
 
             if (servicio !== "ORDE") {
               putAnuPract(orden, servicio);
@@ -108,9 +90,14 @@ const listadoordenes = () => {
     });
   };
 
-  const putAnuUso = async (orden, servicio) => {
+  const putAnuUso = async (orden, id) => {
+    let data = {
+      f: "anular orden",
+      id: id,
+    };
+
     await axios
-      .put(`${ip}api/sgi/servicios/anularorden/${orden}`)
+      .put(`/api/servicios`, data)
       .then((res) => {
         if (res.status === 200) {
           toastr.success("Se anulo la orden con exito", "ATENCION");
@@ -124,70 +111,54 @@ const listadoordenes = () => {
   };
 
   const putAnuPract = async (orden, servicio) => {
-    if (servicio === "FARM") {
-      await axios
-        .put(`${ip}api/sgi/servicios/anularordenfarm/${orden}`)
-        .then((res) => {
-          if (res.status === 200) {
-            toastr.success(
-              "Se anulo los items de la orden con exito",
-              "ATENCION"
-            );
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          toastr.error("Ocurrio un error al anular la orden", "ATENCION");
-        });
+    let data = {
+      f: "anular practica",
+      orden: orden,
+      servicio: servicio,
+    };
 
-      traerOrdenesEmitidas();
-    } else if (servicio === "ENFE") {
-      await axios
-        .put(`${ip}api/sgi/servicios/anularordenenfe/${orden}`)
-        .then((res) => {
-          if (res.status === 200) {
-            toastr.success(
-              "Se anulo los items de la orden con exito",
-              "ATENCION"
-            );
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          toastr.error("Ocurrio un error al anular la orden", "ATENCION");
-        });
+    await axios
+      .put(`/api/servicios`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          toastr.success(
+            "Se anulo los items de la orden con exito",
+            "ATENCION"
+          );
 
-      traerOrdenesEmitidas();
-    } else {
-      await axios
-        .put(`${ip}api/sgi/servicios/anularordenpract/${orden}`)
-        .then((res) => {
-          if (res.status === 200) {
-            toastr.success(
-              "Se anulo los items de la orden con exito",
-              "ATENCION"
-            );
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          toastr.error("Ocurrio un error al anular la orden", "ATENCION");
-        });
-
-      traerOrdenesEmitidas();
-    }
+          traerOrdenesEmitidas();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error al anular la orden", "ATENCION");
+      });
   };
 
+  useSWR(usu ? "/api/servicios" : null, traerOrdenesEmitidas);
+
+  if (isLoading === true) return <Skeleton />;
+
   return (
-    <Layout>
-      <ListadoOrdenesEmitidas
-        listado={listado}
-        generarImpresion={generarImpresion}
-        anularOrdenes={anularOrdenes}
-        user={user}
-        perfil={perfil}
-      />
-    </Layout>
+    <>
+      {!usu ? (
+        <Layout>
+          <Redirect />
+        </Layout>
+      ) : usu ? (
+        <>
+          <Layout>
+            <ListadoOrdenesEmitidas
+              listado={listado}
+              generarImpresion={generarImpresion}
+              anularOrdenes={anularOrdenes}
+              user={usu.usuario}
+              perfil={usu.perfil}
+            />
+          </Layout>
+        </>
+      ) : null}
+    </>
   );
 };
 

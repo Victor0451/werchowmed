@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../components/layout/Layout";
+import useUser from "../../hook/useUser";
+import useWerchow from "../../hook/useWerchow";
+import useSWR from "swr";
+import Redirect from "../../components/auth/RedirectToLogin";
+import { Skeleton } from "../../components/layout/Skeleton";
 import moment from "moment-timezone";
 import axios from "axios";
 import jsCookie from "js-cookie";
 import toastr from "toastr";
 import Router, { useRouter } from "next/router";
-import { ip } from "../../config/config";
 import ListadoCajasGeneradas from "../../components/caja/ListadoCajasGeneradas";
 import ModalImprimirCaja from "../../components/caja/ModalImprimirCaja";
 
@@ -26,9 +30,17 @@ const ListadoCajas = () => {
     }
   }, []);
 
+  const { usu } = useWerchow();
+
+  const { isLoading } = useUser();
+
   const traerCajas = async () => {
     await axios
-      .get(`${ip}api/sgi/servicios/listadocajas`)
+      .get(`/api/caja`, {
+        params: {
+          f: "listado cajas",
+        },
+      })
       .then((res) => {
         guardarCajas(res.data);
       })
@@ -46,7 +58,12 @@ const ListadoCajas = () => {
     guardarFec(fecha);
 
     await axios
-      .get(`${ip}api/sgi/servicios/traeringresos/${fecha}`)
+      .get(`/api/caja`, {
+        params: {
+          f: "traer ingresos",
+          fecha: fecha,
+        },
+      })
       .then((res) => {
         guardarIngresos(res.data);
       })
@@ -56,7 +73,12 @@ const ListadoCajas = () => {
       });
 
     await axios
-      .get(`${ip}api/sgi/servicios/traeregresos/${fecha}`)
+      .get(`/api/caja`, {
+        params: {
+          f: "traer egresos",
+          fecha: fecha,
+        },
+      })
       .then((res) => {
         guardarEgresos(res.data);
       })
@@ -70,10 +92,11 @@ const ListadoCajas = () => {
     guardarFec(fecha);
 
     await axios
-      .get(`${ip}api/sgi/servicios/traerlistadocontrol`, {
+      .get(`/api/caja`, {
         params: {
           fecha: fecha,
           operador: operador,
+          f: "traer listado de control",
         },
       })
       .then((res) => {
@@ -112,6 +135,10 @@ const ListadoCajas = () => {
 
     window.location.replace("/servicios/listadocajas");
   };
+
+  useSWR(usu ? "/api/caja" : null, traerCajas);
+
+  if (isLoading === true) return <Skeleton />;
 
   return (
     <Layout>

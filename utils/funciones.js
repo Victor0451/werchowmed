@@ -7,6 +7,9 @@ import toastr from "toastr";
 export const p1 = 1000;
 export const p2 = 1500;
 
+export const p1Int = 1500;
+export const p2Int = 2000;
+
 export const registrarHistoria = async (accion, user) => {
   const historial = {
     operador: user,

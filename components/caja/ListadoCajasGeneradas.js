@@ -9,7 +9,20 @@ const ListadoCajasGeneradas = ({
   traerMovimientos,
   traerListadoControl,
 }) => {
-  if (!listado) return <Spinner />;
+  if (!listado)
+    return (
+      <>
+        <div className="container list border border-dark mt-4 p-4">
+          <h2 className="mb-4">
+            <strong>
+              <u>Generando Listado De Cajas</u>
+            </strong>
+          </h2>
+
+          <Spinner />
+        </div>
+      </>
+    );
 
   return (
     <div className="container list border border-dark mt-4 p-4">

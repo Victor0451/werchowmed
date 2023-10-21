@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../components/layout/Layout";
+import useUser from "../../hook/useUser";
+import useWerchow from "../../hook/useWerchow";
+import useSWR from "swr";
+import Redirect from "../../components/auth/RedirectToLogin";
+import { Skeleton } from "../../components/layout/Skeleton";
 import moment from "moment-timezone";
 import axios from "axios";
-import jsCookie from "js-cookie";
 import toastr from "toastr";
-import Router from "next/router";
-import { ip } from "../../config/config";
 import { registrarHistoria } from "../../utils/funciones";
 import FormGestionTurno from "../../components/servicios/FormGestionTurno";
 import ListadoTurnosRegistrados from "../../components/servicios/ListadoTurnosRegistrados";
@@ -23,7 +25,6 @@ const GestionTurnos = () => {
   let domicilioRef = React.createRef();
   let mailRef = React.createRef();
 
-  const [user, guardarUsuario] = useState(null);
   const [medicos, guardarMedicos] = useState(null);
   const [listado, guardarListado] = useState([]);
   const [errores, guardarErrores] = useState(null);
@@ -31,16 +32,24 @@ const GestionTurnos = () => {
   const [flag, guardarFlag] = useState(false);
   const [otroCamp, guardarOrtoCamp] = useState(false);
 
+  const { usu } = useWerchow();
+
+  const { isLoading } = useUser();
+
   const traerMedicos = async (f) => {
     await axios
-      .get(`${ip}api/sgi/servicios/traermedicos`)
+      .get(`/api/turnos`, {
+        params: {
+          f: "traer medicos otero",
+        },
+      })
       .then((res) => {
         guardarMedicos(res.data);
       })
       .catch((error) => {
         console.log(error);
         toastr.error(
-          "Ocurrio un error al traer el listado de Especialidades",
+          "Ocurrio un error al traer el listado de medicos",
           "ATENCION"
         );
       });
@@ -59,11 +68,12 @@ const GestionTurnos = () => {
       guardarFlag(true);
 
       await axios
-        .get(`${ip}api/sgi/servicios/buscarturnos`, {
+        .get(`/api/turnos`, {
           params: {
             medico: medicoRef.current.value,
             dia: diaRef.current.value,
             turno: turnoRef.current.value,
+            f: "buscar turno medico",
           },
         })
         .then((res) => {
@@ -92,8 +102,9 @@ const GestionTurnos = () => {
       telefono: telefonoRef.current.value,
       domicilio: domicilioRef.current.value,
       mail: mailRef.current.value,
-      operador: user,
+      operador: usu.usuario,
       estado: 0,
+      f: "reg turno",
     };
 
     if (horaRef.current.value === "") {
@@ -108,14 +119,14 @@ const GestionTurnos = () => {
       }
 
       await axios
-        .post(`${ip}api/sgi/servicios/regturno`, turnoReg)
+        .post(`/api/turnos`, turnoReg)
         .then((res) => {
           if (res.status === 200) {
             toastr.success("Se registro el turno correctamente", "ATENCION");
 
             let accion = `Se registro turno del paciente: ${turnoReg.paciente}, para el DR/DRA: ${turnoReg.doctor} para el dia: ${turnoReg.fecha} - ${turnoReg.hora}`;
 
-            registrarHistoria(accion, user);
+            registrarHistoria(accion, usu.usuario);
 
             buscarListadoTurnos();
           }
@@ -142,14 +153,18 @@ const GestionTurnos = () => {
   };
 
   const estadoTurno = async (flag, id) => {
+    let data = {
+      estado: 0,
+      f: "cambiar estado turno",
+      idturno: id,
+    };
     if (flag === "si") {
+      data.estado = 1;
+
       await axios
-        .put(`${ip}api/sgi/servicios/updateestadoturno/${id}`, {
-          params: {
-            estado: 1,
-          },
-        })
+        .put(`/api/turnos`, data)
         .then((res) => {
+          console.log(res.data);
           if (res.status === 200) {
             toastr.success(
               "El estado del turno se cambio con exito",
@@ -168,12 +183,9 @@ const GestionTurnos = () => {
           );
         });
     } else if (flag === "no") {
+      data.estado = 2;
       await axios
-        .put(`${ip}api/sgi/servicios/updateestadoturno/${id}`, {
-          params: {
-            estado: 2,
-          },
-        })
+        .put(`/api/turnos`, data)
         .then((res) => {
           if (res.status === 200) {
             toastr.success(
@@ -205,53 +217,53 @@ const GestionTurnos = () => {
     }
   };
 
-  let token = jsCookie.get("token");
+  useSWR("/api/turnos", traerMedicos);
 
-  useEffect(() => {
-    if (!token) {
-      Router.push("/redirect");
-    } else {
-      let usuario = jsCookie.get("usuario");
-
-      if (usuario) {
-        let userData = JSON.parse(usuario);
-        guardarUsuario(userData.usuario);
-      }
-
-      traerMedicos();
-    }
-  }, []);
+  if (isLoading === true) return <Skeleton />;
 
   return (
-    <Layout>
-      <FormGestionTurno
-        medicos={medicos}
-        medicoRef={medicoRef}
-        diaRef={diaRef}
-        turnoRef={turnoRef}
-        errores={errores}
-        buscarListadoTurnos={buscarListadoTurnos}
-      />
+    <>
+      {!usu ? (
+        <Layout>
+          <Redirect />
+        </Layout>
+      ) : usu ? (
+        <>
+          <Layout>
+            <FormGestionTurno
+              medicos={medicos}
+              medicoRef={medicoRef}
+              diaRef={diaRef}
+              turnoRef={turnoRef}
+              errores={errores}
+              buscarListadoTurnos={buscarListadoTurnos}
+            />
 
-      {flag === true ? (
-        <ListadoTurnosRegistrados listado={listado} estadoTurno={estadoTurno} />
-      ) : flag === false ? null : null}
+            {flag === true ? (
+              <ListadoTurnosRegistrados
+                listado={listado}
+                estadoTurno={estadoTurno}
+              />
+            ) : flag === false ? null : null}
 
-      <ModalRegistrarTurno
-        horaRef={horaRef}
-        pacienteRef={pacienteRef}
-        obraSocRef={obraSocRef}
-        otraOSRef={otraOSRef}
-        telefonoRef={telefonoRef}
-        domicilioRef={domicilioRef}
-        mailRef={mailRef}
-        registrarTurno={registrarTurno}
-        errores={errores2}
-        usaWerchow={usaWerchow}
-        handleChange={handleChange}
-        otroCamp={otroCamp}
-      />
-    </Layout>
+            <ModalRegistrarTurno
+              horaRef={horaRef}
+              pacienteRef={pacienteRef}
+              obraSocRef={obraSocRef}
+              otraOSRef={otraOSRef}
+              telefonoRef={telefonoRef}
+              domicilioRef={domicilioRef}
+              mailRef={mailRef}
+              registrarTurno={registrarTurno}
+              errores={errores2}
+              usaWerchow={usaWerchow}
+              handleChange={handleChange}
+              otroCamp={otroCamp}
+            />
+          </Layout>
+        </>
+      ) : null}
+    </>
   );
 };
 

@@ -11,11 +11,24 @@ const ListadoOrdenesEmitidas = ({
   perfil,
   user,
 }) => {
-  if (!listado) return <Spinner />;
+  if (!listado)
+    return (
+      <>
+        <div className="container list border border-dark mt-4 p-4">
+          <h2 className="mb-4">
+            <strong>
+              <u>Generando Listado De Ordenes</u>
+            </strong>
+          </h2>
+
+          <Spinner />
+        </div>
+      </>
+    );
 
   return (
     <div className="container list border border-dark mt-4 p-4">
-      <h2 className="mb-4">
+      <h2 className=" mb-4">
         <strong>
           {perfil === 1 || perfil === 3 ? (
             <u>Listado de ordenes emitidas por todos los usuarios</u>
@@ -27,7 +40,7 @@ const ListadoOrdenesEmitidas = ({
         </strong>
       </h2>
 
-      <div>
+      <div className="mt-5">
         <ReactTable
           data={listado}
           filterable
@@ -163,7 +176,8 @@ const ListadoOrdenesEmitidas = ({
                           e.preventDefault();
                           anularOrdenes(
                             row.original.ORDEN,
-                            row.original.SERVICIO
+                            row.original.SERVICIO,
+                            row.original.iduso
                           );
                         }}
                       >

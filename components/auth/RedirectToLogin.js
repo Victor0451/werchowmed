@@ -6,9 +6,7 @@ const RedirectToLogin = () => {
       <div className="  mt-4 mb-4  ">
         <h1 className="text-center">
           <strong>
-
-            No estas logueado, debes iniciar session para acceder al sistema
-
+            No estas logueado, debes iniciar sesion para acceder al sistema.
           </strong>
         </h1>
 

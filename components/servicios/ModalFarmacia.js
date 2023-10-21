@@ -37,8 +37,8 @@ const ModalFarmacia = ({
           </div>
           <div className="modal-body p-4">
             <div className="alert alert-info border border-dark mt-4 mb-4 text-center text-uppercase">
-              Este es el uso <strong>N°{usosFarm + 1}</strong> del socio para
-              el prestador de farmacia seleccionado
+              Este es el uso <strong>N°{usosFarm + 1}</strong> del socio para el
+              prestador de farmacia seleccionado
             </div>
 
             <div className="row border border-dark list p-4">
