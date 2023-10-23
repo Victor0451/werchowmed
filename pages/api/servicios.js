@@ -470,7 +470,7 @@ export default async function handler(req, res) {
                 SERVICIO,
                 IMPORTE
             FROM USOS
-            WHERE ANULADO IS NULL
+            WHERE ANULADO in(NULL, 0) 
             ORDER BY iduso DESC
     `;
         res
