@@ -74,13 +74,10 @@ const Emision = () => {
   const [usosFarm, guardarUsosFarm] = useState(0);
   const [farmaDescReg, guardarFarmaDescReg] = useState([]);
   const [promos, guardarPromociones] = useState([]);
-<<<<<<< HEAD
 
   const { usu } = useWerchow();
 
   const { isLoading } = useUser();
-=======
->>>>>>> af24421a1fdba68b2e418af8413fcd8c13715151
 
   // FUNCIONES SOCIO
 
@@ -949,14 +946,7 @@ const Emision = () => {
           uso.IMPORTE = detalleMed.CON_PAGA;
         }
       }
-<<<<<<< HEAD
     } else if (detalleMed.PROMO === 0 && detalleMed.OTERO === 0) {
-=======
-    } else if (
-      (detalleMed.PROMO === 0 && detalleMed.OTERO === 0) ||
-      detalleMed.OTERO === 1
-    ) {
->>>>>>> af24421a1fdba68b2e418af8413fcd8c13715151
       uso.IMPORTE = detalleMed.CON_PAGA;
     }
 
@@ -2095,7 +2085,6 @@ const Emision = () => {
       if (priUso === 0) {
         if (socio.GRUPO === 55 || socio.GRUPO === 66) {
           const importe = 0;
-<<<<<<< HEAD
 
           return importe;
         } else {
@@ -2106,18 +2095,6 @@ const Emision = () => {
       } else if (priUso === 1) {
         const importe = promos.pint2;
 
-=======
-
-          return importe;
-        } else {
-          const importe = promos.pint1;
-
-          return importe;
-        }
-      } else if (priUso === 1) {
-        const importe = promos.pint2;
-
->>>>>>> af24421a1fdba68b2e418af8413fcd8c13715151
         return importe;
       } else if (priUso >= 2) {
         const importe = detalleMed.CON_PAGA;
@@ -2156,14 +2133,7 @@ const Emision = () => {
 
         return importe;
       }
-<<<<<<< HEAD
     } else if (detalleMed.PROMO === 0 && detalleMed.OTERO === 0) {
-=======
-    } else if (
-      (detalleMed.PROMO === 0 && detalleMed.OTERO === 0) ||
-      detalleMed.OTERO === 1
-    ) {
->>>>>>> af24421a1fdba68b2e418af8413fcd8c13715151
       const importe = detalleMed.CON_PAGA;
 
       return importe;
@@ -2219,15 +2189,11 @@ const Emision = () => {
 
   const traerPromociones = async () => {
     await axios
-<<<<<<< HEAD
       .get(`/api/servicios`, {
         params: {
           f: "traer promociones",
         },
       })
-=======
-      .get(`${ip}api/sgi/servicios/promociones`)
->>>>>>> af24421a1fdba68b2e418af8413fcd8c13715151
       .then((res) => {
         guardarPromociones(res.data[0]);
       })
@@ -2236,10 +2202,6 @@ const Emision = () => {
         toastr.error("Ocurrio un error al traer las promociones", "ATENCION");
       });
   };
-<<<<<<< HEAD
-=======
-  // ----------------------------------------------
->>>>>>> af24421a1fdba68b2e418af8413fcd8c13715151
 
   const traerInfo = () => {
     traerSucursales();
@@ -2254,18 +2216,7 @@ const Emision = () => {
 
   useSWR("/api/servicios", traerInfo);
 
-<<<<<<< HEAD
   if (isLoading === true) return <Skeleton />;
-=======
-      traerSucursales();
-      traerEspecialidades();
-      traerFarmacias();
-      traerPlanesOrto();
-      traerPlanesImp();
-      traerPromociones();
-    }
-  }, []);
->>>>>>> af24421a1fdba68b2e418af8413fcd8c13715151
 
   return (
     <>

@@ -266,7 +266,7 @@ const Orden = () => {
     jsCookie.set("dnio", router.query.dni);
     jsCookie.set("idusoo", router.query.iduso);
     jsCookie.set("ordeno", router.query.orden);
-    jsCookie.set("fo", router.query.f);
+    jsCookie.set("fo", router.query.flag);
   }
 
   useEffect(() => {
