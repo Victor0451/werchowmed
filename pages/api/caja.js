@@ -12,7 +12,7 @@ export default async function handler(req, res) {
                 COUNT(ORDEN) "CANTIDAD"  
          FROM USOS
          WHERE RENDIDO = 0
-         AND ANULADO IS NULL
+         AND ANULADO in (NULL, 0)
          AND SUC = ${req.query.suc}
          AND OPERADOR = ${req.query.user}
          GROUP BY SUC, FECHA
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
         FROM USOS
         WHERE RENDIDO = 0
         AND FECHA = ${req.query.fecha}
-        AND ANULADO IS NULL
+        AND ANULADO in (NULL, 0)
         AND SUC = ${req.query.suc}
         AND OPERADOR = ${req.query.user}
         GROUP BY SERVICIO
@@ -178,7 +178,7 @@ export default async function handler(req, res) {
           AND
             OPERADOR = ${req.query.operador}
           AND 
-            ANULADO IS NULL
+            ANULADO in (NULL, 0)
       `;
       res
         .status(200)

@@ -40,7 +40,7 @@ export default async function handler(req, res) {
         AND SERVICIO = 'ORDE'
         AND YEAR(FECHA) = YEAR(CURDATE())
         AND MONTH(FECHA) = MONTH(CURDATE())
-        AND ANULADO IS NULL
+        AND ANULADO in (NULL, 0)
   
   `;
 
@@ -61,7 +61,7 @@ export default async function handler(req, res) {
         AND SERVICIO = 'PBIO'
         AND YEAR(FECHA) = YEAR(CURDATE())
         AND MONTH(FECHA) = MONTH(CURDATE())
-        AND ANULADO IS NULL
+        AND ANULADO in (NULL, 0)
     
     `;
 
@@ -129,7 +129,7 @@ export default async function handler(req, res) {
           AND PRESTADO = ${req.query.prestado}
           AND YEAR(FECHA) = YEAR(CURDATE())
           AND MONTH(FECHA) = MONTH(CURDATE())
-          AND ANULADO IS NULL
+          AND ANULADO in (NULL, 0)
       `;
       res
         .status(200)
@@ -459,7 +459,7 @@ export default async function handler(req, res) {
         parseInt(req.query.perfil) === 1 ||
         parseInt(req.query.perfil) === 3
       ) {
-        const traerPromociones = await Serv.$queryRaw`
+        const listadoOrdenes = await Serv.$queryRaw`
          
          SELECT 
                 iduso,
@@ -470,18 +470,18 @@ export default async function handler(req, res) {
                 SERVICIO,
                 IMPORTE
             FROM USOS
-            WHERE ANULADO in(NULL, 0) 
+            WHERE ANULADO in (NULL, 0) 
             ORDER BY iduso DESC
     `;
         res
           .status(200)
           .json(
-            JSON.stringify(traerPromociones, (key, value) =>
+            JSON.stringify(listadoOrdenes, (key, value) =>
               typeof value === "bigint" ? value.toString() : value
             )
           );
       } else {
-        const traerPromociones = await Serv.$queryRaw`
+        const listadoOrdenes = await Serv.$queryRaw`
          
          SELECT 
                 iduso,
@@ -492,14 +492,14 @@ export default async function handler(req, res) {
                 SERVICIO,
                 IMPORTE
             FROM USOS
-            WHERE ANULADO in(NULL, 0) 
+            WHERE ANULADO in (NULL, 0) 
             AND OPERADOR = ${req.query.usu}
             ORDER BY iduso DESC
    `;
         res
           .status(200)
           .json(
-            JSON.stringify(traerPromociones, (key, value) =>
+            JSON.stringify(listadoOrdenes, (key, value) =>
               typeof value === "bigint" ? value.toString() : value
             )
           );

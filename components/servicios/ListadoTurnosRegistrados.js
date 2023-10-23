@@ -89,7 +89,7 @@ const ListadoTurnosRegistrados = ({ listado, estadoTurno }) => {
                 {
                   Header: "Hora",
                   id: "hora",
-                  accessor: (d) => moment(d.hora).utc(0).format("HH:mm"),
+                  accessor: (d) => d.hora,
                   filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["hora"] }),
                   filterAll: true,

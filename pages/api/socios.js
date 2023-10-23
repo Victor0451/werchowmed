@@ -751,7 +751,7 @@ export default async function handler(req, res) {
       const Usos = await Serv.USOS.findMany({
         where: {
           CONTRATO: parseInt(req.query.contrato),
-          ANULADO: null,
+          ANULADO: 0,
         },
         orderBy: {
           FECHA: "desc",
@@ -761,7 +761,7 @@ export default async function handler(req, res) {
       const UsosFa = await Serv.USOSFA.findMany({
         where: {
           CONTRATO: req.query.contrato,
-          ANULADO: null,
+          ANULADO: 0,
         },
         orderBy: {
           FECHA: "desc",
