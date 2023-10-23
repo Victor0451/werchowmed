@@ -12,7 +12,11 @@ import ListadoOrdenesEmitidas from "../../components/servicios/ListadoOrdenesEmi
 import { confirmAlert } from "react-confirm-alert";
 
 const listadoordenes = () => {
+  let fechaRef = React.createRef();
+
   const [listado, guardarListado] = useState(null);
+  const [errores, guardarErrores] = useState(null);
+  const [resu, guardarResu] = useState(false);
 
   const { usu } = useWerchow();
 
@@ -135,6 +139,45 @@ const listadoordenes = () => {
       });
   };
 
+  const ordenesDelDia = async () => {
+    let fecha = fechaRef.current.value;
+
+    if (fecha === "") {
+      guardarErrores("Debes seleccionar la fecha a consultar");
+    } else {
+      await axios
+        .get(`/api/caja`, {
+          params: {
+            fecha: fecha,
+            operador: usu.usuario,
+            f: "traer listado de control",
+          },
+        })
+        .then((res) => {
+          if (res.data.length > 0) {
+            guardarListado(res.data);
+            guardarResu(true);
+          } else {
+            toastr.info("No hay ordenes registradas en el dia seleccionado");
+            guardarListado([]);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toastr.error("Ocurrio un error al traer el listado de control");
+        });
+    }
+  };
+  const totalImporte = (arr) => {
+    let total = 0;
+
+    for (let i = 0; i < arr.length; i++) {
+      total += parseFloat(arr[i].IMPORTE);
+    }
+
+    return total.toFixed(2);
+  };
+
   useSWR(usu ? "/api/servicios" : null, traerOrdenesEmitidas);
 
   if (isLoading === true) return <Skeleton />;
@@ -149,7 +192,14 @@ const listadoordenes = () => {
         <>
           <Layout>
             <ListadoOrdenesEmitidas
+              fechaRef={fechaRef}
+              ordenesDelDia={ordenesDelDia}
+              errores={errores}
+              resu={resu}
               listado={listado}
+              totalImporte={totalImporte}
+              guardarResu={guardarResu}
+              traerOrdenesEmitidas={traerOrdenesEmitidas}
               generarImpresion={generarImpresion}
               anularOrdenes={anularOrdenes}
               user={usu.usuario}

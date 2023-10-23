@@ -5,7 +5,14 @@ import Spinner from "../layout/Spinner";
 import moment from "moment";
 
 const ListadoOrdenesEmitidas = ({
+  fechaRef,
+  ordenesDelDia,
+  errores,
+  resu,
   listado,
+  totalImporte,
+  traerOrdenesEmitidas,
+  guardarResu,
   generarImpresion,
   anularOrdenes,
   perfil,
@@ -40,14 +47,80 @@ const ListadoOrdenesEmitidas = ({
         </strong>
       </h2>
 
-      <div className="mt-5">
+      <div className="mt-4 mb-4 border border-dark p-4">
+        <div className="row">
+          <div className="col-md-4">
+            <h4 className="mt-4">
+              <strong>
+                <u>Resumen de ordenes por dia</u>
+              </strong>
+            </h4>
+          </div>
+          <div className="col-md-4">
+            <input type="date" className="mt-4 form-control" ref={fechaRef} />
+          </div>
+          <div className="col-md-2">
+            <button
+              className="btn btn-primary btn-block mt-4 "
+              onClick={ordenesDelDia}
+            >
+              Buscar
+            </button>
+          </div>
+          <div className="col-md-2">
+            <button
+              className="btn btn-success btn-block mt-4 "
+              onClick={() => {
+                guardarResu(false);
+                traerOrdenesEmitidas();
+              }}
+            >
+              Cargar Todas las Ordenes
+            </button>
+          </div>
+        </div>
+        {errores ? (
+          <div className="mt-4 mb-4 text-center text-uppercase border border-dark alert alert-danger">
+            {errores}
+          </div>
+        ) : null}
+
+        {resu === true ? (
+          <div
+            className="border border-dark alert alert-success mt-4 mb-4"
+            role="alert"
+          >
+            <h4 className="alert-heading">Resumen del dia</h4>
+
+            <hr />
+            <p className="mb-0 mt-2">
+              <strong>
+                <u>Total de ordenes</u>: {listado.length}
+              </strong>
+            </p>
+            <p className="mb-0 mt-2">
+              <strong>
+                <u>Monto total</u>: $ {totalImporte(listado)}
+              </strong>
+            </p>
+            <p className="mb-0 mt-4 text-uppercase text-center">
+              <strong>
+                En el listado de ordenes, se muestran las correspondientes al
+                dia seleccionado.
+              </strong>
+            </p>
+          </div>
+        ) : resu === false ? null : null}
+      </div>
+
+      <div className="mt-5 border border-dark p-2">
         <ReactTable
           data={listado}
           filterable
           defaultFilterMethod={(filter, row) => row[filter.id] === filter.value}
           columns={[
             {
-              Header: "Practicas",
+              Header: "Listado de Ordenes",
               columns: [
                 {
                   Header: "Fecha",
@@ -93,7 +166,7 @@ const ListadoOrdenesEmitidas = ({
                 {
                   Header: "Importe",
                   id: "IMPORTE",
-                  accessor: (d) => d.IMPORTE,
+                  accessor: (d) => `$ ${d.IMPORTE.toFixed(2)}`,
                   filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["IMPORTE"] }),
                   filterAll: true,
