@@ -3,7 +3,6 @@ import axios from "axios";
 import { ip } from "../config/config";
 import toastr from "toastr";
 
-// VARIALES PROMOCION
 export const registrarHistoria = async (accion, user) => {
   const historial = {
     operador: user,
