@@ -388,6 +388,20 @@ export default async function handler(req, res) {
             )
           );
       }
+    } else if (req.query.f && req.query.f === "listado prestadores") {
+      const listadoPrestadores = await Serv.$queryRaw`
+         
+          SELECT COD_PRES, NOMBRE, CON_PAGA
+          FROM PRESTADO
+          ORDER BY NOMBRE ASC
+      `;
+      res
+        .status(200)
+        .json(
+          JSON.stringify(listadoPrestadores, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
     } else if (req.query.f && req.query.f === "traer detalle medico") {
       const detalleMedico = await Serv.$queryRaw`
          
@@ -742,6 +756,43 @@ export default async function handler(req, res) {
             )
           );
       }
+    } else if (req.body.f && req.body.f === "update conpaga") {
+      const updateConPaga = await Serv.$queryRaw`
+         
+         UPDATE PRESTADO
+         SET CON_PAGA = ${parseInt(req.body.CON_PAGA)}                
+         WHERE COD_PRES = ${req.body.COD_PRES} 
+`;
+      res
+        .status(200)
+        .json(
+          JSON.stringify(updateConPaga, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.body.f && req.body.f === "update prestado") {
+      const updatePrestado = await Serv.$queryRaw`
+         
+         UPDATE PRESTADO
+          SET LIS_ESPE= ${req.body.LIS_ESPE},
+              NOMBRE= ${req.body.NOMBRE},
+              MATRICULA= ${req.body.MATRICULA},
+              DIRECCION= ${req.body.DIRECCION},
+              HORARIO1= ${req.body.HORARIO1},
+              HORARIO2= ${req.body.HORARIO2},
+              SUC= ${req.body.SUC},
+              LOCALIDAD= ${req.body.LOCALIDAD},
+              OTERO= ${req.body.OTERO}
+
+        WHERE COD_PRES = ${req.body.COD_PRES}
+`;
+      res
+        .status(200)
+        .json(
+          JSON.stringify(updatePrestado, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
     }
   }
 }

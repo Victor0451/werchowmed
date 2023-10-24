@@ -125,7 +125,7 @@ const ListadoOrdenesEmitidas = ({
                 {
                   Header: "Fecha",
                   id: "FECHA",
-                  accessor: (d) => moment(d.FECHA).format("DD/MM/YYYY"),
+                  accessor: (d) => moment(d.FECHA).utcOffset("+0300").format("DD/MM/YYYY"),
                   filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["FECHA"] }),
                   filterAll: true,

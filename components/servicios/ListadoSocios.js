@@ -90,7 +90,7 @@ const ListadoSocios = ({ listado, Seleccionar, SeleccionarM }) => {
                             Header: "Alta",
                             id: "ALTA",
                             accessor: (d) =>
-                              moment(d.ALTA).format("DD/MM/YYYY"),
+                              moment(d.ALTA).utcOffset("+0300").format("DD/MM/YYYY"),
                             filterMethod: (filter, rows) =>
                               matchSorter(rows, filter.value, {
                                 keys: ["ALTA"],

@@ -42,6 +42,14 @@ const Adimn = ({ userData }) => {
               Gen. Caja
             </a>
           </li>
+          <li>
+            <a
+              href="/servicios/administracion"
+              className="nav-link dropdown-toggle"
+            >
+              Administracion
+            </a>
+          </li>
         </>
       ) : null}
     </ul>

@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../components/layout/Layout";
+import { Skeleton } from "../../components/layout/Skeleton";
+import useUser from "../../hook/useUser";
+import useWerchow from "../../hook/useWerchow";
+import useSWR from "swr";
+import Redirect from "../../components/auth/RedirectToLogin";
 import moment from "moment-timezone";
 import axios from "axios";
 import jsCookie from "js-cookie";
@@ -9,8 +14,6 @@ import { ip } from "../../config/config";
 import { confirmAlert } from "react-confirm-alert";
 import { registrarHistoria } from "../../utils/funciones";
 import FormAdministracion from "../../components/servicios/FormAdministracion";
-import Redirect from "../../components/auth/RedirectToLogin";
-
 
 function Administracion(props) {
   let medicoRef = React.createRef();
@@ -31,9 +34,17 @@ function Administracion(props) {
   const [prestador, guardarPrestador] = useState([]);
   const [practicasPres, guardarPracticasPres] = useState([]);
 
+  const { usu } = useWerchow();
+
+  const { isLoading } = useUser();
+
   const traerMedicos = async (f) => {
     await axios
-      .get(`${ip}api/sgi/servicios/traermedicostodos`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "listado prestadores",
+        },
+      })
       .then((res) => {
         guardarMedicos(res.data);
       })
@@ -48,9 +59,11 @@ function Administracion(props) {
 
   const traerPracticas = async (id, lugar) => {
     axios
-      .get(`${ip}api/sgi/servicios/traerpracticaspresador/${id}`, {
+      .get(`/api/servicios`, {
         params: {
           lugar: lugar,
+          f: "traer prac prest",
+          id: id,
         },
       })
       .then((res1) => {
@@ -71,12 +84,13 @@ function Administracion(props) {
     let ref = medicoRef.current.value;
 
     guardarCodPres(ref.substr(0, 5));
-    guardarPresImp(ref.substr(6, 20));
+    guardarPresImp(parseFloat(ref.substr(6, 20)));
 
     await axios
-      .get(`${ip}api/sgi/servicios/traerprestador`, {
+      .get(`/api/servicios`, {
         params: {
-          COD_PRES: ref.substr(0, 5),
+          prestado: ref.substr(0, 5),
+          f: "traer detalle medico",
         },
       })
       .then((res) => {
@@ -118,6 +132,7 @@ function Administracion(props) {
       let data = {
         COD_PRES: codPres,
         CON_PAGA: consultaRef.current.value,
+        f: "update conpaga",
       };
 
       await confirmAlert({
@@ -128,7 +143,7 @@ function Administracion(props) {
             label: "Si",
             onClick: () => {
               axios
-                .put(`${ip}api/sgi/servicios/updateconpaga`, data)
+                .put(`/api/servicios`, data)
                 .then((res) => {
                   console.log(res);
                   if (res.status === 200) {
@@ -181,8 +196,9 @@ function Administracion(props) {
               HORARIO2: horario2Ref.current.value,
               SUC: "",
               LOCALIDAD: "",
-              OTERO: 0,
+              OTERO: false,
               COD_PRES: prestador.COD_PRES,
+              f: "update prestado",
             };
 
             if (sucRef.current.value === "S.S. DE JUJUY") {
@@ -191,7 +207,7 @@ function Administracion(props) {
             } else if (sucRef.current.value === "OTERO") {
               data.SUC = "W";
               data.LOCALIDAD = sucRef.current.value;
-              data.OTERO = 1;
+              data.OTERO = true;
             } else if (sucRef.current.value === "PALPALA") {
               data.SUC = "L";
               data.LOCALIDAD = sucRef.current.value;
@@ -207,7 +223,7 @@ function Administracion(props) {
             }
 
             axios
-              .put(`${ip}api/sgi/servicios/updateprestado`, data)
+              .put(`/api/servicios`, data)
               .then((res) => {
                 if (res.status === 200) {
                   toastr.success(
@@ -257,27 +273,39 @@ function Administracion(props) {
     }
   }, []);
 
+  if (isLoading === true) return <Skeleton />;
+
   return (
-    <Layout>
-      <FormAdministracion
-        medicos={medicos}
-        medicoRef={medicoRef}
-        handleChange={handleChange}
-        presImp={presImp}
-        updateConsulta={updateConsulta}
-        consultaRef={consultaRef}
-        prestador={prestador}
-        practicasPres={practicasPres}
-        especialidadRef={especialidadRef}
-        nombreRef={nombreRef}
-        matriculaRef={matriculaRef}
-        direccionRef={direccionRef}
-        horario1Ref={horario1Ref}
-        horario2Ref={horario2Ref}
-        sucRef={sucRef}
-        updatePrestador={updatePrestador}
-      />
-    </Layout>
+    <>
+      {!usu ? (
+        <Layout>
+          <Redirect />
+        </Layout>
+      ) : usu ? (
+        <>
+          <Layout>
+            <FormAdministracion
+              medicos={medicos}
+              medicoRef={medicoRef}
+              handleChange={handleChange}
+              presImp={presImp}
+              updateConsulta={updateConsulta}
+              consultaRef={consultaRef}
+              prestador={prestador}
+              practicasPres={practicasPres}
+              especialidadRef={especialidadRef}
+              nombreRef={nombreRef}
+              matriculaRef={matriculaRef}
+              direccionRef={direccionRef}
+              horario1Ref={horario1Ref}
+              horario2Ref={horario2Ref}
+              sucRef={sucRef}
+              updatePrestador={updatePrestador}
+            />
+          </Layout>
+        </>
+      ) : null}
+    </>
   );
 }
 

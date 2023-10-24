@@ -80,7 +80,7 @@ const ListadoTurnosRegistrados = ({ listado, estadoTurno }) => {
                 {
                   Header: "Fecha",
                   id: "fecha",
-                  accessor: (d) => moment(d.fecha).format("DD/MM/YYYY"),
+                  accessor: (d) => moment(d.fecha).utcOffset("+0300").format("DD/MM/YYYY"),
                   filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["fecha"] }),
                   filterAll: true,

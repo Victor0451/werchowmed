@@ -44,7 +44,10 @@ const TurnosMedicosDelDia = ({ listTurno }) => {
                         {
                           Header: "Fecha",
                           id: "fecha",
-                          accessor: (d) => moment(d.fecha).format("DD/MM/YYYY"),
+                          accessor: (d) =>
+                            moment(d.fecha)
+                              .utcOffset("+0300")
+                              .format("DD/MM/YYYY"),
                           filterMethod: (filter, rows) =>
                             matchSorter(rows, filter.value, {
                               keys: ["fecha"],
@@ -55,8 +58,7 @@ const TurnosMedicosDelDia = ({ listTurno }) => {
                         {
                           Header: "Hora",
                           id: "hora",
-                          accessor: (d) =>
-                            moment(d.hora).utc(0).format("HH:mm"),
+                          accessor: (d) => d.hora,
                           filterMethod: (filter, rows) =>
                             matchSorter(rows, filter.value, { keys: ["hora"] }),
                           filterAll: true,

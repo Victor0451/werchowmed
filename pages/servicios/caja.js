@@ -160,7 +160,7 @@ const Caja = () => {
 
       let caja = {
         SUCURSAL: usu.sucursal,
-        PUESTO: 30,
+        PUESTO: "30",
         CODIGO: 0,
         MOVIM: "",
         CUENTA: "",

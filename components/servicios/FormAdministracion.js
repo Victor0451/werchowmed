@@ -58,7 +58,7 @@ const FormAdministracion = ({
               </select>
             </div>
           ) : (
-            <div className="col-md-4 alert alert-info  border border-dark text-center text-uppercase">
+            <div className="col-md-4 mt-4 alert alert-info  border border-dark text-center text-uppercase">
               No hay medicos registrados
             </div>
           )}
@@ -71,7 +71,7 @@ const FormAdministracion = ({
             <input
               type="number"
               className="form-control"
-              defaultValue={presImp}
+              value={presImp}
               readOnly
             />
           </div>
@@ -240,7 +240,7 @@ const FormAdministracion = ({
                               keys: ["DESCRIP"],
                             }),
                           filterAll: true,
-                          width: 400,
+                          width: 600,
                         },
 
                         {

@@ -16,6 +16,7 @@ export default async function handler(req, res) {
          AND SUC = ${req.query.suc}
          AND OPERADOR = ${req.query.user}
          GROUP BY SUC, FECHA
+         ORDER BY FECHA DESC
      `;
       res
         .status(200)
@@ -109,7 +110,7 @@ export default async function handler(req, res) {
         FROM CAJA AS C
         
         GROUP BY FECHA, OPERADOR
-        ORDER BY FECHA DESC
+        ORDER BY FECHA ASC
       `;
       res
         .status(200)
