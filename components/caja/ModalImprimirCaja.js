@@ -38,7 +38,9 @@ const ModalImprimirCaja = ({
                 <h2>
                   <strong>
                     <u>Caja Otero</u>:{" "}
-                    {fec ? moment(fec).format("DD/MM/YYYY") : null}
+                    {fec
+                      ? moment(fec).utcOffset("+0300").format("DD/MM/YYYY")
+                      : null}
                   </strong>
                 </h2>
 
@@ -69,7 +71,7 @@ const ModalImprimirCaja = ({
                               <tr key={index}>
                                 <th scope="row">{index + 1}</th>
                                 <td>{i.DETALLE}</td>
-                                <td>{i.IMPORTE}</td>
+                                <td>{i.IMPORTE.toFixed(2)}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -107,7 +109,7 @@ const ModalImprimirCaja = ({
                               <tr key={index}>
                                 <th scope="row">{index + 1}</th>
                                 <td>{e.DETALLE}</td>
-                                <td>{e.IMPORTE}</td>
+                                <td>{e.IMPORTE.toFixed(2)}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -161,12 +163,16 @@ const ModalImprimirCaja = ({
                       {listControl.map((i, index) => (
                         <tr key={index}>
                           <th scope="row">{index + 1}</th>
-                          <td>{i.FECHA}</td>
+                          <td>
+                            {moment(i.FECHA)
+                              .utcOffset("+0300")
+                              .format("DD/MM/YYYY")}
+                          </td>
                           <td>{i.ORDEN}</td>
                           <td>{i.CONTRATO}</td>
                           <td>{i.NRO_DOC}</td>
                           <td>{i.SERVICIO}</td>
-                          <td>{i.IMPORTE}</td>
+                          <td>{i.IMPORTE.toFixed(2)}</td>
                           <td>{i.OPERADOR}</td>
                         </tr>
                       ))}

@@ -64,7 +64,6 @@ const CajaPato = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
         let ing = [];
 
         let arr = res.data;

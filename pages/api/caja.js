@@ -110,7 +110,7 @@ export default async function handler(req, res) {
         FROM CAJA AS C
         
         GROUP BY FECHA, OPERADOR
-        ORDER BY FECHA ASC
+        ORDER BY FECHA DESC
       `;
       res
         .status(200)

@@ -50,7 +50,8 @@ const ListadoCajasGeneradas = ({
                 {
                   Header: "Fecha Caja",
                   id: "FECHA",
-                  accessor: (d) => moment(d.FECHA).format("DD/MM/YYYY"),
+                  accessor: (d) =>
+                    moment(d.FECHA).utcOffset("+0300").format("DD/MM/YYYY"),
                   filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["FECHA"] }),
                   filterAll: true,
@@ -65,7 +66,7 @@ const ListadoCajasGeneradas = ({
                       {row.original.INGRESOS === null ? (
                         <>0</>
                       ) : (
-                        <>{row.original.INGRESOS}</>
+                        <>{row.original.INGRESOS.toFixed(2)}</>
                       )}
                     </div>
                   ),
@@ -81,7 +82,7 @@ const ListadoCajasGeneradas = ({
                       {row.original.EGRESOS === null ? (
                         <>0</>
                       ) : (
-                        <>{row.original.EGRESOS}</>
+                        <>{row.original.EGRESOS.toFixed(2)}</>
                       )}
                     </div>
                   ),
@@ -95,9 +96,9 @@ const ListadoCajasGeneradas = ({
                   Cell: (row) => (
                     <div>
                       {row.original.VAL_DEPOSIT === null ? (
-                        <>0</>
+                        <>{row.original.INGRESOS.toFixed(2)}</>
                       ) : (
-                        <>{row.original.VAL_DEPOSIT}</>
+                        <>{row.original.VAL_DEPOSIT.toFixed(2)}</>
                       )}
                     </div>
                   ),

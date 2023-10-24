@@ -4,7 +4,6 @@ import matchSorter from "match-sorter";
 import moment from "moment";
 
 const ListadoOrdenesSinRendir = ({ listado, traerOrdenesPorDia }) => {
-  console.log(listado);
   return (
     <div className="border border-dark mt-4 p-1">
       <ReactTable
@@ -24,7 +23,8 @@ const ListadoOrdenesSinRendir = ({ listado, traerOrdenesPorDia }) => {
               {
                 Header: "FECHA ORDENES",
                 id: "FECHA",
-                accessor: (d) => moment(d.FECHA).utcOffset("+0300").format("DD/MM/YYYY"),
+                accessor: (d) =>
+                  moment(d.FECHA).utcOffset("+0300").format("DD/MM/YYYY"),
                 filterMethod: (filter, rows) =>
                   matchSorter(rows, filter.value, { keys: ["FECHA"] }),
                 filterAll: true,
