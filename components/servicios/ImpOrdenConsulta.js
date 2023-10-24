@@ -68,7 +68,8 @@ const ImpOrdenConsulta = ({
         <div className="row col-md-4">
           <div className="col-md-12">
             <strong>
-              <u>Fecha</u>: {moment(orden.FECHA).format("DD/MM/YYYY")}
+              <u>Fecha</u>:{" "}
+              {moment(orden.FECHA).utcOffset("+0300").format("DD/MM/YYYY")}
             </strong>
           </div>
 
@@ -255,7 +256,7 @@ const ImpOrdenConsulta = ({
         <div className="mt-2 col-md-12">
           <strong>
             <u>Fecha de Vencimiento</u>:{" "}
-            {moment(orden.FECHA).add(1, "M").format("DD/MM/YYYY")}
+            {moment(orden.FECHA).utcOffset("+0300").add(1, "M").format("DD/MM/YYYY")}
           </strong>
         </div>
       </div>
