@@ -518,6 +518,56 @@ export default async function handler(req, res) {
             )
           );
       }
+    } else if (req.query.f && req.query.f === "traer historial usos") {
+      const usos = await Serv.$queryRaw`
+         
+         SELECT
+          u.CONTRATO,
+          u.FECHA,
+          u.HORA,
+          u.NRO_DOC,
+          p.NOMBRE,
+          u.SERVICIO,
+          u.IMPORTE,
+          u.ANULADO,
+          'WEB' AS SISTEMA
+        FROM
+          USOS AS u
+        INNER JOIN PRESTADO AS p ON p.COD_PRES = u.PRESTADO
+        WHERE
+          u.CONTRATO = ${parseInt(req.query.contrato)}
+        ORDER BY u.FECHA DESC
+              `;
+
+      const usosFa = await Serv.$queryRaw`
+         
+         SELECT
+          u.CONTRATO,
+          u.FECHA,
+          u.HORA,
+          u.NRO_DOC,
+          p.NOMBRE,
+          u.SERVICIO,
+          u.IMPORTE,
+          u.ANULADO,
+          'FOX' AS SISTEMA
+        FROM
+          USOSFA AS u
+        INNER JOIN PRESTADO AS p ON p.COD_PRES = u.PRESTADO
+        WHERE
+          u.CONTRATO = ${parseInt(req.query.contrato)}
+        ORDER BY u.FECHA DESC
+`;
+
+      let historial = usos.concat(usosFa);
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(historial, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
     }
   } else if (req.method === "POST") {
     if (req.body.f && req.body.f === "reg adh provisorio") {

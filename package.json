@@ -1,6 +1,6 @@
 {
   "name": "werchowmedicos",
-  "version": "4.5.7",
+  "version": "4.6",
   "private": true,
   "scripts": {
     "dev": "next dev -p $PORT",

@@ -71,6 +71,7 @@ const EmitirServicio = ({
   registrarPlanImp,
   usosFarm,
   selDescuento,
+  traerHistorialUsos,
 }) => {
   if (!ficha) return <Spinner />;
 
@@ -116,22 +117,34 @@ const EmitirServicio = ({
         </div>
       )}
 
-      <div className="row mt-4 border border-dark p-4">
-        <div className="col-md-8">
-          <h3>
-            <strong>
-              <u>Afiliado</u>: {ficha[0].CONTRATO} - {ficha[0].APELLIDOS},{" "}
-              {ficha[0].NOMBRES}
-            </strong>
-          </h3>
-        </div>
-        <div className="col-md-4">
-          <a
-            className="btn btn-block btn-danger btn-sm"
-            href="/servicios/emision"
-          >
-            Cancelar
-          </a>
+      <div className=" mt-4 border border-dark p-4">
+        <div className="row">
+          <div className="col-md-8">
+            <h3>
+              <strong>
+                <u>Afiliado</u>: {ficha[0].CONTRATO} - {ficha[0].APELLIDOS},{" "}
+                {ficha[0].NOMBRES}
+              </strong>
+            </h3>
+          </div>
+          <div className="col-md-2">
+            <button
+              className="btn btn-block btn-primary btn-sm"
+              data-toggle="modal"
+              data-target="#ModalHistorialUsos"
+              onClick={() => traerHistorialUsos(ficha[0].CONTRATO)}
+            >
+              Historial de Usos
+            </button>
+          </div>
+          <div className="col-md-2">
+            <a
+              className="btn btn-block btn-danger btn-sm"
+              href="/servicios/emision"
+            >
+              Cancelar
+            </a>
+          </div>
         </div>
       </div>
 
@@ -245,7 +258,7 @@ const EmitirServicio = ({
                   data-toggle="modal"
                   data-target="#ModalAdhProvi"
                 >
-                  Agregar Adh
+                  Agregar Adherente
                 </button>
               </div>
             </div>

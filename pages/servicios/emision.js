@@ -13,6 +13,7 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import BuscarSocio from "../../components/servicios/BuscarSocio";
 import EmitirServicio from "../../components/servicios/EmitirServicio";
 import { registrarHistoria } from "../../utils/funciones";
+import ModalHistorialUsos from "../../components/servicios/ModalHistorialUsos";
 
 const Emision = () => {
   let contratoRef = React.createRef();
@@ -74,6 +75,7 @@ const Emision = () => {
   const [usosFarm, guardarUsosFarm] = useState(0);
   const [farmaDescReg, guardarFarmaDescReg] = useState([]);
   const [promos, guardarPromociones] = useState([]);
+  const [historialUsos, guardarHistorialUsos] = useState([]);
 
   const { usu } = useWerchow();
 
@@ -2209,6 +2211,33 @@ const Emision = () => {
       });
   };
 
+  const traerHistorialUsos = async (contrato) => {
+    await axios
+      .get("/api/servicios", {
+        params: {
+          f: "traer historial usos",
+          contrato: contrato,
+        },
+      })
+      .then((res) => {
+        if (res.data.length > 0) {
+          guardarHistorialUsos(res.data);
+        } else {
+          toastr.info(
+            "La ficha no posee ningun uso registrado en su historial",
+            "ATENCION"
+          );
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error(
+          "Ocurrio un error al generar el historial de usos de la ficha",
+          "ATENCION"
+        );
+      });
+  };
+
   const traerInfo = () => {
     traerSucursales();
     traerEspecialidades();
@@ -2257,73 +2286,78 @@ const Emision = () => {
               ) : flag === true ? (
                 <>
                   {ficha ? (
-                    <EmitirServicio
-                      adhs={adhs}
-                      pagos={pagos}
-                      ficha={ficha}
-                      selectSocio={selectSocio}
-                      socio={socio}
-                      farmaciaRef={farmaciaRef}
-                      modalidadRef={modalidadRef}
-                      descuentoRef={descuentoRef}
-                      especialidadRef={especialidadRef}
-                      especialidadRefP={especialidadRefP}
-                      especialidadRefPl={especialidadRefPl}
-                      sucursalRef={sucursalRef}
-                      sucursalRefP={sucursalRefP}
-                      sucursalRefPl={sucursalRefPl}
-                      medicoRef={medicoRef}
-                      medicoRefP={medicoRefP}
-                      medicoRefPl={medicoRefPl}
-                      traerDetalleMedSelec={traerDetalleMedSelec}
-                      detalleMed={detalleMed}
-                      sucursales={sucursales}
-                      espec={espec}
-                      medicos={medicos}
-                      traerMedicosPorSuc={traerMedicosPorSuc}
-                      registrarOrdenUsos={registrarOrdenUsos}
-                      practicas={practicas}
-                      agregarPractica={agregarPractica}
-                      pracSocio={pracSocio}
-                      eliminarPracticaPrecargado={eliminarPracticaPrecargado}
-                      calcularTotalPracticas={calcularTotalPracticas}
-                      registrarPracticaUso={registrarPracticaUso}
-                      farmacias={farmacias}
-                      gestionDescuento={gestionDescuento}
-                      descFarma={descFarma}
-                      registrarFarmaciaUso={registrarFarmaciaUso}
-                      enfer={enfer}
-                      sucursalRefE={sucursalRefE}
-                      traerEnfer={traerEnfer}
-                      detEnf={detEnf}
-                      medicoRefE={medicoRefE}
-                      practEnfer={practEnfer}
-                      prestacionRefE={prestacionRefE}
-                      cantidadRefE={cantidadRefE}
-                      registrarEnfermeriaUso={registrarEnfermeriaUso}
-                      cantidadRefP={cantidadRefP}
-                      priUso={priUso}
-                      nFisio={nFisio}
-                      selector={selector}
-                      isj={isj}
-                      importeOrden={importeOrden}
-                      verificarUso={verificarUso}
-                      planOrto={planOrto}
-                      registrarPlanOrto={registrarPlanOrto}
-                      arancel={arancel}
-                      nacimientoRef={nacimientoRef}
-                      nombreRef={nombreRef}
-                      apellidoRef={apellidoRef}
-                      nroDocRef={nroDocRef}
-                      regAdhProvi={regAdhProvi}
-                      checkAdhProvi={checkAdhProvi}
-                      habilita={habilita}
-                      infoAdh={infoAdh}
-                      planImp={planImp}
-                      registrarPlanImp={registrarPlanImp}
-                      usosFarm={usosFarm}
-                      selDescuento={selDescuento}
-                    />
+                    <>
+                      <EmitirServicio
+                        adhs={adhs}
+                        pagos={pagos}
+                        ficha={ficha}
+                        selectSocio={selectSocio}
+                        socio={socio}
+                        farmaciaRef={farmaciaRef}
+                        modalidadRef={modalidadRef}
+                        descuentoRef={descuentoRef}
+                        especialidadRef={especialidadRef}
+                        especialidadRefP={especialidadRefP}
+                        especialidadRefPl={especialidadRefPl}
+                        sucursalRef={sucursalRef}
+                        sucursalRefP={sucursalRefP}
+                        sucursalRefPl={sucursalRefPl}
+                        medicoRef={medicoRef}
+                        medicoRefP={medicoRefP}
+                        medicoRefPl={medicoRefPl}
+                        traerDetalleMedSelec={traerDetalleMedSelec}
+                        detalleMed={detalleMed}
+                        sucursales={sucursales}
+                        espec={espec}
+                        medicos={medicos}
+                        traerMedicosPorSuc={traerMedicosPorSuc}
+                        registrarOrdenUsos={registrarOrdenUsos}
+                        practicas={practicas}
+                        agregarPractica={agregarPractica}
+                        pracSocio={pracSocio}
+                        eliminarPracticaPrecargado={eliminarPracticaPrecargado}
+                        calcularTotalPracticas={calcularTotalPracticas}
+                        registrarPracticaUso={registrarPracticaUso}
+                        farmacias={farmacias}
+                        gestionDescuento={gestionDescuento}
+                        descFarma={descFarma}
+                        registrarFarmaciaUso={registrarFarmaciaUso}
+                        enfer={enfer}
+                        sucursalRefE={sucursalRefE}
+                        traerEnfer={traerEnfer}
+                        detEnf={detEnf}
+                        medicoRefE={medicoRefE}
+                        practEnfer={practEnfer}
+                        prestacionRefE={prestacionRefE}
+                        cantidadRefE={cantidadRefE}
+                        registrarEnfermeriaUso={registrarEnfermeriaUso}
+                        cantidadRefP={cantidadRefP}
+                        priUso={priUso}
+                        nFisio={nFisio}
+                        selector={selector}
+                        isj={isj}
+                        importeOrden={importeOrden}
+                        verificarUso={verificarUso}
+                        planOrto={planOrto}
+                        registrarPlanOrto={registrarPlanOrto}
+                        arancel={arancel}
+                        nacimientoRef={nacimientoRef}
+                        nombreRef={nombreRef}
+                        apellidoRef={apellidoRef}
+                        nroDocRef={nroDocRef}
+                        regAdhProvi={regAdhProvi}
+                        checkAdhProvi={checkAdhProvi}
+                        habilita={habilita}
+                        infoAdh={infoAdh}
+                        planImp={planImp}
+                        registrarPlanImp={registrarPlanImp}
+                        usosFarm={usosFarm}
+                        selDescuento={selDescuento}
+                        traerHistorialUsos={traerHistorialUsos}
+                      />
+
+                      <ModalHistorialUsos historialUsos={historialUsos} />
+                    </>
                   ) : null}
                 </>
               ) : null}
