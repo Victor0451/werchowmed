@@ -44,6 +44,14 @@ const Adimn = ({ userData }) => {
           </li>
           <li>
             <a
+              href="/servicios/listadocajas"
+              className="nav-link dropdown-toggle"
+            >
+              Listado Cajas
+            </a>
+          </li>
+          <li>
+            <a
               href="/servicios/administracion"
               className="nav-link dropdown-toggle"
             >

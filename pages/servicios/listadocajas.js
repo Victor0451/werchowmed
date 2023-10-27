@@ -20,16 +20,6 @@ const ListadoCajas = () => {
   const [listControl, guardarListControl] = useState(null);
   const [fec, guardarFec] = useState(null);
 
-  let token = jsCookie.get("token");
-
-  useEffect(() => {
-    if (!token) {
-      Router.push("/redirect");
-    } else {
-      traerCajas();
-    }
-  }, []);
-
   const { usu } = useWerchow();
 
   const { isLoading } = useUser();

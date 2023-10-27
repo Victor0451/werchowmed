@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../components/layout/Layout";
 import Redirect from "../../components/auth/RedirectToLogin";
-import moment from "moment-timezone";
 import axios from "axios";
 import jsCookie from "js-cookie";
 import toastr from "toastr";
 import Router, { useRouter } from "next/router";
-import { ip } from "../../config/config";
 import ImpReciboPlan from "../../components/servicios/ImpReciboPlan";
 
 const reciboplan = () => {
@@ -17,10 +15,15 @@ const reciboplan = () => {
 
   const traerPlan = async (id) => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerplanorto/${id}`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer plan orto",
+          id: id,
+        },
+      })
       .then((res) => {
         if (res.status === 200) {
-          guardarPlanSocio(res.data);
+          guardarPlanSocio(res.data[0]);
         }
       })
       .catch((error) => {

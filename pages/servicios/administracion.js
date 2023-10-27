@@ -14,6 +14,7 @@ import { ip } from "../../config/config";
 import { confirmAlert } from "react-confirm-alert";
 import { registrarHistoria } from "../../utils/funciones";
 import FormAdministracion from "../../components/servicios/FormAdministracion";
+import ModalActPractica from "../../components/servicios/ModalActPractica";
 
 function Administracion(props) {
   let medicoRef = React.createRef();
@@ -25,14 +26,14 @@ function Administracion(props) {
   let horario1Ref = React.createRef();
   let horario2Ref = React.createRef();
   let sucRef = React.createRef();
+  let nuevoImportePrac = React.createRef();
 
-  const [user, guardarUsuario] = useState(null);
-  const [usuc, guardarUsuc] = useState(null);
   const [medicos, guardarMedicos] = useState(null);
   const [codPres, guardarCodPres] = useState("");
   const [presImp, guardarPresImp] = useState(0);
   const [prestador, guardarPrestador] = useState([]);
   const [practicasPres, guardarPracticasPres] = useState([]);
+  const [row, guardarRow] = useState([]);
 
   const { usu } = useWerchow();
 
@@ -77,19 +78,11 @@ function Administracion(props) {
       });
   };
 
-  const handleChange = async () => {
-    guardarPracticasPres([]);
-    guardarPrestador([]);
-
-    let ref = medicoRef.current.value;
-
-    guardarCodPres(ref.substr(0, 5));
-    guardarPresImp(parseFloat(ref.substr(6, 20)));
-
+  const traerDetMedico = async (prestado) => {
     await axios
       .get(`/api/servicios`, {
         params: {
-          prestado: ref.substr(0, 5),
+          prestado: prestado,
           f: "traer detalle medico",
         },
       })
@@ -120,6 +113,18 @@ function Administracion(props) {
         console.log(error);
         toastr.error("Ocurrio un error al traer los datos del prestador");
       });
+  };
+
+  const handleChange = async () => {
+    guardarPracticasPres([]);
+    guardarPrestador([]);
+
+    let ref = medicoRef.current.value;
+
+    guardarCodPres(ref.substr(0, 5));
+    guardarPresImp(parseFloat(ref.substr(6, 20)));
+
+    traerDetMedico(ref.substr(0, 5));
   };
 
   const updateConsulta = async () => {
@@ -153,10 +158,10 @@ function Administracion(props) {
 
                     let accion = `Se actualizo el valor de la consulta del prestador codigo: ${codPres}, de $${presImp} a $${consultaRef.current.value}.`;
 
-                    registrarHistoria(accion, user);
+                    registrarHistoria(accion, usu.usuario);
 
                     setTimeout(() => {
-                      Router.reload();
+                      traerDetMedico(codPres);
                     }, 500);
                   }
                 })
@@ -232,7 +237,11 @@ function Administracion(props) {
 
                   let accion = `Se actualizaron datos del prestador ${prestador.COD_PRES}.`;
 
-                  registrarHistoria(accion, user);
+                  registrarHistoria(accion, usu.usuario);
+
+                  setTimeout(() => {
+                    traerDetMedico(prestador.COD_PRES);
+                  }, 500);
                 }
               })
               .catch((error) => {
@@ -255,23 +264,73 @@ function Administracion(props) {
     });
   };
 
-  let token = jsCookie.get("token");
+  const actValorPractica = async () => {
+    const importe = nuevoImportePrac.current.value;
 
-  useEffect(() => {
-    if (!token) {
-      Router.push("/redirect");
+    if (importe === "") {
+      toastr.error("Debes ingresar el nuevo valor de la practica", "ATENCION");
     } else {
-      let usuario = jsCookie.get("usuario");
+      await confirmAlert({
+        title: "ATENCION",
+        message:
+          "¿Seguro quieres modificar el valor de la practica seleccionada?",
+        buttons: [
+          {
+            label: "Si",
+            onClick: () => {
+              const data = {
+                f: "act valor practica",
+                importe: importe,
+                lugar: prestador.LUGAR,
+                prestado: prestador.COD_PRES,
+                id: row.idpractica,
+              };
 
-      if (usuario) {
-        let userData = JSON.parse(usuario);
-        guardarUsuario(userData.usuario);
-        guardarUsuc(userData.sucursal);
-      }
+              if (data.lugar < 10) {
+                data.lugar = `0${data.lugar}`;
+              }
 
-      traerMedicos();
+              axios
+                .put("/api/servicios", data)
+                .then((res) => {
+                  if (res.status === 200) {
+                    toastr.success(
+                      "El valor de la practica se actualizo correctamente",
+                      "ATENCION"
+                    );
+
+                    let accion = `Se actualizo el valor de la practica ${row.CODIGOS} - ${row.DESCRIP} preteneciente al prestador ${prestador.COD_PRES} - ${prestador.NOMBRE}, de $${row.IMPORTE} a $${importe}.`;
+
+                    registrarHistoria(accion, usu.usuario);
+
+                    setTimeout(() => {
+                      traerDetMedico(prestador.COD_PRES);
+                    }, 500);
+                  }
+                })
+                .catch((error) => {
+                  console.log(error);
+                  toastr.error(
+                    "Ocurrio un error al actualizar el valor de la practica",
+                    "ATENCION"
+                  );
+                });
+            },
+          },
+          {
+            label: "No",
+            onClick: () => {
+              toastr.info(
+                "El valor de la practica seleccionada, no fue modificado"
+              );
+            },
+          },
+        ],
+      });
     }
-  }, []);
+  };
+
+  useSWR("/api/servicios", traerMedicos);
 
   if (isLoading === true) return <Skeleton />;
 
@@ -301,8 +360,15 @@ function Administracion(props) {
               horario2Ref={horario2Ref}
               sucRef={sucRef}
               updatePrestador={updatePrestador}
+              guardarRow={guardarRow}
             />
           </Layout>
+
+          <ModalActPractica
+            row={row}
+            nuevoImportePrac={nuevoImportePrac}
+            actValorPractica={actValorPractica}
+          />
         </>
       ) : null}
     </>

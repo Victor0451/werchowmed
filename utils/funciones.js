@@ -1,6 +1,5 @@
 import moment from "moment";
 import axios from "axios";
-import { ip } from "../config/config";
 import toastr from "toastr";
 
 export const registrarHistoria = async (accion, user) => {
@@ -8,20 +7,18 @@ export const registrarHistoria = async (accion, user) => {
     operador: user,
     fecha: moment().format("YYYY-MM-DD HH:mm:ss"),
     accion: accion,
+    f: "sistema",
   };
 
   await axios
-    .post(`${ip}api/sgi/historialacciones/reghistorial`, historial)
+    .post(`/api/historia`, historial)
     .then((res) => {
       if (res.status === 200) {
-        // toastr.info("Esta accion se registo en el historial", "ATENCION")
+        toastr.info("Esta accion se registo en el historial");
       }
     })
     .catch((error) => {
       console.log(error);
-      toastr.error(
-        "Ocurrio un error al registrar la accion en el historial",
-        "ATENCION"
-      );
+      toastr.error("Ocurrio un error al registrar la accion en el historial");
     });
 };

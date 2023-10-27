@@ -568,6 +568,70 @@ export default async function handler(req, res) {
             typeof value === "bigint" ? value.toString() : value
           )
         );
+    } else if (req.query.f && req.query.f === "buscar plan") {
+      const planOdonto = await Serv.$queryRaw`
+         
+         SELECT 
+           *
+        FROM planes_socio
+        WHERE contrato = ${parseInt(req.query.contrato)}       
+         `;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(planOdonto, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.query.f && req.query.f === "buscar plan dni") {
+      const planOdonto = await Serv.$queryRaw`
+         
+         SELECT 
+           *
+        FROM planes_socio
+        WHERE dni = ${parseInt(req.query.dni)}       
+         `;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(planOdonto, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.query.f && req.query.f === "traer plan visitas") {
+      const planOdonto = await Serv.$queryRaw`
+         
+         SELECT 
+           *
+        FROM planes_visitas
+        WHERE idplan = ${parseInt(req.query.id)}       
+         `;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(planOdonto, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.query.f && req.query.f === "traer plan orto") {
+      const planOdonto = await Serv.$queryRaw`
+    
+         SELECT 
+           *
+         FROM planes_socio
+         WHERE idplansocio = ${parseInt(req.query.id)}
+                  `;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(planOdonto, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
     }
   } else if (req.method === "POST") {
     if (req.body.f && req.body.f === "reg adh provisorio") {
@@ -840,6 +904,58 @@ export default async function handler(req, res) {
         .status(200)
         .json(
           JSON.stringify(updatePrestado, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.body.f && req.body.f === "act pago visita") {
+      const updatePrestado = await Serv.$queryRaw`
+         
+         UPDATE planes_visitas
+         SET 
+             pagado = 1,
+             pago = ${parseFloat(req.body.pag)}
+         WHERE idvisita = ${parseInt(req.body.id)} 
+`;
+      res
+        .status(200)
+        .json(
+          JSON.stringify(updatePrestado, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.body.f && req.body.f === "act plan") {
+      const updatePrestado = await Serv.$queryRaw`
+         
+         UPDATE planes_socio
+         SET 
+            pagado = pagado + ${parseFloat(req.body.pag)},
+            saldo = saldo - ${parseFloat(req.body.pag)}
+         WHERE idplansocio = ${parseInt(req.body.id)} 
+`;
+      res
+        .status(200)
+        .json(
+          JSON.stringify(updatePrestado, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.body.f && req.body.f === "act valor practica") {
+      let impo = `PRECIO_${req.body.lugar}`;
+      let codPres = `COD_PRES${req.body.lugar}`;
+      let prestado = `${req.body.prestado}`;
+
+      const updateAutPrac = await Serv.$queryRawUnsafe(
+        `     
+        UPDATE AUT_PRAC
+        SET  ${impo} = '${req.body.importe}'
+        WHERE ${codPres} = '${prestado}'
+        AND idpractica = ${req.body.id}
+       `
+      );
+      res
+        .status(200)
+        .json(
+          JSON.stringify(updateAutPrac, (key, value) =>
             typeof value === "bigint" ? value.toString() : value
           )
         );

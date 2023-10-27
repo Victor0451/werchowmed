@@ -19,6 +19,7 @@ const FormAdministracion = ({
   horario2Ref,
   sucRef,
   updatePrestador,
+  guardarRow,
 }) => {
   return (
     <div className="container border border-dark p-4 mt-4 list">
@@ -254,6 +255,26 @@ const FormAdministracion = ({
                           filterAll: true,
                         },
                       ],
+                    },
+                    {
+                      Header: "Acciones",
+                      id: "acciones",
+                      filterAll: true,
+
+                      Cell: (row) => (
+                        <div>
+                          <button
+                            className="btn btn-warning btn-sm"
+                            data-toggle="modal"
+                            data-target="#ModalActPractica"
+                            onClick={() => {
+                              guardarRow(row.original);
+                            }}
+                          >
+                            <i className="fa fa-pencil" aria-hidden="true"></i>
+                          </button>
+                        </div>
+                      ),
                     },
                   ]}
                   defaultPageSize={15}

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
+import useUser from "../../hook/useUser";
+import useWerchow from "../../hook/useWerchow";
+import useSWR from "swr";
+import { Skeleton } from "../../components/layout/Skeleton";
 import Layout from "../../components/layout/Layout";
 import Redirect from "../../components/auth/RedirectToLogin";
-import moment from "moment-timezone";
 import axios from "axios";
 import jsCookie from "js-cookie";
 import toastr from "toastr";
 import Router from "next/router";
-import { ip } from "../../config/config";
 import { registrarHistoria } from "../../utils/funciones";
 import BuscarPlanOrtodoncia from "../../components/servicios/BuscarPlanOrtodoncia";
 import DetallePlanSocio from "../../components/servicios/DetallePlanSocio";
@@ -16,7 +18,6 @@ const seguimientoplan = () => {
   let socioRef = React.createRef();
   let pagoRef = React.createRef();
 
-  const [user, guardarUsuario] = useState(null);
   const [errores, guardarErrores] = useState(null);
   const [plan, guardarPlan] = useState(null);
   const [planVisit, guardarPlanVisit] = useState(null);
@@ -24,9 +25,11 @@ const seguimientoplan = () => {
 
   const traerPlanVisi = async (id, plan) => {
     await axios
-      .get(`${ip}api/sgi/servicios/traerplanvisit/${id}`, {
+      .get(`/api/servicios`, {
         params: {
           plan: plan,
+          id: id,
+          f: "traer plan visitas",
         },
       })
       .then((res) => {
@@ -56,20 +59,30 @@ const seguimientoplan = () => {
       guardarErrores("Debes ingresar el DNI o el numero de socio");
     } else {
       await axios
-        .get(`${ip}api/sgi/servicios/traerplansocio/${socio}`)
+        .get(`/api/servicios`, {
+          params: {
+            f: "buscar plan",
+            contrato: socio,
+          },
+        })
         .then((res) => {
-          if (!res.data) {
+          if (!res.data[0]) {
             axios
-              .get(`${ip}api/sgi/servicios/traerplandni/${socio}`)
+              .get(`/api/servicios`, {
+                params: {
+                  f: "buscar plan dni",
+                  dni: socio,
+                },
+              })
               .then((res1) => {
-                if (res1.data.length === 0) {
+                if (res1.data[0].length === 0) {
                   toastr.error("El socio no posee plan registrado", "ATENCION");
 
                   guardarErrores("El socio no posee plan registrado");
                 } else {
-                  guardarPlan(res1.data);
+                  guardarPlan(res1.data[0]);
 
-                  traerPlanVisi(res1.data.idplansocio, res1.data.plan);
+                  traerPlanVisi(res1.data[0].idplansocio, res1.data[0].plan);
                 }
               })
               .catch((error) => {
@@ -77,9 +90,9 @@ const seguimientoplan = () => {
                 toastr.error("Ocurrio un error", "ATENCION");
               });
           } else {
-            guardarPlan(res.data);
+            guardarPlan(res.data[0]);
 
-            traerPlanVisi(res.data.idplansocio, res.data.plan);
+            traerPlanVisi(res.data[0].idplansocio, res.data[0].plan);
           }
         })
         .catch((error) => {
@@ -93,10 +106,12 @@ const seguimientoplan = () => {
     if (pag > 0) {
       let pago = {
         pag: pag,
+        id: id,
+        f: "act pago visita",
       };
 
       await axios
-        .put(`${ip}api/sgi/servicios/imppagovisit/${id}`, pago)
+        .put(`/api/servicios`, pago)
         .then((res) => {
           if (res.status === 200) {
             toastr.success("Pago impactado correctamente", "ATENCION");
@@ -105,7 +120,7 @@ const seguimientoplan = () => {
 
             let accion = `Se registro cobranza de cuota del plan ID: ${plan.idplansocio}, para el socio: ${plan.contrato} - ${plan.socio}, dni: ${plan.dni}, por un total de ${pago.pag}`;
 
-            registrarHistoria(accion, user);
+            registrarHistoria(accion, usu.usuario);
 
             if (plan.total > plan.pagado) {
               updatePlan(plan.idplansocio, pag);
@@ -127,18 +142,18 @@ const seguimientoplan = () => {
         "Ingresa el monto acordado y volve a registrar el pago",
         "ATENCION"
       );
-
-      console.log(pag);
     }
   };
 
   const updatePlan = async (id, pag) => {
     let pago = {
       pag: pag,
+      id: id,
+      f: "act plan",
     };
 
     await axios
-      .put(`${ip}api/sgi/servicios/actplan/${id}`, pago)
+      .put(`/api/servicios`, pago)
       .then((res) => {
         if (res.status === 200) {
           toastr.info(
@@ -185,51 +200,54 @@ const seguimientoplan = () => {
     window.location.replace("/servicios/seguimientoplan");
   };
 
-  let token = jsCookie.get("token");
+  const { usu } = useWerchow();
 
-  useEffect(() => {
-    if (!token) {
-      Router.push("/redirect");
-    } else {
-      let usuario = jsCookie.get("usuario");
+  const { isLoading } = useUser();
 
-      if (usuario) {
-        let userData = JSON.parse(usuario);
-        guardarUsuario(userData.usuario);
-      }
-    }
-  }, []);
+  if (isLoading === true) return <Skeleton />;
 
   return (
-    <Layout>
-      <BuscarPlanOrtodoncia
-        traerPlan={traerPlan}
-        socioRef={socioRef}
-        errores={errores}
-      />
+    <>
+      <>
+        {!usu ? (
+          <Layout>
+            <Redirect />
+          </Layout>
+        ) : usu ? (
+          <>
+            <Layout>
+              <BuscarPlanOrtodoncia
+                traerPlan={traerPlan}
+                socioRef={socioRef}
+                errores={errores}
+              />
 
-      {plan ? (
-        <>
-          {planVisit ? (
-            <DetallePlanSocio
-              plan={plan}
-              planVisit={planVisit}
-              checkPago={checkPago}
-              pagoRef={pagoRef}
-              datosVisita={datosVisita}
-            />
-          ) : null}
-        </>
-      ) : null}
+              {plan ? (
+                <>
+                  {planVisit ? (
+                    <DetallePlanSocio
+                      plan={plan}
+                      planVisit={planVisit}
+                      checkPago={checkPago}
+                      pagoRef={pagoRef}
+                      datosVisita={datosVisita}
+                    />
+                  ) : null}
+                </>
+              ) : null}
 
-      {plan ? (
-        <ModalReciboPagoVisita
-          plan={plan}
-          datVisi={datVisi}
-          imprimir={imprimir}
-        />
-      ) : null}
-    </Layout>
+              {plan ? (
+                <ModalReciboPagoVisita
+                  plan={plan}
+                  datVisi={datVisi}
+                  imprimir={imprimir}
+                />
+              ) : null}
+            </Layout>
+          </>
+        ) : null}
+      </>
+    </>
   );
 };
 
