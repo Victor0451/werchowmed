@@ -76,6 +76,21 @@ export default async function handler(req, res) {
           )
         );
     }
+    if (req.query.f && req.query.f === "buscar paciente") {
+      const paciente = await Serv.pacientes.findFirst({
+        where: {
+          dni: parseInt(req.query.dni),
+        },
+      });
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(paciente, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    }
   } else if (req.method === "POST") {
     if (req.body.f && req.body.f === "reg turno") {
       const regTurno = await Serv.MEDICOS_TURNOS.create({
@@ -91,6 +106,26 @@ export default async function handler(req, res) {
           mail: req.body.mail,
           operador: req.body.operador,
           estado: parseInt(req.body.estado),
+          dni: parseInt(req.body.dni),
+        },
+      });
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(regTurno, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.body.f && req.body.f === "reg paciente") {
+      const regTurno = await Serv.pacientes.create({
+        data: {
+          paciente: req.body.paciente,
+          dni: parseInt(req.body.dni),
+          obra_soc: req.body.obra_soc,
+          telefono: parseInt(req.body.telefono),
+          domicilio: req.body.domicilio,
+          mail: req.body.mail,
         },
       });
 

@@ -24,13 +24,17 @@ const GestionTurnos = () => {
   let telefonoRef = React.createRef();
   let domicilioRef = React.createRef();
   let mailRef = React.createRef();
+  let dniRef = React.createRef();
 
+  const [listTurno, guardarListTurno] = useState([]);
   const [medicos, guardarMedicos] = useState(null);
   const [listado, guardarListado] = useState([]);
   const [errores, guardarErrores] = useState(null);
   const [errores2, guardarErrores2] = useState(null);
   const [flag, guardarFlag] = useState(false);
   const [otroCamp, guardarOrtoCamp] = useState(false);
+  const [paciente, guardarPaciente] = useState([]);
+  const [cargaP, guardarCargaP] = useState(false);
 
   const { usu } = useWerchow();
 
@@ -50,6 +54,30 @@ const GestionTurnos = () => {
         console.log(error);
         toastr.error(
           "Ocurrio un error al traer el listado de medicos",
+          "ATENCION"
+        );
+      });
+
+    await axios
+      .get(`/api/turnos`, {
+        params: {
+          f: "turnos del dia",
+        },
+      })
+      .then((res) => {
+        if (res.data.length > 0) {
+          guardarListTurno(res.data);
+        } else if (res.data.length === 0) {
+          toastr.info(
+            "No hay turnos registrados para el dia de hoy",
+            "ATENCION"
+          );
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error(
+          "Ocurrio un error al traer el listado de turnos",
           "ATENCION"
         );
       });
@@ -105,6 +133,7 @@ const GestionTurnos = () => {
       operador: usu.usuario,
       estado: 0,
       f: "reg turno",
+      dni: dniRef.current.value,
     };
 
     if (horaRef.current.value === "") {
@@ -129,6 +158,16 @@ const GestionTurnos = () => {
             registrarHistoria(accion, usu.usuario);
 
             buscarListadoTurnos();
+
+            if (cargaP === true) {
+              turnoReg.f = "reg paciente";
+
+              registrarPaciente(turnoReg);
+
+              // let accion = `Se registro turno del paciente: ${turnoReg.paciente}, para el DR/DRA: ${turnoReg.doctor} para el dia: ${turnoReg.fecha} - ${turnoReg.hora}`;
+
+              // registrarHistoria(accion, usu.usuario);
+            }
           }
         })
         .catch((error) => {
@@ -217,6 +256,63 @@ const GestionTurnos = () => {
     }
   };
 
+  const buscarPaciente = async () => {
+    let dni = dniRef.current.value;
+
+    if (dni === "") {
+      toastr.error("Debes ingresar el DNI del paciente", "ATENCION");
+    } else {
+      await axios
+        .get(`/api/turnos`, {
+          params: {
+            f: "buscar paciente",
+            dni: dni,
+          },
+        })
+        .then((res) => {
+          if (res.data) {
+            guardarPaciente(res.data);
+            toastr.success("El paciente fue encontrado", "ATENCION");
+            guardarCargaP(false);
+          } else {
+            guardarCargaP(true);
+            toastr.info(
+              "El paciente no esta registrado. Este sera registrado automaticamente al generar el turno",
+              "ATENCION"
+            );
+            guardarPaciente([]);
+
+            resetForm();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toastr.error("Ocurrio un error al buscar al paciente", "ATENCION");
+        });
+    }
+  };
+
+  const registrarPaciente = async (data) => {
+    await axios
+      .post(`/api/turnos`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          toastr.success("El paciente fue registrado con exito.", "ATENCION");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error al registrar al paciente");
+      });
+  };
+
+  const resetForm = () => {
+    document.getElementById("paciente").value = "";
+    document.getElementById("domicilio").value = "";
+    document.getElementById("telefono").value = "";
+    document.getElementById("mail").value = "";
+  };
+
   useSWR("/api/turnos", traerMedicos);
 
   if (isLoading === true) return <Skeleton />;
@@ -237,6 +333,7 @@ const GestionTurnos = () => {
               turnoRef={turnoRef}
               errores={errores}
               buscarListadoTurnos={buscarListadoTurnos}
+              listTurno={listTurno}
             />
 
             {flag === true ? (
@@ -259,6 +356,9 @@ const GestionTurnos = () => {
               usaWerchow={usaWerchow}
               handleChange={handleChange}
               otroCamp={otroCamp}
+              dniRef={dniRef}
+              buscarPaciente={buscarPaciente}
+              paciente={paciente}
             />
           </Layout>
         </>

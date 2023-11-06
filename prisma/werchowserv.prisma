@@ -89,7 +89,7 @@ model CAJA {
   SERIE     Int?
   NUMERO    Int?
   CUIT      String?   @db.VarChar(13)
-  DETALLE   String?   @db.VarChar(25)
+  DETALLE   String?   @db.VarChar(255)
   DET_AUX   String?   @db.VarChar(50)
   FECHA     DateTime? @db.Date
   FEC_COMP  String?   @db.VarChar(255)
@@ -234,6 +234,7 @@ model MEDICOS_TURNOS {
   operador  String?   @db.VarChar(255)
   domicilio String?   @db.VarChar(1000)
   mail      String?   @db.VarChar(500)
+  dni       Int?
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -359,7 +360,7 @@ model USOS {
   CONTROL       Boolean?
   NORDEN        String?   @db.VarChar(255)
   FECHA_CONTROL DateTime? @db.Date
-  IMP_LIQ       Float?    @db.Float
+  IMP_LIQ       String?   @db.VarChar(255)
 }
 
 model USOSFA {
@@ -472,4 +473,14 @@ model promociones {
   pot2    Int?
   pint1   Int?
   pint2   Int?
+}
+
+model pacientes {
+  idpaciente Int     @id @default(autoincrement())
+  paciente   String? @db.VarChar(500)
+  dni        Int?
+  obra_soc   String? @db.VarChar(255)
+  telefono   BigInt?
+  domicilio  String? @db.VarChar(1000)
+  mail       String? @db.VarChar(500)
 }

@@ -269,7 +269,8 @@ exports.Prisma.MEDICOS_TURNOSScalarFieldEnum = {
   estado: 'estado',
   operador: 'operador',
   domicilio: 'domicilio',
-  mail: 'mail'
+  mail: 'mail',
+  dni: 'dni'
 };
 
 exports.Prisma.PRACTICAScalarFieldEnum = {
@@ -469,6 +470,16 @@ exports.Prisma.PromocionesScalarFieldEnum = {
   pint2: 'pint2'
 };
 
+exports.Prisma.PacientesScalarFieldEnum = {
+  idpaciente: 'idpaciente',
+  paciente: 'paciente',
+  dni: 'dni',
+  obra_soc: 'obra_soc',
+  telefono: 'telefono',
+  domicilio: 'domicilio',
+  mail: 'mail'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -497,7 +508,8 @@ exports.Prisma.ModelName = {
   planes_odontologicos: 'planes_odontologicos',
   planes_socio: 'planes_socio',
   planes_visitas: 'planes_visitas',
-  promociones: 'promociones'
+  promociones: 'promociones',
+  pacientes: 'pacientes'
 };
 
 /**

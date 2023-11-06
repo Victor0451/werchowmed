@@ -98,6 +98,11 @@ export type planes_visitas = $Result.DefaultSelection<Prisma.$planes_visitasPayl
  * 
  */
 export type promociones = $Result.DefaultSelection<Prisma.$promocionesPayload>
+/**
+ * Model pacientes
+ * 
+ */
+export type pacientes = $Result.DefaultSelection<Prisma.$pacientesPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -390,6 +395,16 @@ export class PrismaClient<
     * ```
     */
   get promociones(): Prisma.promocionesDelegate<ExtArgs>;
+
+  /**
+   * `prisma.pacientes`: Exposes CRUD operations for the **pacientes** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Pacientes
+    * const pacientes = await prisma.pacientes.findMany()
+    * ```
+    */
+  get pacientes(): Prisma.pacientesDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -876,7 +891,8 @@ export namespace Prisma {
     planes_odontologicos: 'planes_odontologicos',
     planes_socio: 'planes_socio',
     planes_visitas: 'planes_visitas',
-    promociones: 'promociones'
+    promociones: 'promociones',
+    pacientes: 'pacientes'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -893,7 +909,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'aUT_PRAC' | 'cAJA' | 'cONSULTA' | 'eNFERMER' | 'fARMACIA' | 'mEDICOS_TURNOS' | 'pRACTICA' | 'pRACT_ENFER' | 'pRESTADO' | 'uSOS' | 'uSOSFA' | 'adherent_provi' | 'nosocios' | 'planes_odontologicos' | 'planes_socio' | 'planes_visitas' | 'promociones'
+      modelProps: 'aUT_PRAC' | 'cAJA' | 'cONSULTA' | 'eNFERMER' | 'fARMACIA' | 'mEDICOS_TURNOS' | 'pRACTICA' | 'pRACT_ENFER' | 'pRESTADO' | 'uSOS' | 'uSOSFA' | 'adherent_provi' | 'nosocios' | 'planes_odontologicos' | 'planes_socio' | 'planes_visitas' | 'promociones' | 'pacientes'
       txIsolationLevel: Prisma.TransactionIsolationLevel
     },
     model: {
@@ -2016,6 +2032,72 @@ export namespace Prisma {
           count: {
             args: Prisma.promocionesCountArgs<ExtArgs>,
             result: $Utils.Optional<PromocionesCountAggregateOutputType> | number
+          }
+        }
+      }
+      pacientes: {
+        payload: Prisma.$pacientesPayload<ExtArgs>
+        fields: Prisma.pacientesFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.pacientesFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$pacientesPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.pacientesFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$pacientesPayload>
+          }
+          findFirst: {
+            args: Prisma.pacientesFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$pacientesPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.pacientesFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$pacientesPayload>
+          }
+          findMany: {
+            args: Prisma.pacientesFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$pacientesPayload>[]
+          }
+          create: {
+            args: Prisma.pacientesCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$pacientesPayload>
+          }
+          createMany: {
+            args: Prisma.pacientesCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          delete: {
+            args: Prisma.pacientesDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$pacientesPayload>
+          }
+          update: {
+            args: Prisma.pacientesUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$pacientesPayload>
+          }
+          deleteMany: {
+            args: Prisma.pacientesDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          updateMany: {
+            args: Prisma.pacientesUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          upsert: {
+            args: Prisma.pacientesUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$pacientesPayload>
+          }
+          aggregate: {
+            args: Prisma.PacientesAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregatePacientes>
+          }
+          groupBy: {
+            args: Prisma.pacientesGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<PacientesGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.pacientesCountArgs<ExtArgs>,
+            result: $Utils.Optional<PacientesCountAggregateOutputType> | number
           }
         }
       }
@@ -8066,12 +8148,14 @@ export namespace Prisma {
     idturno: number | null
     telefono: number | null
     estado: number | null
+    dni: number | null
   }
 
   export type MEDICOS_TURNOSSumAggregateOutputType = {
     idturno: number | null
     telefono: bigint | null
     estado: number | null
+    dni: number | null
   }
 
   export type MEDICOS_TURNOSMinAggregateOutputType = {
@@ -8087,6 +8171,7 @@ export namespace Prisma {
     operador: string | null
     domicilio: string | null
     mail: string | null
+    dni: number | null
   }
 
   export type MEDICOS_TURNOSMaxAggregateOutputType = {
@@ -8102,6 +8187,7 @@ export namespace Prisma {
     operador: string | null
     domicilio: string | null
     mail: string | null
+    dni: number | null
   }
 
   export type MEDICOS_TURNOSCountAggregateOutputType = {
@@ -8117,6 +8203,7 @@ export namespace Prisma {
     operador: number
     domicilio: number
     mail: number
+    dni: number
     _all: number
   }
 
@@ -8125,12 +8212,14 @@ export namespace Prisma {
     idturno?: true
     telefono?: true
     estado?: true
+    dni?: true
   }
 
   export type MEDICOS_TURNOSSumAggregateInputType = {
     idturno?: true
     telefono?: true
     estado?: true
+    dni?: true
   }
 
   export type MEDICOS_TURNOSMinAggregateInputType = {
@@ -8146,6 +8235,7 @@ export namespace Prisma {
     operador?: true
     domicilio?: true
     mail?: true
+    dni?: true
   }
 
   export type MEDICOS_TURNOSMaxAggregateInputType = {
@@ -8161,6 +8251,7 @@ export namespace Prisma {
     operador?: true
     domicilio?: true
     mail?: true
+    dni?: true
   }
 
   export type MEDICOS_TURNOSCountAggregateInputType = {
@@ -8176,6 +8267,7 @@ export namespace Prisma {
     operador?: true
     domicilio?: true
     mail?: true
+    dni?: true
     _all?: true
   }
 
@@ -8278,6 +8370,7 @@ export namespace Prisma {
     operador: string | null
     domicilio: string | null
     mail: string | null
+    dni: number | null
     _count: MEDICOS_TURNOSCountAggregateOutputType | null
     _avg: MEDICOS_TURNOSAvgAggregateOutputType | null
     _sum: MEDICOS_TURNOSSumAggregateOutputType | null
@@ -8312,6 +8405,7 @@ export namespace Prisma {
     operador?: boolean
     domicilio?: boolean
     mail?: boolean
+    dni?: boolean
   }, ExtArgs["result"]["mEDICOS_TURNOS"]>
 
   export type MEDICOS_TURNOSSelectScalar = {
@@ -8327,6 +8421,7 @@ export namespace Prisma {
     operador?: boolean
     domicilio?: boolean
     mail?: boolean
+    dni?: boolean
   }
 
 
@@ -8346,6 +8441,7 @@ export namespace Prisma {
       operador: string | null
       domicilio: string | null
       mail: string | null
+      dni: number | null
     }, ExtArgs["result"]["mEDICOS_TURNOS"]>
     composites: {}
   }
@@ -8752,6 +8848,7 @@ export namespace Prisma {
     readonly operador: FieldRef<"MEDICOS_TURNOS", 'String'>
     readonly domicilio: FieldRef<"MEDICOS_TURNOS", 'String'>
     readonly mail: FieldRef<"MEDICOS_TURNOS", 'String'>
+    readonly dni: FieldRef<"MEDICOS_TURNOS", 'Int'>
   }
     
 
@@ -12144,7 +12241,6 @@ export namespace Prisma {
     ANULADO: number | null
     RENDIDO: number | null
     iduso: number | null
-    IMP_LIQ: number | null
   }
 
   export type USOSSumAggregateOutputType = {
@@ -12157,7 +12253,6 @@ export namespace Prisma {
     ANULADO: number | null
     RENDIDO: number | null
     iduso: number | null
-    IMP_LIQ: number | null
   }
 
   export type USOSMinAggregateOutputType = {
@@ -12189,7 +12284,7 @@ export namespace Prisma {
     CONTROL: boolean | null
     NORDEN: string | null
     FECHA_CONTROL: Date | null
-    IMP_LIQ: number | null
+    IMP_LIQ: string | null
   }
 
   export type USOSMaxAggregateOutputType = {
@@ -12221,7 +12316,7 @@ export namespace Prisma {
     CONTROL: boolean | null
     NORDEN: string | null
     FECHA_CONTROL: Date | null
-    IMP_LIQ: number | null
+    IMP_LIQ: string | null
   }
 
   export type USOSCountAggregateOutputType = {
@@ -12268,7 +12363,6 @@ export namespace Prisma {
     ANULADO?: true
     RENDIDO?: true
     iduso?: true
-    IMP_LIQ?: true
   }
 
   export type USOSSumAggregateInputType = {
@@ -12281,7 +12375,6 @@ export namespace Prisma {
     ANULADO?: true
     RENDIDO?: true
     iduso?: true
-    IMP_LIQ?: true
   }
 
   export type USOSMinAggregateInputType = {
@@ -12496,7 +12589,7 @@ export namespace Prisma {
     CONTROL: boolean | null
     NORDEN: string | null
     FECHA_CONTROL: Date | null
-    IMP_LIQ: number | null
+    IMP_LIQ: string | null
     _count: USOSCountAggregateOutputType | null
     _avg: USOSAvgAggregateOutputType | null
     _sum: USOSSumAggregateOutputType | null
@@ -12615,7 +12708,7 @@ export namespace Prisma {
       CONTROL: boolean | null
       NORDEN: string | null
       FECHA_CONTROL: Date | null
-      IMP_LIQ: number | null
+      IMP_LIQ: string | null
     }, ExtArgs["result"]["uSOS"]>
     composites: {}
   }
@@ -13038,7 +13131,7 @@ export namespace Prisma {
     readonly CONTROL: FieldRef<"USOS", 'Boolean'>
     readonly NORDEN: FieldRef<"USOS", 'String'>
     readonly FECHA_CONTROL: FieldRef<"USOS", 'DateTime'>
-    readonly IMP_LIQ: FieldRef<"USOS", 'Float'>
+    readonly IMP_LIQ: FieldRef<"USOS", 'String'>
   }
     
 
@@ -20351,6 +20444,940 @@ export namespace Prisma {
 
 
   /**
+   * Model pacientes
+   */
+
+  export type AggregatePacientes = {
+    _count: PacientesCountAggregateOutputType | null
+    _avg: PacientesAvgAggregateOutputType | null
+    _sum: PacientesSumAggregateOutputType | null
+    _min: PacientesMinAggregateOutputType | null
+    _max: PacientesMaxAggregateOutputType | null
+  }
+
+  export type PacientesAvgAggregateOutputType = {
+    idpaciente: number | null
+    dni: number | null
+    telefono: number | null
+  }
+
+  export type PacientesSumAggregateOutputType = {
+    idpaciente: number | null
+    dni: number | null
+    telefono: bigint | null
+  }
+
+  export type PacientesMinAggregateOutputType = {
+    idpaciente: number | null
+    paciente: string | null
+    dni: number | null
+    obra_soc: string | null
+    telefono: bigint | null
+    domicilio: string | null
+    mail: string | null
+  }
+
+  export type PacientesMaxAggregateOutputType = {
+    idpaciente: number | null
+    paciente: string | null
+    dni: number | null
+    obra_soc: string | null
+    telefono: bigint | null
+    domicilio: string | null
+    mail: string | null
+  }
+
+  export type PacientesCountAggregateOutputType = {
+    idpaciente: number
+    paciente: number
+    dni: number
+    obra_soc: number
+    telefono: number
+    domicilio: number
+    mail: number
+    _all: number
+  }
+
+
+  export type PacientesAvgAggregateInputType = {
+    idpaciente?: true
+    dni?: true
+    telefono?: true
+  }
+
+  export type PacientesSumAggregateInputType = {
+    idpaciente?: true
+    dni?: true
+    telefono?: true
+  }
+
+  export type PacientesMinAggregateInputType = {
+    idpaciente?: true
+    paciente?: true
+    dni?: true
+    obra_soc?: true
+    telefono?: true
+    domicilio?: true
+    mail?: true
+  }
+
+  export type PacientesMaxAggregateInputType = {
+    idpaciente?: true
+    paciente?: true
+    dni?: true
+    obra_soc?: true
+    telefono?: true
+    domicilio?: true
+    mail?: true
+  }
+
+  export type PacientesCountAggregateInputType = {
+    idpaciente?: true
+    paciente?: true
+    dni?: true
+    obra_soc?: true
+    telefono?: true
+    domicilio?: true
+    mail?: true
+    _all?: true
+  }
+
+  export type PacientesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which pacientes to aggregate.
+     */
+    where?: pacientesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of pacientes to fetch.
+     */
+    orderBy?: pacientesOrderByWithRelationInput | pacientesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: pacientesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` pacientes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` pacientes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned pacientes
+    **/
+    _count?: true | PacientesCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PacientesAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PacientesSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PacientesMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PacientesMaxAggregateInputType
+  }
+
+  export type GetPacientesAggregateType<T extends PacientesAggregateArgs> = {
+        [P in keyof T & keyof AggregatePacientes]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePacientes[P]>
+      : GetScalarType<T[P], AggregatePacientes[P]>
+  }
+
+
+
+
+  export type pacientesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: pacientesWhereInput
+    orderBy?: pacientesOrderByWithAggregationInput | pacientesOrderByWithAggregationInput[]
+    by: PacientesScalarFieldEnum[] | PacientesScalarFieldEnum
+    having?: pacientesScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PacientesCountAggregateInputType | true
+    _avg?: PacientesAvgAggregateInputType
+    _sum?: PacientesSumAggregateInputType
+    _min?: PacientesMinAggregateInputType
+    _max?: PacientesMaxAggregateInputType
+  }
+
+  export type PacientesGroupByOutputType = {
+    idpaciente: number
+    paciente: string | null
+    dni: number | null
+    obra_soc: string | null
+    telefono: bigint | null
+    domicilio: string | null
+    mail: string | null
+    _count: PacientesCountAggregateOutputType | null
+    _avg: PacientesAvgAggregateOutputType | null
+    _sum: PacientesSumAggregateOutputType | null
+    _min: PacientesMinAggregateOutputType | null
+    _max: PacientesMaxAggregateOutputType | null
+  }
+
+  type GetPacientesGroupByPayload<T extends pacientesGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PacientesGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PacientesGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PacientesGroupByOutputType[P]>
+            : GetScalarType<T[P], PacientesGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type pacientesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    idpaciente?: boolean
+    paciente?: boolean
+    dni?: boolean
+    obra_soc?: boolean
+    telefono?: boolean
+    domicilio?: boolean
+    mail?: boolean
+  }, ExtArgs["result"]["pacientes"]>
+
+  export type pacientesSelectScalar = {
+    idpaciente?: boolean
+    paciente?: boolean
+    dni?: boolean
+    obra_soc?: boolean
+    telefono?: boolean
+    domicilio?: boolean
+    mail?: boolean
+  }
+
+
+  export type $pacientesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "pacientes"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      idpaciente: number
+      paciente: string | null
+      dni: number | null
+      obra_soc: string | null
+      telefono: bigint | null
+      domicilio: string | null
+      mail: string | null
+    }, ExtArgs["result"]["pacientes"]>
+    composites: {}
+  }
+
+
+  type pacientesGetPayload<S extends boolean | null | undefined | pacientesDefaultArgs> = $Result.GetResult<Prisma.$pacientesPayload, S>
+
+  type pacientesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<pacientesFindManyArgs, 'select' | 'include'> & {
+      select?: PacientesCountAggregateInputType | true
+    }
+
+  export interface pacientesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['pacientes'], meta: { name: 'pacientes' } }
+    /**
+     * Find zero or one Pacientes that matches the filter.
+     * @param {pacientesFindUniqueArgs} args - Arguments to find a Pacientes
+     * @example
+     * // Get one Pacientes
+     * const pacientes = await prisma.pacientes.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends pacientesFindUniqueArgs<ExtArgs>>(
+      args: SelectSubset<T, pacientesFindUniqueArgs<ExtArgs>>
+    ): Prisma__pacientesClient<$Result.GetResult<Prisma.$pacientesPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
+
+    /**
+     * Find one Pacientes that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {pacientesFindUniqueOrThrowArgs} args - Arguments to find a Pacientes
+     * @example
+     * // Get one Pacientes
+     * const pacientes = await prisma.pacientes.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends pacientesFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, pacientesFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__pacientesClient<$Result.GetResult<Prisma.$pacientesPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find the first Pacientes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {pacientesFindFirstArgs} args - Arguments to find a Pacientes
+     * @example
+     * // Get one Pacientes
+     * const pacientes = await prisma.pacientes.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends pacientesFindFirstArgs<ExtArgs>>(
+      args?: SelectSubset<T, pacientesFindFirstArgs<ExtArgs>>
+    ): Prisma__pacientesClient<$Result.GetResult<Prisma.$pacientesPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
+
+    /**
+     * Find the first Pacientes that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {pacientesFindFirstOrThrowArgs} args - Arguments to find a Pacientes
+     * @example
+     * // Get one Pacientes
+     * const pacientes = await prisma.pacientes.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends pacientesFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, pacientesFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__pacientesClient<$Result.GetResult<Prisma.$pacientesPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Pacientes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {pacientesFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Pacientes
+     * const pacientes = await prisma.pacientes.findMany()
+     * 
+     * // Get first 10 Pacientes
+     * const pacientes = await prisma.pacientes.findMany({ take: 10 })
+     * 
+     * // Only select the `idpaciente`
+     * const pacientesWithIdpacienteOnly = await prisma.pacientes.findMany({ select: { idpaciente: true } })
+     * 
+    **/
+    findMany<T extends pacientesFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, pacientesFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$pacientesPayload<ExtArgs>, T, 'findMany'>>
+
+    /**
+     * Create a Pacientes.
+     * @param {pacientesCreateArgs} args - Arguments to create a Pacientes.
+     * @example
+     * // Create one Pacientes
+     * const Pacientes = await prisma.pacientes.create({
+     *   data: {
+     *     // ... data to create a Pacientes
+     *   }
+     * })
+     * 
+    **/
+    create<T extends pacientesCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, pacientesCreateArgs<ExtArgs>>
+    ): Prisma__pacientesClient<$Result.GetResult<Prisma.$pacientesPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
+
+    /**
+     * Create many Pacientes.
+     *     @param {pacientesCreateManyArgs} args - Arguments to create many Pacientes.
+     *     @example
+     *     // Create many Pacientes
+     *     const pacientes = await prisma.pacientes.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends pacientesCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, pacientesCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Pacientes.
+     * @param {pacientesDeleteArgs} args - Arguments to delete one Pacientes.
+     * @example
+     * // Delete one Pacientes
+     * const Pacientes = await prisma.pacientes.delete({
+     *   where: {
+     *     // ... filter to delete one Pacientes
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends pacientesDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, pacientesDeleteArgs<ExtArgs>>
+    ): Prisma__pacientesClient<$Result.GetResult<Prisma.$pacientesPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
+
+    /**
+     * Update one Pacientes.
+     * @param {pacientesUpdateArgs} args - Arguments to update one Pacientes.
+     * @example
+     * // Update one Pacientes
+     * const pacientes = await prisma.pacientes.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends pacientesUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, pacientesUpdateArgs<ExtArgs>>
+    ): Prisma__pacientesClient<$Result.GetResult<Prisma.$pacientesPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
+
+    /**
+     * Delete zero or more Pacientes.
+     * @param {pacientesDeleteManyArgs} args - Arguments to filter Pacientes to delete.
+     * @example
+     * // Delete a few Pacientes
+     * const { count } = await prisma.pacientes.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends pacientesDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, pacientesDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Pacientes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {pacientesUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Pacientes
+     * const pacientes = await prisma.pacientes.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends pacientesUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, pacientesUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Pacientes.
+     * @param {pacientesUpsertArgs} args - Arguments to update or create a Pacientes.
+     * @example
+     * // Update or create a Pacientes
+     * const pacientes = await prisma.pacientes.upsert({
+     *   create: {
+     *     // ... data to create a Pacientes
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Pacientes we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends pacientesUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, pacientesUpsertArgs<ExtArgs>>
+    ): Prisma__pacientesClient<$Result.GetResult<Prisma.$pacientesPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
+
+    /**
+     * Count the number of Pacientes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {pacientesCountArgs} args - Arguments to filter Pacientes to count.
+     * @example
+     * // Count the number of Pacientes
+     * const count = await prisma.pacientes.count({
+     *   where: {
+     *     // ... the filter for the Pacientes we want to count
+     *   }
+     * })
+    **/
+    count<T extends pacientesCountArgs>(
+      args?: Subset<T, pacientesCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PacientesCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Pacientes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PacientesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PacientesAggregateArgs>(args: Subset<T, PacientesAggregateArgs>): Prisma.PrismaPromise<GetPacientesAggregateType<T>>
+
+    /**
+     * Group by Pacientes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {pacientesGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends pacientesGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: pacientesGroupByArgs['orderBy'] }
+        : { orderBy?: pacientesGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, pacientesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPacientesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the pacientes model
+   */
+  readonly fields: pacientesFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for pacientes.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__pacientesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+
+
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+  }
+
+
+
+  /**
+   * Fields of the pacientes model
+   */ 
+  interface pacientesFieldRefs {
+    readonly idpaciente: FieldRef<"pacientes", 'Int'>
+    readonly paciente: FieldRef<"pacientes", 'String'>
+    readonly dni: FieldRef<"pacientes", 'Int'>
+    readonly obra_soc: FieldRef<"pacientes", 'String'>
+    readonly telefono: FieldRef<"pacientes", 'BigInt'>
+    readonly domicilio: FieldRef<"pacientes", 'String'>
+    readonly mail: FieldRef<"pacientes", 'String'>
+  }
+    
+
+  // Custom InputTypes
+
+  /**
+   * pacientes findUnique
+   */
+  export type pacientesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the pacientes
+     */
+    select?: pacientesSelect<ExtArgs> | null
+    /**
+     * Filter, which pacientes to fetch.
+     */
+    where: pacientesWhereUniqueInput
+  }
+
+
+  /**
+   * pacientes findUniqueOrThrow
+   */
+  export type pacientesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the pacientes
+     */
+    select?: pacientesSelect<ExtArgs> | null
+    /**
+     * Filter, which pacientes to fetch.
+     */
+    where: pacientesWhereUniqueInput
+  }
+
+
+  /**
+   * pacientes findFirst
+   */
+  export type pacientesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the pacientes
+     */
+    select?: pacientesSelect<ExtArgs> | null
+    /**
+     * Filter, which pacientes to fetch.
+     */
+    where?: pacientesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of pacientes to fetch.
+     */
+    orderBy?: pacientesOrderByWithRelationInput | pacientesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for pacientes.
+     */
+    cursor?: pacientesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` pacientes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` pacientes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of pacientes.
+     */
+    distinct?: PacientesScalarFieldEnum | PacientesScalarFieldEnum[]
+  }
+
+
+  /**
+   * pacientes findFirstOrThrow
+   */
+  export type pacientesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the pacientes
+     */
+    select?: pacientesSelect<ExtArgs> | null
+    /**
+     * Filter, which pacientes to fetch.
+     */
+    where?: pacientesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of pacientes to fetch.
+     */
+    orderBy?: pacientesOrderByWithRelationInput | pacientesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for pacientes.
+     */
+    cursor?: pacientesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` pacientes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` pacientes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of pacientes.
+     */
+    distinct?: PacientesScalarFieldEnum | PacientesScalarFieldEnum[]
+  }
+
+
+  /**
+   * pacientes findMany
+   */
+  export type pacientesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the pacientes
+     */
+    select?: pacientesSelect<ExtArgs> | null
+    /**
+     * Filter, which pacientes to fetch.
+     */
+    where?: pacientesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of pacientes to fetch.
+     */
+    orderBy?: pacientesOrderByWithRelationInput | pacientesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing pacientes.
+     */
+    cursor?: pacientesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` pacientes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` pacientes.
+     */
+    skip?: number
+    distinct?: PacientesScalarFieldEnum | PacientesScalarFieldEnum[]
+  }
+
+
+  /**
+   * pacientes create
+   */
+  export type pacientesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the pacientes
+     */
+    select?: pacientesSelect<ExtArgs> | null
+    /**
+     * The data needed to create a pacientes.
+     */
+    data?: XOR<pacientesCreateInput, pacientesUncheckedCreateInput>
+  }
+
+
+  /**
+   * pacientes createMany
+   */
+  export type pacientesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many pacientes.
+     */
+    data: pacientesCreateManyInput | pacientesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * pacientes update
+   */
+  export type pacientesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the pacientes
+     */
+    select?: pacientesSelect<ExtArgs> | null
+    /**
+     * The data needed to update a pacientes.
+     */
+    data: XOR<pacientesUpdateInput, pacientesUncheckedUpdateInput>
+    /**
+     * Choose, which pacientes to update.
+     */
+    where: pacientesWhereUniqueInput
+  }
+
+
+  /**
+   * pacientes updateMany
+   */
+  export type pacientesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update pacientes.
+     */
+    data: XOR<pacientesUpdateManyMutationInput, pacientesUncheckedUpdateManyInput>
+    /**
+     * Filter which pacientes to update
+     */
+    where?: pacientesWhereInput
+  }
+
+
+  /**
+   * pacientes upsert
+   */
+  export type pacientesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the pacientes
+     */
+    select?: pacientesSelect<ExtArgs> | null
+    /**
+     * The filter to search for the pacientes to update in case it exists.
+     */
+    where: pacientesWhereUniqueInput
+    /**
+     * In case the pacientes found by the `where` argument doesn't exist, create a new pacientes with this data.
+     */
+    create: XOR<pacientesCreateInput, pacientesUncheckedCreateInput>
+    /**
+     * In case the pacientes was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<pacientesUpdateInput, pacientesUncheckedUpdateInput>
+  }
+
+
+  /**
+   * pacientes delete
+   */
+  export type pacientesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the pacientes
+     */
+    select?: pacientesSelect<ExtArgs> | null
+    /**
+     * Filter which pacientes to delete.
+     */
+    where: pacientesWhereUniqueInput
+  }
+
+
+  /**
+   * pacientes deleteMany
+   */
+  export type pacientesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which pacientes to delete
+     */
+    where?: pacientesWhereInput
+  }
+
+
+  /**
+   * pacientes without action
+   */
+  export type pacientesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the pacientes
+     */
+    select?: pacientesSelect<ExtArgs> | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -20541,7 +21568,8 @@ export namespace Prisma {
     estado: 'estado',
     operador: 'operador',
     domicilio: 'domicilio',
-    mail: 'mail'
+    mail: 'mail',
+    dni: 'dni'
   };
 
   export type MEDICOS_TURNOSScalarFieldEnum = (typeof MEDICOS_TURNOSScalarFieldEnum)[keyof typeof MEDICOS_TURNOSScalarFieldEnum]
@@ -20775,6 +21803,19 @@ export namespace Prisma {
   };
 
   export type PromocionesScalarFieldEnum = (typeof PromocionesScalarFieldEnum)[keyof typeof PromocionesScalarFieldEnum]
+
+
+  export const PacientesScalarFieldEnum: {
+    idpaciente: 'idpaciente',
+    paciente: 'paciente',
+    dni: 'dni',
+    obra_soc: 'obra_soc',
+    telefono: 'telefono',
+    domicilio: 'domicilio',
+    mail: 'mail'
+  };
+
+  export type PacientesScalarFieldEnum = (typeof PacientesScalarFieldEnum)[keyof typeof PacientesScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -21679,6 +22720,7 @@ export namespace Prisma {
     operador?: StringNullableFilter<"MEDICOS_TURNOS"> | string | null
     domicilio?: StringNullableFilter<"MEDICOS_TURNOS"> | string | null
     mail?: StringNullableFilter<"MEDICOS_TURNOS"> | string | null
+    dni?: IntNullableFilter<"MEDICOS_TURNOS"> | number | null
   }
 
   export type MEDICOS_TURNOSOrderByWithRelationInput = {
@@ -21694,6 +22736,7 @@ export namespace Prisma {
     operador?: SortOrderInput | SortOrder
     domicilio?: SortOrderInput | SortOrder
     mail?: SortOrderInput | SortOrder
+    dni?: SortOrderInput | SortOrder
   }
 
   export type MEDICOS_TURNOSWhereUniqueInput = Prisma.AtLeast<{
@@ -21712,6 +22755,7 @@ export namespace Prisma {
     operador?: StringNullableFilter<"MEDICOS_TURNOS"> | string | null
     domicilio?: StringNullableFilter<"MEDICOS_TURNOS"> | string | null
     mail?: StringNullableFilter<"MEDICOS_TURNOS"> | string | null
+    dni?: IntNullableFilter<"MEDICOS_TURNOS"> | number | null
   }, "idturno">
 
   export type MEDICOS_TURNOSOrderByWithAggregationInput = {
@@ -21727,6 +22771,7 @@ export namespace Prisma {
     operador?: SortOrderInput | SortOrder
     domicilio?: SortOrderInput | SortOrder
     mail?: SortOrderInput | SortOrder
+    dni?: SortOrderInput | SortOrder
     _count?: MEDICOS_TURNOSCountOrderByAggregateInput
     _avg?: MEDICOS_TURNOSAvgOrderByAggregateInput
     _max?: MEDICOS_TURNOSMaxOrderByAggregateInput
@@ -21750,6 +22795,7 @@ export namespace Prisma {
     operador?: StringNullableWithAggregatesFilter<"MEDICOS_TURNOS"> | string | null
     domicilio?: StringNullableWithAggregatesFilter<"MEDICOS_TURNOS"> | string | null
     mail?: StringNullableWithAggregatesFilter<"MEDICOS_TURNOS"> | string | null
+    dni?: IntNullableWithAggregatesFilter<"MEDICOS_TURNOS"> | number | null
   }
 
   export type PRACTICAWhereInput = {
@@ -22091,7 +23137,7 @@ export namespace Prisma {
     CONTROL?: BoolNullableFilter<"USOS"> | boolean | null
     NORDEN?: StringNullableFilter<"USOS"> | string | null
     FECHA_CONTROL?: DateTimeNullableFilter<"USOS"> | Date | string | null
-    IMP_LIQ?: FloatNullableFilter<"USOS"> | number | null
+    IMP_LIQ?: StringNullableFilter<"USOS"> | string | null
   }
 
   export type USOSOrderByWithRelationInput = {
@@ -22158,7 +23204,7 @@ export namespace Prisma {
     CONTROL?: BoolNullableFilter<"USOS"> | boolean | null
     NORDEN?: StringNullableFilter<"USOS"> | string | null
     FECHA_CONTROL?: DateTimeNullableFilter<"USOS"> | Date | string | null
-    IMP_LIQ?: FloatNullableFilter<"USOS"> | number | null
+    IMP_LIQ?: StringNullableFilter<"USOS"> | string | null
   }, "iduso">
 
   export type USOSOrderByWithAggregationInput = {
@@ -22230,7 +23276,7 @@ export namespace Prisma {
     CONTROL?: BoolNullableWithAggregatesFilter<"USOS"> | boolean | null
     NORDEN?: StringNullableWithAggregatesFilter<"USOS"> | string | null
     FECHA_CONTROL?: DateTimeNullableWithAggregatesFilter<"USOS"> | Date | string | null
-    IMP_LIQ?: FloatNullableWithAggregatesFilter<"USOS"> | number | null
+    IMP_LIQ?: StringNullableWithAggregatesFilter<"USOS"> | string | null
   }
 
   export type USOSFAWhereInput = {
@@ -22889,6 +23935,70 @@ export namespace Prisma {
     pot2?: IntNullableWithAggregatesFilter<"promociones"> | number | null
     pint1?: IntNullableWithAggregatesFilter<"promociones"> | number | null
     pint2?: IntNullableWithAggregatesFilter<"promociones"> | number | null
+  }
+
+  export type pacientesWhereInput = {
+    AND?: pacientesWhereInput | pacientesWhereInput[]
+    OR?: pacientesWhereInput[]
+    NOT?: pacientesWhereInput | pacientesWhereInput[]
+    idpaciente?: IntFilter<"pacientes"> | number
+    paciente?: StringNullableFilter<"pacientes"> | string | null
+    dni?: IntNullableFilter<"pacientes"> | number | null
+    obra_soc?: StringNullableFilter<"pacientes"> | string | null
+    telefono?: BigIntNullableFilter<"pacientes"> | bigint | number | null
+    domicilio?: StringNullableFilter<"pacientes"> | string | null
+    mail?: StringNullableFilter<"pacientes"> | string | null
+  }
+
+  export type pacientesOrderByWithRelationInput = {
+    idpaciente?: SortOrder
+    paciente?: SortOrderInput | SortOrder
+    dni?: SortOrderInput | SortOrder
+    obra_soc?: SortOrderInput | SortOrder
+    telefono?: SortOrderInput | SortOrder
+    domicilio?: SortOrderInput | SortOrder
+    mail?: SortOrderInput | SortOrder
+  }
+
+  export type pacientesWhereUniqueInput = Prisma.AtLeast<{
+    idpaciente?: number
+    AND?: pacientesWhereInput | pacientesWhereInput[]
+    OR?: pacientesWhereInput[]
+    NOT?: pacientesWhereInput | pacientesWhereInput[]
+    paciente?: StringNullableFilter<"pacientes"> | string | null
+    dni?: IntNullableFilter<"pacientes"> | number | null
+    obra_soc?: StringNullableFilter<"pacientes"> | string | null
+    telefono?: BigIntNullableFilter<"pacientes"> | bigint | number | null
+    domicilio?: StringNullableFilter<"pacientes"> | string | null
+    mail?: StringNullableFilter<"pacientes"> | string | null
+  }, "idpaciente">
+
+  export type pacientesOrderByWithAggregationInput = {
+    idpaciente?: SortOrder
+    paciente?: SortOrderInput | SortOrder
+    dni?: SortOrderInput | SortOrder
+    obra_soc?: SortOrderInput | SortOrder
+    telefono?: SortOrderInput | SortOrder
+    domicilio?: SortOrderInput | SortOrder
+    mail?: SortOrderInput | SortOrder
+    _count?: pacientesCountOrderByAggregateInput
+    _avg?: pacientesAvgOrderByAggregateInput
+    _max?: pacientesMaxOrderByAggregateInput
+    _min?: pacientesMinOrderByAggregateInput
+    _sum?: pacientesSumOrderByAggregateInput
+  }
+
+  export type pacientesScalarWhereWithAggregatesInput = {
+    AND?: pacientesScalarWhereWithAggregatesInput | pacientesScalarWhereWithAggregatesInput[]
+    OR?: pacientesScalarWhereWithAggregatesInput[]
+    NOT?: pacientesScalarWhereWithAggregatesInput | pacientesScalarWhereWithAggregatesInput[]
+    idpaciente?: IntWithAggregatesFilter<"pacientes"> | number
+    paciente?: StringNullableWithAggregatesFilter<"pacientes"> | string | null
+    dni?: IntNullableWithAggregatesFilter<"pacientes"> | number | null
+    obra_soc?: StringNullableWithAggregatesFilter<"pacientes"> | string | null
+    telefono?: BigIntNullableWithAggregatesFilter<"pacientes"> | bigint | number | null
+    domicilio?: StringNullableWithAggregatesFilter<"pacientes"> | string | null
+    mail?: StringNullableWithAggregatesFilter<"pacientes"> | string | null
   }
 
   export type AUT_PRACCreateInput = {
@@ -23938,6 +25048,7 @@ export namespace Prisma {
     operador?: string | null
     domicilio?: string | null
     mail?: string | null
+    dni?: number | null
   }
 
   export type MEDICOS_TURNOSUncheckedCreateInput = {
@@ -23953,6 +25064,7 @@ export namespace Prisma {
     operador?: string | null
     domicilio?: string | null
     mail?: string | null
+    dni?: number | null
   }
 
   export type MEDICOS_TURNOSUpdateInput = {
@@ -23967,6 +25079,7 @@ export namespace Prisma {
     operador?: NullableStringFieldUpdateOperationsInput | string | null
     domicilio?: NullableStringFieldUpdateOperationsInput | string | null
     mail?: NullableStringFieldUpdateOperationsInput | string | null
+    dni?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type MEDICOS_TURNOSUncheckedUpdateInput = {
@@ -23982,6 +25095,7 @@ export namespace Prisma {
     operador?: NullableStringFieldUpdateOperationsInput | string | null
     domicilio?: NullableStringFieldUpdateOperationsInput | string | null
     mail?: NullableStringFieldUpdateOperationsInput | string | null
+    dni?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type MEDICOS_TURNOSCreateManyInput = {
@@ -23997,6 +25111,7 @@ export namespace Prisma {
     operador?: string | null
     domicilio?: string | null
     mail?: string | null
+    dni?: number | null
   }
 
   export type MEDICOS_TURNOSUpdateManyMutationInput = {
@@ -24011,6 +25126,7 @@ export namespace Prisma {
     operador?: NullableStringFieldUpdateOperationsInput | string | null
     domicilio?: NullableStringFieldUpdateOperationsInput | string | null
     mail?: NullableStringFieldUpdateOperationsInput | string | null
+    dni?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type MEDICOS_TURNOSUncheckedUpdateManyInput = {
@@ -24026,6 +25142,7 @@ export namespace Prisma {
     operador?: NullableStringFieldUpdateOperationsInput | string | null
     domicilio?: NullableStringFieldUpdateOperationsInput | string | null
     mail?: NullableStringFieldUpdateOperationsInput | string | null
+    dni?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type PRACTICACreateInput = {
@@ -24418,7 +25535,7 @@ export namespace Prisma {
     CONTROL?: boolean | null
     NORDEN?: string | null
     FECHA_CONTROL?: Date | string | null
-    IMP_LIQ?: number | null
+    IMP_LIQ?: string | null
   }
 
   export type USOSUncheckedCreateInput = {
@@ -24450,7 +25567,7 @@ export namespace Prisma {
     CONTROL?: boolean | null
     NORDEN?: string | null
     FECHA_CONTROL?: Date | string | null
-    IMP_LIQ?: number | null
+    IMP_LIQ?: string | null
   }
 
   export type USOSUpdateInput = {
@@ -24481,7 +25598,7 @@ export namespace Prisma {
     CONTROL?: NullableBoolFieldUpdateOperationsInput | boolean | null
     NORDEN?: NullableStringFieldUpdateOperationsInput | string | null
     FECHA_CONTROL?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    IMP_LIQ?: NullableFloatFieldUpdateOperationsInput | number | null
+    IMP_LIQ?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type USOSUncheckedUpdateInput = {
@@ -24513,7 +25630,7 @@ export namespace Prisma {
     CONTROL?: NullableBoolFieldUpdateOperationsInput | boolean | null
     NORDEN?: NullableStringFieldUpdateOperationsInput | string | null
     FECHA_CONTROL?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    IMP_LIQ?: NullableFloatFieldUpdateOperationsInput | number | null
+    IMP_LIQ?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type USOSCreateManyInput = {
@@ -24545,7 +25662,7 @@ export namespace Prisma {
     CONTROL?: boolean | null
     NORDEN?: string | null
     FECHA_CONTROL?: Date | string | null
-    IMP_LIQ?: number | null
+    IMP_LIQ?: string | null
   }
 
   export type USOSUpdateManyMutationInput = {
@@ -24576,7 +25693,7 @@ export namespace Prisma {
     CONTROL?: NullableBoolFieldUpdateOperationsInput | boolean | null
     NORDEN?: NullableStringFieldUpdateOperationsInput | string | null
     FECHA_CONTROL?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    IMP_LIQ?: NullableFloatFieldUpdateOperationsInput | number | null
+    IMP_LIQ?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type USOSUncheckedUpdateManyInput = {
@@ -24608,7 +25725,7 @@ export namespace Prisma {
     CONTROL?: NullableBoolFieldUpdateOperationsInput | boolean | null
     NORDEN?: NullableStringFieldUpdateOperationsInput | string | null
     FECHA_CONTROL?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    IMP_LIQ?: NullableFloatFieldUpdateOperationsInput | number | null
+    IMP_LIQ?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type USOSFACreateInput = {
@@ -25374,6 +26491,73 @@ export namespace Prisma {
     pint2?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
+  export type pacientesCreateInput = {
+    paciente?: string | null
+    dni?: number | null
+    obra_soc?: string | null
+    telefono?: bigint | number | null
+    domicilio?: string | null
+    mail?: string | null
+  }
+
+  export type pacientesUncheckedCreateInput = {
+    idpaciente?: number
+    paciente?: string | null
+    dni?: number | null
+    obra_soc?: string | null
+    telefono?: bigint | number | null
+    domicilio?: string | null
+    mail?: string | null
+  }
+
+  export type pacientesUpdateInput = {
+    paciente?: NullableStringFieldUpdateOperationsInput | string | null
+    dni?: NullableIntFieldUpdateOperationsInput | number | null
+    obra_soc?: NullableStringFieldUpdateOperationsInput | string | null
+    telefono?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    domicilio?: NullableStringFieldUpdateOperationsInput | string | null
+    mail?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type pacientesUncheckedUpdateInput = {
+    idpaciente?: IntFieldUpdateOperationsInput | number
+    paciente?: NullableStringFieldUpdateOperationsInput | string | null
+    dni?: NullableIntFieldUpdateOperationsInput | number | null
+    obra_soc?: NullableStringFieldUpdateOperationsInput | string | null
+    telefono?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    domicilio?: NullableStringFieldUpdateOperationsInput | string | null
+    mail?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type pacientesCreateManyInput = {
+    idpaciente?: number
+    paciente?: string | null
+    dni?: number | null
+    obra_soc?: string | null
+    telefono?: bigint | number | null
+    domicilio?: string | null
+    mail?: string | null
+  }
+
+  export type pacientesUpdateManyMutationInput = {
+    paciente?: NullableStringFieldUpdateOperationsInput | string | null
+    dni?: NullableIntFieldUpdateOperationsInput | number | null
+    obra_soc?: NullableStringFieldUpdateOperationsInput | string | null
+    telefono?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    domicilio?: NullableStringFieldUpdateOperationsInput | string | null
+    mail?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type pacientesUncheckedUpdateManyInput = {
+    idpaciente?: IntFieldUpdateOperationsInput | number
+    paciente?: NullableStringFieldUpdateOperationsInput | string | null
+    dni?: NullableIntFieldUpdateOperationsInput | number | null
+    obra_soc?: NullableStringFieldUpdateOperationsInput | string | null
+    telefono?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    domicilio?: NullableStringFieldUpdateOperationsInput | string | null
+    mail?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -26106,12 +27290,14 @@ export namespace Prisma {
     operador?: SortOrder
     domicilio?: SortOrder
     mail?: SortOrder
+    dni?: SortOrder
   }
 
   export type MEDICOS_TURNOSAvgOrderByAggregateInput = {
     idturno?: SortOrder
     telefono?: SortOrder
     estado?: SortOrder
+    dni?: SortOrder
   }
 
   export type MEDICOS_TURNOSMaxOrderByAggregateInput = {
@@ -26127,6 +27313,7 @@ export namespace Prisma {
     operador?: SortOrder
     domicilio?: SortOrder
     mail?: SortOrder
+    dni?: SortOrder
   }
 
   export type MEDICOS_TURNOSMinOrderByAggregateInput = {
@@ -26142,12 +27329,14 @@ export namespace Prisma {
     operador?: SortOrder
     domicilio?: SortOrder
     mail?: SortOrder
+    dni?: SortOrder
   }
 
   export type MEDICOS_TURNOSSumOrderByAggregateInput = {
     idturno?: SortOrder
     telefono?: SortOrder
     estado?: SortOrder
+    dni?: SortOrder
   }
 
   export type BigIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -26461,7 +27650,6 @@ export namespace Prisma {
     ANULADO?: SortOrder
     RENDIDO?: SortOrder
     iduso?: SortOrder
-    IMP_LIQ?: SortOrder
   }
 
   export type USOSMaxOrderByAggregateInput = {
@@ -26538,7 +27726,6 @@ export namespace Prisma {
     ANULADO?: SortOrder
     RENDIDO?: SortOrder
     iduso?: SortOrder
-    IMP_LIQ?: SortOrder
   }
 
   export type USOSFACountOrderByAggregateInput = {
@@ -26973,6 +28160,48 @@ export namespace Prisma {
     pint2?: SortOrder
   }
 
+  export type pacientesCountOrderByAggregateInput = {
+    idpaciente?: SortOrder
+    paciente?: SortOrder
+    dni?: SortOrder
+    obra_soc?: SortOrder
+    telefono?: SortOrder
+    domicilio?: SortOrder
+    mail?: SortOrder
+  }
+
+  export type pacientesAvgOrderByAggregateInput = {
+    idpaciente?: SortOrder
+    dni?: SortOrder
+    telefono?: SortOrder
+  }
+
+  export type pacientesMaxOrderByAggregateInput = {
+    idpaciente?: SortOrder
+    paciente?: SortOrder
+    dni?: SortOrder
+    obra_soc?: SortOrder
+    telefono?: SortOrder
+    domicilio?: SortOrder
+    mail?: SortOrder
+  }
+
+  export type pacientesMinOrderByAggregateInput = {
+    idpaciente?: SortOrder
+    paciente?: SortOrder
+    dni?: SortOrder
+    obra_soc?: SortOrder
+    telefono?: SortOrder
+    domicilio?: SortOrder
+    mail?: SortOrder
+  }
+
+  export type pacientesSumOrderByAggregateInput = {
+    idpaciente?: SortOrder
+    dni?: SortOrder
+    telefono?: SortOrder
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
@@ -27313,6 +28542,10 @@ export namespace Prisma {
      * @deprecated Use promocionesDefaultArgs instead
      */
     export type promocionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = promocionesDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use pacientesDefaultArgs instead
+     */
+    export type pacientesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = pacientesDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany
