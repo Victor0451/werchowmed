@@ -360,7 +360,7 @@ model USOS {
   CONTROL       Boolean?
   NORDEN        String?   @db.VarChar(255)
   FECHA_CONTROL DateTime? @db.Date
-  IMP_LIQ       String?   @db.VarChar(255)
+  IMP_LIQ       Float?    @db.Float
 }
 
 model USOSFA {

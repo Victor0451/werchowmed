@@ -12241,6 +12241,7 @@ export namespace Prisma {
     ANULADO: number | null
     RENDIDO: number | null
     iduso: number | null
+    IMP_LIQ: number | null
   }
 
   export type USOSSumAggregateOutputType = {
@@ -12253,6 +12254,7 @@ export namespace Prisma {
     ANULADO: number | null
     RENDIDO: number | null
     iduso: number | null
+    IMP_LIQ: number | null
   }
 
   export type USOSMinAggregateOutputType = {
@@ -12284,7 +12286,7 @@ export namespace Prisma {
     CONTROL: boolean | null
     NORDEN: string | null
     FECHA_CONTROL: Date | null
-    IMP_LIQ: string | null
+    IMP_LIQ: number | null
   }
 
   export type USOSMaxAggregateOutputType = {
@@ -12316,7 +12318,7 @@ export namespace Prisma {
     CONTROL: boolean | null
     NORDEN: string | null
     FECHA_CONTROL: Date | null
-    IMP_LIQ: string | null
+    IMP_LIQ: number | null
   }
 
   export type USOSCountAggregateOutputType = {
@@ -12363,6 +12365,7 @@ export namespace Prisma {
     ANULADO?: true
     RENDIDO?: true
     iduso?: true
+    IMP_LIQ?: true
   }
 
   export type USOSSumAggregateInputType = {
@@ -12375,6 +12378,7 @@ export namespace Prisma {
     ANULADO?: true
     RENDIDO?: true
     iduso?: true
+    IMP_LIQ?: true
   }
 
   export type USOSMinAggregateInputType = {
@@ -12589,7 +12593,7 @@ export namespace Prisma {
     CONTROL: boolean | null
     NORDEN: string | null
     FECHA_CONTROL: Date | null
-    IMP_LIQ: string | null
+    IMP_LIQ: number | null
     _count: USOSCountAggregateOutputType | null
     _avg: USOSAvgAggregateOutputType | null
     _sum: USOSSumAggregateOutputType | null
@@ -12708,7 +12712,7 @@ export namespace Prisma {
       CONTROL: boolean | null
       NORDEN: string | null
       FECHA_CONTROL: Date | null
-      IMP_LIQ: string | null
+      IMP_LIQ: number | null
     }, ExtArgs["result"]["uSOS"]>
     composites: {}
   }
@@ -13131,7 +13135,7 @@ export namespace Prisma {
     readonly CONTROL: FieldRef<"USOS", 'Boolean'>
     readonly NORDEN: FieldRef<"USOS", 'String'>
     readonly FECHA_CONTROL: FieldRef<"USOS", 'DateTime'>
-    readonly IMP_LIQ: FieldRef<"USOS", 'String'>
+    readonly IMP_LIQ: FieldRef<"USOS", 'Float'>
   }
     
 
@@ -23137,7 +23141,7 @@ export namespace Prisma {
     CONTROL?: BoolNullableFilter<"USOS"> | boolean | null
     NORDEN?: StringNullableFilter<"USOS"> | string | null
     FECHA_CONTROL?: DateTimeNullableFilter<"USOS"> | Date | string | null
-    IMP_LIQ?: StringNullableFilter<"USOS"> | string | null
+    IMP_LIQ?: FloatNullableFilter<"USOS"> | number | null
   }
 
   export type USOSOrderByWithRelationInput = {
@@ -23204,7 +23208,7 @@ export namespace Prisma {
     CONTROL?: BoolNullableFilter<"USOS"> | boolean | null
     NORDEN?: StringNullableFilter<"USOS"> | string | null
     FECHA_CONTROL?: DateTimeNullableFilter<"USOS"> | Date | string | null
-    IMP_LIQ?: StringNullableFilter<"USOS"> | string | null
+    IMP_LIQ?: FloatNullableFilter<"USOS"> | number | null
   }, "iduso">
 
   export type USOSOrderByWithAggregationInput = {
@@ -23276,7 +23280,7 @@ export namespace Prisma {
     CONTROL?: BoolNullableWithAggregatesFilter<"USOS"> | boolean | null
     NORDEN?: StringNullableWithAggregatesFilter<"USOS"> | string | null
     FECHA_CONTROL?: DateTimeNullableWithAggregatesFilter<"USOS"> | Date | string | null
-    IMP_LIQ?: StringNullableWithAggregatesFilter<"USOS"> | string | null
+    IMP_LIQ?: FloatNullableWithAggregatesFilter<"USOS"> | number | null
   }
 
   export type USOSFAWhereInput = {
@@ -25535,7 +25539,7 @@ export namespace Prisma {
     CONTROL?: boolean | null
     NORDEN?: string | null
     FECHA_CONTROL?: Date | string | null
-    IMP_LIQ?: string | null
+    IMP_LIQ?: number | null
   }
 
   export type USOSUncheckedCreateInput = {
@@ -25567,7 +25571,7 @@ export namespace Prisma {
     CONTROL?: boolean | null
     NORDEN?: string | null
     FECHA_CONTROL?: Date | string | null
-    IMP_LIQ?: string | null
+    IMP_LIQ?: number | null
   }
 
   export type USOSUpdateInput = {
@@ -25598,7 +25602,7 @@ export namespace Prisma {
     CONTROL?: NullableBoolFieldUpdateOperationsInput | boolean | null
     NORDEN?: NullableStringFieldUpdateOperationsInput | string | null
     FECHA_CONTROL?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    IMP_LIQ?: NullableStringFieldUpdateOperationsInput | string | null
+    IMP_LIQ?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type USOSUncheckedUpdateInput = {
@@ -25630,7 +25634,7 @@ export namespace Prisma {
     CONTROL?: NullableBoolFieldUpdateOperationsInput | boolean | null
     NORDEN?: NullableStringFieldUpdateOperationsInput | string | null
     FECHA_CONTROL?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    IMP_LIQ?: NullableStringFieldUpdateOperationsInput | string | null
+    IMP_LIQ?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type USOSCreateManyInput = {
@@ -25662,7 +25666,7 @@ export namespace Prisma {
     CONTROL?: boolean | null
     NORDEN?: string | null
     FECHA_CONTROL?: Date | string | null
-    IMP_LIQ?: string | null
+    IMP_LIQ?: number | null
   }
 
   export type USOSUpdateManyMutationInput = {
@@ -25693,7 +25697,7 @@ export namespace Prisma {
     CONTROL?: NullableBoolFieldUpdateOperationsInput | boolean | null
     NORDEN?: NullableStringFieldUpdateOperationsInput | string | null
     FECHA_CONTROL?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    IMP_LIQ?: NullableStringFieldUpdateOperationsInput | string | null
+    IMP_LIQ?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type USOSUncheckedUpdateManyInput = {
@@ -25725,7 +25729,7 @@ export namespace Prisma {
     CONTROL?: NullableBoolFieldUpdateOperationsInput | boolean | null
     NORDEN?: NullableStringFieldUpdateOperationsInput | string | null
     FECHA_CONTROL?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    IMP_LIQ?: NullableStringFieldUpdateOperationsInput | string | null
+    IMP_LIQ?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type USOSFACreateInput = {
@@ -27650,6 +27654,7 @@ export namespace Prisma {
     ANULADO?: SortOrder
     RENDIDO?: SortOrder
     iduso?: SortOrder
+    IMP_LIQ?: SortOrder
   }
 
   export type USOSMaxOrderByAggregateInput = {
@@ -27726,6 +27731,7 @@ export namespace Prisma {
     ANULADO?: SortOrder
     RENDIDO?: SortOrder
     iduso?: SortOrder
+    IMP_LIQ?: SortOrder
   }
 
   export type USOSFACountOrderByAggregateInput = {
