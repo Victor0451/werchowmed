@@ -153,7 +153,11 @@ const ImpOrdenConsulta = ({
             <div className="col-4 ">{socio.NRO_DOC}</div>
             {enfermeria.length > 0 ? (
               <>
-                <div className="col-4"> {enfermeria[0].practica}</div>
+                <div className="col-4">
+                  {" "}
+                  {enfermeria[0].PRACTICA} --- {enfermeria[0].CANTIDAD}{" "}
+                  Unidades.
+                </div>
 
                 <div className="col-4">{enfermeria[0].NOMBRE}</div>
               </>
@@ -256,7 +260,10 @@ const ImpOrdenConsulta = ({
         <div className="mt-2 col-md-12">
           <strong>
             <u>Fecha de Vencimiento</u>:{" "}
-            {moment(orden.FECHA).utcOffset("+0300").add(1, "M").format("DD/MM/YYYY")}
+            {moment(orden.FECHA)
+              .utcOffset("+0300")
+              .add(1, "M")
+              .format("DD/MM/YYYY")}
           </strong>
         </div>
       </div>

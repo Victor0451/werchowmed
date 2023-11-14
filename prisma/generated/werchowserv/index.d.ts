@@ -6049,7 +6049,6 @@ export namespace Prisma {
     CONTRATO: number | null
     IMPORTE: number | null
     ANULADO: number | null
-    PRACTICA: number | null
     OPE_ANU: number | null
     NRO_DNI: number | null
     idenfermer: number | null
@@ -6060,7 +6059,6 @@ export namespace Prisma {
     CONTRATO: number | null
     IMPORTE: number | null
     ANULADO: number | null
-    PRACTICA: number | null
     OPE_ANU: number | null
     NRO_DNI: number | null
     idenfermer: number | null
@@ -6075,7 +6073,7 @@ export namespace Prisma {
     DESTINO: string | null
     IMPORTE: number | null
     ANULADO: number | null
-    PRACTICA: number | null
+    PRACTICA: string | null
     OPERADOR: string | null
     OPE_ANU: number | null
     NRO_DNI: number | null
@@ -6092,7 +6090,7 @@ export namespace Prisma {
     DESTINO: string | null
     IMPORTE: number | null
     ANULADO: number | null
-    PRACTICA: number | null
+    PRACTICA: string | null
     OPERADOR: string | null
     OPE_ANU: number | null
     NRO_DNI: number | null
@@ -6124,7 +6122,6 @@ export namespace Prisma {
     CONTRATO?: true
     IMPORTE?: true
     ANULADO?: true
-    PRACTICA?: true
     OPE_ANU?: true
     NRO_DNI?: true
     idenfermer?: true
@@ -6135,7 +6132,6 @@ export namespace Prisma {
     CONTRATO?: true
     IMPORTE?: true
     ANULADO?: true
-    PRACTICA?: true
     OPE_ANU?: true
     NRO_DNI?: true
     idenfermer?: true
@@ -6288,7 +6284,7 @@ export namespace Prisma {
     DESTINO: string | null
     IMPORTE: number | null
     ANULADO: number | null
-    PRACTICA: number | null
+    PRACTICA: string | null
     OPERADOR: string | null
     OPE_ANU: number | null
     NRO_DNI: number | null
@@ -6362,7 +6358,7 @@ export namespace Prisma {
       DESTINO: string | null
       IMPORTE: number | null
       ANULADO: number | null
-      PRACTICA: number | null
+      PRACTICA: string | null
       OPERADOR: string | null
       OPE_ANU: number | null
       NRO_DNI: number | null
@@ -6770,7 +6766,7 @@ export namespace Prisma {
     readonly DESTINO: FieldRef<"ENFERMER", 'String'>
     readonly IMPORTE: FieldRef<"ENFERMER", 'Float'>
     readonly ANULADO: FieldRef<"ENFERMER", 'Int'>
-    readonly PRACTICA: FieldRef<"ENFERMER", 'Int'>
+    readonly PRACTICA: FieldRef<"ENFERMER", 'String'>
     readonly OPERADOR: FieldRef<"ENFERMER", 'String'>
     readonly OPE_ANU: FieldRef<"ENFERMER", 'Int'>
     readonly NRO_DNI: FieldRef<"ENFERMER", 'Int'>
@@ -22506,7 +22502,7 @@ export namespace Prisma {
     DESTINO?: StringNullableFilter<"ENFERMER"> | string | null
     IMPORTE?: FloatNullableFilter<"ENFERMER"> | number | null
     ANULADO?: IntNullableFilter<"ENFERMER"> | number | null
-    PRACTICA?: IntNullableFilter<"ENFERMER"> | number | null
+    PRACTICA?: StringNullableFilter<"ENFERMER"> | string | null
     OPERADOR?: StringNullableFilter<"ENFERMER"> | string | null
     OPE_ANU?: IntNullableFilter<"ENFERMER"> | number | null
     NRO_DNI?: IntNullableFilter<"ENFERMER"> | number | null
@@ -22544,7 +22540,7 @@ export namespace Prisma {
     DESTINO?: StringNullableFilter<"ENFERMER"> | string | null
     IMPORTE?: FloatNullableFilter<"ENFERMER"> | number | null
     ANULADO?: IntNullableFilter<"ENFERMER"> | number | null
-    PRACTICA?: IntNullableFilter<"ENFERMER"> | number | null
+    PRACTICA?: StringNullableFilter<"ENFERMER"> | string | null
     OPERADOR?: StringNullableFilter<"ENFERMER"> | string | null
     OPE_ANU?: IntNullableFilter<"ENFERMER"> | number | null
     NRO_DNI?: IntNullableFilter<"ENFERMER"> | number | null
@@ -22585,7 +22581,7 @@ export namespace Prisma {
     DESTINO?: StringNullableWithAggregatesFilter<"ENFERMER"> | string | null
     IMPORTE?: FloatNullableWithAggregatesFilter<"ENFERMER"> | number | null
     ANULADO?: IntNullableWithAggregatesFilter<"ENFERMER"> | number | null
-    PRACTICA?: IntNullableWithAggregatesFilter<"ENFERMER"> | number | null
+    PRACTICA?: StringNullableWithAggregatesFilter<"ENFERMER"> | string | null
     OPERADOR?: StringNullableWithAggregatesFilter<"ENFERMER"> | string | null
     OPE_ANU?: IntNullableWithAggregatesFilter<"ENFERMER"> | number | null
     NRO_DNI?: IntNullableWithAggregatesFilter<"ENFERMER"> | number | null
@@ -24795,7 +24791,7 @@ export namespace Prisma {
     DESTINO?: string | null
     IMPORTE?: number | null
     ANULADO?: number | null
-    PRACTICA?: number | null
+    PRACTICA?: string | null
     OPERADOR?: string | null
     OPE_ANU?: number | null
     NRO_DNI?: number | null
@@ -24811,7 +24807,7 @@ export namespace Prisma {
     DESTINO?: string | null
     IMPORTE?: number | null
     ANULADO?: number | null
-    PRACTICA?: number | null
+    PRACTICA?: string | null
     OPERADOR?: string | null
     OPE_ANU?: number | null
     NRO_DNI?: number | null
@@ -24828,7 +24824,7 @@ export namespace Prisma {
     DESTINO?: NullableStringFieldUpdateOperationsInput | string | null
     IMPORTE?: NullableFloatFieldUpdateOperationsInput | number | null
     ANULADO?: NullableIntFieldUpdateOperationsInput | number | null
-    PRACTICA?: NullableIntFieldUpdateOperationsInput | number | null
+    PRACTICA?: NullableStringFieldUpdateOperationsInput | string | null
     OPERADOR?: NullableStringFieldUpdateOperationsInput | string | null
     OPE_ANU?: NullableIntFieldUpdateOperationsInput | number | null
     NRO_DNI?: NullableIntFieldUpdateOperationsInput | number | null
@@ -24844,7 +24840,7 @@ export namespace Prisma {
     DESTINO?: NullableStringFieldUpdateOperationsInput | string | null
     IMPORTE?: NullableFloatFieldUpdateOperationsInput | number | null
     ANULADO?: NullableIntFieldUpdateOperationsInput | number | null
-    PRACTICA?: NullableIntFieldUpdateOperationsInput | number | null
+    PRACTICA?: NullableStringFieldUpdateOperationsInput | string | null
     OPERADOR?: NullableStringFieldUpdateOperationsInput | string | null
     OPE_ANU?: NullableIntFieldUpdateOperationsInput | number | null
     NRO_DNI?: NullableIntFieldUpdateOperationsInput | number | null
@@ -24861,7 +24857,7 @@ export namespace Prisma {
     DESTINO?: string | null
     IMPORTE?: number | null
     ANULADO?: number | null
-    PRACTICA?: number | null
+    PRACTICA?: string | null
     OPERADOR?: string | null
     OPE_ANU?: number | null
     NRO_DNI?: number | null
@@ -24878,7 +24874,7 @@ export namespace Prisma {
     DESTINO?: NullableStringFieldUpdateOperationsInput | string | null
     IMPORTE?: NullableFloatFieldUpdateOperationsInput | number | null
     ANULADO?: NullableIntFieldUpdateOperationsInput | number | null
-    PRACTICA?: NullableIntFieldUpdateOperationsInput | number | null
+    PRACTICA?: NullableStringFieldUpdateOperationsInput | string | null
     OPERADOR?: NullableStringFieldUpdateOperationsInput | string | null
     OPE_ANU?: NullableIntFieldUpdateOperationsInput | number | null
     NRO_DNI?: NullableIntFieldUpdateOperationsInput | number | null
@@ -24894,7 +24890,7 @@ export namespace Prisma {
     DESTINO?: NullableStringFieldUpdateOperationsInput | string | null
     IMPORTE?: NullableFloatFieldUpdateOperationsInput | number | null
     ANULADO?: NullableIntFieldUpdateOperationsInput | number | null
-    PRACTICA?: NullableIntFieldUpdateOperationsInput | number | null
+    PRACTICA?: NullableStringFieldUpdateOperationsInput | string | null
     OPERADOR?: NullableStringFieldUpdateOperationsInput | string | null
     OPE_ANU?: NullableIntFieldUpdateOperationsInput | number | null
     NRO_DNI?: NullableIntFieldUpdateOperationsInput | number | null
@@ -27134,7 +27130,6 @@ export namespace Prisma {
     CONTRATO?: SortOrder
     IMPORTE?: SortOrder
     ANULADO?: SortOrder
-    PRACTICA?: SortOrder
     OPE_ANU?: SortOrder
     NRO_DNI?: SortOrder
     idenfermer?: SortOrder
@@ -27179,7 +27174,6 @@ export namespace Prisma {
     CONTRATO?: SortOrder
     IMPORTE?: SortOrder
     ANULADO?: SortOrder
-    PRACTICA?: SortOrder
     OPE_ANU?: SortOrder
     NRO_DNI?: SortOrder
     idenfermer?: SortOrder

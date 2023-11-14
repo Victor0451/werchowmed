@@ -130,7 +130,7 @@ model ENFERMER {
   DESTINO    String?   @db.VarChar(5)
   IMPORTE    Float?
   ANULADO    Int?      @db.TinyInt
-  PRACTICA   Int?
+  PRACTICA   String?   @db.VarChar(255)
   OPERADOR   String?   @db.VarChar(255)
   OPE_ANU    Int?
   NRO_DNI    Int?

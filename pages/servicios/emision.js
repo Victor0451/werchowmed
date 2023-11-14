@@ -70,6 +70,8 @@ const Emision = () => {
   const [planOrto, guardarPlanOrto] = useState(null);
   const [planImp, guardarPlanImp] = useState(null);
   const [arancel, guardarArancel] = useState(0);
+  const [pracEnfSel, guardarPracEnfSel] = useState(0);
+  const [indexSel, guardarindexSel] = useState(null);
   const [habilita, guardarHabilita] = useState(false);
   const [infoAdh, guardarInfoAdh] = useState([]);
   const [usosFarm, guardarUsosFarm] = useState(0);
@@ -127,8 +129,6 @@ const Emision = () => {
             guardarFicha(ficha);
 
             traerAdhs(ficha[0].CONTRATO);
-
-            arancelEnfDomi(ficha[0].CONTRATO);
 
             if (
               ficha[0].GRUPO === 1001 ||
@@ -232,8 +232,6 @@ const Emision = () => {
             guardarFicha(ficha);
 
             traerAdhs(ficha[0].CONTRATO);
-
-            arancelEnfDomi(ficha[0].CONTRATO);
 
             if (
               ficha[0].GRUPO === 1001 ||
@@ -1495,7 +1493,7 @@ const Emision = () => {
       HORA: moment().format("HH:mm"),
       VALOR: "0",
       SERVICIO: `ENFE`,
-      IMPORTE: 0,
+      IMPORTE: parseFloat(arancel),
       IMP_LIQ: 0,
       PUESTO: "",
       PRESTADO: detEnf.COD_PRES,
@@ -1505,10 +1503,6 @@ const Emision = () => {
       ANULADO: 0,
       f: "reg uso",
     };
-
-    if (detEnf.COD_PRES === "E_NOE") {
-      uso.IMPORTE = arancel;
-    }
 
     await axios
       .post(`/api/servicios`, uso)
@@ -1544,19 +1538,15 @@ const Emision = () => {
       HORA: moment().format("HH:mm"),
       NRO_ORDEN: orden,
       DESTINO: detEnf.COD_PRES,
-      IMPORTE: 0,
+      IMPORTE: parseFloat(arancel),
       ANULADO: 0,
-      PRACTICA: prestacionRefE.current.value,
+      PRACTICA: pracEnfSel,
       CANTIDAD: cantidadRefE.current.value,
       OPERADOR: usu.usuario,
       OPE_ANU: 0,
       NRO_DNI: socio.NRO_DOC,
       f: "reg enfermeria",
     };
-
-    if (detEnf.COD_PRES === "E_NOE") {
-      enfer.IMPORTE = arancel;
-    }
 
     await axios
       .post(`/api/servicios`, enfer)
@@ -1581,33 +1571,43 @@ const Emision = () => {
       });
   };
 
-  const arancelEnfDomi = async (contrato) => {
-    await axios
-      .get(`/api/servicios`, {
-        params: {
-          f: "arancel enfe domicilio",
-          contrato: contrato,
-        },
-      })
-      .then((res) => {
-        if (res.data.length > 0) {
-          if (priUso === 0) {
-            guardarArancel(400);
-          } else {
-            guardarArancel(600);
-          }
-        } else if (res.data.length === 0) {
-          if (priUso === 0) {
-            guardarArancel(600);
-          } else {
-            guardarArancel(800);
-          }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toastr.error("Ocurrio un error al determinar el arancel", "ATENCNION");
-      });
+  const arancelEnfDomi = (row, index) => {
+    // -----------------------------------
+    // CALCLULO DE ARANCEL (COLOCAR EN FUNCIONES DE BUSQUEDAS SOCIO)
+    // -----------------------------------
+    // await axios
+    //   .get(`/api/servicios`, {
+    //     params: {
+    //       f: "arancel enfe domicilio",
+    //       contrato: contrato,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     if (res.data.length > 0) {
+    //       if (priUso === 0) {
+    //         guardarArancel(400);
+    //       } else {
+    //         guardarArancel(600);
+    //       }
+    //     } else if (res.data.length === 0) {
+    //       if (priUso === 0) {
+    //         guardarArancel(600);
+    //       } else {
+    //         guardarArancel(800);
+    //       }
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     toastr.error("Ocurrio un error al determinar el arancel", "ATENCNION");
+    //   });
+    // -----------------------------------
+
+    let cantidad = cantidadRefE.current.value;
+    let aranfinal = parseFloat(row.importe) * parseInt(cantidad);
+    guardarArancel(aranfinal);
+    guardarPracEnfSel(row.practica);
+    guardarindexSel(index);
   };
 
   // -------------------------------------------------
@@ -2354,6 +2354,8 @@ const Emision = () => {
                         usosFarm={usosFarm}
                         selDescuento={selDescuento}
                         traerHistorialUsos={traerHistorialUsos}
+                        arancelEnfDomi={arancelEnfDomi}
+                        indexSel={indexSel}
                       />
 
                       <ModalHistorialUsos historialUsos={historialUsos} />

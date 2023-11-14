@@ -226,10 +226,9 @@ export default async function handler(req, res) {
     } else if (req.query.f && req.query.f === "traer enfermeria orden") {
       const pracEnfer = await Serv.$queryRaw`
          
-          SELECT p.practica, a.NOMBRE, e.IMPORTE
+          SELECT e.PRACTICA, a.NOMBRE, e.IMPORTE, e.CANTIDAD
           FROM ENFERMER as e
-          INNER JOIN PRESTADO as a on a.COD_PRES = e.DESTINO
-          INNER JOIN PRACT_ENFER as p on p.idpractica = e.PRACTICA
+          INNER JOIN PRESTADO as a on a.COD_PRES = e.DESTINO          
           WHERE e.NRO_ORDEN = ${req.query.orden}
       `;
       res
@@ -756,7 +755,7 @@ export default async function handler(req, res) {
           DESTINO: req.body.DESTINO,
           IMPORTE: parseFloat(req.body.IMPORTE),
           ANULADO: req.body.ANULADO,
-          PRACTICA: parseInt(req.body.PRACTICA),
+          PRACTICA: req.body.PRACTICA,
           CANTIDAD: parseInt(req.body.CANTIDAD),
           OPERADOR: req.body.OPERADOR,
           OPE_ANU: parseInt(req.body.OPE_ANU),

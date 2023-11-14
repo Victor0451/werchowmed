@@ -1,4 +1,5 @@
 import React from "react";
+import toastr from "toastr";
 
 const ModalEnfermeria = ({
   socio,
@@ -14,6 +15,8 @@ const ModalEnfermeria = ({
   cantidadRefE,
   registrarEnfermeriaUso,
   arancel,
+  arancelEnfDomi,
+  indexSel,
 }) => {
   return (
     <div
@@ -149,59 +152,80 @@ const ModalEnfermeria = ({
                         No hay prestacion registrada
                       </div>
                     ) : (
-                      <div className="col-md-4 mt-4">
-                        <label>Prestacion:</label>
+                      <div className="col-md-8 mt-4">
+                        <h6>Listado de Prestaciones:</h6>
 
-                        <select className="custom-select" ref={prestacionRefE}>
-                          <option selected value="no">
-                            Selecciona una opcion
-                          </option>
-                          {practEnfer.map((s, index) => (
-                            <option key={index} value={s.idpractica}>
-                              {s.practica}
-                            </option>
-                          ))}
-                        </select>
+                        <table className="table table-sm mt-2 border">
+                          <thead className="thead-dark">
+                            <tr className="trSel">
+                              <th scope="col">#</th>
+                              <th scope="col">Practica</th>
+                              <th scope="col">Importe</th>
+                              <th scope="col">Accion</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {practEnfer.map((p, index) => (
+                              <tr
+                                key={index}
+                                style={{
+                                  backgroundColor:
+                                    index === indexSel ? "gray" : "",
+                                  color: index === indexSel ? "white" : "",
+                                }}
+                              >
+                                <th scope="row">{index + 1}</th>
+                                <td>{p.practica}</td>
+                                <td>{p.importe}</td>
+                                <td>
+                                  <div
+                                    className="butlist text-center"
+                                    onClick={() => {
+                                      arancelEnfDomi(p, index);
+                                    }}
+                                  >
+                                    <i className="butfa fa fa-arrow-left"></i>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     )}
 
                     <div className="col-md-4 mt-4">
                       <label>Cantidad:</label>
 
-                      <select className="custom-select" ref={cantidadRefE}>
-                        <option selected value="no">
-                          Selecciona una opcion
-                        </option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                      </select>
+                      <input
+                        type="number"
+                        className="form-control"
+                        defaultValue={1}
+                        ref={cantidadRefE}
+                        onChange={() =>
+                          toastr.info(
+                            "Cambiaste la cantidad, vuelve a seleccionar la practica para actualizar el valor final de la orden"
+                          )
+                        }
+                      />
+                    </div>
+                    <div className="col-md-8 mt-4">
+                      <div className="alert alert-info border border-dark mt-4 mb-4 text-center text-uppercase">
+                        El valor final de la orden esta determinado por el
+                        importe de la practica seleccionada, multiplicada por la
+                        cantidad ingresada. En caso de ingresar una nueva
+                        cantidad, para actualizar el valor final solo basta con
+                        volver a seleccionar la practica.
+                      </div>
                     </div>
 
-                    <div className="col-md-12 d-flex justify-content-end mt-4">
+                    <div className="col-md-4  mt-4">
                       <div className="mt-4 alert alert-info text-center text-uppercase border border-dark">
                         <>
                           <u>Coseguro</u>: ${arancel}
                         </>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="alert alert-info border border-dark mt-4 mb-4 text-center text-uppercase">
-                    El valor del coseguro esta determinado por la cantidad de
-                    usos y el domicilio del socio.
                   </div>
                 </div>
               </>

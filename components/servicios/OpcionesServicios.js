@@ -58,7 +58,9 @@ const OpcionesServicios = ({
   planImp,
   registrarPlanImp,
   usosFarm,
-  selDescuento
+  selDescuento,
+  arancelEnfDomi,
+  indexSel
 }) => {
   return (
     <div className="mt-4 border border-dark p-4">
@@ -247,6 +249,8 @@ const OpcionesServicios = ({
         registrarEnfermeriaUso={registrarEnfermeriaUso}
         priUso={priUso}
         arancel={arancel}
+        arancelEnfDomi={arancelEnfDomi}
+        indexSel={indexSel}
       />
 
       <ModalPlanOdontologico
