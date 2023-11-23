@@ -16,35 +16,35 @@ const ImpOrdenConsulta = ({
   if (!socio) return <Spinner />;
 
   return (
-    <div className=" p-4 borderImp list">
+    <div className=" p-2 borderImp list">
       <div className="row">
         <div className="col-md-8">
           {flag && flag === "E" ? (
-            <h2 className="mt-4 mb-4">
+            <h2 className="mt-2 mb-2">
               <strong>
                 <u>Subsidio Enfermeria</u>
               </strong>
             </h2>
           ) : flag && flag === "F" ? (
-            <h2 className="mt-4 mb-4">
+            <h2 className="mt-2 mb-2">
               <strong>
                 <u>Subsidio Farmacia</u>
               </strong>
             </h2>
           ) : (
-            <h2 className="mt-4 mb-4">
+            <h2 className="mt-2 mb-2">
               <strong>
                 <u>Subsidio Medico</u>
               </strong>
             </h2>
           )}
         </div>
-        <div className="mt-4 col-md-4 d-flex justify-content-end">
+        <div className="mt-2 col-md-4 d-flex justify-content-end">
           <img src="/img/logo.png" className="werchowlogo" />
         </div>
       </div>
 
-      <div className="mt-4 borderImp p-4 row">
+      <div className="mt-2 borderImp p-2 row">
         <div className="row  col-md-8">
           <div className="col-md-12">
             <strong>
@@ -98,18 +98,18 @@ const ImpOrdenConsulta = ({
               </strong>
             </div>
           )}
-
+          {/* 
           <div className="mt-2 col-md-12">
             <strong>
               <u>SIN ARANCEL DIFERENCIAL</u>
             </strong>
-          </div>
+          </div> */}
         </div>
       </div>
 
       {flag && flag === "F" ? (
         <>
-          <div className="mt-4 d-flex justify-content-between text-center border-bottom  border-dark descr">
+          <div className="mt-2 d-flex justify-content-between text-center border-bottom  border-dark descr">
             <div className="col-4">
               <strong>DNI Beneficiario</strong>
             </div>
@@ -137,7 +137,7 @@ const ImpOrdenConsulta = ({
         </>
       ) : flag && flag === "E" ? (
         <>
-          <div className="mt-4 d-flex justify-content-between text-center border-bottom  border-dark descr">
+          <div className="mt-2 d-flex justify-content-between text-center border-bottom  border-dark descr">
             <div className="col-4">
               <strong>DNI Beneficiario</strong>
             </div>
@@ -166,7 +166,7 @@ const ImpOrdenConsulta = ({
         </>
       ) : (
         <>
-          <h4 className="mt-4 mb-4">
+          <h4 className="mt-2 mb-2">
             <strong>
               <u>Prestador</u>
             </strong>
@@ -204,7 +204,7 @@ const ImpOrdenConsulta = ({
 
           {practicas.length > 0 ? (
             <>
-              <h4 className="mt-4 mb-4">
+              <h4 className="mt-2 mb-2">
                 <strong>
                   <u>Listado De Practicas</u>
                 </strong>
@@ -242,7 +242,7 @@ const ImpOrdenConsulta = ({
                 </div>
               ))}
 
-              <div className=" mt-4 border border-dark alert alert-info text-center text-uppercase">
+              <div className=" mt-2 border border-dark alert alert-info text-center text-uppercase">
                 $ {calcularTotalPracticas(practicas)}
               </div>
             </>
@@ -250,7 +250,7 @@ const ImpOrdenConsulta = ({
         </>
       )}
 
-      <div className="row mt-4 col-md-4">
+      <div className="row mt-2 col-md-4">
         <div className="col-md-12">
           <strong>
             <u>Fecha de Atencion</u>:
@@ -269,27 +269,27 @@ const ImpOrdenConsulta = ({
       </div>
       <br />
 
-      <div className=" mt-4">
+      <div className=" mt-2">
         <div className="row d-flex justify-content-between p-2">
-          <div className="col-4 text-center mt-4">
+          <div className="col-4 text-center mt-2">
             <br />
             <p>-----------------------------</p>
             <label>Firma del Afiliado</label>
           </div>
-          <div className="col-4 text-center mt-4">
+          <div className="col-4 text-center mt-2">
             <br />
             <p>-----------------------------</p>
             <label>Aclaracion</label>
           </div>
 
           {flag && flag === "F" ? (
-            <div className="col-4 text-center mt-4">
+            <div className="col-4 text-center mt-2">
               <br />
               <p>-----------------------------</p>
               <label>Firma/Sello de la Farmacia</label>
             </div>
           ) : (
-            <div className="col-4 text-center mt-4">
+            <div className="col-4 text-center mt-2">
               <br />
               <p>-----------------------------</p>
               <label>Firma/Sello del Medico</label>

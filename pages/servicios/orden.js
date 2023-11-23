@@ -167,7 +167,7 @@ const Orden = () => {
 
     document.body.innerHTML = contenidoOrg;
 
-    window.location.replace("/servicios/emision");
+    window.location.replace("/servicios/listadoordenes");
   };
 
   const traerPracticas = async (orden) => {
