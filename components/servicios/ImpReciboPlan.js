@@ -42,19 +42,7 @@ const ImpReciboPlan = ({ planSocio }) => {
 
           <div className="col-md-12">
             <strong>
-              <u>Total</u>: ${planSocio.total}
-            </strong>
-          </div>
-
-          <div className="col-md-12">
-            <strong>
               <u>Pago Inicial</u>: ${planSocio.pagado}
-            </strong>
-          </div>
-
-          <div className="col-md-12">
-            <strong>
-              <u>Saldo</u>: ${planSocio.saldo}
             </strong>
           </div>
         </div>

@@ -279,7 +279,7 @@ export default async function handler(req, res) {
            *
          FROM planes_odontologicos        
          WHERE estado = 1 
-         AND plan = 'IMP'
+         AND plan = 'CONT'
       `;
       res
         .status(200)

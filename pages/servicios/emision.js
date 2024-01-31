@@ -1654,13 +1654,15 @@ const Emision = () => {
       fecha: moment().format("YYYY-MM-DD"),
       total: planOrto.total,
       pagado: planOrto.pago_inicial,
-      saldo: parseFloat(planOrto.total) - parseFloat(planOrto.pago_inicial),
+      // saldo: parseFloat(planOrto.total) - parseFloat(planOrto.pago_inicial),
+      saldo: 0,
       estado: true,
       prestador: detalleMed.COD_PRES,
       prestador_nombre: detalleMed.NOMBRE,
       operador: usu.usuario,
       sucursal: usu.sucursal,
       plan: "ORTO",
+      contencion: 0,
       f: "reg plan odontologico",
     };
 
@@ -1684,7 +1686,9 @@ const Emision = () => {
                   plan.saldo,
                   planOrto.cuotas,
                   "ORTO",
-                  planOrto.visitas
+                  planOrto.visitas,
+                  planOrto.pago_cuota,
+                  planOrto.pago_final
                 );
 
                 let accion = `Se registro plan implante dental ID: ${res2.data.idplansocio}, para el socio: ${plan.contrato} - ${plan.socio}, dni: ${plan.dni}. Con un monto de ${plan.total}`;
@@ -1820,7 +1824,15 @@ const Emision = () => {
       });
   };
 
-  const regPlanVisitas = async (plan, saldo, cuotas, tiPla, visitas) => {
+  const regPlanVisitas = async (
+    plan,
+    saldo,
+    cuotas,
+    tiPla,
+    visitas,
+    pagCuo,
+    pagFin
+  ) => {
     let visi = {
       idplan: plan,
       nvisita: "",
@@ -1833,13 +1845,13 @@ const Emision = () => {
     };
 
     for (let i = 1; i < visitas; i++) {
-      if (i <= cuotas) {
+      if (i < cuotas) {
         visi.nvisita = i;
-        visi.pago = saldo / cuotas;
+        visi.pago = pagCuo;
         visi.fecha = moment().add(i, "months").format("YYYY-MM-DD");
       } else if (i > cuotas) {
         visi.nvisita = i;
-        visi.pago = 0;
+        visi.pago = pagFin;
         visi.fecha = moment().add(i, "months").format("YYYY-MM-DD");
       }
 

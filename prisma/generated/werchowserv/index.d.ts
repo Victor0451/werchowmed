@@ -16601,108 +16601,134 @@ export namespace Prisma {
 
   export type Planes_odontologicosAvgAggregateOutputType = {
     idplan: number | null
-    total: number | null
     pago_inicial: number | null
-    visitas: number | null
+    pago_cuota: number | null
+    pago_final: number | null
     cuotas: number | null
+    visitas: number | null
+    total: number | null
   }
 
   export type Planes_odontologicosSumAggregateOutputType = {
     idplan: number | null
-    total: number | null
     pago_inicial: number | null
-    visitas: number | null
+    pago_cuota: number | null
+    pago_final: number | null
     cuotas: number | null
+    visitas: number | null
+    total: number | null
   }
 
   export type Planes_odontologicosMinAggregateOutputType = {
     idplan: number | null
-    total: number | null
+    plan: string | null
     pago_inicial: number | null
+    pago_cuota: number | null
+    pago_final: number | null
+    cuotas: number | null
     detalle: string | null
-    estado: boolean | null
     visitas: number | null
     fecha_plan: Date | null
-    cuotas: number | null
-    plan: string | null
+    total: number | null
+    estado: boolean | null
+    detalle_plan: string | null
   }
 
   export type Planes_odontologicosMaxAggregateOutputType = {
     idplan: number | null
-    total: number | null
+    plan: string | null
     pago_inicial: number | null
+    pago_cuota: number | null
+    pago_final: number | null
+    cuotas: number | null
     detalle: string | null
-    estado: boolean | null
     visitas: number | null
     fecha_plan: Date | null
-    cuotas: number | null
-    plan: string | null
+    total: number | null
+    estado: boolean | null
+    detalle_plan: string | null
   }
 
   export type Planes_odontologicosCountAggregateOutputType = {
     idplan: number
-    total: number
+    plan: number
     pago_inicial: number
+    pago_cuota: number
+    pago_final: number
+    cuotas: number
     detalle: number
-    estado: number
     visitas: number
     fecha_plan: number
-    cuotas: number
-    plan: number
+    total: number
+    estado: number
+    detalle_plan: number
     _all: number
   }
 
 
   export type Planes_odontologicosAvgAggregateInputType = {
     idplan?: true
-    total?: true
     pago_inicial?: true
-    visitas?: true
+    pago_cuota?: true
+    pago_final?: true
     cuotas?: true
+    visitas?: true
+    total?: true
   }
 
   export type Planes_odontologicosSumAggregateInputType = {
     idplan?: true
-    total?: true
     pago_inicial?: true
-    visitas?: true
+    pago_cuota?: true
+    pago_final?: true
     cuotas?: true
+    visitas?: true
+    total?: true
   }
 
   export type Planes_odontologicosMinAggregateInputType = {
     idplan?: true
-    total?: true
+    plan?: true
     pago_inicial?: true
+    pago_cuota?: true
+    pago_final?: true
+    cuotas?: true
     detalle?: true
-    estado?: true
     visitas?: true
     fecha_plan?: true
-    cuotas?: true
-    plan?: true
+    total?: true
+    estado?: true
+    detalle_plan?: true
   }
 
   export type Planes_odontologicosMaxAggregateInputType = {
     idplan?: true
-    total?: true
+    plan?: true
     pago_inicial?: true
+    pago_cuota?: true
+    pago_final?: true
+    cuotas?: true
     detalle?: true
-    estado?: true
     visitas?: true
     fecha_plan?: true
-    cuotas?: true
-    plan?: true
+    total?: true
+    estado?: true
+    detalle_plan?: true
   }
 
   export type Planes_odontologicosCountAggregateInputType = {
     idplan?: true
-    total?: true
+    plan?: true
     pago_inicial?: true
+    pago_cuota?: true
+    pago_final?: true
+    cuotas?: true
     detalle?: true
-    estado?: true
     visitas?: true
     fecha_plan?: true
-    cuotas?: true
-    plan?: true
+    total?: true
+    estado?: true
+    detalle_plan?: true
     _all?: true
   }
 
@@ -16794,14 +16820,17 @@ export namespace Prisma {
 
   export type Planes_odontologicosGroupByOutputType = {
     idplan: number
-    total: number | null
+    plan: string | null
     pago_inicial: number | null
+    pago_cuota: number | null
+    pago_final: number | null
+    cuotas: number | null
     detalle: string | null
-    estado: boolean | null
     visitas: number | null
     fecha_plan: Date | null
-    cuotas: number | null
-    plan: string | null
+    total: number | null
+    estado: boolean | null
+    detalle_plan: string | null
     _count: Planes_odontologicosCountAggregateOutputType | null
     _avg: Planes_odontologicosAvgAggregateOutputType | null
     _sum: Planes_odontologicosSumAggregateOutputType | null
@@ -16825,26 +16854,32 @@ export namespace Prisma {
 
   export type planes_odontologicosSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     idplan?: boolean
-    total?: boolean
+    plan?: boolean
     pago_inicial?: boolean
+    pago_cuota?: boolean
+    pago_final?: boolean
+    cuotas?: boolean
     detalle?: boolean
-    estado?: boolean
     visitas?: boolean
     fecha_plan?: boolean
-    cuotas?: boolean
-    plan?: boolean
+    total?: boolean
+    estado?: boolean
+    detalle_plan?: boolean
   }, ExtArgs["result"]["planes_odontologicos"]>
 
   export type planes_odontologicosSelectScalar = {
     idplan?: boolean
-    total?: boolean
+    plan?: boolean
     pago_inicial?: boolean
+    pago_cuota?: boolean
+    pago_final?: boolean
+    cuotas?: boolean
     detalle?: boolean
-    estado?: boolean
     visitas?: boolean
     fecha_plan?: boolean
-    cuotas?: boolean
-    plan?: boolean
+    total?: boolean
+    estado?: boolean
+    detalle_plan?: boolean
   }
 
 
@@ -16853,14 +16888,17 @@ export namespace Prisma {
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       idplan: number
-      total: number | null
+      plan: string | null
       pago_inicial: number | null
+      pago_cuota: number | null
+      pago_final: number | null
+      cuotas: number | null
       detalle: string | null
-      estado: boolean | null
       visitas: number | null
       fecha_plan: Date | null
-      cuotas: number | null
-      plan: string | null
+      total: number | null
+      estado: boolean | null
+      detalle_plan: string | null
     }, ExtArgs["result"]["planes_odontologicos"]>
     composites: {}
   }
@@ -17256,14 +17294,17 @@ export namespace Prisma {
    */ 
   interface planes_odontologicosFieldRefs {
     readonly idplan: FieldRef<"planes_odontologicos", 'Int'>
-    readonly total: FieldRef<"planes_odontologicos", 'Float'>
+    readonly plan: FieldRef<"planes_odontologicos", 'String'>
     readonly pago_inicial: FieldRef<"planes_odontologicos", 'Float'>
+    readonly pago_cuota: FieldRef<"planes_odontologicos", 'Float'>
+    readonly pago_final: FieldRef<"planes_odontologicos", 'Float'>
+    readonly cuotas: FieldRef<"planes_odontologicos", 'Int'>
     readonly detalle: FieldRef<"planes_odontologicos", 'String'>
-    readonly estado: FieldRef<"planes_odontologicos", 'Boolean'>
     readonly visitas: FieldRef<"planes_odontologicos", 'Int'>
     readonly fecha_plan: FieldRef<"planes_odontologicos", 'DateTime'>
-    readonly cuotas: FieldRef<"planes_odontologicos", 'Int'>
-    readonly plan: FieldRef<"planes_odontologicos", 'String'>
+    readonly total: FieldRef<"planes_odontologicos", 'Float'>
+    readonly estado: FieldRef<"planes_odontologicos", 'Boolean'>
+    readonly detalle_plan: FieldRef<"planes_odontologicos", 'String'>
   }
     
 
@@ -17596,6 +17637,7 @@ export namespace Prisma {
     operador: string | null
     sucursal: string | null
     plan: string | null
+    contencion: boolean | null
   }
 
   export type Planes_socioMaxAggregateOutputType = {
@@ -17613,6 +17655,7 @@ export namespace Prisma {
     operador: string | null
     sucursal: string | null
     plan: string | null
+    contencion: boolean | null
   }
 
   export type Planes_socioCountAggregateOutputType = {
@@ -17630,6 +17673,7 @@ export namespace Prisma {
     operador: number
     sucursal: number
     plan: number
+    contencion: number
     _all: number
   }
 
@@ -17667,6 +17711,7 @@ export namespace Prisma {
     operador?: true
     sucursal?: true
     plan?: true
+    contencion?: true
   }
 
   export type Planes_socioMaxAggregateInputType = {
@@ -17684,6 +17729,7 @@ export namespace Prisma {
     operador?: true
     sucursal?: true
     plan?: true
+    contencion?: true
   }
 
   export type Planes_socioCountAggregateInputType = {
@@ -17701,6 +17747,7 @@ export namespace Prisma {
     operador?: true
     sucursal?: true
     plan?: true
+    contencion?: true
     _all?: true
   }
 
@@ -17805,6 +17852,7 @@ export namespace Prisma {
     operador: string | null
     sucursal: string | null
     plan: string | null
+    contencion: boolean | null
     _count: Planes_socioCountAggregateOutputType | null
     _avg: Planes_socioAvgAggregateOutputType | null
     _sum: Planes_socioSumAggregateOutputType | null
@@ -17841,6 +17889,7 @@ export namespace Prisma {
     operador?: boolean
     sucursal?: boolean
     plan?: boolean
+    contencion?: boolean
   }, ExtArgs["result"]["planes_socio"]>
 
   export type planes_socioSelectScalar = {
@@ -17858,6 +17907,7 @@ export namespace Prisma {
     operador?: boolean
     sucursal?: boolean
     plan?: boolean
+    contencion?: boolean
   }
 
 
@@ -17879,6 +17929,7 @@ export namespace Prisma {
       operador: string | null
       sucursal: string | null
       plan: string | null
+      contencion: boolean | null
     }, ExtArgs["result"]["planes_socio"]>
     composites: {}
   }
@@ -18287,6 +18338,7 @@ export namespace Prisma {
     readonly operador: FieldRef<"planes_socio", 'String'>
     readonly sucursal: FieldRef<"planes_socio", 'String'>
     readonly plan: FieldRef<"planes_socio", 'String'>
+    readonly contencion: FieldRef<"planes_socio", 'Boolean'>
   }
     
 
@@ -21747,14 +21799,17 @@ export namespace Prisma {
 
   export const Planes_odontologicosScalarFieldEnum: {
     idplan: 'idplan',
-    total: 'total',
+    plan: 'plan',
     pago_inicial: 'pago_inicial',
+    pago_cuota: 'pago_cuota',
+    pago_final: 'pago_final',
+    cuotas: 'cuotas',
     detalle: 'detalle',
-    estado: 'estado',
     visitas: 'visitas',
     fecha_plan: 'fecha_plan',
-    cuotas: 'cuotas',
-    plan: 'plan'
+    total: 'total',
+    estado: 'estado',
+    detalle_plan: 'detalle_plan'
   };
 
   export type Planes_odontologicosScalarFieldEnum = (typeof Planes_odontologicosScalarFieldEnum)[keyof typeof Planes_odontologicosScalarFieldEnum]
@@ -21774,7 +21829,8 @@ export namespace Prisma {
     prestador_nombre: 'prestador_nombre',
     operador: 'operador',
     sucursal: 'sucursal',
-    plan: 'plan'
+    plan: 'plan',
+    contencion: 'contencion'
   };
 
   export type Planes_socioScalarFieldEnum = (typeof Planes_socioScalarFieldEnum)[keyof typeof Planes_socioScalarFieldEnum]
@@ -23646,26 +23702,32 @@ export namespace Prisma {
     OR?: planes_odontologicosWhereInput[]
     NOT?: planes_odontologicosWhereInput | planes_odontologicosWhereInput[]
     idplan?: IntFilter<"planes_odontologicos"> | number
-    total?: FloatNullableFilter<"planes_odontologicos"> | number | null
+    plan?: StringNullableFilter<"planes_odontologicos"> | string | null
     pago_inicial?: FloatNullableFilter<"planes_odontologicos"> | number | null
+    pago_cuota?: FloatNullableFilter<"planes_odontologicos"> | number | null
+    pago_final?: FloatNullableFilter<"planes_odontologicos"> | number | null
+    cuotas?: IntNullableFilter<"planes_odontologicos"> | number | null
     detalle?: StringNullableFilter<"planes_odontologicos"> | string | null
-    estado?: BoolNullableFilter<"planes_odontologicos"> | boolean | null
     visitas?: IntNullableFilter<"planes_odontologicos"> | number | null
     fecha_plan?: DateTimeNullableFilter<"planes_odontologicos"> | Date | string | null
-    cuotas?: IntNullableFilter<"planes_odontologicos"> | number | null
-    plan?: StringNullableFilter<"planes_odontologicos"> | string | null
+    total?: FloatNullableFilter<"planes_odontologicos"> | number | null
+    estado?: BoolNullableFilter<"planes_odontologicos"> | boolean | null
+    detalle_plan?: StringNullableFilter<"planes_odontologicos"> | string | null
   }
 
   export type planes_odontologicosOrderByWithRelationInput = {
     idplan?: SortOrder
-    total?: SortOrderInput | SortOrder
+    plan?: SortOrderInput | SortOrder
     pago_inicial?: SortOrderInput | SortOrder
+    pago_cuota?: SortOrderInput | SortOrder
+    pago_final?: SortOrderInput | SortOrder
+    cuotas?: SortOrderInput | SortOrder
     detalle?: SortOrderInput | SortOrder
-    estado?: SortOrderInput | SortOrder
     visitas?: SortOrderInput | SortOrder
     fecha_plan?: SortOrderInput | SortOrder
-    cuotas?: SortOrderInput | SortOrder
-    plan?: SortOrderInput | SortOrder
+    total?: SortOrderInput | SortOrder
+    estado?: SortOrderInput | SortOrder
+    detalle_plan?: SortOrderInput | SortOrder
   }
 
   export type planes_odontologicosWhereUniqueInput = Prisma.AtLeast<{
@@ -23673,26 +23735,32 @@ export namespace Prisma {
     AND?: planes_odontologicosWhereInput | planes_odontologicosWhereInput[]
     OR?: planes_odontologicosWhereInput[]
     NOT?: planes_odontologicosWhereInput | planes_odontologicosWhereInput[]
-    total?: FloatNullableFilter<"planes_odontologicos"> | number | null
+    plan?: StringNullableFilter<"planes_odontologicos"> | string | null
     pago_inicial?: FloatNullableFilter<"planes_odontologicos"> | number | null
+    pago_cuota?: FloatNullableFilter<"planes_odontologicos"> | number | null
+    pago_final?: FloatNullableFilter<"planes_odontologicos"> | number | null
+    cuotas?: IntNullableFilter<"planes_odontologicos"> | number | null
     detalle?: StringNullableFilter<"planes_odontologicos"> | string | null
-    estado?: BoolNullableFilter<"planes_odontologicos"> | boolean | null
     visitas?: IntNullableFilter<"planes_odontologicos"> | number | null
     fecha_plan?: DateTimeNullableFilter<"planes_odontologicos"> | Date | string | null
-    cuotas?: IntNullableFilter<"planes_odontologicos"> | number | null
-    plan?: StringNullableFilter<"planes_odontologicos"> | string | null
+    total?: FloatNullableFilter<"planes_odontologicos"> | number | null
+    estado?: BoolNullableFilter<"planes_odontologicos"> | boolean | null
+    detalle_plan?: StringNullableFilter<"planes_odontologicos"> | string | null
   }, "idplan">
 
   export type planes_odontologicosOrderByWithAggregationInput = {
     idplan?: SortOrder
-    total?: SortOrderInput | SortOrder
+    plan?: SortOrderInput | SortOrder
     pago_inicial?: SortOrderInput | SortOrder
+    pago_cuota?: SortOrderInput | SortOrder
+    pago_final?: SortOrderInput | SortOrder
+    cuotas?: SortOrderInput | SortOrder
     detalle?: SortOrderInput | SortOrder
-    estado?: SortOrderInput | SortOrder
     visitas?: SortOrderInput | SortOrder
     fecha_plan?: SortOrderInput | SortOrder
-    cuotas?: SortOrderInput | SortOrder
-    plan?: SortOrderInput | SortOrder
+    total?: SortOrderInput | SortOrder
+    estado?: SortOrderInput | SortOrder
+    detalle_plan?: SortOrderInput | SortOrder
     _count?: planes_odontologicosCountOrderByAggregateInput
     _avg?: planes_odontologicosAvgOrderByAggregateInput
     _max?: planes_odontologicosMaxOrderByAggregateInput
@@ -23705,14 +23773,17 @@ export namespace Prisma {
     OR?: planes_odontologicosScalarWhereWithAggregatesInput[]
     NOT?: planes_odontologicosScalarWhereWithAggregatesInput | planes_odontologicosScalarWhereWithAggregatesInput[]
     idplan?: IntWithAggregatesFilter<"planes_odontologicos"> | number
-    total?: FloatNullableWithAggregatesFilter<"planes_odontologicos"> | number | null
+    plan?: StringNullableWithAggregatesFilter<"planes_odontologicos"> | string | null
     pago_inicial?: FloatNullableWithAggregatesFilter<"planes_odontologicos"> | number | null
+    pago_cuota?: FloatNullableWithAggregatesFilter<"planes_odontologicos"> | number | null
+    pago_final?: FloatNullableWithAggregatesFilter<"planes_odontologicos"> | number | null
+    cuotas?: IntNullableWithAggregatesFilter<"planes_odontologicos"> | number | null
     detalle?: StringNullableWithAggregatesFilter<"planes_odontologicos"> | string | null
-    estado?: BoolNullableWithAggregatesFilter<"planes_odontologicos"> | boolean | null
     visitas?: IntNullableWithAggregatesFilter<"planes_odontologicos"> | number | null
     fecha_plan?: DateTimeNullableWithAggregatesFilter<"planes_odontologicos"> | Date | string | null
-    cuotas?: IntNullableWithAggregatesFilter<"planes_odontologicos"> | number | null
-    plan?: StringNullableWithAggregatesFilter<"planes_odontologicos"> | string | null
+    total?: FloatNullableWithAggregatesFilter<"planes_odontologicos"> | number | null
+    estado?: BoolNullableWithAggregatesFilter<"planes_odontologicos"> | boolean | null
+    detalle_plan?: StringNullableWithAggregatesFilter<"planes_odontologicos"> | string | null
   }
 
   export type planes_socioWhereInput = {
@@ -23733,6 +23804,7 @@ export namespace Prisma {
     operador?: StringNullableFilter<"planes_socio"> | string | null
     sucursal?: StringNullableFilter<"planes_socio"> | string | null
     plan?: StringNullableFilter<"planes_socio"> | string | null
+    contencion?: BoolNullableFilter<"planes_socio"> | boolean | null
   }
 
   export type planes_socioOrderByWithRelationInput = {
@@ -23750,6 +23822,7 @@ export namespace Prisma {
     operador?: SortOrderInput | SortOrder
     sucursal?: SortOrderInput | SortOrder
     plan?: SortOrderInput | SortOrder
+    contencion?: SortOrderInput | SortOrder
   }
 
   export type planes_socioWhereUniqueInput = Prisma.AtLeast<{
@@ -23770,6 +23843,7 @@ export namespace Prisma {
     operador?: StringNullableFilter<"planes_socio"> | string | null
     sucursal?: StringNullableFilter<"planes_socio"> | string | null
     plan?: StringNullableFilter<"planes_socio"> | string | null
+    contencion?: BoolNullableFilter<"planes_socio"> | boolean | null
   }, "idplansocio">
 
   export type planes_socioOrderByWithAggregationInput = {
@@ -23787,6 +23861,7 @@ export namespace Prisma {
     operador?: SortOrderInput | SortOrder
     sucursal?: SortOrderInput | SortOrder
     plan?: SortOrderInput | SortOrder
+    contencion?: SortOrderInput | SortOrder
     _count?: planes_socioCountOrderByAggregateInput
     _avg?: planes_socioAvgOrderByAggregateInput
     _max?: planes_socioMaxOrderByAggregateInput
@@ -23812,6 +23887,7 @@ export namespace Prisma {
     operador?: StringNullableWithAggregatesFilter<"planes_socio"> | string | null
     sucursal?: StringNullableWithAggregatesFilter<"planes_socio"> | string | null
     plan?: StringNullableWithAggregatesFilter<"planes_socio"> | string | null
+    contencion?: BoolNullableWithAggregatesFilter<"planes_socio"> | boolean | null
   }
 
   export type planes_visitasWhereInput = {
@@ -26168,84 +26244,105 @@ export namespace Prisma {
   }
 
   export type planes_odontologicosCreateInput = {
-    total?: number | null
+    plan?: string | null
     pago_inicial?: number | null
+    pago_cuota?: number | null
+    pago_final?: number | null
+    cuotas?: number | null
     detalle?: string | null
-    estado?: boolean | null
     visitas?: number | null
     fecha_plan?: Date | string | null
-    cuotas?: number | null
-    plan?: string | null
+    total?: number | null
+    estado?: boolean | null
+    detalle_plan?: string | null
   }
 
   export type planes_odontologicosUncheckedCreateInput = {
     idplan?: number
-    total?: number | null
+    plan?: string | null
     pago_inicial?: number | null
+    pago_cuota?: number | null
+    pago_final?: number | null
+    cuotas?: number | null
     detalle?: string | null
-    estado?: boolean | null
     visitas?: number | null
     fecha_plan?: Date | string | null
-    cuotas?: number | null
-    plan?: string | null
+    total?: number | null
+    estado?: boolean | null
+    detalle_plan?: string | null
   }
 
   export type planes_odontologicosUpdateInput = {
-    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    plan?: NullableStringFieldUpdateOperationsInput | string | null
     pago_inicial?: NullableFloatFieldUpdateOperationsInput | number | null
+    pago_cuota?: NullableFloatFieldUpdateOperationsInput | number | null
+    pago_final?: NullableFloatFieldUpdateOperationsInput | number | null
+    cuotas?: NullableIntFieldUpdateOperationsInput | number | null
     detalle?: NullableStringFieldUpdateOperationsInput | string | null
-    estado?: NullableBoolFieldUpdateOperationsInput | boolean | null
     visitas?: NullableIntFieldUpdateOperationsInput | number | null
     fecha_plan?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cuotas?: NullableIntFieldUpdateOperationsInput | number | null
-    plan?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    detalle_plan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type planes_odontologicosUncheckedUpdateInput = {
     idplan?: IntFieldUpdateOperationsInput | number
-    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    plan?: NullableStringFieldUpdateOperationsInput | string | null
     pago_inicial?: NullableFloatFieldUpdateOperationsInput | number | null
+    pago_cuota?: NullableFloatFieldUpdateOperationsInput | number | null
+    pago_final?: NullableFloatFieldUpdateOperationsInput | number | null
+    cuotas?: NullableIntFieldUpdateOperationsInput | number | null
     detalle?: NullableStringFieldUpdateOperationsInput | string | null
-    estado?: NullableBoolFieldUpdateOperationsInput | boolean | null
     visitas?: NullableIntFieldUpdateOperationsInput | number | null
     fecha_plan?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cuotas?: NullableIntFieldUpdateOperationsInput | number | null
-    plan?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    detalle_plan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type planes_odontologicosCreateManyInput = {
     idplan?: number
-    total?: number | null
+    plan?: string | null
     pago_inicial?: number | null
+    pago_cuota?: number | null
+    pago_final?: number | null
+    cuotas?: number | null
     detalle?: string | null
-    estado?: boolean | null
     visitas?: number | null
     fecha_plan?: Date | string | null
-    cuotas?: number | null
-    plan?: string | null
+    total?: number | null
+    estado?: boolean | null
+    detalle_plan?: string | null
   }
 
   export type planes_odontologicosUpdateManyMutationInput = {
-    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    plan?: NullableStringFieldUpdateOperationsInput | string | null
     pago_inicial?: NullableFloatFieldUpdateOperationsInput | number | null
+    pago_cuota?: NullableFloatFieldUpdateOperationsInput | number | null
+    pago_final?: NullableFloatFieldUpdateOperationsInput | number | null
+    cuotas?: NullableIntFieldUpdateOperationsInput | number | null
     detalle?: NullableStringFieldUpdateOperationsInput | string | null
-    estado?: NullableBoolFieldUpdateOperationsInput | boolean | null
     visitas?: NullableIntFieldUpdateOperationsInput | number | null
     fecha_plan?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cuotas?: NullableIntFieldUpdateOperationsInput | number | null
-    plan?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    detalle_plan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type planes_odontologicosUncheckedUpdateManyInput = {
     idplan?: IntFieldUpdateOperationsInput | number
-    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    plan?: NullableStringFieldUpdateOperationsInput | string | null
     pago_inicial?: NullableFloatFieldUpdateOperationsInput | number | null
+    pago_cuota?: NullableFloatFieldUpdateOperationsInput | number | null
+    pago_final?: NullableFloatFieldUpdateOperationsInput | number | null
+    cuotas?: NullableIntFieldUpdateOperationsInput | number | null
     detalle?: NullableStringFieldUpdateOperationsInput | string | null
-    estado?: NullableBoolFieldUpdateOperationsInput | boolean | null
     visitas?: NullableIntFieldUpdateOperationsInput | number | null
     fecha_plan?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cuotas?: NullableIntFieldUpdateOperationsInput | number | null
-    plan?: NullableStringFieldUpdateOperationsInput | string | null
+    total?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    detalle_plan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type planes_socioCreateInput = {
@@ -26262,6 +26359,7 @@ export namespace Prisma {
     operador?: string | null
     sucursal?: string | null
     plan?: string | null
+    contencion?: boolean | null
   }
 
   export type planes_socioUncheckedCreateInput = {
@@ -26279,6 +26377,7 @@ export namespace Prisma {
     operador?: string | null
     sucursal?: string | null
     plan?: string | null
+    contencion?: boolean | null
   }
 
   export type planes_socioUpdateInput = {
@@ -26295,6 +26394,7 @@ export namespace Prisma {
     operador?: NullableStringFieldUpdateOperationsInput | string | null
     sucursal?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
+    contencion?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type planes_socioUncheckedUpdateInput = {
@@ -26312,6 +26412,7 @@ export namespace Prisma {
     operador?: NullableStringFieldUpdateOperationsInput | string | null
     sucursal?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
+    contencion?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type planes_socioCreateManyInput = {
@@ -26329,6 +26430,7 @@ export namespace Prisma {
     operador?: string | null
     sucursal?: string | null
     plan?: string | null
+    contencion?: boolean | null
   }
 
   export type planes_socioUpdateManyMutationInput = {
@@ -26345,6 +26447,7 @@ export namespace Prisma {
     operador?: NullableStringFieldUpdateOperationsInput | string | null
     sucursal?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
+    contencion?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type planes_socioUncheckedUpdateManyInput = {
@@ -26362,6 +26465,7 @@ export namespace Prisma {
     operador?: NullableStringFieldUpdateOperationsInput | string | null
     sucursal?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
+    contencion?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type planes_visitasCreateInput = {
@@ -27954,54 +28058,67 @@ export namespace Prisma {
 
   export type planes_odontologicosCountOrderByAggregateInput = {
     idplan?: SortOrder
-    total?: SortOrder
+    plan?: SortOrder
     pago_inicial?: SortOrder
+    pago_cuota?: SortOrder
+    pago_final?: SortOrder
+    cuotas?: SortOrder
     detalle?: SortOrder
-    estado?: SortOrder
     visitas?: SortOrder
     fecha_plan?: SortOrder
-    cuotas?: SortOrder
-    plan?: SortOrder
+    total?: SortOrder
+    estado?: SortOrder
+    detalle_plan?: SortOrder
   }
 
   export type planes_odontologicosAvgOrderByAggregateInput = {
     idplan?: SortOrder
-    total?: SortOrder
     pago_inicial?: SortOrder
-    visitas?: SortOrder
+    pago_cuota?: SortOrder
+    pago_final?: SortOrder
     cuotas?: SortOrder
+    visitas?: SortOrder
+    total?: SortOrder
   }
 
   export type planes_odontologicosMaxOrderByAggregateInput = {
     idplan?: SortOrder
-    total?: SortOrder
+    plan?: SortOrder
     pago_inicial?: SortOrder
+    pago_cuota?: SortOrder
+    pago_final?: SortOrder
+    cuotas?: SortOrder
     detalle?: SortOrder
-    estado?: SortOrder
     visitas?: SortOrder
     fecha_plan?: SortOrder
-    cuotas?: SortOrder
-    plan?: SortOrder
+    total?: SortOrder
+    estado?: SortOrder
+    detalle_plan?: SortOrder
   }
 
   export type planes_odontologicosMinOrderByAggregateInput = {
     idplan?: SortOrder
-    total?: SortOrder
+    plan?: SortOrder
     pago_inicial?: SortOrder
+    pago_cuota?: SortOrder
+    pago_final?: SortOrder
+    cuotas?: SortOrder
     detalle?: SortOrder
-    estado?: SortOrder
     visitas?: SortOrder
     fecha_plan?: SortOrder
-    cuotas?: SortOrder
-    plan?: SortOrder
+    total?: SortOrder
+    estado?: SortOrder
+    detalle_plan?: SortOrder
   }
 
   export type planes_odontologicosSumOrderByAggregateInput = {
     idplan?: SortOrder
-    total?: SortOrder
     pago_inicial?: SortOrder
-    visitas?: SortOrder
+    pago_cuota?: SortOrder
+    pago_final?: SortOrder
     cuotas?: SortOrder
+    visitas?: SortOrder
+    total?: SortOrder
   }
 
   export type planes_socioCountOrderByAggregateInput = {
@@ -28019,6 +28136,7 @@ export namespace Prisma {
     operador?: SortOrder
     sucursal?: SortOrder
     plan?: SortOrder
+    contencion?: SortOrder
   }
 
   export type planes_socioAvgOrderByAggregateInput = {
@@ -28045,6 +28163,7 @@ export namespace Prisma {
     operador?: SortOrder
     sucursal?: SortOrder
     plan?: SortOrder
+    contencion?: SortOrder
   }
 
   export type planes_socioMinOrderByAggregateInput = {
@@ -28062,6 +28181,7 @@ export namespace Prisma {
     operador?: SortOrder
     sucursal?: SortOrder
     plan?: SortOrder
+    contencion?: SortOrder
   }
 
   export type planes_socioSumOrderByAggregateInput = {

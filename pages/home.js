@@ -10,6 +10,7 @@ import AccesosRapidos from "../components/home/AccesosRapidos";
 import Calendario from "../components/servicios/Calendario";
 import TurnosMedicosDelDia from "../components/servicios/TurnosMedicosDelDia";
 import moment from "moment";
+import toastr from "toastr";
 
 const home = () => {
   const { usu } = useWerchow();

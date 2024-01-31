@@ -424,14 +424,17 @@ exports.Prisma.NosociosScalarFieldEnum = {
 
 exports.Prisma.Planes_odontologicosScalarFieldEnum = {
   idplan: 'idplan',
-  total: 'total',
+  plan: 'plan',
   pago_inicial: 'pago_inicial',
+  pago_cuota: 'pago_cuota',
+  pago_final: 'pago_final',
+  cuotas: 'cuotas',
   detalle: 'detalle',
-  estado: 'estado',
   visitas: 'visitas',
   fecha_plan: 'fecha_plan',
-  cuotas: 'cuotas',
-  plan: 'plan'
+  total: 'total',
+  estado: 'estado',
+  detalle_plan: 'detalle_plan'
 };
 
 exports.Prisma.Planes_socioScalarFieldEnum = {
@@ -448,7 +451,8 @@ exports.Prisma.Planes_socioScalarFieldEnum = {
   prestador_nombre: 'prestador_nombre',
   operador: 'operador',
   sucursal: 'sucursal',
-  plan: 'plan'
+  plan: 'plan',
+  contencion: 'contencion'
 };
 
 exports.Prisma.Planes_visitasScalarFieldEnum = {
