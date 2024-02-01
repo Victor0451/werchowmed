@@ -170,149 +170,160 @@ const ModalPlanOdontologico = ({
 
                 <hr className="mt-4 mb-4" />
 
-                <div className="row">
-                  <div className=" border border-dark p-4 col-md-12">
-                    <h4>
-                      <u>Plan De Ortodoncia</u>
-                    </h4>
+                {planOrto ? (
+                  <>
+                    <div className="row">
+                      <div className=" border border-dark p-4 col-md-12">
+                        <h4>
+                          <u>Plan De Ortodoncia</u>
+                        </h4>
 
-                    <div className="row border border-dark p-4 mt-4">
-                      <div className="col-md-4 mt-4">
-                        <label>
-                          <u>Paciente</u>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          value={`${socio.APELLIDOS}, ${socio.NOMBRES}`}
-                          readOnly
-                        />
-                      </div>
+                        <div className="row border border-dark p-4 mt-4">
+                          <div className="col-md-4 mt-4">
+                            <label>
+                              <u>Paciente</u>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={`${socio.APELLIDOS}, ${socio.NOMBRES}`}
+                              readOnly
+                            />
+                          </div>
 
-                      <div className="col-md-4 mt-4">
-                        <label>
-                          <u>Plan</u>: Sujeto a modif. del especialista
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue={planOrto.detalle}
-                          readOnly
-                        />
-                      </div>
+                          <div className="col-md-4 mt-4">
+                            <label>
+                              <u>Plan</u>: Sujeto a modif. del especialista
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              defaultValue={planOrto.detalle}
+                              readOnly
+                            />
+                          </div>
 
-                      <div className="col-md-4 mt-4">
-                        <label>
-                          <u>Pago Inicial</u>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue={planOrto.pago_inicial}
-                          readOnly
-                        />
-                      </div>
+                          <div className="col-md-4 mt-4">
+                            <label>
+                              <u>Pago Inicial</u>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              defaultValue={planOrto.pago_inicial}
+                              readOnly
+                            />
+                          </div>
 
-                      <div className="col-md-8 mt-4">
-                        <label>
-                          <u>Detalle plan</u>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue={planOrto.detalle_plan}
-                          readOnly
-                        />
-                      </div>
+                          <div className="col-md-8 mt-4">
+                            <label>
+                              <u>Detalle plan</u>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              defaultValue={planOrto.detalle_plan}
+                              readOnly
+                            />
+                          </div>
 
-                      <div className="col-md-12 mt-4 d-flex justify-content-end">
-                        <button
-                          type="button"
-                          className="btn btn-primary"
-                          data-dismiss="modal"
-                          onClick={registrarPlanOrto}
-                        >
-                          Iniciar Plan
-                        </button>
+                          <div className="col-md-12 mt-4 d-flex justify-content-end">
+                            <button
+                              type="button"
+                              className="btn btn-primary"
+                              data-dismiss="modal"
+                              onClick={registrarPlanOrto}
+                            >
+                              Iniciar Plan
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
+                  </>
+                ) : (
+                  <div className="col-md-12 alert alert-info border border-dark text-center text-uppercase ">
+                    No hay Planes de Ortodoncia Activos
                   </div>
-                </div>
+                )}
+
+                <hr className="mt-4 mb-4" />
 
                 <div className="row mt-4">
+                  {planImp ? (
+                    <>
+                      <div className=" border border-dark p-4 col-md-12">
+                        <h4>
+                          <u>Aparato de Contencion</u>
+                        </h4>
 
-                  <div className=" border border-dark p-4 col-md-12">
+                        <div className="row border border-dark p-4 mt-4">
+                          <div className="col-md-4 mt-4">
+                            <label>
+                              <u>Paciente</u>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={`${socio.APELLIDOS}, ${socio.NOMBRES}`}
+                              readOnly
+                            />
+                          </div>
 
-                    <h4>
-                      <u>Implantes Dentales</u>
-                    </h4>
+                          <div className="col-md-4 mt-4">
+                            <label>
+                              <u>Plan</u>: Sujeto a modif. del especialista
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              defaultValue={planImp.detalle}
+                              readOnly
+                            />
+                          </div>
 
-                    <div className="row border border-dark p-4 mt-4">
+                          <div className="col-md-4 mt-4">
+                            <label>
+                              <u>Pago Inicial</u>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              defaultValue={planImp.pago_inicial}
+                              readOnly
+                            />
+                          </div>
 
-                      <div className="col-md-4 mt-4">
-                        <label>
-                          <u>
-                            Paciente
-                          </u>
-                        </label>
-                        <input type="text" className="form-control" value={`${socio.APELLIDOS}, ${socio.NOMBRES}`} readOnly />
+                          <div className="col-md-8 mt-4">
+                            <label>
+                              <u>Detalle plan</u>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              defaultValue={planImp.detalle_plan}
+                              readOnly
+                            />
+                          </div>
+
+                          <div className="col-md-12 mt-4 d-flex justify-content-end">
+                            <button
+                              type="button"
+                              className="btn btn-primary"
+                              data-dismiss="modal"
+                              onClick={registrarPlanImp}
+                            >
+                              Iniciar Plan
+                            </button>
+                          </div>
+                        </div>
                       </div>
-
-                      <div className="col-md-4 mt-4">
-                        <label>
-                          <u>
-                            Plan
-                          </u>: Sujeto a modif. del especialista
-
-                        </label>
-                        <input type="text" className="form-control" defaultValue={planImp.detalle} readOnly />
-                      </div>
-
-                      <div className="col-md-4 mt-4">
-                        <label>
-                          <u>
-                            Monto Total
-                          </u>
-
-                        </label>
-                        <input type="text" className="form-control" defaultValue={planImp.total} readOnly />
-                      </div>
-
-                      <div className="col-md-4 mt-4">
-                        <label>
-                          <u>
-                            Pago Inicial
-                          </u>
-                        </label>
-                        <input type="text" className="form-control" defaultValue={planImp.pago_inicial} readOnly />
-                      </div>
-
-                      <div className="col-md-8 mt-4">
-                        <label>
-                          <u>Detalle plan</u>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue={planImp.detalle_plan}
-                          readOnly
-                        />
-                      </div>
-
-                      <div className="col-md-12 mt-4 d-flex justify-content-end">
-                        <button
-                          type="button"
-                          className="btn btn-primary"
-                          data-dismiss="modal"
-                          onClick={registrarPlanImp}
-                        >
-                          Iniciar Plan
-                        </button>
-                      </div>
-
-
+                    </>
+                  ) : (
+                    <div className="col-md-12 alert alert-info border border-dark text-center text-uppercase ">
+                      No hay Planes de Contencion Activos
                     </div>
-                  </div>
+                  )}
                 </div>
               </>
             ) : null}

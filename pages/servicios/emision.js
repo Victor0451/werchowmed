@@ -1662,7 +1662,7 @@ const Emision = () => {
       operador: usu.usuario,
       sucursal: usu.sucursal,
       plan: "ORTO",
-      contencion: 0,
+      contencion: false,
       f: "reg plan odontologico",
     };
 
@@ -1683,7 +1683,7 @@ const Emision = () => {
 
                 regPlanVisitas(
                   res2.data.idplansocio,
-                  plan.saldo,
+                  planOrto.saldo,
                   planOrto.cuotas,
                   "ORTO",
                   planOrto.visitas,
@@ -1745,13 +1745,15 @@ const Emision = () => {
       fecha: moment().format("YYYY-MM-DD"),
       total: planImp.total,
       pagado: planImp.pago_inicial,
-      saldo: parseFloat(planImp.total) - parseFloat(planImp.pago_inicial),
+      //saldo: parseFloat(planImp.total) - parseFloat(planImp.pago_inicial),
+      saldo: 0,
       estado: true,
       prestador: detalleMed.COD_PRES,
       prestador_nombre: detalleMed.NOMBRE,
       operador: usu.usuario,
       sucursal: usu.sucursal,
-      plan: "IMP",
+      plan: "CONT",
+      contencion: false,
       f: "reg plan odontologico",
     };
 
@@ -1772,13 +1774,15 @@ const Emision = () => {
 
                 regPlanVisitas(
                   res2.data.idplansocio,
-                  plan.saldo,
+                  planImp.saldo,
                   planImp.cuotas,
-                  "IMP",
-                  planImp.visitas
+                  "CONT",
+                  planImp.visitas,
+                  planImp.pago_cuota,
+                  planImp.pago_final
                 );
 
-                let accion = `Se registro plan implante dental ID: ${res2.data.idplansocio}, para el socio: ${plan.contrato} - ${plan.socio}, dni: ${plan.dni}. Con un monto de ${plan.total}`;
+                let accion = `Se registro plan aparato de contencion dental ID: ${res2.data.idplansocio}, para el socio: ${plan.contrato} - ${plan.socio}, dni: ${plan.dni}. Con un monto de ${plan.total}`;
 
                 registrarHistoria(accion, usu.usuario);
 
@@ -1798,7 +1802,7 @@ const Emision = () => {
             });
         } else if (res1.data && res1.data.dni === plan.dni) {
           toastr.warning(
-            "El socio actualmente posee plan de implante dental registrado, consultar con gerencia",
+            "El socio actualmente posee plan de contencion dental registrado, consultar con gerencia",
             "ATENCION"
           );
 
@@ -1845,7 +1849,7 @@ const Emision = () => {
     };
 
     for (let i = 1; i < visitas; i++) {
-      if (i < cuotas) {
+      if (i <= cuotas) {
         visi.nvisita = i;
         visi.pago = pagCuo;
         visi.fecha = moment().add(i, "months").format("YYYY-MM-DD");

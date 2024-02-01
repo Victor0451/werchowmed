@@ -780,6 +780,7 @@ export default async function handler(req, res) {
           operador: req.body.operador,
           sucursal: req.body.sucursal,
           plan: req.body.plan,
+          contencion: req.body.contencion
         },
       });
 
