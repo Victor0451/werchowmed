@@ -13,6 +13,8 @@ import { registrarHistoria } from "../../utils/funciones";
 import BuscarPlanOrtodoncia from "../../components/servicios/BuscarPlanOrtodoncia";
 import DetallePlanSocio from "../../components/servicios/DetallePlanSocio";
 import ModalReciboPagoVisita from "../../components/servicios/ModalReciboPagoVisita";
+import ListadoPlanes from "../../components/servicios/ListadoPlanes";
+import ModalPlanSeleccionado from "../../components/servicios/ModalPlanSeleccionado";
 
 const seguimientoplan = () => {
   let socioRef = React.createRef();
@@ -20,10 +22,13 @@ const seguimientoplan = () => {
 
   const [errores, guardarErrores] = useState(null);
   const [plan, guardarPlan] = useState(null);
+  const [planSel, guardarPlanSel] = useState([]);
   const [planVisit, guardarPlanVisit] = useState(null);
   const [datVisi, guardarVisita] = useState([]);
 
-  const traerPlanVisi = async (id, plan) => {
+  const traerPlanVisi = async (id, plan, row) => {
+    guardarPlanSel(row);
+
     await axios
       .get(`/api/servicios`, {
         params: {
@@ -80,9 +85,7 @@ const seguimientoplan = () => {
 
                   guardarErrores("El socio no posee plan registrado");
                 } else {
-                  guardarPlan(res1.data[0]);
-
-                  traerPlanVisi(res1.data[0].idplansocio, res1.data[0].plan);
+                  guardarPlan(res1.data);
                 }
               })
               .catch((error) => {
@@ -90,9 +93,7 @@ const seguimientoplan = () => {
                 toastr.error("Ocurrio un error", "ATENCION");
               });
           } else {
-            guardarPlan(res.data[0]);
-
-            traerPlanVisi(res.data[0].idplansocio, res.data[0].plan);
+            guardarPlan(res.data);
           }
         })
         .catch((error) => {
@@ -118,13 +119,15 @@ const seguimientoplan = () => {
 
             traerPlan();
 
-            let accion = `Se registro cobranza de cuota del plan ID: ${plan.idplansocio}, para el socio: ${plan.contrato} - ${plan.socio}, dni: ${plan.dni}, por un total de ${pago.pag}`;
+            traerPlanVisi(planSel.idplansocio, planSel.plan, planSel);
+
+            let accion = `Se registro cobranza de cuota del plan ${planSel.plan} ID: ${planSel.idplansocio}, para el socio: ${planSel.contrato} - ${planSel.socio}, dni: ${planSel.dni}, por un total de ${pago.pag}`;
 
             registrarHistoria(accion, usu.usuario);
 
-            if (plan.total > plan.pagado) {
-              updatePlan(plan.idplansocio, pag);
-            } else if (plan.total === plan.pagado) {
+            if (planSel.total > planSel.pagado) {
+              updatePlan(planSel.idplansocio, pag);
+            } else if (planSel.total === planSel.pagado) {
               toastr.info(
                 "El plan esta cancelado, solo se cobran el valor por las visitas pactado por el/la DR/A",
                 "ATENCION"
@@ -224,9 +227,11 @@ const seguimientoplan = () => {
 
               {plan ? (
                 <>
+                  <ListadoPlanes listado={plan} traerPlanVisi={traerPlanVisi} />
+
                   {planVisit ? (
-                    <DetallePlanSocio
-                      plan={plan}
+                    <ModalPlanSeleccionado
+                      planSel={planSel}
                       planVisit={planVisit}
                       checkPago={checkPago}
                       pagoRef={pagoRef}

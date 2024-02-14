@@ -312,8 +312,6 @@ exports.Prisma.PRESTADOScalarFieldEnum = {
   MATRICULA: 'MATRICULA',
   COD_POST: 'COD_POST',
   AUSENTE: 'AUSENTE',
-  DESDE: 'DESDE',
-  HASTA: 'HASTA',
   CUIT: 'CUIT',
   FEC_NAC: 'FEC_NAC',
   LUGAR: 'LUGAR',
@@ -484,6 +482,18 @@ exports.Prisma.PacientesScalarFieldEnum = {
   mail: 'mail'
 };
 
+exports.Prisma.AusenciasScalarFieldEnum = {
+  idausencia: 'idausencia',
+  cod_pres: 'cod_pres',
+  prestador: 'prestador',
+  motivo: 'motivo',
+  desde: 'desde',
+  hasta: 'hasta',
+  observacion: 'observacion',
+  estado: 'estado',
+  operador: 'operador'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -513,7 +523,8 @@ exports.Prisma.ModelName = {
   planes_socio: 'planes_socio',
   planes_visitas: 'planes_visitas',
   promociones: 'promociones',
-  pacientes: 'pacientes'
+  pacientes: 'pacientes',
+  ausencias: 'ausencias'
 };
 
 /**

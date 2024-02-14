@@ -4,24 +4,24 @@ import matchSorter from "match-sorter";
 import moment from "moment";
 
 const DetallePlanSocio = ({
-  plan,
+  planSel,
   planVisit,
   checkPago,
   pagoRef,
   datosVisita,
 }) => {
   return (
-    <div className="container border border-dark list p-4 mt-4">
+    <div className=" border border-dark list p-4 ">
       <div className="row">
         <div className="col-md-8">
           <h4>
-            <u>Detalle Plan Socio</u>: {plan.contrato} - {plan.socio}
+            <u>Socio</u>: {planSel.contrato} - {planSel.socio}
           </h4>
         </div>
 
         <div className="col-md-4">
           <a
-            href={`/servicios/reciboplan?id=${plan.idplansocio}`}
+            href={`/servicios/reciboplan?id=${planSel.idplansocio}`}
             target={"_blank"}
             className="btn btn-primary btn-block"
           >
@@ -46,7 +46,7 @@ const DetallePlanSocio = ({
         </div>
 
         <div className="col-md-8">
-          {plan.plan === "ORTO" ? (
+          {planSel.plan === "ORTO" ? (
             <div className="alert alert-info border border-dark text-center text-uppercase">
               <strong>
                 <u>Plan Ortodoncia</u>
@@ -54,13 +54,13 @@ const DetallePlanSocio = ({
               : Al haber terminado el plan de pagos del kit, ahora el monto a
               ingresar es el acordado por el/la DR/A.
             </div>
-          ) : plan.plan === "IMP" ? (
+          ) : planSel.plan === "CONT" ? (
             <div className="alert alert-info border border-dark text-center text-uppercase">
               <strong>
-                <u>Plan Implante Dental</u>
+                <u>Plan Aparato de Contencion</u>
               </strong>
-              : Una vez cancelado el pago del implante, consultar con el/la DR/A
-              los pasos a seguir.
+              : Una vez cancelado el pago del aparato de contencion, consultar
+              con el/la DR/A los pasos a seguir.
             </div>
           ) : null}
         </div>

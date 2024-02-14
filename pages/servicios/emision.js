@@ -2011,6 +2011,15 @@ const Emision = () => {
     }
   };
 
+  const alertaAusencia = (prestado) => {
+    if (prestado.AUSENTE === 1) {
+      toastr.info(
+        `El prestador ${prestado.NOMBRE} se encuentra de licencia (Vacaciones/Carpeta Medica). No se pueden
+        generar ordenes a su nombre.`
+      );
+    }
+  };
+
   const traerDetalleMedSelec = async (f) => {
     if (f === "C" && medicoRef.current.value !== null) {
       await axios
@@ -2022,6 +2031,7 @@ const Emision = () => {
         })
         .then((res) => {
           guardarDetalleMed(res.data[0]);
+          alertaAusencia(res.data[0]);
         })
         .catch((error) => {
           console.log(error);
@@ -2042,7 +2052,7 @@ const Emision = () => {
         })
         .then((res) => {
           guardarDetalleMed(res.data[0]);
-
+          alertaAusencia(res.data[0]);
           traerPracticasPrest(id, res.data[0].LUGAR);
         })
         .catch((error) => {
@@ -2062,7 +2072,7 @@ const Emision = () => {
         })
         .then((res) => {
           guardarDetalleEnfer(res.data[0]);
-
+          alertaAusencia(res.data[0]);
           traerPractEnfer();
         })
         .catch((error) => {
@@ -2082,6 +2092,7 @@ const Emision = () => {
         })
         .then((res) => {
           guardarDetalleMed(res.data[0]);
+          alertaAusencia(res.data[0]);
         })
         .catch((error) => {
           console.log(error);

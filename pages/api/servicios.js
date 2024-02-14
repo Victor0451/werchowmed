@@ -415,7 +415,8 @@ export default async function handler(req, res) {
             CON_PAGA,
             LUGAR,
             OTERO,
-            PROMO
+            PROMO, 
+            AUSENTE
         FROM PRESTADO
         WHERE COD_PRES = ${req.query.prestado}   
       `;
@@ -573,7 +574,8 @@ export default async function handler(req, res) {
          SELECT 
            *
         FROM planes_socio
-        WHERE contrato = ${parseInt(req.query.contrato)}       
+        WHERE contrato = ${parseInt(req.query.contrato)}     
+          
          `;
 
       res
@@ -780,7 +782,7 @@ export default async function handler(req, res) {
           operador: req.body.operador,
           sucursal: req.body.sucursal,
           plan: req.body.plan,
-          contencion: req.body.contencion
+          contencion: req.body.contencion,
         },
       });
 
@@ -799,6 +801,21 @@ export default async function handler(req, res) {
       });
 
       res.status(200).json(regPlanVisitas);
+    } else if (req.body.f && req.body.f === "reg ausencia") {
+      const regAusen = await Serv.ausencias.create({
+        data: {
+          prestador: req.body.prestador,
+          cod_pres: req.body.cod_pres,
+          motivo: req.body.motivo,
+          desde: new Date(req.body.desde),
+          hasta: new Date(req.body.hasta),
+          observacion: req.body.observacion,
+          estado: req.body.estado,
+          operador: req.body.operador,
+        },
+      });
+
+      res.status(200).json(regAusen);
     }
   } else if (req.method === "PUT") {
     if (req.body.f && req.body.f === "puntear codigo") {
@@ -959,6 +976,15 @@ export default async function handler(req, res) {
             typeof value === "bigint" ? value.toString() : value
           )
         );
+    } else if (req.body.f && req.body.f === "act ausencia") {
+      const updateAusente = await Serv.$queryRaw`
+         
+         UPDATE PRESTADO
+         SET 
+            AUSENTE = ${req.body.AUSENTE}            
+         WHERE COD_PRES=${req.body.codPres}
+`;
+      res.status(200).json(updateAusente);
     }
   }
 }

@@ -11,7 +11,7 @@ datasource db {
 
 model AUT_PRAC {
   ESP_PRAC   String?   @db.VarChar(3)
-  CODIGOS    String?   @db.VarChar(8)
+  CODIGOS    String?   @db.VarChar(20)
   DESCRIP    String?   @db.VarChar(1500)
   FECHA_ALT  DateTime? @db.Date
   ANULADO    Int?      @db.TinyInt
@@ -293,8 +293,6 @@ model PRESTADO {
   MATRICULA  String?   @db.VarChar(10)
   COD_POST   Int?
   AUSENTE    Int?      @db.TinyInt
-  DESDE      DateTime? @db.Date
-  HASTA      DateTime? @db.Date
   CUIT       String?   @db.VarChar(13)
   FEC_NAC    DateTime? @db.Date
   LUGAR      Int?
@@ -487,4 +485,16 @@ model pacientes {
   telefono   BigInt?
   domicilio  String? @db.VarChar(1000)
   mail       String? @db.VarChar(500)
+}
+
+model ausencias {
+  idausencia  Int       @id @default(autoincrement())
+  cod_pres    String?   @db.VarChar(255)
+  prestador   String?   @db.VarChar(255)
+  motivo      String?   @db.VarChar(255)
+  desde       DateTime? @db.Date
+  hasta       DateTime? @db.Date
+  observacion String?   @db.VarChar(1000)
+  estado      Int?      @db.TinyInt
+  operador    String?   @db.VarChar(255)
 }

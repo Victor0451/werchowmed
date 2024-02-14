@@ -103,6 +103,11 @@ export type promociones = $Result.DefaultSelection<Prisma.$promocionesPayload>
  * 
  */
 export type pacientes = $Result.DefaultSelection<Prisma.$pacientesPayload>
+/**
+ * Model ausencias
+ * 
+ */
+export type ausencias = $Result.DefaultSelection<Prisma.$ausenciasPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -405,6 +410,16 @@ export class PrismaClient<
     * ```
     */
   get pacientes(): Prisma.pacientesDelegate<ExtArgs>;
+
+  /**
+   * `prisma.ausencias`: Exposes CRUD operations for the **ausencias** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Ausencias
+    * const ausencias = await prisma.ausencias.findMany()
+    * ```
+    */
+  get ausencias(): Prisma.ausenciasDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -892,7 +907,8 @@ export namespace Prisma {
     planes_socio: 'planes_socio',
     planes_visitas: 'planes_visitas',
     promociones: 'promociones',
-    pacientes: 'pacientes'
+    pacientes: 'pacientes',
+    ausencias: 'ausencias'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -909,7 +925,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'aUT_PRAC' | 'cAJA' | 'cONSULTA' | 'eNFERMER' | 'fARMACIA' | 'mEDICOS_TURNOS' | 'pRACTICA' | 'pRACT_ENFER' | 'pRESTADO' | 'uSOS' | 'uSOSFA' | 'adherent_provi' | 'nosocios' | 'planes_odontologicos' | 'planes_socio' | 'planes_visitas' | 'promociones' | 'pacientes'
+      modelProps: 'aUT_PRAC' | 'cAJA' | 'cONSULTA' | 'eNFERMER' | 'fARMACIA' | 'mEDICOS_TURNOS' | 'pRACTICA' | 'pRACT_ENFER' | 'pRESTADO' | 'uSOS' | 'uSOSFA' | 'adherent_provi' | 'nosocios' | 'planes_odontologicos' | 'planes_socio' | 'planes_visitas' | 'promociones' | 'pacientes' | 'ausencias'
       txIsolationLevel: Prisma.TransactionIsolationLevel
     },
     model: {
@@ -2098,6 +2114,72 @@ export namespace Prisma {
           count: {
             args: Prisma.pacientesCountArgs<ExtArgs>,
             result: $Utils.Optional<PacientesCountAggregateOutputType> | number
+          }
+        }
+      }
+      ausencias: {
+        payload: Prisma.$ausenciasPayload<ExtArgs>
+        fields: Prisma.ausenciasFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ausenciasFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$ausenciasPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ausenciasFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$ausenciasPayload>
+          }
+          findFirst: {
+            args: Prisma.ausenciasFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$ausenciasPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ausenciasFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$ausenciasPayload>
+          }
+          findMany: {
+            args: Prisma.ausenciasFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$ausenciasPayload>[]
+          }
+          create: {
+            args: Prisma.ausenciasCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$ausenciasPayload>
+          }
+          createMany: {
+            args: Prisma.ausenciasCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          delete: {
+            args: Prisma.ausenciasDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$ausenciasPayload>
+          }
+          update: {
+            args: Prisma.ausenciasUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$ausenciasPayload>
+          }
+          deleteMany: {
+            args: Prisma.ausenciasDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ausenciasUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          upsert: {
+            args: Prisma.ausenciasUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$ausenciasPayload>
+          }
+          aggregate: {
+            args: Prisma.AusenciasAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateAusencias>
+          }
+          groupBy: {
+            args: Prisma.ausenciasGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<AusenciasGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ausenciasCountArgs<ExtArgs>,
+            result: $Utils.Optional<AusenciasCountAggregateOutputType> | number
           }
         }
       }
@@ -11103,8 +11185,6 @@ export namespace Prisma {
     MATRICULA: string | null
     COD_POST: number | null
     AUSENTE: number | null
-    DESDE: Date | null
-    HASTA: Date | null
     CUIT: string | null
     FEC_NAC: Date | null
     LUGAR: number | null
@@ -11132,8 +11212,6 @@ export namespace Prisma {
     MATRICULA: string | null
     COD_POST: number | null
     AUSENTE: number | null
-    DESDE: Date | null
-    HASTA: Date | null
     CUIT: string | null
     FEC_NAC: Date | null
     LUGAR: number | null
@@ -11161,8 +11239,6 @@ export namespace Prisma {
     MATRICULA: number
     COD_POST: number
     AUSENTE: number
-    DESDE: number
-    HASTA: number
     CUIT: number
     FEC_NAC: number
     LUGAR: number
@@ -11212,8 +11288,6 @@ export namespace Prisma {
     MATRICULA?: true
     COD_POST?: true
     AUSENTE?: true
-    DESDE?: true
-    HASTA?: true
     CUIT?: true
     FEC_NAC?: true
     LUGAR?: true
@@ -11241,8 +11315,6 @@ export namespace Prisma {
     MATRICULA?: true
     COD_POST?: true
     AUSENTE?: true
-    DESDE?: true
-    HASTA?: true
     CUIT?: true
     FEC_NAC?: true
     LUGAR?: true
@@ -11270,8 +11342,6 @@ export namespace Prisma {
     MATRICULA?: true
     COD_POST?: true
     AUSENTE?: true
-    DESDE?: true
-    HASTA?: true
     CUIT?: true
     FEC_NAC?: true
     LUGAR?: true
@@ -11386,8 +11456,6 @@ export namespace Prisma {
     MATRICULA: string | null
     COD_POST: number | null
     AUSENTE: number | null
-    DESDE: Date | null
-    HASTA: Date | null
     CUIT: string | null
     FEC_NAC: Date | null
     LUGAR: number | null
@@ -11434,8 +11502,6 @@ export namespace Prisma {
     MATRICULA?: boolean
     COD_POST?: boolean
     AUSENTE?: boolean
-    DESDE?: boolean
-    HASTA?: boolean
     CUIT?: boolean
     FEC_NAC?: boolean
     LUGAR?: boolean
@@ -11463,8 +11529,6 @@ export namespace Prisma {
     MATRICULA?: boolean
     COD_POST?: boolean
     AUSENTE?: boolean
-    DESDE?: boolean
-    HASTA?: boolean
     CUIT?: boolean
     FEC_NAC?: boolean
     LUGAR?: boolean
@@ -11496,8 +11560,6 @@ export namespace Prisma {
       MATRICULA: string | null
       COD_POST: number | null
       AUSENTE: number | null
-      DESDE: Date | null
-      HASTA: Date | null
       CUIT: string | null
       FEC_NAC: Date | null
       LUGAR: number | null
@@ -11916,8 +11978,6 @@ export namespace Prisma {
     readonly MATRICULA: FieldRef<"PRESTADO", 'String'>
     readonly COD_POST: FieldRef<"PRESTADO", 'Int'>
     readonly AUSENTE: FieldRef<"PRESTADO", 'Int'>
-    readonly DESDE: FieldRef<"PRESTADO", 'DateTime'>
-    readonly HASTA: FieldRef<"PRESTADO", 'DateTime'>
     readonly CUIT: FieldRef<"PRESTADO", 'String'>
     readonly FEC_NAC: FieldRef<"PRESTADO", 'DateTime'>
     readonly LUGAR: FieldRef<"PRESTADO", 'Int'>
@@ -21430,6 +21490,958 @@ export namespace Prisma {
 
 
   /**
+   * Model ausencias
+   */
+
+  export type AggregateAusencias = {
+    _count: AusenciasCountAggregateOutputType | null
+    _avg: AusenciasAvgAggregateOutputType | null
+    _sum: AusenciasSumAggregateOutputType | null
+    _min: AusenciasMinAggregateOutputType | null
+    _max: AusenciasMaxAggregateOutputType | null
+  }
+
+  export type AusenciasAvgAggregateOutputType = {
+    idausencia: number | null
+    estado: number | null
+  }
+
+  export type AusenciasSumAggregateOutputType = {
+    idausencia: number | null
+    estado: number | null
+  }
+
+  export type AusenciasMinAggregateOutputType = {
+    idausencia: number | null
+    cod_pres: string | null
+    prestador: string | null
+    motivo: string | null
+    desde: Date | null
+    hasta: Date | null
+    observacion: string | null
+    estado: number | null
+    operador: string | null
+  }
+
+  export type AusenciasMaxAggregateOutputType = {
+    idausencia: number | null
+    cod_pres: string | null
+    prestador: string | null
+    motivo: string | null
+    desde: Date | null
+    hasta: Date | null
+    observacion: string | null
+    estado: number | null
+    operador: string | null
+  }
+
+  export type AusenciasCountAggregateOutputType = {
+    idausencia: number
+    cod_pres: number
+    prestador: number
+    motivo: number
+    desde: number
+    hasta: number
+    observacion: number
+    estado: number
+    operador: number
+    _all: number
+  }
+
+
+  export type AusenciasAvgAggregateInputType = {
+    idausencia?: true
+    estado?: true
+  }
+
+  export type AusenciasSumAggregateInputType = {
+    idausencia?: true
+    estado?: true
+  }
+
+  export type AusenciasMinAggregateInputType = {
+    idausencia?: true
+    cod_pres?: true
+    prestador?: true
+    motivo?: true
+    desde?: true
+    hasta?: true
+    observacion?: true
+    estado?: true
+    operador?: true
+  }
+
+  export type AusenciasMaxAggregateInputType = {
+    idausencia?: true
+    cod_pres?: true
+    prestador?: true
+    motivo?: true
+    desde?: true
+    hasta?: true
+    observacion?: true
+    estado?: true
+    operador?: true
+  }
+
+  export type AusenciasCountAggregateInputType = {
+    idausencia?: true
+    cod_pres?: true
+    prestador?: true
+    motivo?: true
+    desde?: true
+    hasta?: true
+    observacion?: true
+    estado?: true
+    operador?: true
+    _all?: true
+  }
+
+  export type AusenciasAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ausencias to aggregate.
+     */
+    where?: ausenciasWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ausencias to fetch.
+     */
+    orderBy?: ausenciasOrderByWithRelationInput | ausenciasOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ausenciasWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ausencias from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ausencias.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ausencias
+    **/
+    _count?: true | AusenciasCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AusenciasAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AusenciasSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AusenciasMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AusenciasMaxAggregateInputType
+  }
+
+  export type GetAusenciasAggregateType<T extends AusenciasAggregateArgs> = {
+        [P in keyof T & keyof AggregateAusencias]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAusencias[P]>
+      : GetScalarType<T[P], AggregateAusencias[P]>
+  }
+
+
+
+
+  export type ausenciasGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ausenciasWhereInput
+    orderBy?: ausenciasOrderByWithAggregationInput | ausenciasOrderByWithAggregationInput[]
+    by: AusenciasScalarFieldEnum[] | AusenciasScalarFieldEnum
+    having?: ausenciasScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AusenciasCountAggregateInputType | true
+    _avg?: AusenciasAvgAggregateInputType
+    _sum?: AusenciasSumAggregateInputType
+    _min?: AusenciasMinAggregateInputType
+    _max?: AusenciasMaxAggregateInputType
+  }
+
+  export type AusenciasGroupByOutputType = {
+    idausencia: number
+    cod_pres: string | null
+    prestador: string | null
+    motivo: string | null
+    desde: Date | null
+    hasta: Date | null
+    observacion: string | null
+    estado: number | null
+    operador: string | null
+    _count: AusenciasCountAggregateOutputType | null
+    _avg: AusenciasAvgAggregateOutputType | null
+    _sum: AusenciasSumAggregateOutputType | null
+    _min: AusenciasMinAggregateOutputType | null
+    _max: AusenciasMaxAggregateOutputType | null
+  }
+
+  type GetAusenciasGroupByPayload<T extends ausenciasGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AusenciasGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AusenciasGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AusenciasGroupByOutputType[P]>
+            : GetScalarType<T[P], AusenciasGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ausenciasSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    idausencia?: boolean
+    cod_pres?: boolean
+    prestador?: boolean
+    motivo?: boolean
+    desde?: boolean
+    hasta?: boolean
+    observacion?: boolean
+    estado?: boolean
+    operador?: boolean
+  }, ExtArgs["result"]["ausencias"]>
+
+  export type ausenciasSelectScalar = {
+    idausencia?: boolean
+    cod_pres?: boolean
+    prestador?: boolean
+    motivo?: boolean
+    desde?: boolean
+    hasta?: boolean
+    observacion?: boolean
+    estado?: boolean
+    operador?: boolean
+  }
+
+
+  export type $ausenciasPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ausencias"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      idausencia: number
+      cod_pres: string | null
+      prestador: string | null
+      motivo: string | null
+      desde: Date | null
+      hasta: Date | null
+      observacion: string | null
+      estado: number | null
+      operador: string | null
+    }, ExtArgs["result"]["ausencias"]>
+    composites: {}
+  }
+
+
+  type ausenciasGetPayload<S extends boolean | null | undefined | ausenciasDefaultArgs> = $Result.GetResult<Prisma.$ausenciasPayload, S>
+
+  type ausenciasCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<ausenciasFindManyArgs, 'select' | 'include'> & {
+      select?: AusenciasCountAggregateInputType | true
+    }
+
+  export interface ausenciasDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ausencias'], meta: { name: 'ausencias' } }
+    /**
+     * Find zero or one Ausencias that matches the filter.
+     * @param {ausenciasFindUniqueArgs} args - Arguments to find a Ausencias
+     * @example
+     * // Get one Ausencias
+     * const ausencias = await prisma.ausencias.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ausenciasFindUniqueArgs<ExtArgs>>(
+      args: SelectSubset<T, ausenciasFindUniqueArgs<ExtArgs>>
+    ): Prisma__ausenciasClient<$Result.GetResult<Prisma.$ausenciasPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
+
+    /**
+     * Find one Ausencias that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {ausenciasFindUniqueOrThrowArgs} args - Arguments to find a Ausencias
+     * @example
+     * // Get one Ausencias
+     * const ausencias = await prisma.ausencias.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends ausenciasFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, ausenciasFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__ausenciasClient<$Result.GetResult<Prisma.$ausenciasPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find the first Ausencias that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ausenciasFindFirstArgs} args - Arguments to find a Ausencias
+     * @example
+     * // Get one Ausencias
+     * const ausencias = await prisma.ausencias.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ausenciasFindFirstArgs<ExtArgs>>(
+      args?: SelectSubset<T, ausenciasFindFirstArgs<ExtArgs>>
+    ): Prisma__ausenciasClient<$Result.GetResult<Prisma.$ausenciasPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
+
+    /**
+     * Find the first Ausencias that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ausenciasFindFirstOrThrowArgs} args - Arguments to find a Ausencias
+     * @example
+     * // Get one Ausencias
+     * const ausencias = await prisma.ausencias.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends ausenciasFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, ausenciasFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__ausenciasClient<$Result.GetResult<Prisma.$ausenciasPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Ausencias that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ausenciasFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Ausencias
+     * const ausencias = await prisma.ausencias.findMany()
+     * 
+     * // Get first 10 Ausencias
+     * const ausencias = await prisma.ausencias.findMany({ take: 10 })
+     * 
+     * // Only select the `idausencia`
+     * const ausenciasWithIdausenciaOnly = await prisma.ausencias.findMany({ select: { idausencia: true } })
+     * 
+    **/
+    findMany<T extends ausenciasFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, ausenciasFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ausenciasPayload<ExtArgs>, T, 'findMany'>>
+
+    /**
+     * Create a Ausencias.
+     * @param {ausenciasCreateArgs} args - Arguments to create a Ausencias.
+     * @example
+     * // Create one Ausencias
+     * const Ausencias = await prisma.ausencias.create({
+     *   data: {
+     *     // ... data to create a Ausencias
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ausenciasCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, ausenciasCreateArgs<ExtArgs>>
+    ): Prisma__ausenciasClient<$Result.GetResult<Prisma.$ausenciasPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
+
+    /**
+     * Create many Ausencias.
+     *     @param {ausenciasCreateManyArgs} args - Arguments to create many Ausencias.
+     *     @example
+     *     // Create many Ausencias
+     *     const ausencias = await prisma.ausencias.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends ausenciasCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, ausenciasCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Ausencias.
+     * @param {ausenciasDeleteArgs} args - Arguments to delete one Ausencias.
+     * @example
+     * // Delete one Ausencias
+     * const Ausencias = await prisma.ausencias.delete({
+     *   where: {
+     *     // ... filter to delete one Ausencias
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ausenciasDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, ausenciasDeleteArgs<ExtArgs>>
+    ): Prisma__ausenciasClient<$Result.GetResult<Prisma.$ausenciasPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
+
+    /**
+     * Update one Ausencias.
+     * @param {ausenciasUpdateArgs} args - Arguments to update one Ausencias.
+     * @example
+     * // Update one Ausencias
+     * const ausencias = await prisma.ausencias.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ausenciasUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, ausenciasUpdateArgs<ExtArgs>>
+    ): Prisma__ausenciasClient<$Result.GetResult<Prisma.$ausenciasPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
+
+    /**
+     * Delete zero or more Ausencias.
+     * @param {ausenciasDeleteManyArgs} args - Arguments to filter Ausencias to delete.
+     * @example
+     * // Delete a few Ausencias
+     * const { count } = await prisma.ausencias.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ausenciasDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, ausenciasDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Ausencias.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ausenciasUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Ausencias
+     * const ausencias = await prisma.ausencias.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ausenciasUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, ausenciasUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Ausencias.
+     * @param {ausenciasUpsertArgs} args - Arguments to update or create a Ausencias.
+     * @example
+     * // Update or create a Ausencias
+     * const ausencias = await prisma.ausencias.upsert({
+     *   create: {
+     *     // ... data to create a Ausencias
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Ausencias we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ausenciasUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, ausenciasUpsertArgs<ExtArgs>>
+    ): Prisma__ausenciasClient<$Result.GetResult<Prisma.$ausenciasPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
+
+    /**
+     * Count the number of Ausencias.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ausenciasCountArgs} args - Arguments to filter Ausencias to count.
+     * @example
+     * // Count the number of Ausencias
+     * const count = await prisma.ausencias.count({
+     *   where: {
+     *     // ... the filter for the Ausencias we want to count
+     *   }
+     * })
+    **/
+    count<T extends ausenciasCountArgs>(
+      args?: Subset<T, ausenciasCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AusenciasCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Ausencias.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AusenciasAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AusenciasAggregateArgs>(args: Subset<T, AusenciasAggregateArgs>): Prisma.PrismaPromise<GetAusenciasAggregateType<T>>
+
+    /**
+     * Group by Ausencias.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ausenciasGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ausenciasGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ausenciasGroupByArgs['orderBy'] }
+        : { orderBy?: ausenciasGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ausenciasGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAusenciasGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ausencias model
+   */
+  readonly fields: ausenciasFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ausencias.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ausenciasClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+
+
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+  }
+
+
+
+  /**
+   * Fields of the ausencias model
+   */ 
+  interface ausenciasFieldRefs {
+    readonly idausencia: FieldRef<"ausencias", 'Int'>
+    readonly cod_pres: FieldRef<"ausencias", 'String'>
+    readonly prestador: FieldRef<"ausencias", 'String'>
+    readonly motivo: FieldRef<"ausencias", 'String'>
+    readonly desde: FieldRef<"ausencias", 'DateTime'>
+    readonly hasta: FieldRef<"ausencias", 'DateTime'>
+    readonly observacion: FieldRef<"ausencias", 'String'>
+    readonly estado: FieldRef<"ausencias", 'Int'>
+    readonly operador: FieldRef<"ausencias", 'String'>
+  }
+    
+
+  // Custom InputTypes
+
+  /**
+   * ausencias findUnique
+   */
+  export type ausenciasFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ausencias
+     */
+    select?: ausenciasSelect<ExtArgs> | null
+    /**
+     * Filter, which ausencias to fetch.
+     */
+    where: ausenciasWhereUniqueInput
+  }
+
+
+  /**
+   * ausencias findUniqueOrThrow
+   */
+  export type ausenciasFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ausencias
+     */
+    select?: ausenciasSelect<ExtArgs> | null
+    /**
+     * Filter, which ausencias to fetch.
+     */
+    where: ausenciasWhereUniqueInput
+  }
+
+
+  /**
+   * ausencias findFirst
+   */
+  export type ausenciasFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ausencias
+     */
+    select?: ausenciasSelect<ExtArgs> | null
+    /**
+     * Filter, which ausencias to fetch.
+     */
+    where?: ausenciasWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ausencias to fetch.
+     */
+    orderBy?: ausenciasOrderByWithRelationInput | ausenciasOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ausencias.
+     */
+    cursor?: ausenciasWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ausencias from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ausencias.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ausencias.
+     */
+    distinct?: AusenciasScalarFieldEnum | AusenciasScalarFieldEnum[]
+  }
+
+
+  /**
+   * ausencias findFirstOrThrow
+   */
+  export type ausenciasFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ausencias
+     */
+    select?: ausenciasSelect<ExtArgs> | null
+    /**
+     * Filter, which ausencias to fetch.
+     */
+    where?: ausenciasWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ausencias to fetch.
+     */
+    orderBy?: ausenciasOrderByWithRelationInput | ausenciasOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ausencias.
+     */
+    cursor?: ausenciasWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ausencias from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ausencias.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ausencias.
+     */
+    distinct?: AusenciasScalarFieldEnum | AusenciasScalarFieldEnum[]
+  }
+
+
+  /**
+   * ausencias findMany
+   */
+  export type ausenciasFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ausencias
+     */
+    select?: ausenciasSelect<ExtArgs> | null
+    /**
+     * Filter, which ausencias to fetch.
+     */
+    where?: ausenciasWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ausencias to fetch.
+     */
+    orderBy?: ausenciasOrderByWithRelationInput | ausenciasOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ausencias.
+     */
+    cursor?: ausenciasWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ausencias from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ausencias.
+     */
+    skip?: number
+    distinct?: AusenciasScalarFieldEnum | AusenciasScalarFieldEnum[]
+  }
+
+
+  /**
+   * ausencias create
+   */
+  export type ausenciasCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ausencias
+     */
+    select?: ausenciasSelect<ExtArgs> | null
+    /**
+     * The data needed to create a ausencias.
+     */
+    data?: XOR<ausenciasCreateInput, ausenciasUncheckedCreateInput>
+  }
+
+
+  /**
+   * ausencias createMany
+   */
+  export type ausenciasCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ausencias.
+     */
+    data: ausenciasCreateManyInput | ausenciasCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * ausencias update
+   */
+  export type ausenciasUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ausencias
+     */
+    select?: ausenciasSelect<ExtArgs> | null
+    /**
+     * The data needed to update a ausencias.
+     */
+    data: XOR<ausenciasUpdateInput, ausenciasUncheckedUpdateInput>
+    /**
+     * Choose, which ausencias to update.
+     */
+    where: ausenciasWhereUniqueInput
+  }
+
+
+  /**
+   * ausencias updateMany
+   */
+  export type ausenciasUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ausencias.
+     */
+    data: XOR<ausenciasUpdateManyMutationInput, ausenciasUncheckedUpdateManyInput>
+    /**
+     * Filter which ausencias to update
+     */
+    where?: ausenciasWhereInput
+  }
+
+
+  /**
+   * ausencias upsert
+   */
+  export type ausenciasUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ausencias
+     */
+    select?: ausenciasSelect<ExtArgs> | null
+    /**
+     * The filter to search for the ausencias to update in case it exists.
+     */
+    where: ausenciasWhereUniqueInput
+    /**
+     * In case the ausencias found by the `where` argument doesn't exist, create a new ausencias with this data.
+     */
+    create: XOR<ausenciasCreateInput, ausenciasUncheckedCreateInput>
+    /**
+     * In case the ausencias was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ausenciasUpdateInput, ausenciasUncheckedUpdateInput>
+  }
+
+
+  /**
+   * ausencias delete
+   */
+  export type ausenciasDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ausencias
+     */
+    select?: ausenciasSelect<ExtArgs> | null
+    /**
+     * Filter which ausencias to delete.
+     */
+    where: ausenciasWhereUniqueInput
+  }
+
+
+  /**
+   * ausencias deleteMany
+   */
+  export type ausenciasDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ausencias to delete
+     */
+    where?: ausenciasWhereInput
+  }
+
+
+  /**
+   * ausencias without action
+   */
+  export type ausenciasDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ausencias
+     */
+    select?: ausenciasSelect<ExtArgs> | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -21672,8 +22684,6 @@ export namespace Prisma {
     MATRICULA: 'MATRICULA',
     COD_POST: 'COD_POST',
     AUSENTE: 'AUSENTE',
-    DESDE: 'DESDE',
-    HASTA: 'HASTA',
     CUIT: 'CUIT',
     FEC_NAC: 'FEC_NAC',
     LUGAR: 'LUGAR',
@@ -21872,6 +22882,21 @@ export namespace Prisma {
   };
 
   export type PacientesScalarFieldEnum = (typeof PacientesScalarFieldEnum)[keyof typeof PacientesScalarFieldEnum]
+
+
+  export const AusenciasScalarFieldEnum: {
+    idausencia: 'idausencia',
+    cod_pres: 'cod_pres',
+    prestador: 'prestador',
+    motivo: 'motivo',
+    desde: 'desde',
+    hasta: 'hasta',
+    observacion: 'observacion',
+    estado: 'estado',
+    operador: 'operador'
+  };
+
+  export type AusenciasScalarFieldEnum = (typeof AusenciasScalarFieldEnum)[keyof typeof AusenciasScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -23020,8 +24045,6 @@ export namespace Prisma {
     MATRICULA?: StringNullableFilter<"PRESTADO"> | string | null
     COD_POST?: IntNullableFilter<"PRESTADO"> | number | null
     AUSENTE?: IntNullableFilter<"PRESTADO"> | number | null
-    DESDE?: DateTimeNullableFilter<"PRESTADO"> | Date | string | null
-    HASTA?: DateTimeNullableFilter<"PRESTADO"> | Date | string | null
     CUIT?: StringNullableFilter<"PRESTADO"> | string | null
     FEC_NAC?: DateTimeNullableFilter<"PRESTADO"> | Date | string | null
     LUGAR?: IntNullableFilter<"PRESTADO"> | number | null
@@ -23049,8 +24072,6 @@ export namespace Prisma {
     MATRICULA?: SortOrderInput | SortOrder
     COD_POST?: SortOrderInput | SortOrder
     AUSENTE?: SortOrderInput | SortOrder
-    DESDE?: SortOrderInput | SortOrder
-    HASTA?: SortOrderInput | SortOrder
     CUIT?: SortOrderInput | SortOrder
     FEC_NAC?: SortOrderInput | SortOrder
     LUGAR?: SortOrderInput | SortOrder
@@ -23082,8 +24103,6 @@ export namespace Prisma {
     MATRICULA?: StringNullableFilter<"PRESTADO"> | string | null
     COD_POST?: IntNullableFilter<"PRESTADO"> | number | null
     AUSENTE?: IntNullableFilter<"PRESTADO"> | number | null
-    DESDE?: DateTimeNullableFilter<"PRESTADO"> | Date | string | null
-    HASTA?: DateTimeNullableFilter<"PRESTADO"> | Date | string | null
     CUIT?: StringNullableFilter<"PRESTADO"> | string | null
     FEC_NAC?: DateTimeNullableFilter<"PRESTADO"> | Date | string | null
     LUGAR?: IntNullableFilter<"PRESTADO"> | number | null
@@ -23110,8 +24129,6 @@ export namespace Prisma {
     MATRICULA?: SortOrderInput | SortOrder
     COD_POST?: SortOrderInput | SortOrder
     AUSENTE?: SortOrderInput | SortOrder
-    DESDE?: SortOrderInput | SortOrder
-    HASTA?: SortOrderInput | SortOrder
     CUIT?: SortOrderInput | SortOrder
     FEC_NAC?: SortOrderInput | SortOrder
     LUGAR?: SortOrderInput | SortOrder
@@ -23147,8 +24164,6 @@ export namespace Prisma {
     MATRICULA?: StringNullableWithAggregatesFilter<"PRESTADO"> | string | null
     COD_POST?: IntNullableWithAggregatesFilter<"PRESTADO"> | number | null
     AUSENTE?: IntNullableWithAggregatesFilter<"PRESTADO"> | number | null
-    DESDE?: DateTimeNullableWithAggregatesFilter<"PRESTADO"> | Date | string | null
-    HASTA?: DateTimeNullableWithAggregatesFilter<"PRESTADO"> | Date | string | null
     CUIT?: StringNullableWithAggregatesFilter<"PRESTADO"> | string | null
     FEC_NAC?: DateTimeNullableWithAggregatesFilter<"PRESTADO"> | Date | string | null
     LUGAR?: IntNullableWithAggregatesFilter<"PRESTADO"> | number | null
@@ -24075,6 +25090,80 @@ export namespace Prisma {
     telefono?: BigIntNullableWithAggregatesFilter<"pacientes"> | bigint | number | null
     domicilio?: StringNullableWithAggregatesFilter<"pacientes"> | string | null
     mail?: StringNullableWithAggregatesFilter<"pacientes"> | string | null
+  }
+
+  export type ausenciasWhereInput = {
+    AND?: ausenciasWhereInput | ausenciasWhereInput[]
+    OR?: ausenciasWhereInput[]
+    NOT?: ausenciasWhereInput | ausenciasWhereInput[]
+    idausencia?: IntFilter<"ausencias"> | number
+    cod_pres?: StringNullableFilter<"ausencias"> | string | null
+    prestador?: StringNullableFilter<"ausencias"> | string | null
+    motivo?: StringNullableFilter<"ausencias"> | string | null
+    desde?: DateTimeNullableFilter<"ausencias"> | Date | string | null
+    hasta?: DateTimeNullableFilter<"ausencias"> | Date | string | null
+    observacion?: StringNullableFilter<"ausencias"> | string | null
+    estado?: IntNullableFilter<"ausencias"> | number | null
+    operador?: StringNullableFilter<"ausencias"> | string | null
+  }
+
+  export type ausenciasOrderByWithRelationInput = {
+    idausencia?: SortOrder
+    cod_pres?: SortOrderInput | SortOrder
+    prestador?: SortOrderInput | SortOrder
+    motivo?: SortOrderInput | SortOrder
+    desde?: SortOrderInput | SortOrder
+    hasta?: SortOrderInput | SortOrder
+    observacion?: SortOrderInput | SortOrder
+    estado?: SortOrderInput | SortOrder
+    operador?: SortOrderInput | SortOrder
+  }
+
+  export type ausenciasWhereUniqueInput = Prisma.AtLeast<{
+    idausencia?: number
+    AND?: ausenciasWhereInput | ausenciasWhereInput[]
+    OR?: ausenciasWhereInput[]
+    NOT?: ausenciasWhereInput | ausenciasWhereInput[]
+    cod_pres?: StringNullableFilter<"ausencias"> | string | null
+    prestador?: StringNullableFilter<"ausencias"> | string | null
+    motivo?: StringNullableFilter<"ausencias"> | string | null
+    desde?: DateTimeNullableFilter<"ausencias"> | Date | string | null
+    hasta?: DateTimeNullableFilter<"ausencias"> | Date | string | null
+    observacion?: StringNullableFilter<"ausencias"> | string | null
+    estado?: IntNullableFilter<"ausencias"> | number | null
+    operador?: StringNullableFilter<"ausencias"> | string | null
+  }, "idausencia">
+
+  export type ausenciasOrderByWithAggregationInput = {
+    idausencia?: SortOrder
+    cod_pres?: SortOrderInput | SortOrder
+    prestador?: SortOrderInput | SortOrder
+    motivo?: SortOrderInput | SortOrder
+    desde?: SortOrderInput | SortOrder
+    hasta?: SortOrderInput | SortOrder
+    observacion?: SortOrderInput | SortOrder
+    estado?: SortOrderInput | SortOrder
+    operador?: SortOrderInput | SortOrder
+    _count?: ausenciasCountOrderByAggregateInput
+    _avg?: ausenciasAvgOrderByAggregateInput
+    _max?: ausenciasMaxOrderByAggregateInput
+    _min?: ausenciasMinOrderByAggregateInput
+    _sum?: ausenciasSumOrderByAggregateInput
+  }
+
+  export type ausenciasScalarWhereWithAggregatesInput = {
+    AND?: ausenciasScalarWhereWithAggregatesInput | ausenciasScalarWhereWithAggregatesInput[]
+    OR?: ausenciasScalarWhereWithAggregatesInput[]
+    NOT?: ausenciasScalarWhereWithAggregatesInput | ausenciasScalarWhereWithAggregatesInput[]
+    idausencia?: IntWithAggregatesFilter<"ausencias"> | number
+    cod_pres?: StringNullableWithAggregatesFilter<"ausencias"> | string | null
+    prestador?: StringNullableWithAggregatesFilter<"ausencias"> | string | null
+    motivo?: StringNullableWithAggregatesFilter<"ausencias"> | string | null
+    desde?: DateTimeNullableWithAggregatesFilter<"ausencias"> | Date | string | null
+    hasta?: DateTimeNullableWithAggregatesFilter<"ausencias"> | Date | string | null
+    observacion?: StringNullableWithAggregatesFilter<"ausencias"> | string | null
+    estado?: IntNullableWithAggregatesFilter<"ausencias"> | number | null
+    operador?: StringNullableWithAggregatesFilter<"ausencias"> | string | null
   }
 
   export type AUT_PRACCreateInput = {
@@ -25398,8 +26487,6 @@ export namespace Prisma {
     MATRICULA?: string | null
     COD_POST?: number | null
     AUSENTE?: number | null
-    DESDE?: Date | string | null
-    HASTA?: Date | string | null
     CUIT?: string | null
     FEC_NAC?: Date | string | null
     LUGAR?: number | null
@@ -25426,8 +26513,6 @@ export namespace Prisma {
     MATRICULA?: string | null
     COD_POST?: number | null
     AUSENTE?: number | null
-    DESDE?: Date | string | null
-    HASTA?: Date | string | null
     CUIT?: string | null
     FEC_NAC?: Date | string | null
     LUGAR?: number | null
@@ -25455,8 +26540,6 @@ export namespace Prisma {
     MATRICULA?: NullableStringFieldUpdateOperationsInput | string | null
     COD_POST?: NullableIntFieldUpdateOperationsInput | number | null
     AUSENTE?: NullableIntFieldUpdateOperationsInput | number | null
-    DESDE?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    HASTA?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     CUIT?: NullableStringFieldUpdateOperationsInput | string | null
     FEC_NAC?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     LUGAR?: NullableIntFieldUpdateOperationsInput | number | null
@@ -25483,8 +26566,6 @@ export namespace Prisma {
     MATRICULA?: NullableStringFieldUpdateOperationsInput | string | null
     COD_POST?: NullableIntFieldUpdateOperationsInput | number | null
     AUSENTE?: NullableIntFieldUpdateOperationsInput | number | null
-    DESDE?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    HASTA?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     CUIT?: NullableStringFieldUpdateOperationsInput | string | null
     FEC_NAC?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     LUGAR?: NullableIntFieldUpdateOperationsInput | number | null
@@ -25512,8 +26593,6 @@ export namespace Prisma {
     MATRICULA?: string | null
     COD_POST?: number | null
     AUSENTE?: number | null
-    DESDE?: Date | string | null
-    HASTA?: Date | string | null
     CUIT?: string | null
     FEC_NAC?: Date | string | null
     LUGAR?: number | null
@@ -25541,8 +26620,6 @@ export namespace Prisma {
     MATRICULA?: NullableStringFieldUpdateOperationsInput | string | null
     COD_POST?: NullableIntFieldUpdateOperationsInput | number | null
     AUSENTE?: NullableIntFieldUpdateOperationsInput | number | null
-    DESDE?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    HASTA?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     CUIT?: NullableStringFieldUpdateOperationsInput | string | null
     FEC_NAC?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     LUGAR?: NullableIntFieldUpdateOperationsInput | number | null
@@ -25569,8 +26646,6 @@ export namespace Prisma {
     MATRICULA?: NullableStringFieldUpdateOperationsInput | string | null
     COD_POST?: NullableIntFieldUpdateOperationsInput | number | null
     AUSENTE?: NullableIntFieldUpdateOperationsInput | number | null
-    DESDE?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    HASTA?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     CUIT?: NullableStringFieldUpdateOperationsInput | string | null
     FEC_NAC?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     LUGAR?: NullableIntFieldUpdateOperationsInput | number | null
@@ -26662,6 +27737,87 @@ export namespace Prisma {
     mail?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type ausenciasCreateInput = {
+    cod_pres?: string | null
+    prestador?: string | null
+    motivo?: string | null
+    desde?: Date | string | null
+    hasta?: Date | string | null
+    observacion?: string | null
+    estado?: number | null
+    operador?: string | null
+  }
+
+  export type ausenciasUncheckedCreateInput = {
+    idausencia?: number
+    cod_pres?: string | null
+    prestador?: string | null
+    motivo?: string | null
+    desde?: Date | string | null
+    hasta?: Date | string | null
+    observacion?: string | null
+    estado?: number | null
+    operador?: string | null
+  }
+
+  export type ausenciasUpdateInput = {
+    cod_pres?: NullableStringFieldUpdateOperationsInput | string | null
+    prestador?: NullableStringFieldUpdateOperationsInput | string | null
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    desde?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacion?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: NullableIntFieldUpdateOperationsInput | number | null
+    operador?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ausenciasUncheckedUpdateInput = {
+    idausencia?: IntFieldUpdateOperationsInput | number
+    cod_pres?: NullableStringFieldUpdateOperationsInput | string | null
+    prestador?: NullableStringFieldUpdateOperationsInput | string | null
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    desde?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacion?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: NullableIntFieldUpdateOperationsInput | number | null
+    operador?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ausenciasCreateManyInput = {
+    idausencia?: number
+    cod_pres?: string | null
+    prestador?: string | null
+    motivo?: string | null
+    desde?: Date | string | null
+    hasta?: Date | string | null
+    observacion?: string | null
+    estado?: number | null
+    operador?: string | null
+  }
+
+  export type ausenciasUpdateManyMutationInput = {
+    cod_pres?: NullableStringFieldUpdateOperationsInput | string | null
+    prestador?: NullableStringFieldUpdateOperationsInput | string | null
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    desde?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacion?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: NullableIntFieldUpdateOperationsInput | number | null
+    operador?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ausenciasUncheckedUpdateManyInput = {
+    idausencia?: IntFieldUpdateOperationsInput | number
+    cod_pres?: NullableStringFieldUpdateOperationsInput | string | null
+    prestador?: NullableStringFieldUpdateOperationsInput | string | null
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    desde?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacion?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: NullableIntFieldUpdateOperationsInput | number | null
+    operador?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -27593,8 +28749,6 @@ export namespace Prisma {
     MATRICULA?: SortOrder
     COD_POST?: SortOrder
     AUSENTE?: SortOrder
-    DESDE?: SortOrder
-    HASTA?: SortOrder
     CUIT?: SortOrder
     FEC_NAC?: SortOrder
     LUGAR?: SortOrder
@@ -27632,8 +28786,6 @@ export namespace Prisma {
     MATRICULA?: SortOrder
     COD_POST?: SortOrder
     AUSENTE?: SortOrder
-    DESDE?: SortOrder
-    HASTA?: SortOrder
     CUIT?: SortOrder
     FEC_NAC?: SortOrder
     LUGAR?: SortOrder
@@ -27661,8 +28813,6 @@ export namespace Prisma {
     MATRICULA?: SortOrder
     COD_POST?: SortOrder
     AUSENTE?: SortOrder
-    DESDE?: SortOrder
-    HASTA?: SortOrder
     CUIT?: SortOrder
     FEC_NAC?: SortOrder
     LUGAR?: SortOrder
@@ -28322,6 +29472,52 @@ export namespace Prisma {
     telefono?: SortOrder
   }
 
+  export type ausenciasCountOrderByAggregateInput = {
+    idausencia?: SortOrder
+    cod_pres?: SortOrder
+    prestador?: SortOrder
+    motivo?: SortOrder
+    desde?: SortOrder
+    hasta?: SortOrder
+    observacion?: SortOrder
+    estado?: SortOrder
+    operador?: SortOrder
+  }
+
+  export type ausenciasAvgOrderByAggregateInput = {
+    idausencia?: SortOrder
+    estado?: SortOrder
+  }
+
+  export type ausenciasMaxOrderByAggregateInput = {
+    idausencia?: SortOrder
+    cod_pres?: SortOrder
+    prestador?: SortOrder
+    motivo?: SortOrder
+    desde?: SortOrder
+    hasta?: SortOrder
+    observacion?: SortOrder
+    estado?: SortOrder
+    operador?: SortOrder
+  }
+
+  export type ausenciasMinOrderByAggregateInput = {
+    idausencia?: SortOrder
+    cod_pres?: SortOrder
+    prestador?: SortOrder
+    motivo?: SortOrder
+    desde?: SortOrder
+    hasta?: SortOrder
+    observacion?: SortOrder
+    estado?: SortOrder
+    operador?: SortOrder
+  }
+
+  export type ausenciasSumOrderByAggregateInput = {
+    idausencia?: SortOrder
+    estado?: SortOrder
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
@@ -28666,6 +29862,10 @@ export namespace Prisma {
      * @deprecated Use pacientesDefaultArgs instead
      */
     export type pacientesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = pacientesDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use ausenciasDefaultArgs instead
+     */
+    export type ausenciasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ausenciasDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

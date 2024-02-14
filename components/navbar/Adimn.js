@@ -30,6 +30,11 @@ const Adimn = ({ userData }) => {
           Seg. Plan Ortodoncia
         </a>
       </li>
+      <li>
+        <a href="/servicios/ausencias" className="nav-link dropdown-toggle">
+          Gestion Ausencia
+        </a>
+      </li>
       {userData.perfil === 1 || userData.perfil === 3 ? (
         <>
           <li>
