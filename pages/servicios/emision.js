@@ -54,7 +54,7 @@ const Emision = () => {
   const [sucursales, guardarSucursales] = useState(null);
   const [espec, guardarEspec] = useState(null);
   const [medicos, guardarMedicos] = useState(null);
-  const [detalleMed, guardarDetalleMed] = useState(null);
+  const [detalleMed, guardarDetalleMed] = useState([]);
   const [nOrden, guardarNorden] = useState(null);
   const [practicas, guardarPracticas] = useState(null);
   const [pracSocio, guardarPracSocio] = useState([]);

@@ -17,6 +17,9 @@ const ModalConsulta = ({
   isj,
   importeOrden,
 }) => {
+
+  console.log(detalleMed);
+
   return (
     <div
       className="modal fade"
@@ -206,7 +209,7 @@ const ModalConsulta = ({
                       </div>
                     </div>
 
-                    {detalleMed.AUSENTE === 1 ? (
+                    {detalleMed.AUSENTE && detalleMed.AUSENTE === 1 ? (
                       <div className="col-md-12 d-flex justify-content-end mt-4">
                         <div className="mt-4 alert alert-warning text-center text-uppercase border border-dark">
                           <strong>
@@ -245,7 +248,7 @@ const ModalConsulta = ({
             ) : null}
           </div>
           <div className="modal-footer">
-            {detalleMed.AUSENTE === 1 ? null : (
+            {detalleMed.AUSENTE && detalleMed.AUSENTE === 1 ? null : (
               <button
                 type="button"
                 className="btn btn-primary"
