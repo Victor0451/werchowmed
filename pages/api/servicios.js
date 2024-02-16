@@ -633,6 +633,39 @@ export default async function handler(req, res) {
             typeof value === "bigint" ? value.toString() : value
           )
         );
+    } else if (req.query.f && req.query.f === "listado ausencias") {
+      const listAusencias = await Serv.$queryRaw`
+    
+         SELECT 
+           *
+         FROM ausencias
+
+                  `;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(listAusencias, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.query.f && req.query.f === "listado ausencias vigentes") {
+      const listAusencias = await Serv.$queryRaw`
+    
+         SELECT 
+           *
+         FROM ausencias
+         WHERE estado = 1
+
+                  `;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(listAusencias, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
     }
   } else if (req.method === "POST") {
     if (req.body.f && req.body.f === "reg adh provisorio") {

@@ -17,8 +17,7 @@ const ModalConsulta = ({
   isj,
   importeOrden,
 }) => {
-
-  console.log(detalleMed);
+  console.log(detalleMed.COD_PRES);
 
   return (
     <div
@@ -118,7 +117,7 @@ const ModalConsulta = ({
               )}
             </div>
 
-            {detalleMed ? (
+            {detalleMed.COD_PRES ? (
               <>
                 <hr className="mt-4 mb-4" />
 

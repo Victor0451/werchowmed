@@ -11,13 +11,15 @@ import Calendario from "../components/servicios/Calendario";
 import TurnosMedicosDelDia from "../components/servicios/TurnosMedicosDelDia";
 import moment from "moment";
 import toastr from "toastr";
+import AusenciasPrestadores from "../components/servicios/AusenciasPrestadores";
+import jsCookie from "js-cookie";
 
 const home = () => {
-  const { usu } = useWerchow();
   const { isLoading } = useUser();
   const [listTurno, guardarListTurno] = useState([]);
   const [visitas, guardarVisitas] = useState([]);
   const [detVisi, guardarDetVisi] = useState(null);
+  const [listAusen, guardarAusen] = useState([]);
 
   const traerInfo = async () => {
     await axios
@@ -81,6 +83,29 @@ const home = () => {
       .catch((error) => {
         console.log(error);
       });
+
+    await axios
+      .get(`/api/servicios`, {
+        params: {
+          f: "listado ausencias vigentes",
+        },
+      })
+      .then((res) => {
+        if (res.data.length !== 0) {
+          if (usu) {
+            parImpar(res.data, usu.perfil);
+          }
+        }
+
+        guardarAusen(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error(
+          "Ocurrio un error al traer el listado de Ausencias",
+          "ATENCION"
+        );
+      });
   };
 
   const eventSelected = (eventInfo) => {
@@ -89,6 +114,41 @@ const home = () => {
     let myModal = new bootstrap.Modal(document.getElementById("exampleModal"));
     myModal.show();
   };
+
+  const mandarMail = (array) => {
+    fetch("/api/mail/licencias", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(array),
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          jsCookie.set("env", true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const parImpar = (arr, per) => {
+    console.log(per);
+    let numero = moment().format("DD");
+    let f = jsCookie.get("env");
+
+    if (per === 1 || per === 3) {
+      if (!f || f === "false") {
+        if (numero % 2 === 0 && arr.length > 0) {
+          mandarMail(arr);
+        }
+      }
+    }
+  };
+
+  const { usu } = useWerchow();
 
   useSWR("/api/turnos", traerInfo);
 
@@ -161,6 +221,27 @@ const home = () => {
                     </button>
                   </div>
                   <TurnosMedicosDelDia listTurno={listTurno} />
+                </div>
+              </div>
+
+              <div className="border border-dark mt-4 mb-4 p-2">
+                <div className="row d-flex justify-content-center">
+                  <div className="col-md-6">
+                    <h4>
+                      <u>Prestadores con Licencia</u>
+                    </h4>
+                  </div>
+
+                  <div className="col-md-4">
+                    <button
+                      className="btn btn-block btn-primary mt-1"
+                      data-toggle="collapse"
+                      data-target="#collapseAusenciasPrestadores"
+                    >
+                      Ver Licencias
+                    </button>
+                  </div>
+                  <AusenciasPrestadores listado={listAusen} />
                 </div>
               </div>
             </div>

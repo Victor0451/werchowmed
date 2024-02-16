@@ -38,7 +38,7 @@ const FormRegAusencias = ({
                 <option value="no">Selecciona una opcion</option>
                 {medicos.map((m, index) => (
                   <option key={index} value={`${m.COD_PRES}-${m.NOMBRE}`}>
-                    {m.NOMBRE}
+                    {m.COD_PRES} - {m.NOMBRE}
                   </option>
                 ))}
               </select>

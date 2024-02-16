@@ -76,7 +76,7 @@ const AccesosRapidos = ({ usu }) => {
               >
                 Gestionar
               </a>
-              <p className="card-text mt-2">Generar Caja Diaria</p>
+              <p className="card-text mt-2">Gestionar Ausencias</p>
             </div>
           </div>
           <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">

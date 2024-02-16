@@ -12,6 +12,7 @@ import Router from "next/router";
 import { registrarHistoria } from "../../utils/funciones";
 import moment from "moment";
 import FormRegAusencias from "../../components/servicios/FormRegAusencias";
+import ListadoAusencias from "../../components/servicios/ListadoAusencias";
 
 const Ausencias = () => {
   let medicoRef = React.createRef();
@@ -24,6 +25,7 @@ const Ausencias = () => {
   const [codPres, guardarCodPres] = useState("");
   const [nomPres, guardarNomPres] = useState("");
   const [errores, guardarErrores] = useState(null);
+  const [listAusen, guardarAusen] = useState([]);
 
   const { usu } = useWerchow();
 
@@ -43,6 +45,23 @@ const Ausencias = () => {
         console.log(error);
         toastr.error(
           "Ocurrio un error al traer el listado de Especialidades",
+          "ATENCION"
+        );
+      });
+
+    await axios
+      .get(`/api/servicios`, {
+        params: {
+          f: "listado ausencias",
+        },
+      })
+      .then((res) => {
+        guardarAusen(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error(
+          "Ocurrio un error al traer el listado de Ausencias",
           "ATENCION"
         );
       });
@@ -119,6 +138,8 @@ const Ausencias = () => {
             )} hasta ${moment(ausen.hasta).format("DD/MM/YYYY")}.`;
 
             registrarHistoria(accion, usu.usuario);
+
+            traerMedicos();
           }
         })
         .catch((error) => {
@@ -126,6 +147,19 @@ const Ausencias = () => {
           toastr.error("Ocurrio un error al registrar la ausencia", "ATENCION");
         });
     }
+  };
+
+  const imprimir = () => {
+    let contenido = document.getElementById("list").innerHTML;
+    let contenidoOrg = document.body.innerHTML;
+
+    document.body.innerHTML = contenido;
+
+    window.print();
+
+    document.body.innerHTML = contenidoOrg;
+
+    window.location.replace("/servicios/ausencias");
   };
 
   useSWR("/api/servicios", traerMedicos);
@@ -152,6 +186,8 @@ const Ausencias = () => {
               errores={errores}
               regAusencia={regAusencia}
             />
+
+            <ListadoAusencias listado={listAusen} imprimir={imprimir} />
           </Layout>
         </>
       ) : null}
