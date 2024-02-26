@@ -98,7 +98,15 @@ const ModalConsulta = ({
                 </div>
               ) : (
                 <div className="col-md-4">
-                  <label>Medicos:</label>
+                  {detalleMed ? (
+                    <label>
+                      Medicos: {""}
+                      <strong>Valor Consulta ${detalleMed.CON_PAGA}</strong>
+                    </label>
+                  ) : (
+                    <label>Medicos:</label>
+                  )}
+
                   <select
                     className="custom-select"
                     ref={medicoRef}
