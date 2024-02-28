@@ -117,6 +117,21 @@ const AccesosRapidos = ({ usu }) => {
                   <p className="card-text mt-2">Listado de Cajas generadas</p>
                 </div>
               </div>
+              <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
+                <div className="card-header">Portal Prestador</div>
+                <div className="card-body">
+                  <a
+                    className="btn btn-primary btn-block "
+                    href="/servicios/portalprestador"
+                  >
+                    Ingresar
+                  </a>
+                  <p className="card-text mt-2">
+                    Portar virtual para que el prestador gestione sus ordenes
+                    medicas.
+                  </p>
+                </div>
+              </div>
             </>
           ) : null}
         </div>

@@ -666,6 +666,48 @@ export default async function handler(req, res) {
             typeof value === "bigint" ? value.toString() : value
           )
         );
+    } else if (req.query.f && req.query.f === "traer ordenes dia prestador") {
+      const nOrden = await Serv.$queryRaw`         
+         
+         SELECT
+          CONTRATO,
+          FECHA,
+          ORDEN,
+          NRO_DOC,         
+          (
+            SELECT
+              CONCAT(APELLIDOS, ', ', NOMBRES)
+            FROM
+              werchow.maestro AS m
+            WHERE
+              u.NRO_DOC = m.NRO_DOC
+            LIMIT 1
+          ) AS 'tit',
+          (
+            SELECT
+              CONCAT(APELLIDOS, ', ', NOMBRES)
+            FROM
+              werchow.adherent AS m
+            WHERE
+              u.NRO_DOC = m.NRO_DOC
+            LIMIT 1
+          ) AS 'adh'
+        FROM
+          USOS AS u
+        WHERE
+          u.PRESTADO = ${req.query.codpres}
+        AND u.FECHA = ${req.query.fecha}
+
+
+       
+      `;
+      res
+        .status(200)
+        .json(
+          JSON.stringify(nOrden, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
     }
   } else if (req.method === "POST") {
     if (req.body.f && req.body.f === "reg adh provisorio") {
