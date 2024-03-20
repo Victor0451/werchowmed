@@ -131,6 +131,7 @@ const Emision = () => {
             traerAdhs(ficha[0].CONTRATO);
 
             if (
+              ficha[0].GRUPO === 666 ||
               ficha[0].GRUPO === 1001 ||
               ficha[0].GRUPO === 1005 ||
               ficha[0].GRUPO === 1006 ||
@@ -140,6 +141,7 @@ const Emision = () => {
               ficha[0].GRUPO === 3888 ||
               ficha[0].GRUPO === 3999 ||
               ficha[0].GRUPO === 4004 ||
+              ficha[0].GRUPO === 7777 ||
               ficha[0].GRUPO === 8500
             ) {
               toastr.warning(
@@ -149,7 +151,7 @@ const Emision = () => {
 
               confirmAlert({
                 title: "ATENCION",
-                message: `El socio ${ficha[0].CONTRATO} - ${ficha[0].APELLIDOS}, ${ficha[0].NOMBRES} esta en estado moroso, por tal motivo todos sus servicios estan en dados de baja.`,
+                message: `El socio ${ficha[0].CONTRATO} - ${ficha[0].APELLIDOS}, ${ficha[0].NOMBRES} esta en estado moroso (¡¡¡GRUPO ${ficha[0].GRUPO}!!!), por tal motivo todos sus servicios medicos estan suspendidos hasta regularizar su situacion.`,
                 buttons: [
                   {
                     label: "OK",
