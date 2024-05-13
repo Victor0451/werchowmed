@@ -222,19 +222,22 @@ model HIS_SERV {
 }
 
 model MEDICOS_TURNOS {
-  idturno   Int       @id @default(autoincrement())
-  turno     String?   @db.VarChar(255)
-  fecha     DateTime? @db.Date
-  hora      String?   @db.VarChar(255)
-  doctor    String?   @db.VarChar(255)
-  paciente  String?   @db.VarChar(255)
-  obra_soc  String?   @db.VarChar(255)
-  telefono  BigInt?
-  estado    Int?
-  operador  String?   @db.VarChar(255)
-  domicilio String?   @db.VarChar(1000)
-  mail      String?   @db.VarChar(500)
-  dni       Int?
+  idturno      Int       @id @default(autoincrement())
+  turno        String?   @db.VarChar(255)
+  fecha        DateTime? @db.Date
+  hora         String?   @db.VarChar(255)
+  doctor       String?   @db.VarChar(255)
+  paciente     String?   @db.VarChar(255)
+  obra_soc     String?   @db.VarChar(255)
+  telefono     BigInt?
+  estado       Int?
+  operador     String?   @db.VarChar(255)
+  domicilio    String?   @db.VarChar(1000)
+  mail         String?   @db.VarChar(500)
+  dni          Int?
+  motivo_turno String?   @db.VarChar(255)
+  norden       String?   @db.VarChar(255)
+  observacion  String?   @db.VarChar(5000)
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.

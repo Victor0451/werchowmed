@@ -65,8 +65,8 @@ const FormGestionTurno = ({
 
             <select className="custom-select" ref={turnoRef}>
               <option value="no">Selecciona una opcion</option>
-              <option value="mañana">Mañana</option>
-              <option value="tarde">Tarde</option>
+              <option value="Mañana">Mañana</option>
+              <option value="Tarde">Tarde</option>
             </select>
           </div>
 

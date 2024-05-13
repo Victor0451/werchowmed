@@ -9,11 +9,14 @@ const ModalRegistrarTurno = ({
   domicilioRef,
   mailRef,
   registrarTurno,
+  motivoTurnoRef,
+  nOrdenRef,
   errores,
   usaWerchow,
   handleChange,
   otroCamp,
   dniRef,
+  descripRef,
   buscarPaciente,
   paciente,
 }) => {
@@ -264,6 +267,39 @@ const ModalRegistrarTurno = ({
                     No
                   </label>
                 </div>
+              </div>
+
+              <div className="col-md-4 mt-4">
+                <label>
+                  <u>Motivo del Turno</u>
+                </label>
+
+                <select
+                  className="custom-select"
+                  defaultValue={"no"}
+                  ref={motivoTurnoRef}
+                  onChange={handleChange}
+                >
+                  <option value="no">Elige una Opcion</option>
+                  <option value="Consulta">Consulta</option>
+                  <option value="Practica">Practica</option>
+                </select>
+              </div>
+
+              <div className="col-md-4 mt-4">
+                <label>
+                  <u>N° de Orden (Emitida por el Sist.)</u>
+                </label>
+
+                <input type="text" className="form-control" ref={nOrdenRef} />
+              </div>
+
+              <div className="col-md-8 mt-4">
+                <label>
+                  <u>Observacion</u>
+                </label>
+
+                <textarea rows={5} type="text" className="form-control" ref={descripRef} />
               </div>
             </div>
 

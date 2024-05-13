@@ -25,6 +25,9 @@ const GestionTurnos = () => {
   let domicilioRef = React.createRef();
   let mailRef = React.createRef();
   let dniRef = React.createRef();
+  let motivoTurnoRef = React.createRef();
+  let nOrdenRef = React.createRef();
+  let descripRef = React.createRef();
 
   const [listTurno, guardarListTurno] = useState([]);
   const [medicos, guardarMedicos] = useState(null);
@@ -134,12 +137,19 @@ const GestionTurnos = () => {
       estado: 0,
       f: "reg turno",
       dni: dniRef.current.value,
+      motivo_turno: motivoTurnoRef.current.value,
+      norden: nOrdenRef.current.value,
+      observacion: descripRef.current.value,
     };
 
     if (horaRef.current.value === "") {
       guardarErrores2("Debes ingresar una hora");
     } else if (pacienteRef.current.value === "") {
       guardarErrores2("Debes ingresar el apellido y nombre del paciente");
+    } else if (turnoRef.motivo_turno === "no") {
+      guardarErrores2(
+        "Debes seleccionar el motivo del turno (PRACTICA o CONSULTA) que vas a registrar"
+      );
     } else {
       if (otroCamp === false) {
         turnoReg.obra_soc = obraSocRef.current.value;
@@ -357,8 +367,11 @@ const GestionTurnos = () => {
               handleChange={handleChange}
               otroCamp={otroCamp}
               dniRef={dniRef}
+              motivoTurnoRef={motivoTurnoRef}
+              nOrdenRef={nOrdenRef}
               buscarPaciente={buscarPaciente}
               paciente={paciente}
+              descripRef={descripRef}
             />
           </Layout>
         </>

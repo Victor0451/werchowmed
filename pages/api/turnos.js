@@ -64,7 +64,7 @@ export default async function handler(req, res) {
             WHERE doctor = ${req.query.medico}
             AND fecha = ${req.query.dia}
             AND turno = ${req.query.turno}
-            AND estado != 2
+            
      
   
   `;
@@ -107,6 +107,9 @@ export default async function handler(req, res) {
           operador: req.body.operador,
           estado: parseInt(req.body.estado),
           dni: parseInt(req.body.dni),
+          motivo_turno: req.body.motivo_turno,
+          norden: req.body.norden,
+          observacion: req.body.observacion,
         },
       });
 

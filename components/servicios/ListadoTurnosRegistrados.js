@@ -80,7 +80,8 @@ const ListadoTurnosRegistrados = ({ listado, estadoTurno }) => {
                 {
                   Header: "Fecha",
                   id: "fecha",
-                  accessor: (d) => moment(d.fecha).utcOffset("+0300").format("DD/MM/YYYY"),
+                  accessor: (d) =>
+                    moment(d.fecha).utcOffset("+0300").format("DD/MM/YYYY"),
                   filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["fecha"] }),
                   filterAll: true,
@@ -103,7 +104,34 @@ const ListadoTurnosRegistrados = ({ listado, estadoTurno }) => {
                   filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["paciente"] }),
                   filterAll: true,
-                  width: 300,
+                  width: 200,
+                },
+                {
+                  Header: "Motivo",
+                  id: "motivo_turno",
+                  accessor: (d) => d.motivo_turno,
+                  filterMethod: (filter, rows) =>
+                    matchSorter(rows, filter.value, { keys: ["motivo_turno"] }),
+                  filterAll: true,
+                  width: 100,
+                },
+                {
+                  Header: "N° Orden",
+                  id: "norden",
+                  accessor: (d) => d.norden,
+                  filterMethod: (filter, rows) =>
+                    matchSorter(rows, filter.value, { keys: ["norden"] }),
+                  filterAll: true,
+                  width: 100,
+                },
+                {
+                  Header: "Observacion",
+                  id: "observacion",
+                  accessor: (d) => d.observacion,
+                  filterMethod: (filter, rows) =>
+                    matchSorter(rows, filter.value, { keys: ["observacion"] }),
+                  filterAll: true,
+                  width: 200,
                 },
                 {
                   Header: "Telefono",
