@@ -413,6 +413,7 @@ export default async function handler(req, res) {
             HORARIO2,      
             SUBSTR(LIS_ESPE,1,3) "SERVICIO", 
             CON_PAGA,
+            LIQUIDACION,
             LUGAR,
             OTERO,
             PROMO, 
@@ -967,6 +968,20 @@ export default async function handler(req, res) {
          
          UPDATE PRESTADO
          SET CON_PAGA = ${parseInt(req.body.CON_PAGA)}                
+         WHERE COD_PRES = ${req.body.COD_PRES} 
+`;
+      res
+        .status(200)
+        .json(
+          JSON.stringify(updateConPaga, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.body.f && req.body.f === "update liquidacion") {
+      const updateConPaga = await Serv.$queryRaw`
+         
+         UPDATE PRESTADO
+         SET LIQUIDACION = ${parseFloat(req.body.LIQUIDACION)}                
          WHERE COD_PRES = ${req.body.COD_PRES} 
 `;
       res

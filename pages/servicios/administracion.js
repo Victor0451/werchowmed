@@ -19,6 +19,7 @@ import ModalActPractica from "../../components/servicios/ModalActPractica";
 function Administracion(props) {
   let medicoRef = React.createRef();
   let consultaRef = React.createRef();
+  let liquidacionRef = React.createRef();
   let especialidadRef = React.createRef();
   let nombreRef = React.createRef();
   let matriculaRef = React.createRef();
@@ -127,60 +128,115 @@ function Administracion(props) {
     traerDetMedico(ref.substr(0, 5));
   };
 
-  const updateConsulta = async () => {
-    if (consultaRef.current.value === "") {
-      toastr.warning(
-        "Debes ingresar el nuevo valor de la consulta",
-        "ATENCION"
-      );
-    } else {
-      let data = {
-        COD_PRES: codPres,
-        CON_PAGA: consultaRef.current.value,
-        f: "update conpaga",
-      };
+  const updateConsulta = async (f) => {
+    if (f === "C") {
+      if (consultaRef.current.value === "") {
+        toastr.warning(
+          "Debes ingresar el nuevo valor de la consulta",
+          "ATENCION"
+        );
+      } else {
+        let data = {
+          COD_PRES: codPres,
+          CON_PAGA: consultaRef.current.value,
+          f: "update conpaga",
+        };
 
-      await confirmAlert({
-        title: "ATENCION",
-        message: "¿Seguro quieres modificar el valor de la consulta?",
-        buttons: [
-          {
-            label: "Si",
-            onClick: () => {
-              axios
-                .put(`/api/servicios`, data)
-                .then((res) => {
-                  console.log(res);
-                  if (res.status === 200) {
-                    toastr.success(
-                      "El valor de la consulta se modifico con exito"
+        await confirmAlert({
+          title: "ATENCION",
+          message: "¿Seguro quieres modificar el valor de la consulta?",
+          buttons: [
+            {
+              label: "Si",
+              onClick: () => {
+                axios
+                  .put(`/api/servicios`, data)
+                  .then((res) => {
+                    if (res.status === 200) {
+                      toastr.success(
+                        "El valor de la consulta se modifico con exito"
+                      );
+
+                      let accion = `Se actualizo el valor de la consulta del prestador codigo: ${codPres}, de $${presImp} a $${consultaRef.current.value}.`;
+
+                      registrarHistoria(accion, usu.usuario);
+
+                      setTimeout(() => {
+                        traerDetMedico(codPres);
+                      }, 500);
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                    toastr.error(
+                      "Ocurrio un error al actualizar el valor de la consulta"
                     );
-
-                    let accion = `Se actualizo el valor de la consulta del prestador codigo: ${codPres}, de $${presImp} a $${consultaRef.current.value}.`;
-
-                    registrarHistoria(accion, usu.usuario);
-
-                    setTimeout(() => {
-                      traerDetMedico(codPres);
-                    }, 500);
-                  }
-                })
-                .catch((error) => {
-                  console.log(error);
-                  toastr.error(
-                    "Ocurrio un error al actualizar el valor de la consulta"
-                  );
-                });
+                  });
+              },
             },
-          },
-          {
-            label: "No",
-            onClick: () => {
-              toastr.info("El valor de la consulta no fue modificado");
+            {
+              label: "No",
+              onClick: () => {
+                toastr.info("El valor de la consulta no fue modificado");
+              },
             },
-          },
-        ],
-      });
+          ],
+        });
+      }
+    } else if (f === "L") {
+      if (liquidacionRef.current.value === "") {
+        toastr.warning(
+          "Debes ingresar el nuevo valor de liquidacion",
+          "ATENCION"
+        );
+      } else {
+        let data = {
+          COD_PRES: codPres,
+          LIQUIDACION: liquidacionRef.current.value,
+          f: "update liquidacion",
+        };
+
+        await confirmAlert({
+          title: "ATENCION",
+          message: "¿Seguro quieres modificar el valor de liquidacion?",
+          buttons: [
+            {
+              label: "Si",
+              onClick: () => {
+                axios
+                  .put(`/api/servicios`, data)
+                  .then((res) => {
+                    if (res.status === 200) {
+                      toastr.success(
+                        "El valor de liquidacion se modifico con exito"
+                      );
+
+                      let accion = `Se actualizo el valor de liquidacion del prestador codigo: ${codPres}, de $${prestador.LIQUIDACION} a $${liquidacionRef.current.value}.`;
+
+                      registrarHistoria(accion, usu.usuario);
+
+                      setTimeout(() => {
+                        traerDetMedico(codPres);
+                      }, 500);
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                    toastr.error(
+                      "Ocurrio un error al actualizar el valor de liquidacion"
+                    );
+                  });
+              },
+            },
+            {
+              label: "No",
+              onClick: () => {
+                toastr.info("El valor de liquidacion no fue modificado");
+              },
+            },
+          ],
+        });
+      }
     }
   };
 
@@ -350,6 +406,7 @@ function Administracion(props) {
               presImp={presImp}
               updateConsulta={updateConsulta}
               consultaRef={consultaRef}
+              liquidacionRef={liquidacionRef}
               prestador={prestador}
               practicasPres={practicasPres}
               especialidadRef={especialidadRef}

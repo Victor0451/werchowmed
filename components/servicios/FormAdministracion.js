@@ -9,6 +9,7 @@ const FormAdministracion = ({
   presImp,
   updateConsulta,
   consultaRef,
+  liquidacionRef,
   prestador,
   practicasPres,
   especialidadRef,
@@ -63,38 +64,102 @@ const FormAdministracion = ({
               No hay medicos registrados
             </div>
           )}
-
-          <div className="col-md-3">
-            <label>
-              <u>Importe de Consulta:</u>
-            </label>
-
-            <input
-              type="number"
-              className="form-control"
-              value={presImp}
-              readOnly
-            />
-          </div>
-
-          <div className="col-md-3">
-            <label>
-              <u>Nuevo Importe:</u>
-            </label>
-
-            <input type="number" className="form-control" ref={consultaRef} />
-          </div>
-
-          <div className="col-md-3">
-            <button className="btn btn-primary mt-4" onClick={updateConsulta}>
-              Actualizar
-            </button>
-          </div>
         </div>
       </div>
 
       {prestador.length !== 0 ? (
         <>
+          <div className="mt-4 border border-dark p-4">
+            <h4>
+              <strong>
+                <u>Valores del Prestador</u>
+              </strong>
+            </h4>
+
+            <div className="row mt-4 ">
+              <div className="col-md-2">
+                <label>
+                  <u>Coseguro:</u>
+                </label>
+
+                <input
+                  type="number"
+                  className="form-control"
+                  value={presImp}
+                  readOnly
+                />
+              </div>
+
+              <div className="col-md-2">
+                <label>
+                  <u>Nuevo Coseguro:</u>
+                </label>
+
+                <input
+                  type="number"
+                  className="form-control"
+                  ref={consultaRef}
+                />
+              </div>
+
+              <div className="col-md-2">
+                <button
+                  className="btn btn-primary mt-4"
+                  onClick={() =>updateConsulta("C")}
+                >
+                  Actualizar
+                </button>
+              </div>
+
+              <div className="col-md-6">
+                <div className="alert alert-info  border border-dark text-center text-uppercase">
+                  Valor del coseguro que figura en la emision de ordenes, el
+                  valor que debe abonar el afiliado en la Clinica Otero
+                </div>
+              </div>
+
+              <div className="col-md-2">
+                <label>
+                  <u>Liquidacion:</u>
+                </label>
+
+                <input
+                  type="number"
+                  className="form-control"
+                  value={prestador.LIQUIDACION}
+                  readOnly
+                />
+              </div>
+
+              <div className="col-md-2">
+                <label>
+                  <u>Nueva Liquidacion:</u>
+                </label>
+
+                <input
+                  type="number"
+                  className="form-control"
+                  ref={liquidacionRef}
+                />
+              </div>
+
+              <div className="col-md-2">
+                <button
+                  className="btn btn-primary mt-4"
+                  onClick={() =>updateConsulta("L")}
+                >
+                  Actualizar
+                </button>
+              </div>
+              <div className="col-md-6">
+                <div className="alert alert-info  border border-dark text-center text-uppercase">
+                  Valor de liquidacion de las consultas o practicas del
+                  prestador al momento de generar las ordenes de pago.
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="mt-4 border border-dark p-4">
             <h4>
               <strong>

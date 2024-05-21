@@ -324,7 +324,8 @@ exports.Prisma.PRESTADOScalarFieldEnum = {
   BAJA: 'BAJA',
   OTERO: 'OTERO',
   idprest: 'idprest',
-  PROMO: 'PROMO'
+  PROMO: 'PROMO',
+  LIQUIDACION: 'LIQUIDACION'
 };
 
 exports.Prisma.USOSScalarFieldEnum = {
