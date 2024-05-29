@@ -85,7 +85,7 @@ const FormAdministracion = ({
                 <input
                   type="number"
                   className="form-control"
-                  value={presImp}
+                  value={prestador.CON_PAGA}
                   readOnly
                 />
               </div>
@@ -105,7 +105,7 @@ const FormAdministracion = ({
               <div className="col-md-2">
                 <button
                   className="btn btn-primary mt-4"
-                  onClick={() =>updateConsulta("C")}
+                  onClick={() => updateConsulta("C")}
                 >
                   Actualizar
                 </button>
@@ -146,7 +146,7 @@ const FormAdministracion = ({
               <div className="col-md-2">
                 <button
                   className="btn btn-primary mt-4"
-                  onClick={() =>updateConsulta("L")}
+                  onClick={() => updateConsulta("L")}
                 >
                   Actualizar
                 </button>

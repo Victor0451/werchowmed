@@ -883,7 +883,7 @@ const Emision = () => {
       HORA: moment().format("HH:mm"),
       SERVICIO: "ORDE",
       IMPORTE: 0,
-      IMP_LIQ: detalleMed.CON_PAGA,
+      IMP_LIQ: detalleMed.LIQUIDACION,
       VALOR: "0",
       PUESTO: "",
       PRESTADO: detalleMed.COD_PRES,
