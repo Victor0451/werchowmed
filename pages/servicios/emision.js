@@ -921,25 +921,13 @@ const Emision = () => {
         if (socio.GRUPO === 55 || socio.GRUPO === 66) {
           uso.IMPORTE = 0;
         } else {
-          if (detalleMed.COD_PRES === "C_CRI") {
-            uso.IMPORTE = 3000;
-          } else {
-            uso.IMPORTE = promos.pot1;
-          }
+          uso.IMPORTE = promos.pot1;
         }
       } else if (priUso === 1) {
         if (isj === true) {
-          if (detalleMed.COD_PRES === "C_CRI") {
-            uso.IMPORTE = 3500 - 350;
-          } else {
-            uso.IMPORTE = promos.pot2 - 350;
-          }
+          uso.IMPORTE = promos.pot2 - 350;
         } else {
-          if (detalleMed.COD_PRES === "C_CRI") {
-            uso.IMPORTE = 3500;
-          } else {
-            uso.IMPORTE = promos.pot2;
-          }
+          uso.IMPORTE = promos.pot2;
         }
       } else if (priUso >= 2) {
         if (isj === true) {
@@ -952,7 +940,15 @@ const Emision = () => {
       (detalleMed.PROMO === 0 && detalleMed.OTERO === 1) ||
       detalleMed.OTERO === 0
     ) {
-      uso.IMPORTE = detalleMed.CON_PAGA;
+      if (socio.GRUPO === 55 || socio.GRUPO === 66) {
+        if (priUso === 0) {
+          uso.IMPORTE = 0;
+        } else {
+          uso.IMPORTE = detalleMed.CON_PAGA;
+        }
+      } else {
+        uso.IMPORTE = detalleMed.CON_PAGA;
+      }
     }
 
     await axios
@@ -2142,38 +2138,38 @@ const Emision = () => {
 
           return importe;
         } else {
-          if (detalleMed.COD_PRES === "C_CRI") {
-            const importe = 3000;
+          const importe = promos.pot1;
 
-            return importe;
-          } else {
-            const importe = promos.pot1;
-
-            return importe;
-          }
+          return importe;
         }
       } else if (priUso === 1) {
-        if (detalleMed.COD_PRES === "C_CRI") {
-          const importe = 3500;
+        const importe = promos.pot2;
 
-          return importe;
-        } else {
-          const importe = promos.pot2;
-
-          return importe;
-        }
+        return importe;
       } else if (priUso >= 2) {
         const importe = detalleMed.CON_PAGA;
 
         return importe;
       }
     } else if (
-      (detalleMed.PROMO === 0 && detalleMed.OTERO === 1) ||
-      detalleMed.OTERO === 0
+      (detalleMed.PROMO === 0 && detalleMed.OTERO === 0) ||
+      detalleMed.OTERO === 1
     ) {
-      const importe = detalleMed.CON_PAGA;
+      if (socio.GRUPO === 55 || socio.GRUPO === 66) {
+        if (priUso === 0) {
+          const importe = 0;
 
-      return importe;
+          return importe;
+        } else {
+          const importe = detalleMed.CON_PAGA;
+
+          return importe;
+        }
+      } else {
+        const importe = detalleMed.CON_PAGA;
+
+        return importe;
+      }
     }
   };
 
