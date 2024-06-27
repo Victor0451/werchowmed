@@ -11192,6 +11192,8 @@ export namespace Prisma {
     OTERO: number | null
     idprest: number | null
     LIQUIDACION: number | null
+    PROMO1: number | null
+    PROMO2: number | null
   }
 
   export type PRESTADOSumAggregateOutputType = {
@@ -11203,6 +11205,8 @@ export namespace Prisma {
     OTERO: number | null
     idprest: number | null
     LIQUIDACION: number | null
+    PROMO1: number | null
+    PROMO2: number | null
   }
 
   export type PRESTADOMinAggregateOutputType = {
@@ -11231,6 +11235,8 @@ export namespace Prisma {
     idprest: number | null
     PROMO: boolean | null
     LIQUIDACION: number | null
+    PROMO1: number | null
+    PROMO2: number | null
   }
 
   export type PRESTADOMaxAggregateOutputType = {
@@ -11259,6 +11265,8 @@ export namespace Prisma {
     idprest: number | null
     PROMO: boolean | null
     LIQUIDACION: number | null
+    PROMO1: number | null
+    PROMO2: number | null
   }
 
   export type PRESTADOCountAggregateOutputType = {
@@ -11287,6 +11295,8 @@ export namespace Prisma {
     idprest: number
     PROMO: number
     LIQUIDACION: number
+    PROMO1: number
+    PROMO2: number
     _all: number
   }
 
@@ -11300,6 +11310,8 @@ export namespace Prisma {
     OTERO?: true
     idprest?: true
     LIQUIDACION?: true
+    PROMO1?: true
+    PROMO2?: true
   }
 
   export type PRESTADOSumAggregateInputType = {
@@ -11311,6 +11323,8 @@ export namespace Prisma {
     OTERO?: true
     idprest?: true
     LIQUIDACION?: true
+    PROMO1?: true
+    PROMO2?: true
   }
 
   export type PRESTADOMinAggregateInputType = {
@@ -11339,6 +11353,8 @@ export namespace Prisma {
     idprest?: true
     PROMO?: true
     LIQUIDACION?: true
+    PROMO1?: true
+    PROMO2?: true
   }
 
   export type PRESTADOMaxAggregateInputType = {
@@ -11367,6 +11383,8 @@ export namespace Prisma {
     idprest?: true
     PROMO?: true
     LIQUIDACION?: true
+    PROMO1?: true
+    PROMO2?: true
   }
 
   export type PRESTADOCountAggregateInputType = {
@@ -11395,6 +11413,8 @@ export namespace Prisma {
     idprest?: true
     PROMO?: true
     LIQUIDACION?: true
+    PROMO1?: true
+    PROMO2?: true
     _all?: true
   }
 
@@ -11510,6 +11530,8 @@ export namespace Prisma {
     idprest: number
     PROMO: boolean | null
     LIQUIDACION: number | null
+    PROMO1: number | null
+    PROMO2: number | null
     _count: PRESTADOCountAggregateOutputType | null
     _avg: PRESTADOAvgAggregateOutputType | null
     _sum: PRESTADOSumAggregateOutputType | null
@@ -11557,6 +11579,8 @@ export namespace Prisma {
     idprest?: boolean
     PROMO?: boolean
     LIQUIDACION?: boolean
+    PROMO1?: boolean
+    PROMO2?: boolean
   }, ExtArgs["result"]["pRESTADO"]>
 
   export type PRESTADOSelectScalar = {
@@ -11585,6 +11609,8 @@ export namespace Prisma {
     idprest?: boolean
     PROMO?: boolean
     LIQUIDACION?: boolean
+    PROMO1?: boolean
+    PROMO2?: boolean
   }
 
 
@@ -11617,6 +11643,8 @@ export namespace Prisma {
       idprest: number
       PROMO: boolean | null
       LIQUIDACION: number | null
+      PROMO1: number | null
+      PROMO2: number | null
     }, ExtArgs["result"]["pRESTADO"]>
     composites: {}
   }
@@ -12036,6 +12064,8 @@ export namespace Prisma {
     readonly idprest: FieldRef<"PRESTADO", 'Int'>
     readonly PROMO: FieldRef<"PRESTADO", 'Boolean'>
     readonly LIQUIDACION: FieldRef<"PRESTADO", 'Float'>
+    readonly PROMO1: FieldRef<"PRESTADO", 'Float'>
+    readonly PROMO2: FieldRef<"PRESTADO", 'Float'>
   }
     
 
@@ -22745,7 +22775,9 @@ export namespace Prisma {
     OTERO: 'OTERO',
     idprest: 'idprest',
     PROMO: 'PROMO',
-    LIQUIDACION: 'LIQUIDACION'
+    LIQUIDACION: 'LIQUIDACION',
+    PROMO1: 'PROMO1',
+    PROMO2: 'PROMO2'
   };
 
   export type PRESTADOScalarFieldEnum = (typeof PRESTADOScalarFieldEnum)[keyof typeof PRESTADOScalarFieldEnum]
@@ -24123,6 +24155,8 @@ export namespace Prisma {
     idprest?: IntFilter<"PRESTADO"> | number
     PROMO?: BoolNullableFilter<"PRESTADO"> | boolean | null
     LIQUIDACION?: FloatNullableFilter<"PRESTADO"> | number | null
+    PROMO1?: FloatNullableFilter<"PRESTADO"> | number | null
+    PROMO2?: FloatNullableFilter<"PRESTADO"> | number | null
   }
 
   export type PRESTADOOrderByWithRelationInput = {
@@ -24151,6 +24185,8 @@ export namespace Prisma {
     idprest?: SortOrder
     PROMO?: SortOrderInput | SortOrder
     LIQUIDACION?: SortOrderInput | SortOrder
+    PROMO1?: SortOrderInput | SortOrder
+    PROMO2?: SortOrderInput | SortOrder
   }
 
   export type PRESTADOWhereUniqueInput = Prisma.AtLeast<{
@@ -24182,6 +24218,8 @@ export namespace Prisma {
     OTERO?: IntNullableFilter<"PRESTADO"> | number | null
     PROMO?: BoolNullableFilter<"PRESTADO"> | boolean | null
     LIQUIDACION?: FloatNullableFilter<"PRESTADO"> | number | null
+    PROMO1?: FloatNullableFilter<"PRESTADO"> | number | null
+    PROMO2?: FloatNullableFilter<"PRESTADO"> | number | null
   }, "idprest">
 
   export type PRESTADOOrderByWithAggregationInput = {
@@ -24210,6 +24248,8 @@ export namespace Prisma {
     idprest?: SortOrder
     PROMO?: SortOrderInput | SortOrder
     LIQUIDACION?: SortOrderInput | SortOrder
+    PROMO1?: SortOrderInput | SortOrder
+    PROMO2?: SortOrderInput | SortOrder
     _count?: PRESTADOCountOrderByAggregateInput
     _avg?: PRESTADOAvgOrderByAggregateInput
     _max?: PRESTADOMaxOrderByAggregateInput
@@ -24246,6 +24286,8 @@ export namespace Prisma {
     idprest?: IntWithAggregatesFilter<"PRESTADO"> | number
     PROMO?: BoolNullableWithAggregatesFilter<"PRESTADO"> | boolean | null
     LIQUIDACION?: FloatNullableWithAggregatesFilter<"PRESTADO"> | number | null
+    PROMO1?: FloatNullableWithAggregatesFilter<"PRESTADO"> | number | null
+    PROMO2?: FloatNullableWithAggregatesFilter<"PRESTADO"> | number | null
   }
 
   export type USOSWhereInput = {
@@ -26590,6 +26632,8 @@ export namespace Prisma {
     OTERO?: number | null
     PROMO?: boolean | null
     LIQUIDACION?: number | null
+    PROMO1?: number | null
+    PROMO2?: number | null
   }
 
   export type PRESTADOUncheckedCreateInput = {
@@ -26618,6 +26662,8 @@ export namespace Prisma {
     idprest?: number
     PROMO?: boolean | null
     LIQUIDACION?: number | null
+    PROMO1?: number | null
+    PROMO2?: number | null
   }
 
   export type PRESTADOUpdateInput = {
@@ -26645,6 +26691,8 @@ export namespace Prisma {
     OTERO?: NullableIntFieldUpdateOperationsInput | number | null
     PROMO?: NullableBoolFieldUpdateOperationsInput | boolean | null
     LIQUIDACION?: NullableFloatFieldUpdateOperationsInput | number | null
+    PROMO1?: NullableFloatFieldUpdateOperationsInput | number | null
+    PROMO2?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type PRESTADOUncheckedUpdateInput = {
@@ -26673,6 +26721,8 @@ export namespace Prisma {
     idprest?: IntFieldUpdateOperationsInput | number
     PROMO?: NullableBoolFieldUpdateOperationsInput | boolean | null
     LIQUIDACION?: NullableFloatFieldUpdateOperationsInput | number | null
+    PROMO1?: NullableFloatFieldUpdateOperationsInput | number | null
+    PROMO2?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type PRESTADOCreateManyInput = {
@@ -26701,6 +26751,8 @@ export namespace Prisma {
     idprest?: number
     PROMO?: boolean | null
     LIQUIDACION?: number | null
+    PROMO1?: number | null
+    PROMO2?: number | null
   }
 
   export type PRESTADOUpdateManyMutationInput = {
@@ -26728,6 +26780,8 @@ export namespace Prisma {
     OTERO?: NullableIntFieldUpdateOperationsInput | number | null
     PROMO?: NullableBoolFieldUpdateOperationsInput | boolean | null
     LIQUIDACION?: NullableFloatFieldUpdateOperationsInput | number | null
+    PROMO1?: NullableFloatFieldUpdateOperationsInput | number | null
+    PROMO2?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type PRESTADOUncheckedUpdateManyInput = {
@@ -26756,6 +26810,8 @@ export namespace Prisma {
     idprest?: IntFieldUpdateOperationsInput | number
     PROMO?: NullableBoolFieldUpdateOperationsInput | boolean | null
     LIQUIDACION?: NullableFloatFieldUpdateOperationsInput | number | null
+    PROMO1?: NullableFloatFieldUpdateOperationsInput | number | null
+    PROMO2?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type USOSCreateInput = {
@@ -28869,6 +28925,8 @@ export namespace Prisma {
     idprest?: SortOrder
     PROMO?: SortOrder
     LIQUIDACION?: SortOrder
+    PROMO1?: SortOrder
+    PROMO2?: SortOrder
   }
 
   export type PRESTADOAvgOrderByAggregateInput = {
@@ -28880,6 +28938,8 @@ export namespace Prisma {
     OTERO?: SortOrder
     idprest?: SortOrder
     LIQUIDACION?: SortOrder
+    PROMO1?: SortOrder
+    PROMO2?: SortOrder
   }
 
   export type PRESTADOMaxOrderByAggregateInput = {
@@ -28908,6 +28968,8 @@ export namespace Prisma {
     idprest?: SortOrder
     PROMO?: SortOrder
     LIQUIDACION?: SortOrder
+    PROMO1?: SortOrder
+    PROMO2?: SortOrder
   }
 
   export type PRESTADOMinOrderByAggregateInput = {
@@ -28936,6 +28998,8 @@ export namespace Prisma {
     idprest?: SortOrder
     PROMO?: SortOrder
     LIQUIDACION?: SortOrder
+    PROMO1?: SortOrder
+    PROMO2?: SortOrder
   }
 
   export type PRESTADOSumOrderByAggregateInput = {
@@ -28947,6 +29011,8 @@ export namespace Prisma {
     OTERO?: SortOrder
     idprest?: SortOrder
     LIQUIDACION?: SortOrder
+    PROMO1?: SortOrder
+    PROMO2?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {

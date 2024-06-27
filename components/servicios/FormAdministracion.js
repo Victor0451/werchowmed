@@ -1,15 +1,18 @@
 import ReactTable from "react-table";
 import matchSorter from "match-sorter";
 import React from "react";
+import FormEditPrestador from "./FormEditPrestador";
+import FormValPrestador from "./FormValPrestador";
 
 const FormAdministracion = ({
   medicos,
   medicoRef,
   handleChange,
-  presImp,
   updateConsulta,
   consultaRef,
   liquidacionRef,
+  promo1Ref,
+  promo2Ref,
   prestador,
   practicasPres,
   especialidadRef,
@@ -26,14 +29,14 @@ const FormAdministracion = ({
     <div className="container border border-dark p-4 mt-4 list">
       <h2>
         <strong>
-          <u>Administracion </u>
+          <u>Panel de Administracion</u>
         </strong>
       </h2>
 
       <div className="mt-4 border border-dark p-4">
         <h4>
           <strong>
-            <u>Modificar Valor de Consulta</u>
+            <u>Selecciona al Prestador</u>
           </strong>
         </h4>
 
@@ -60,207 +63,44 @@ const FormAdministracion = ({
               </select>
             </div>
           ) : (
-            <div className="col-md-4 mt-4 alert alert-info  border border-dark text-center text-uppercase">
+            <div className="col-md-4 mt-4 alert alert-warning  border border-dark text-center text-uppercase">
               No hay medicos registrados
             </div>
           )}
+
+          <div className="col-md-9">
+            <div className="col-md-12 mt-4 alert alert-info  border border-dark text-center text-uppercase">
+              Selecciona un prestador del listado para gestionar sus valores,
+              informacion personal y practicas. Para incorporar un nuevo
+              prestador, haz click aqui{" "}
+              <button className="btn btn-success mt-2">Nuevo Prestador</button>
+            </div>
+          </div>
         </div>
       </div>
 
       {prestador.length !== 0 ? (
         <>
-          <div className="mt-4 border border-dark p-4">
-            <h4>
-              <strong>
-                <u>Valores del Prestador</u>
-              </strong>
-            </h4>
+          <FormValPrestador
+            prestador={prestador}
+            updateConsulta={updateConsulta}
+            consultaRef={consultaRef}
+            liquidacionRef={liquidacionRef}
+            promo1Ref={promo1Ref}
+            promo2Ref={promo2Ref}
+          />
 
-            <div className="row mt-4 ">
-              <div className="col-md-2">
-                <label>
-                  <u>Coseguro:</u>
-                </label>
-
-                <input
-                  type="number"
-                  className="form-control"
-                  value={prestador.CON_PAGA}
-                  readOnly
-                />
-              </div>
-
-              <div className="col-md-2">
-                <label>
-                  <u>Nuevo Coseguro:</u>
-                </label>
-
-                <input
-                  type="number"
-                  className="form-control"
-                  ref={consultaRef}
-                />
-              </div>
-
-              <div className="col-md-2">
-                <button
-                  className="btn btn-primary mt-4"
-                  onClick={() => updateConsulta("C")}
-                >
-                  Actualizar
-                </button>
-              </div>
-
-              <div className="col-md-6">
-                <div className="alert alert-info  border border-dark text-center text-uppercase">
-                  Valor del coseguro que figura en la emision de ordenes, el
-                  valor que debe abonar el afiliado en la Clinica Otero
-                </div>
-              </div>
-
-              <div className="col-md-2">
-                <label>
-                  <u>Liquidacion:</u>
-                </label>
-
-                <input
-                  type="number"
-                  className="form-control"
-                  value={prestador.LIQUIDACION}
-                  readOnly
-                />
-              </div>
-
-              <div className="col-md-2">
-                <label>
-                  <u>Nueva Liquidacion:</u>
-                </label>
-
-                <input
-                  type="number"
-                  className="form-control"
-                  ref={liquidacionRef}
-                />
-              </div>
-
-              <div className="col-md-2">
-                <button
-                  className="btn btn-primary mt-4"
-                  onClick={() => updateConsulta("L")}
-                >
-                  Actualizar
-                </button>
-              </div>
-              <div className="col-md-6">
-                <div className="alert alert-info  border border-dark text-center text-uppercase">
-                  Valor de liquidacion de las consultas o practicas del
-                  prestador al momento de generar las ordenes de pago.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-4 border border-dark p-4">
-            <h4>
-              <strong>
-                <u>Datos del Prestador</u>
-              </strong>
-            </h4>
-
-            <div className="row mt-4">
-              <div className="col-md-3">
-                <label>Codigo</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue={prestador.COD_PRES}
-                  readOnly
-                />
-              </div>
-
-              <div className="col-md-3">
-                <label>Especialidad</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue={prestador.LIS_ESPE}
-                  ref={especialidadRef}
-                />
-              </div>
-
-              <div className="col-md-3">
-                <label>Apellido y Nombre</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue={prestador.NOMBRE}
-                  ref={nombreRef}
-                />
-              </div>
-
-              <div className="col-md-3">
-                <label>Matricula</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue={prestador.MATRICULA}
-                  ref={matriculaRef}
-                />
-              </div>
-
-              <div className="col-md-4 mt-4">
-                <label>Direccion</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue={prestador.DIRECCION}
-                  ref={direccionRef}
-                />
-              </div>
-
-              <div className="col-md-4 mt-4">
-                <label>Horario 1</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue={prestador.HORARIO1}
-                  ref={horario1Ref}
-                />
-              </div>
-
-              <div className="col-md-4 mt-4">
-                <label>Horario 2</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue={prestador.HORARIO2}
-                  ref={horario2Ref}
-                />
-              </div>
-
-              <div className="col-md-3 mt-4">
-                <label>Sucursal</label>
-                <select
-                  className="custom-select"
-                  defaultValue={prestador.LOCALIDAD}
-                  ref={sucRef}
-                >
-                  <option value="no">Selecciona una opcion</option>
-                  <option value="S.S. DE JUJUY">Casa Central</option>
-                  <option value="OTERO">Otero</option>
-                  <option value="PALPALA">Palpala</option>
-                  <option value="PERICO">Perico</option>
-                  <option value="EL CARMEN">El Carmen</option>
-                  <option value="SAN PEDRO">San Pedro</option>
-                </select>
-              </div>
-            </div>
-            <div className="d-flex justify-content-end mt-5">
-              <button className="btn btn-primary" onClick={updatePrestador}>
-                Actualizar
-              </button>
-            </div>
-          </div>
+          <FormEditPrestador
+            prestador={prestador}
+            especialidadRef={especialidadRef}
+            nombreRef={nombreRef}
+            matriculaRef={matriculaRef}
+            direccionRef={direccionRef}
+            horario1Ref={horario1Ref}
+            horario2Ref={horario2Ref}
+            sucRef={sucRef}
+            updatePrestador={updatePrestador}
+          />
 
           <div className="mt-4 border border-dark p-4">
             <h4>

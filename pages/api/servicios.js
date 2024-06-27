@@ -417,7 +417,13 @@ export default async function handler(req, res) {
             LUGAR,
             OTERO,
             PROMO, 
-            AUSENTE
+            AUSENTE, 
+            SUC,
+            LOCALIDAD,
+            PROMO1,
+            PROMO2,
+            LIS_ESPE
+            
         FROM PRESTADO
         WHERE COD_PRES = ${req.query.prestado}   
       `;
@@ -982,6 +988,34 @@ export default async function handler(req, res) {
          
          UPDATE PRESTADO
          SET LIQUIDACION = ${parseFloat(req.body.LIQUIDACION)}                
+         WHERE COD_PRES = ${req.body.COD_PRES} 
+`;
+      res
+        .status(200)
+        .json(
+          JSON.stringify(updateConPaga, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.body.f && req.body.f === "update promo1") {
+      const updateConPaga = await Serv.$queryRaw`
+         
+         UPDATE PRESTADO
+         SET PROMO1 = ${parseFloat(req.body.PROMO1)}                
+         WHERE COD_PRES = ${req.body.COD_PRES} 
+`;
+      res
+        .status(200)
+        .json(
+          JSON.stringify(updateConPaga, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.body.f && req.body.f === "update promo2") {
+      const updateConPaga = await Serv.$queryRaw`
+         
+         UPDATE PRESTADO
+         SET PROMO2 = ${parseFloat(req.body.PROMO2)}                
          WHERE COD_PRES = ${req.body.COD_PRES} 
 `;
       res

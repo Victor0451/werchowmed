@@ -901,13 +901,13 @@ const Emision = () => {
         if (socio.GRUPO === 55 || socio.GRUPO === 66) {
           uso.IMPORTE = 0;
         } else {
-          uso.IMPORTE = promos.pint1;
+          uso.IMPORTE = detalleMed.PROMO1;
         }
       } else if (priUso === 1) {
         if (isj === true) {
-          uso.IMPORTE = promos.pint2 - 350;
+          uso.IMPORTE = detalleMed.PROMO2 - 350;
         } else {
-          uso.IMPORTE = promos.pint2;
+          uso.IMPORTE = detalleMed.PROMO2;
         }
       } else if (priUso >= 2) {
         if (isj === true) {
@@ -921,13 +921,13 @@ const Emision = () => {
         if (socio.GRUPO === 55 || socio.GRUPO === 66) {
           uso.IMPORTE = 0;
         } else {
-          uso.IMPORTE = promos.pot1;
+          uso.IMPORTE = detalleMed.PROMO1;
         }
       } else if (priUso === 1) {
         if (isj === true) {
-          uso.IMPORTE = promos.pot2 - 350;
+          uso.IMPORTE = detalleMed.PROMO2 - 350;
         } else {
-          uso.IMPORTE = promos.pot2;
+          uso.IMPORTE = detalleMed.PROMO2;
         }
       } else if (priUso >= 2) {
         if (isj === true) {
@@ -2118,12 +2118,12 @@ const Emision = () => {
 
           return importe;
         } else {
-          const importe = promos.pint1;
+          const importe = detalleMed.PROMO1;
 
           return importe;
         }
       } else if (priUso === 1) {
-        const importe = promos.pint2;
+        const importe = detalleMed.PROMO2;
 
         return importe;
       } else if (priUso >= 2) {
@@ -2138,12 +2138,12 @@ const Emision = () => {
 
           return importe;
         } else {
-          const importe = promos.pot1;
+          const importe = detalleMed.PROMO1;
 
           return importe;
         }
       } else if (priUso === 1) {
-        const importe = promos.pot2;
+        const importe = detalleMed.PROMO2;
 
         return importe;
       } else if (priUso >= 2) {

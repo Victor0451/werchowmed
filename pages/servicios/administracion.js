@@ -28,6 +28,8 @@ function Administracion(props) {
   let horario2Ref = React.createRef();
   let sucRef = React.createRef();
   let nuevoImportePrac = React.createRef();
+  let promo1Ref = React.createRef();
+  let promo2Ref = React.createRef();
 
   const [medicos, guardarMedicos] = useState(null);
   const [codPres, guardarCodPres] = useState("");
@@ -237,6 +239,114 @@ function Administracion(props) {
           ],
         });
       }
+    } else if (f === "P1") {
+      if (promo1Ref.current.value === "") {
+        toastr.warning(
+          "Debes ingresar el nuevo valor de Promocion N°1",
+          "ATENCION"
+        );
+      } else {
+        let data = {
+          COD_PRES: codPres,
+          PROMO1: promo1Ref.current.value,
+          f: "update promo1",
+        };
+
+        await confirmAlert({
+          title: "ATENCION",
+          message: "¿Seguro quieres modificar el valor de la Promocion N°1?",
+          buttons: [
+            {
+              label: "Si",
+              onClick: () => {
+                axios
+                  .put(`/api/servicios`, data)
+                  .then((res) => {
+                    if (res.status === 200) {
+                      toastr.success(
+                        "El valor de Promocion N°1 se modifico con exito"
+                      );
+
+                      let accion = `Se actualizo el valor de Promocion N°1 del prestador codigo: ${codPres}, de $${prestador.PROMO1} a $${promo1Ref.current.value}.`;
+
+                      registrarHistoria(accion, usu.usuario);
+
+                      setTimeout(() => {
+                        traerDetMedico(codPres);
+                      }, 500);
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                    toastr.error(
+                      "Ocurrio un error al actualizar el valor de Promocion N°1"
+                    );
+                  });
+              },
+            },
+            {
+              label: "No",
+              onClick: () => {
+                toastr.info("El valor de Promocion N°1 no fue modificado");
+              },
+            },
+          ],
+        });
+      }
+    } else if (f === "P2") {
+      if (promo1Ref.current.value === "") {
+        toastr.warning(
+          "Debes ingresar el nuevo valor de Promocion N°2",
+          "ATENCION"
+        );
+      } else {
+        let data = {
+          COD_PRES: codPres,
+          PROMO1: promo2Ref.current.value,
+          f: "update promo2",
+        };
+
+        await confirmAlert({
+          title: "ATENCION",
+          message: "¿Seguro quieres modificar el valor de la Promocion N°2?",
+          buttons: [
+            {
+              label: "Si",
+              onClick: () => {
+                axios
+                  .put(`/api/servicios`, data)
+                  .then((res) => {
+                    if (res.status === 200) {
+                      toastr.success(
+                        "El valor de Promocion N°2 se modifico con exito"
+                      );
+
+                      let accion = `Se actualizo el valor de Promocion N°2 del prestador codigo: ${codPres}, de $${prestador.PROMO2} a $${promo2Ref.current.value}.`;
+
+                      registrarHistoria(accion, usu.usuario);
+
+                      setTimeout(() => {
+                        traerDetMedico(codPres);
+                      }, 500);
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                    toastr.error(
+                      "Ocurrio un error al actualizar el valor de la Promocion N°2"
+                    );
+                  });
+              },
+            },
+            {
+              label: "No",
+              onClick: () => {
+                toastr.info("El valor de Promocion N°2 no fue modificado");
+              },
+            },
+          ],
+        });
+      }
     }
   };
 
@@ -262,26 +372,32 @@ function Administracion(props) {
               f: "update prestado",
             };
 
-            if (sucRef.current.value === "S.S. DE JUJUY") {
-              data.SUC = "W";
-              data.LOCALIDAD = sucRef.current.value;
-            } else if (sucRef.current.value === "OTERO") {
-              data.SUC = "W";
-              data.LOCALIDAD = sucRef.current.value;
-              data.OTERO = true;
-            } else if (sucRef.current.value === "PALPALA") {
-              data.SUC = "L";
-              data.LOCALIDAD = sucRef.current.value;
-            } else if (sucRef.current.value === "PERICO") {
-              data.SUC = "R";
-              data.LOCALIDAD = sucRef.current.value;
-            } else if (sucRef.current.value === "EL CARMEN") {
-              data.SUC = "C";
-              data.LOCALIDAD = sucRef.current.value;
-            } else if (sucRef.current.value === "SAN PEDRO") {
-              data.SUC = "P";
-              data.LOCALIDAD = sucRef.current.value;
+            if (sucRef.current.value === "no") {
+              data.SUC = prestador.SUC;
+              data.LOCALIDAD = prestador.LOCALIDAD;
+            } else {
+              if (sucRef.current.value === "S.S. DE JUJUY") {
+                data.SUC = "W";
+                data.LOCALIDAD = sucRef.current.value;
+              } else if (sucRef.current.value === "OTERO") {
+                data.SUC = "W";
+                data.LOCALIDAD = sucRef.current.value;
+                data.OTERO = true;
+              } else if (sucRef.current.value === "PALPALA") {
+                data.SUC = "L";
+                data.LOCALIDAD = sucRef.current.value;
+              } else if (sucRef.current.value === "PERICO") {
+                data.SUC = "R";
+                data.LOCALIDAD = sucRef.current.value;
+              } else if (sucRef.current.value === "EL CARMEN") {
+                data.SUC = "C";
+                data.LOCALIDAD = sucRef.current.value;
+              } else if (sucRef.current.value === "SAN PEDRO") {
+                data.SUC = "P";
+                data.LOCALIDAD = sucRef.current.value;
+              }
             }
+            console.log(data);
 
             axios
               .put(`/api/servicios`, data)
@@ -407,6 +523,8 @@ function Administracion(props) {
               updateConsulta={updateConsulta}
               consultaRef={consultaRef}
               liquidacionRef={liquidacionRef}
+              promo1Ref={promo1Ref}
+              promo2Ref={promo2Ref}
               prestador={prestador}
               practicasPres={practicasPres}
               especialidadRef={especialidadRef}
