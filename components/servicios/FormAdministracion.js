@@ -57,7 +57,7 @@ const FormAdministracion = ({
                 <option value="no">Selecciona una opcion</option>
                 {medicos.map((m, index) => (
                   <option key={index} value={`${m.COD_PRES}-${m.CON_PAGA}`}>
-                    {m.NOMBRE}
+                    {m.NOMBRE} - {m.LOCALIDAD}
                   </option>
                 ))}
               </select>
@@ -73,7 +73,13 @@ const FormAdministracion = ({
               Selecciona un prestador del listado para gestionar sus valores,
               informacion personal y practicas. Para incorporar un nuevo
               prestador, haz click aqui{" "}
-              <button className="btn btn-success mt-2">Nuevo Prestador</button>
+              <button
+                className="btn btn-success mt-2"
+                data-toggle="modal"
+                data-target="#ModalNuevoPrestador"
+              >
+                Nuevo Prestador
+              </button>
             </div>
           </div>
         </div>

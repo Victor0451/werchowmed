@@ -390,8 +390,9 @@ export default async function handler(req, res) {
     } else if (req.query.f && req.query.f === "listado prestadores") {
       const listadoPrestadores = await Serv.$queryRaw`
          
-          SELECT COD_PRES, NOMBRE, CON_PAGA
+          SELECT COD_PRES, NOMBRE, CON_PAGA, LOCALIDAD, SUC
           FROM PRESTADO
+          WHERE SUC IS NOT NULL
           ORDER BY NOMBRE ASC
       `;
       res
@@ -715,6 +716,20 @@ export default async function handler(req, res) {
             typeof value === "bigint" ? value.toString() : value
           )
         );
+    } else if (req.query.f && req.query.f === "check nu prest") {
+      const checkPrest = await Serv.PRESTADO.findFirst({
+        where: {
+          COD_PRES: req.query.codPres,
+        },
+      });
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(checkPrest, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
     }
   } else if (req.method === "POST") {
     if (req.body.f && req.body.f === "reg adh provisorio") {
@@ -898,6 +913,32 @@ export default async function handler(req, res) {
       });
 
       res.status(200).json(regAusen);
+    } else if (req.body.f && req.body.f === "reg prestador") {
+      const regPrestado = await Serv.PRESTADO.create({
+        data: {
+          COD_PRES: req.body.COD_PRES,
+          NOMBRE: req.body.NOMBRE,
+          ESPEC: req.body.ESPEC,
+          LIS_ESPE: req.body.LIS_ESPE,
+          SUC: req.body.SUC,
+          DIRECCION: req.body.DIRECCION,
+          LOCALIDAD: req.body.LOCALIDAD,
+          TELEFONOS: req.body.TELEFONO,
+          HORARIO1: req.body.HORARIO1,
+          HORARIO2: req.body.HORARIO2,
+          MODALIDAD: req.body.MODALIDAD,
+          AUSENTE: req.body.AUSENTE,
+          CON_PAGA: parseInt(req.body.CON_PAGA),
+          ALTA: new Date(req.body.ALTA),
+          OTERO: req.body.OTERO,
+          PROMO: req.body.PROMO,
+          LIQUIDACION: parseFloat(req.body.LIQUIDACION),
+          PROMO1: parseFloat(req.body.PROMO1),
+          PROMO2: parseFloat(req.body.PROMO2),
+        },
+      });
+
+      res.status(200).json(regPrestado);
     }
   } else if (req.method === "PUT") {
     if (req.body.f && req.body.f === "puntear codigo") {

@@ -60,7 +60,7 @@ const OpcionesServicios = ({
   usosFarm,
   selDescuento,
   arancelEnfDomi,
-  indexSel
+  indexSel,
 }) => {
   return (
     <div className="mt-4 border border-dark p-4">
@@ -133,7 +133,8 @@ const OpcionesServicios = ({
             </div>
           </div>
         </div>
-        <div className="col mb-4">
+
+        {/* <div className="col mb-4">
           <div className="card border border-dark">
             <img
               src="/img/emision/enfermeria.jpg"
@@ -152,7 +153,7 @@ const OpcionesServicios = ({
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="col mb-4 ">
           <div className="card border border-dark">

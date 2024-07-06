@@ -17,8 +17,6 @@ const ModalConsulta = ({
   isj,
   importeOrden,
 }) => {
-  console.log(detalleMed.COD_PRES);
-
   return (
     <div
       className="modal fade"

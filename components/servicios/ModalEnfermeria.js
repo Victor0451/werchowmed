@@ -30,7 +30,7 @@ const ModalEnfermeria = ({
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLabel">
-              Orden de Farmacia para: {socio.APELLIDOS}, {socio.NOMBRES}
+              Orden de Enfermeria para: {socio.APELLIDOS}, {socio.NOMBRES}
             </h5>
             <button
               type="button"
