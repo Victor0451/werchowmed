@@ -91,6 +91,20 @@ const AccesosRapidos = ({ usu }) => {
               <p className="card-text mt-2">Generar Caja Diaria</p>
             </div>
           </div>
+          <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
+            <div className="card-header">Listado de Prestadores</div>
+            <div className="card-body">
+              <a
+                className="btn btn-primary btn-block "
+                href="/servicios/listadoprestadores"
+              >
+                Ver Listado
+              </a>
+              <p className="card-text mt-2">
+                Información de prestadores registrados
+              </p>
+            </div>
+          </div>
           {usu.perfil === 1 || usu.perfil === 3 ? (
             <>
               <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">

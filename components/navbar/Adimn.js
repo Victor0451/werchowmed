@@ -18,6 +18,14 @@ const Adimn = ({ userData }) => {
         </a>
       </li>
       <li>
+        <a
+          href="/servicios/listadoprestadores"
+          className="nav-link dropdown-toggle"
+        >
+          List. Prest.
+        </a>
+      </li>
+      <li>
         <a href="/servicios/gestionturnos" className="nav-link dropdown-toggle">
           Gestion Turnos
         </a>
@@ -35,6 +43,11 @@ const Adimn = ({ userData }) => {
           Gestion Ausencia
         </a>
       </li>
+      <li>
+        <a href="/servicios/cajapato" className="nav-link dropdown-toggle">
+          Gen. Caja
+        </a>
+      </li>
       {userData.perfil === 1 || userData.perfil === 3 ? (
         <>
           <li>
@@ -42,11 +55,7 @@ const Adimn = ({ userData }) => {
               Gen. Caja Admin
             </a>
           </li>
-          <li>
-            <a href="/servicios/cajapato" className="nav-link dropdown-toggle">
-              Gen. Caja
-            </a>
-          </li>
+
           <li>
             <a
               href="/servicios/listadocajas"

@@ -716,6 +716,57 @@ export default async function handler(req, res) {
             typeof value === "bigint" ? value.toString() : value
           )
         );
+    } else if (req.query.f && req.query.f === "list info prestadores") {
+      const listPrest = await Serv.$queryRaw`         
+         
+         SELECT 
+              (
+              CASE
+              WHEN SUC = 'W' and OTERO = 0
+              THEN 'Casa Central'
+              WHEN SUC = 'W' and OTERO = 1
+              THEN 'Otero'
+              WHEN SUC = 'L' 
+              THEN 'Palpala'
+              WHEN SUC = 'R' 
+              THEN 'Perico'
+              WHEN SUC = 'C' 
+              THEN 'El Carmen'
+              WHEN SUC = 'P' 
+              THEN 'San Pedro'
+              END
+              )'SUC',
+              NOMBRE,
+              LIS_ESPE,
+              ALTA,
+              (
+              CASE
+              when PROMO = 1
+              THEN 'SI'
+              when PROMO = 0
+              THEN 'NO'
+              end
+              )'PROMO',
+              PROMO1,
+              PROMO2,
+              CON_PAGA,
+              LIQUIDACION
+
+        FROM PRESTADO
+        WHERE SUC is not null
+        AND LIS_ESPE not in ('FAR-', 'ENF-','OPT-','ECO-', 'RAD-','RAD-ECO', 'RAD')
+
+        ORDER BY NOMBRE
+
+       
+      `;
+      res
+        .status(200)
+        .json(
+          JSON.stringify(listPrest, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
     } else if (req.query.f && req.query.f === "check nu prest") {
       const checkPrest = await Serv.PRESTADO.findFirst({
         where: {
