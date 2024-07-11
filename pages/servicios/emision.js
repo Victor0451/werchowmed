@@ -735,6 +735,7 @@ const Emision = () => {
       })
       .then((res) => {
         let us = parseInt(res.data[0].orde);
+        console.log(res.data[0]);
         guardarPriUsoBIo(us);
       })
       .catch((error) => {

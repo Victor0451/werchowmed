@@ -40,7 +40,7 @@ export default async function handler(req, res) {
         AND SERVICIO = 'ORDE'
         AND YEAR(FECHA) = YEAR(CURDATE())
         AND MONTH(FECHA) = MONTH(CURDATE())
-        AND ANULADO in (NULL, 0)
+        AND ANULADO  = 0
   
   `;
 
@@ -61,7 +61,7 @@ export default async function handler(req, res) {
         AND SERVICIO NOT IN ('ORDE','FARM','ENF', 'PBIO')
         AND YEAR(FECHA) = YEAR(CURDATE())
         AND MONTH(FECHA) = MONTH(CURDATE())
-        AND ANULADO in (NULL, 0)
+        AND ANULADO  = 0
     
     `;
 
@@ -80,9 +80,10 @@ export default async function handler(req, res) {
         FROM USOS
         WHERE CONTRATO = ${req.query.contrato}
         AND SERVICIO = 'PBIO'
+        AND PRESTADO = 'C_BIO'
         AND YEAR(FECHA) = YEAR(CURDATE())
         AND MONTH(FECHA) = MONTH(CURDATE())
-        AND ANULADO in (NULL, 0)
+        AND ANULADO  = 0
     
     `;
 
