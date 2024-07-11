@@ -65,6 +65,7 @@ const Emision = () => {
   const [detEnf, guardarDetalleEnfer] = useState(null);
   const [practEnfer, guadrarPractEnfer] = useState(null);
   const [priUso, guardarPriUso] = useState(0);
+  const [priUsoBio, guardarPriUsoBIo] = useState(0);
   const [nFisio, guardarNFisio] = useState(0);
   const [isj, guardarISJ] = useState(false);
   const [planOrto, guardarPlanOrto] = useState(null);
@@ -724,6 +725,23 @@ const Emision = () => {
           toastr.error("Ocurrio un error al verificar el uso", "ATENCION");
         });
     }
+
+    await axios
+      .get(`/api/servicios`, {
+        params: {
+          f: "verificar cbio",
+          contrato: contrato,
+        },
+      })
+      .then((res) => {
+        let us = parseInt(res.data[0].orde);
+        guardarPriUsoBIo(us);
+      })
+      .catch((error) => {
+        console.log(error);
+
+        toastr.error("Ocurrio un error al verificar el uso", "ATENCION");
+      });
   };
 
   const regAdhProvi = async () => {
@@ -1057,7 +1075,7 @@ const Emision = () => {
     }
   };
 
-  const agregarPractica = (row) => {
+  const agregarPractica = async (row) => {
     let pra = {
       CODIGOS: row.CODIGOS,
       DESCRIP: row.DESCRIP,
@@ -1065,6 +1083,28 @@ const Emision = () => {
       IMPORTE: parseFloat(row.IMPORTE) * parseFloat(cantidadRefP.current.value),
       idpractica: row.idpractica,
     };
+
+    // AUMENTO POR CANTIDAD DE USOS
+
+    if (detalleMed.COD_PRES === "C_BIO") {
+      if (priUsoBio === 1) {
+        pra.IMPORTE = pra.IMPORTE * 1.15;
+      } else if (priUsoBio === 2) {
+        pra.IMPORTE = pra.IMPORTE * 1.2;
+      } else if (priUsoBio > 2) {
+        pra.IMPORTE = pra.IMPORTE * 1.25;
+      }
+    }
+
+    // --------------------------------------------
+
+    //PROMO OFTALMO (30.05.05 A 9000) Y ECOGRAFIAS (A 7000) PRIMER USO
+    if (pra.DESCRIP.match(/ECOGRAFIA.*/) && priUso === 0) {
+      pra.IMPORTE = 7000;
+    } else if (pra.CODIGOS === "30.05.05" && priUso === 0) {
+      pra.IMPORTE = 9000;
+    }
+    //---------------------//
 
     let encontrado = false;
 
@@ -1080,9 +1120,21 @@ const Emision = () => {
       if (encontrado === true) {
         toastr.warning("El codigo ingresado ya exitse", "ATENCION");
       } else if (encontrado === false) {
-        toastr.success("Practica cargada exitosamente", "ATENCION");
+        if (pra.DESCRIP.match(/ECOGRAFIA.*/) && priUso === 0) {
+          toastr.warning(
+            "Es solo una ecografia en promocion por mes y por grupo familiar.",
+            "ATENCION"
+          );
+        } else if (pra.CODIGOS === "30.05.05" && priUso === 0) {
+          toastr.warning(
+            "Es solo una consulta + MOD 81 en promocion por mes y por grupo familiar.",
+            "ATENCION"
+          );
+        } else {
+          toastr.success("Practica cargada exitosamente", "ATENCION");
 
-        guardarPracSocio([...pracSocio, pra]);
+          guardarPracSocio([...pracSocio, pra]);
+        }
       }
     }
   };
@@ -1141,20 +1193,6 @@ const Emision = () => {
       }
     }
 
-    // AUMENTO POR CANTIDAD DE USOS
-
-    if (detalleMed.COD_PRES === "C_BIO") {
-      if (priUso === 1) {
-        uso.IMPORTE = uso.IMPORTE * 1.15;
-      } else if (priUso === 2) {
-        uso.IMPORTE = uso.IMPORTE * 1.2;
-      } else if (priUso > 2) {
-        uso.IMPORTE = uso.IMPORTE * 1.25;
-      }
-    }
-
-    // --------------------------------------------
-
     await axios
       .post(`/api/servicios`, uso)
       .then((res) => {
@@ -1209,19 +1247,6 @@ const Emision = () => {
           practi.IMPORTE = 0;
         }
       }
-
-      // AUMENTO POR CANTIDAD DE USOS
-      if (detalleMed.COD_PRES === "C_BIO") {
-        if (priUso === 1) {
-          practi.IMPORTE = practi.IMPORTE * 1.15;
-        } else if (priUso === 2) {
-          practi.IMPORTE = practi.IMPORTE * 1.2;
-        } else if (priUso > 2) {
-          practi.IMPORTE = practi.IMPORTE * 1.25;
-        }
-      }
-
-      // -----------------------------------------
 
       await axios
         .post(`/api/servicios`, practi)
@@ -2381,6 +2406,7 @@ const Emision = () => {
                         traerHistorialUsos={traerHistorialUsos}
                         arancelEnfDomi={arancelEnfDomi}
                         indexSel={indexSel}
+                        priUsoBio={priUsoBio}
                       />
 
                       <ModalHistorialUsos historialUsos={historialUsos} />

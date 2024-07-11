@@ -73,7 +73,8 @@ const EmitirServicio = ({
   selDescuento,
   traerHistorialUsos,
   arancelEnfDomi,
-  indexSel
+  indexSel,
+  priUsoBio,
 }) => {
   if (!ficha) return <Spinner />;
 
@@ -118,6 +119,13 @@ const EmitirServicio = ({
           pagos!
         </div>
       )}
+
+      <div className="alert alert-info border border-dark text-center text-uppercase">
+        <u>ATENCION</u>: HASTA OCTUBRE ESTA VIGUENTE LA PROMOCION DE UNA
+        ECOGRAFIA A 7000 O UNA CONSULTA OFTALMOLOGIA MAS MODULO 81 A 9000, POR
+        MES Y POR GRUPO FAMNILIAR. EL SISTEMA LA COMPUTA Y MUESTRA EL VALOR EN
+        PANTALLA Y EN ORDEN IMPRESA DEL VALOR EN CASO DE QUE CORRESPONDA.
+      </div>
 
       <div className=" mt-4 border border-dark p-4">
         <div className="row">
@@ -413,6 +421,7 @@ const EmitirServicio = ({
             selDescuento={selDescuento}
             arancelEnfDomi={arancelEnfDomi}
             indexSel={indexSel}
+            priUsoBio={priUsoBio}
           />
         </>
       )}

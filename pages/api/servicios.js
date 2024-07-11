@@ -58,6 +58,27 @@ export default async function handler(req, res) {
             COUNT(CONTRATO) 'orde'
         FROM USOS
         WHERE CONTRATO = ${req.query.contrato}
+        AND SERVICIO NOT IN ('ORDE','FARM','ENF', 'PBIO')
+        AND YEAR(FECHA) = YEAR(CURDATE())
+        AND MONTH(FECHA) = MONTH(CURDATE())
+        AND ANULADO in (NULL, 0)
+    
+    `;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(verificarPracticas, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.query.f && req.query.f === "verificar cbio") {
+      const verificarPracticas = await Serv.$queryRaw`
+                
+        SELECT 
+            COUNT(CONTRATO) 'orde'
+        FROM USOS
+        WHERE CONTRATO = ${req.query.contrato}
         AND SERVICIO = 'PBIO'
         AND YEAR(FECHA) = YEAR(CURDATE())
         AND MONTH(FECHA) = MONTH(CURDATE())

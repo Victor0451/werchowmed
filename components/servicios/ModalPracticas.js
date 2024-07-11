@@ -22,6 +22,7 @@ const ModalPractica = ({
   cantidadRefP,
   nFisio,
   priUso,
+  priUsoBio,
 }) => {
   return (
     <div
@@ -48,7 +49,13 @@ const ModalPractica = ({
           </div>
           <div className="modal-body p-4">
             <div className="alert alert-info border border-dark text-center text-uppercase mb-4">
-              Esta es la Practica Bioquimica n° {priUso + 1} del mes
+              El afiliado tiene {priUsoBio} Practicas Bioquimicas registradas en
+              el mes
+            </div>
+
+            <div className="alert alert-info border border-dark text-center text-uppercase mb-4">
+              El afiliado tiene {priUso} Practicas en general registradas en el
+              mes
             </div>
 
             <div className="row border border-dark list p-4">

@@ -61,6 +61,7 @@ const OpcionesServicios = ({
   selDescuento,
   arancelEnfDomi,
   indexSel,
+  priUsoBio
 }) => {
   return (
     <div className="mt-4 border border-dark p-4">
@@ -233,6 +234,7 @@ const OpcionesServicios = ({
         cantidadRefP={cantidadRefP}
         priUso={priUso}
         nFisio={nFisio}
+        priUsoBio={priUsoBio}
       />
 
       <ModalEnfermeria
