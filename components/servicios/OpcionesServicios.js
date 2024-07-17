@@ -61,7 +61,7 @@ const OpcionesServicios = ({
   selDescuento,
   arancelEnfDomi,
   indexSel,
-  priUsoBio
+  priUsoBio,
 }) => {
   return (
     <div className="mt-4 border border-dark p-4">

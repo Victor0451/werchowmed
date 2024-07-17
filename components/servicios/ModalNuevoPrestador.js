@@ -115,7 +115,7 @@ const ModalNuevoPrestador = ({
                     />
                   </div>
 
-                  <div className="col-md-8 mt-4">
+                  <div className="col-md-4 mt-4">
                     <label>Telefono</label>
                     <input
                       type="number"
@@ -133,7 +133,7 @@ const ModalNuevoPrestador = ({
                     />
                   </div>
 
-                  <div className="col-md-4 mt-4">
+                  <div className="col-md-6 mt-4">
                     <label>Horario 1</label>
                     <input
                       type="text"
@@ -142,7 +142,7 @@ const ModalNuevoPrestador = ({
                     />
                   </div>
 
-                  <div className="col-md-4 mt-4">
+                  <div className="col-md-6 mt-4">
                     <label>Horario 2</label>
                     <input
                       type="text"

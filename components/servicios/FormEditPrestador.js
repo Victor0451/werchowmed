@@ -2,14 +2,13 @@ import React from "react";
 
 const FormEditPrestador = ({
   prestador,
-  especialidadRef,
   nombreRef,
   matriculaRef,
   direccionRef,
   horario1Ref,
   horario2Ref,
-  sucRef,
   updatePrestador,
+  promoEditRef,
 }) => {
   return (
     <div className="mt-4 border border-dark p-4">
@@ -29,30 +28,6 @@ const FormEditPrestador = ({
             readOnly
           />
         </div>
-
-        {/* <div className="col-md-3 mt-4">
-            <label>Sucursal: {prestador.LOCALIDAD}</label>
-            <select className="custom-select" ref={sucRef}>
-              <option value="no">Selecciona una opcion</option>
-              <option value="S.S. DE JUJUY">Casa Central</option>
-              <option value="OTERO">Otero</option>
-              <option value="PALPALA">Palpala</option>
-              <option value="PERICO">Perico</option>
-              <option value="EL CARMEN">El Carmen</option>
-              <option value="SAN PEDRO">San Pedro</option>
-            </select>
-          </div> */}
-
-        {/* <div className="col-md-3">
-            <label>Especialidad</label>
-            <input
-              type="text"
-              className="form-control"
-              defaultValue={prestador.LIS_ESPE}
-              ref={especialidadRef}
-              
-            />
-          </div> */}
 
         <div className="col-md-4">
           <label>Apellido y Nombre</label>
@@ -102,6 +77,27 @@ const FormEditPrestador = ({
             defaultValue={prestador.MATRICULA}
             ref={matriculaRef}
           />
+        </div>
+        <div className="col-md-3 mt-4">
+          <label>Modalidad De Pago: </label>
+          <select className="custom-select" defaultValue={prestador.MODALIDAD}>
+            <option value="no">Selecciona una opcion</option>
+            <option value={"PAGA_EN_OFIC"}>En Oficina</option>
+            <option value={"PAGA_EN_PRES"}>Al Prestador</option>
+          </select>
+        </div>
+
+        <div className="col-md-3 mt-4">
+          <label>Promocion: </label>
+          <select
+            className="custom-select"
+            ref={promoEditRef}
+            defaultValue={prestador.PROMO}
+          >
+            <option value="no">Selecciona una opcion</option>
+            <option value={1}>Si</option>
+            <option value={0}>No</option>
+          </select>
         </div>
       </div>
       <div className="d-flex justify-content-end mt-5">

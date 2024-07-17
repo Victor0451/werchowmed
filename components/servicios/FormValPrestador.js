@@ -16,78 +16,92 @@ const FormValPrestador = ({
         </strong>
       </h4>
 
+      {prestador.PROMO === 1 ? (
+        <div className="alert alert-info  border border-dark text-center text-uppercase">
+          El prestador seleccionado, posee promocion activa
+        </div>
+      ) : prestador.PROMO === 0 ? (
+        <div className="alert alert-info  border border-dark text-center text-uppercase">
+          El prestador seleccionado, no posee promocion activa
+        </div>
+      ) : null}
+
       <div className="row mt-4 ">
-        <div className="col-md-2">
-          <label>
-            <u>Promo N°1:</u>
-          </label>
+        {prestador.PROMO === 1 ? (
+          <>
+            <div className="col-md-2">
+              <label>
+                <u>Promo N°1:</u>
+              </label>
 
-          <input
-            type="number"
-            className="form-control"
-            value={prestador.PROMO1}
-            readOnly
-          />
-        </div>
+              <input
+                type="number"
+                className="form-control"
+                value={prestador.PROMO1}
+                readOnly
+              />
+            </div>
 
-        <div className="col-md-2">
-          <label>
-            <u>Nueva Promo N°1:</u>
-          </label>
+            <div className="col-md-2">
+              <label>
+                <u>Nueva Promo N°1:</u>
+              </label>
 
-          <input type="number" className="form-control" ref={promo1Ref} />
-        </div>
+              <input type="number" className="form-control" ref={promo1Ref} />
+            </div>
 
-        <div className="col-md-2">
-          <button
-            className="btn btn-primary mt-4"
-            onClick={() => updateConsulta("P1")}
-          >
-            Actualizar
-          </button>
-        </div>
+            <div className="col-md-2">
+              <button
+                className="btn btn-primary mt-4"
+                onClick={() => updateConsulta("P1")}
+              >
+                Actualizar
+              </button>
+            </div>
 
-        <div className="col-md-6">
-          <div className="alert alert-info  border border-dark text-center text-uppercase">
-            Valor de la promocion N°1 que figura en la emision de ordenes.
-          </div>
-        </div>
+            <div className="col-md-6">
+              <div className="alert alert-info  border border-dark text-center text-uppercase">
+                Valor de la promocion N°1 que figura en la emision de ordenes.
+              </div>
+            </div>
 
-        <div className="col-md-2">
-          <label>
-            <u>Promo N°2:</u>
-          </label>
+            <div className="col-md-2">
+              <label>
+                <u>Promo N°2:</u>
+              </label>
 
-          <input
-            type="number"
-            className="form-control"
-            value={prestador.PROMO2}
-            readOnly
-          />
-        </div>
+              <input
+                type="number"
+                className="form-control"
+                value={prestador.PROMO2}
+                readOnly
+              />
+            </div>
 
-        <div className="col-md-2">
-          <label>
-            <u>Nueva Promo N°2:</u>
-          </label>
+            <div className="col-md-2">
+              <label>
+                <u>Nueva Promo N°2:</u>
+              </label>
 
-          <input type="number" className="form-control" ref={promo2Ref} />
-        </div>
+              <input type="number" className="form-control" ref={promo2Ref} />
+            </div>
 
-        <div className="col-md-2">
-          <button
-            className="btn btn-primary mt-4"
-            onClick={() => updateConsulta("P2")}
-          >
-            Actualizar
-          </button>
-        </div>
+            <div className="col-md-2">
+              <button
+                className="btn btn-primary mt-4"
+                onClick={() => updateConsulta("P2")}
+              >
+                Actualizar
+              </button>
+            </div>
 
-        <div className="col-md-6">
-          <div className="alert alert-info  border border-dark text-center text-uppercase">
-            Valor de la promocion N°2 que figura en la emision de ordenes.
-          </div>
-        </div>
+            <div className="col-md-6">
+              <div className="alert alert-info  border border-dark text-center text-uppercase">
+                Valor de la promocion N°2 que figura en la emision de ordenes.
+              </div>
+            </div>
+          </>
+        ) : prestador.PROMO === 0 ? null : null}
 
         <div className="col-md-2">
           <label>

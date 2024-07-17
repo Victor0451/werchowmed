@@ -445,7 +445,8 @@ export default async function handler(req, res) {
             LOCALIDAD,
             PROMO1,
             PROMO2,
-            LIS_ESPE
+            LIS_ESPE,
+            MODALIDAD
             
         FROM PRESTADO
         WHERE COD_PRES = ${req.query.prestado}   
@@ -1143,15 +1144,14 @@ export default async function handler(req, res) {
       const updatePrestado = await Serv.$queryRaw`
          
          UPDATE PRESTADO
-          SET LIS_ESPE= ${req.body.LIS_ESPE},
-              NOMBRE= ${req.body.NOMBRE},
+          SET              
               MATRICULA= ${req.body.MATRICULA},
               DIRECCION= ${req.body.DIRECCION},
               HORARIO1= ${req.body.HORARIO1},
-              HORARIO2= ${req.body.HORARIO2},
-              SUC= ${req.body.SUC},
-              LOCALIDAD= ${req.body.LOCALIDAD},
-              OTERO= ${req.body.OTERO}
+              HORARIO2= ${req.body.HORARIO2},                  
+              PROMO= ${req.body.PROMO},
+              PROMO1= ${parseInt(req.body.PROMO1)},
+              PROMO2= ${parseInt(req.body.PROMO2)}
 
         WHERE COD_PRES = ${req.body.COD_PRES}
 `;

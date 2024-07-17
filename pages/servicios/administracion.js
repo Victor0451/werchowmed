@@ -22,13 +22,11 @@ function Administracion(props) {
   let medicoRef = React.createRef();
   let consultaRef = React.createRef();
   let liquidacionRef = React.createRef();
-  let especialidadRef = React.createRef();
   let nombreRef = React.createRef();
   let matriculaRef = React.createRef();
   let direccionRef = React.createRef();
   let horario1Ref = React.createRef();
   let horario2Ref = React.createRef();
-  let sucRef = React.createRef();
   let nuevoImportePrac = React.createRef();
   let promo1Ref = React.createRef();
   let promo2Ref = React.createRef();
@@ -49,6 +47,7 @@ function Administracion(props) {
   let nuLiquidacionRef = React.createRef();
   let nuTelefonoRef = React.createRef();
   let nuModalidadRef = React.createRef();
+  let promoEditRef = React.createRef();
 
   const [medicos, guardarMedicos] = useState(null);
   const [especialidades, guardarEspecialidades] = useState(null);
@@ -400,45 +399,25 @@ function Administracion(props) {
           label: "Si",
           onClick: () => {
             let data = {
-              LIS_ESPE: especialidadRef.current.value,
               NOMBRE: nombreRef.current.value,
               MATRICULA: matriculaRef.current.value,
               DIRECCION: direccionRef.current.value,
               HORARIO1: horario1Ref.current.value,
               HORARIO2: horario2Ref.current.value,
-              SUC: "",
-              LOCALIDAD: "",
-              OTERO: false,
               COD_PRES: prestador.COD_PRES,
+              PROMO: prestador.PROMO,
+              PROMO1: prestador.PROMO1,
+              PROMO2: prestador.PROMO2,
               f: "update prestado",
             };
 
-            if (sucRef.current.value === "no") {
-              data.SUC = prestador.SUC;
-              data.LOCALIDAD = prestador.LOCALIDAD;
-            } else {
-              if (sucRef.current.value === "S.S. DE JUJUY") {
-                data.SUC = "W";
-                data.LOCALIDAD = sucRef.current.value;
-              } else if (sucRef.current.value === "OTERO") {
-                data.SUC = "W";
-                data.LOCALIDAD = sucRef.current.value;
-                data.OTERO = true;
-              } else if (sucRef.current.value === "PALPALA") {
-                data.SUC = "L";
-                data.LOCALIDAD = sucRef.current.value;
-              } else if (sucRef.current.value === "PERICO") {
-                data.SUC = "R";
-                data.LOCALIDAD = sucRef.current.value;
-              } else if (sucRef.current.value === "EL CARMEN") {
-                data.SUC = "C";
-                data.LOCALIDAD = sucRef.current.value;
-              } else if (sucRef.current.value === "SAN PEDRO") {
-                data.SUC = "P";
-                data.LOCALIDAD = sucRef.current.value;
-              }
+            if (promoEditRef.current.value === "0") {
+              data.PROMO = false;
+              data.PROMO1 = 0;
+              data.PROMO2 = 0;
+            } else if (promoEditRef.current.value === "1") {
+              data.PROMO = true;
             }
-            console.log(data);
 
             axios
               .put(`/api/servicios`, data)
@@ -748,15 +727,14 @@ function Administracion(props) {
               promo2Ref={promo2Ref}
               prestador={prestador}
               practicasPres={practicasPres}
-              especialidadRef={especialidadRef}
               nombreRef={nombreRef}
               matriculaRef={matriculaRef}
               direccionRef={direccionRef}
               horario1Ref={horario1Ref}
               horario2Ref={horario2Ref}
-              sucRef={sucRef}
               updatePrestador={updatePrestador}
               guardarRow={guardarRow}
+              promoEditRef={promoEditRef}
             />
           </Layout>
 
