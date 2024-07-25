@@ -1100,11 +1100,16 @@ const Emision = () => {
     // --------------------------------------------
 
     //PROMO OFTALMO (30.05.05 A 9000) Y ECOGRAFIAS (A 7000) PRIMER USO
-    if (pra.DESCRIP.match(/ECOGRAFIA.*/) && priUso === 0) {
+
+    // pra.DESCRIP.match(/ECOGRAFIA.*/) && priUso === 0 ---> descuento de ecografias para todos
+    // ahora es solo para cabrera en la otero
+
+    if (detalleMed.COD_PRES === "C_OCB" && pra.DESCRIP.match(/ECOGRAFIA.*/) && priUso === 0) {
       pra.IMPORTE = 7000;
     } else if (pra.CODIGOS === "30.05.05" && priUso === 0) {
       pra.IMPORTE = 9000;
     }
+
     //---------------------//
 
     let encontrado = false;
