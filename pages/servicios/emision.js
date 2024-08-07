@@ -1104,7 +1104,11 @@ const Emision = () => {
     // pra.DESCRIP.match(/ECOGRAFIA.*/) && priUso === 0 ---> descuento de ecografias para todos
     // ahora es solo para cabrera en la otero
 
-    if (detalleMed.COD_PRES === "C_OCB" && pra.DESCRIP.match(/ECOGRAFIA.*/) && priUso === 0) {
+    if (
+      detalleMed.COD_PRES === "C_OCB" &&
+      pra.DESCRIP.match(/ECOGRAFIA.*/) &&
+      priUso === 0
+    ) {
       pra.IMPORTE = 7000;
     } else if (pra.CODIGOS === "30.05.05" && priUso === 0) {
       pra.IMPORTE = 9000;
@@ -1651,7 +1655,7 @@ const Emision = () => {
         },
       })
       .then((res) => {
-        guardarPlanOrto(res.data[0]);
+        guardarPlanOrto(res.data);
       })
       .catch((error) => {
         console.log(error);

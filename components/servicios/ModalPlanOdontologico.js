@@ -172,74 +172,76 @@ const ModalPlanOdontologico = ({
 
                 {planOrto ? (
                   <>
-                    <div className="row">
-                      <div className=" border border-dark p-4 col-md-12">
-                        <h4>
-                          <u>Plan De Ortodoncia</u>
-                        </h4>
+                    {planOrto.map((p, index) => (
+                      <div className="row mt-4" key={index}>
+                        <div className=" border border-dark p-4 col-md-12">
+                          <h4>
+                            <u>Plan De Ortodoncia N°{index + 1}:</u>
+                          </h4>
 
-                        <div className="row border border-dark p-4 mt-4">
-                          <div className="col-md-4 mt-4">
-                            <label>
-                              <u>Paciente</u>
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              value={`${socio.APELLIDOS}, ${socio.NOMBRES}`}
-                              readOnly
-                            />
-                          </div>
+                          <div className="row border border-dark p-4 mt-4">
+                            <div className="col-md-4 mt-4">
+                              <label>
+                                <u>Paciente</u>
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                value={`${socio.APELLIDOS}, ${socio.NOMBRES}`}
+                                readOnly
+                              />
+                            </div>
 
-                          <div className="col-md-4 mt-4">
-                            <label>
-                              <u>Plan</u>: Sujeto a modif. del especialista
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue={planOrto.detalle}
-                              readOnly
-                            />
-                          </div>
+                            <div className="col-md-4 mt-4">
+                              <label>
+                                <u>Plan</u>: Sujeto a modif. del especialista
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                defaultValue={p.detalle}
+                                readOnly
+                              />
+                            </div>
 
-                          <div className="col-md-4 mt-4">
-                            <label>
-                              <u>Pago Inicial</u>
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue={planOrto.pago_inicial}
-                              readOnly
-                            />
-                          </div>
+                            <div className="col-md-4 mt-4">
+                              <label>
+                                <u>Pago Inicial</u>
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                defaultValue={p.pago_inicial}
+                                readOnly
+                              />
+                            </div>
 
-                          <div className="col-md-8 mt-4">
-                            <label>
-                              <u>Detalle plan</u>
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue={planOrto.detalle_plan}
-                              readOnly
-                            />
-                          </div>
+                            <div className="col-md-8 mt-4">
+                              <label>
+                                <u>Detalle plan</u>
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                defaultValue={p.detalle_plan}
+                                readOnly
+                              />
+                            </div>
 
-                          <div className="col-md-12 mt-4 d-flex justify-content-end">
-                            <button
-                              type="button"
-                              className="btn btn-primary"
-                              data-dismiss="modal"
-                              onClick={registrarPlanOrto}
-                            >
-                              Iniciar Plan
-                            </button>
+                            <div className="col-md-12 mt-4 d-flex justify-content-end">
+                              <button
+                                type="button"
+                                className="btn btn-primary"
+                                data-dismiss="modal"
+                                onClick={registrarPlanOrto}
+                              >
+                                Iniciar Plan
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    ))}
                   </>
                 ) : (
                   <div className="col-md-12 alert alert-info border border-dark text-center text-uppercase ">
