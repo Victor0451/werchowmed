@@ -1076,6 +1076,7 @@ const Emision = () => {
     }
   };
 
+  //VALIDACIONES EN SELECTOR DE PRACTICA
   const agregarPractica = async (row) => {
     let pra = {
       CODIGOS: row.CODIGOS,
@@ -1084,6 +1085,16 @@ const Emision = () => {
       IMPORTE: parseFloat(row.IMPORTE) * parseFloat(cantidadRefP.current.value),
       idpractica: row.idpractica,
     };
+
+    //8 FISIO GRATIS PARA G 66 y 55
+    if (socio.GRUPO === 66 || socio.GRUPO === 55) {
+      if (detalleMed.SERVICIO === "FIS" && pra.CODIGOS === "25.01.01") {
+        if (nFisio >= 0 && nFisio <= 8) {
+          pra.IMPORTE = 0;
+        }
+      }
+    }
+    // -----------------
 
     // AUMENTO POR CANTIDAD DE USOS
 
@@ -1148,6 +1159,7 @@ const Emision = () => {
       }
     }
   };
+  // -----------
 
   const eliminarPracticaPrecargado = (index) => {
     pracSocio.splice(index, 1);
@@ -1194,15 +1206,6 @@ const Emision = () => {
       f: "reg uso",
     };
 
-    if (
-      (detalleMed.SERVICIO === "FIS" && socio.GRUPO === 66) ||
-      socio.GRUPO === 55
-    ) {
-      if (nFisio >= 0 && nFisio <= 8) {
-        uso.IMPORTE = 0;
-      }
-    }
-
     await axios
       .post(`/api/servicios`, uso)
       .then((res) => {
@@ -1248,15 +1251,6 @@ const Emision = () => {
         DESCRIP: pracSocio[i].DESCRIP,
         f: "reg practica",
       };
-
-      if (
-        (detalleMed.SERVICIO === "FIS" && socio.GRUPO === 66) ||
-        socio.GRUPO === 55
-      ) {
-        if (nFisio >= 0 && nFisio < 8) {
-          practi.IMPORTE = 0;
-        }
-      }
 
       await axios
         .post(`/api/servicios`, practi)
