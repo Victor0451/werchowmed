@@ -28,13 +28,13 @@ model AUT_PRAC {
   PRECIO_04  String?   @db.VarChar(255)
   SUC_04     String?   @db.VarChar(1)
   COD_PRES05 String?   @db.VarChar(5)
-  PRECIO_05  Float?
+  PRECIO_05  String?   @db.VarChar(255)
   SUC_05     String?   @db.VarChar(1)
   COD_PRES06 String?   @db.VarChar(5)
-  PRECIO_06  Float?
+  PRECIO_06  String?   @db.VarChar(255)
   SUC_06     String?   @db.VarChar(1)
   COD_PRES07 String?   @db.VarChar(5)
-  PRECIO_07  Float?
+  PRECIO_07  String?   @db.VarChar(255)
   SUC_07     String?   @db.VarChar(1)
   COD_PRES08 String?   @db.VarChar(5)
   PRECIO_08  Float?
@@ -163,15 +163,12 @@ model ENFERMERFA {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model ESPECIAL {
-  ESPECIAL   String? @db.VarChar(3)
-  NOMBRE     String? @db.VarChar(25)
-  PRACTICA   Int?    @db.TinyInt
-  CONSULTA   Int?    @db.TinyInt
-  REINTEGROS Int?    @db.TinyInt
-  PLAN_A     Float?
-  PLAN_B     Float?
-  PLAN_50    Float?
-  PLAN_70    Float?
+  ESPECIAL       String? @db.VarChar(3)
+  NOMBRE         String? @db.VarChar(25)
+  PRACTICA       Int?    @db.TinyInt
+  CONSULTA       Int?    @db.TinyInt
+  REINTEGROS     Int?    @db.TinyInt
+  idespecialidad Int     @id @default(autoincrement())
 
   @@ignore
 }
@@ -503,4 +500,13 @@ model ausencias {
   observacion String?   @db.VarChar(1000)
   estado      Int?      @db.TinyInt
   operador    String?   @db.VarChar(255)
+}
+
+model tareas {
+  idevents Int     @id @default(autoincrement())
+  title    String? @db.VarChar(2000)
+  allDay   Int?    @db.TinyInt
+  start    String? @db.VarChar(255)
+  end      String? @db.VarChar(255)
+  priority Int?
 }

@@ -1,96 +1,298 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../../components/layout/Layout";
-import jsCookie from "js-cookie";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
+import { Skeleton } from "../../components/layout/Skeleton";
+import useUser from "../../hook/useUser";
+import useWerchow from "../../hook/useWerchow";
+import useSWR from "swr";
+import Redirect from "../../components/auth/RedirectToLogin";
+import moment from "moment-timezone";
 import axios from "axios";
+import jsCookie from "js-cookie";
+import toastr from "toastr";
+import Router from "next/router";
 import { ip } from "../../config/config";
-import Spinner from "../../components/layout/Spinner";
+import { confirmAlert } from "react-confirm-alert";
+import { registrarHistoria } from "../../utils/funciones";
+import FormCalendar from "../../components/calendario/FormCalendar";
 
-const calendario = () => {
-  const [events, guardarEvents] = useState([]);
+function calendario(props) {
+  let tareaRef = React.createRef();
+  let operadorRef = React.createRef();
+  let prioridadRef = React.createRef();
 
-  let token = jsCookie.get("token");
+  const { usu } = useWerchow();
 
-  useEffect(() => {
-    if (!token) {
-      Router.push("/redirect");
-    } else {
-      traerEventos();
+  const { isLoading } = useUser();
 
-      // prepEvs();
+  const [events, saveEvents] = useState([]);
+  const [datosEv, guardarDatosEv] = useState([]);
+  const [eventSelected, saveEventSelected] = useState([]);
+  const [reg, saveReg] = useState(false);
+  const [edit, saveEdit] = useState(false);
+  const [delet, saveDelete] = useState(false);
+
+  const [operadores, guardarOperadores] = useState([]);
+
+  // FUNCIONES CALENDARIO
+
+  const handleDateSelect = (selectInfo) => {
+    let calendarApi = selectInfo.view.calendar;
+
+    calendarApi.unselect();
+
+    saveReg(true);
+
+    let datosEv = {
+      start: selectInfo.startStr,
+      end: selectInfo.endStr,
+      allDay: selectInfo.allDay,
+    };
+
+    if (datosEv.allDay === false) {
+      datosEv.allDay = 0;
+    } else if (datosEv.allDay === true) {
+      datosEv.allDay = 1;
     }
-  }, []);
 
-  const traerEventos = async () => {
-    axios
-      .get(` ${ip}api/sgi/eventos/traereventos`)
-      .then((res) => {
-        let evs = res.data;
+    guardarDatosEv(datosEv);
+  };
 
-        let arr = [];
+  const editEnable = () => {
+    if (edit === true) {
+      saveEdit(false);
+      toastr.info("Modo edicion desactivado", "ATENCION");
+    } else if (edit === false) {
+      saveEdit(true);
+      toastr.info("Modo edicion activado", "ATENCION");
+    }
+  };
 
-        for (let i = 0; i < evs.length; i++) {
-          let evarr = {
-            title: evs[i].title,
-            allDay: evs[i].allDay,
-            start: new Date(evs[i].start),
-            end: new Date(evs[i].end),
-          };
+  const deleteEnable = () => {
+    if (delet === true) {
+      saveDelete(false);
+      toastr.info("Modo eliminacion desactivado", "ATENCION");
+    } else if (delet === false) {
+      saveDelete(true);
+      toastr.info("Modo eliminacion activado", "ATENCION");
+    }
+  };
 
-          if (evarr.allDay === 1) {
-            evarr.allDay = true;
-          } else if (evarr.allDay === 0) {
-            evarr.allDay = false;
+  const selEvent = (eventInfo) => {
+    console.log(eventInfo.event.extendedProps.idevents);
+    if (edit === true && delet === false) {
+      let evE = {
+        id: eventInfo.event.extendedProps.idevents,
+        title: eventInfo.event.title,
+        start: eventInfo.event.start,
+        end: eventInfo.event.end,
+        allDay: eventInfo.event.allDay,
+        priority: eventInfo.event.extendedProps.priority,
+        f: "editar evento",
+        ft: "Modificacion",
+      };
+
+      if (evE.allDay === false) {
+        evE.allDay = 0;
+      } else if (evE.allDay === true) {
+        evE.allDay = 1;
+      }
+
+      putEvent(evE);
+    } else if (edit === false && delet === false) {
+      saveEventSelected(eventInfo.event);
+    } else if (edit === false && delet === true) {
+      deleteEvents(eventInfo.event.extendedProps.idevents);
+    }
+  };
+
+  const cerrarEvento = () => {
+    saveEventSelected([]);
+    saveReg(false);
+  };
+
+  // --------------------------------------
+
+  // APIS
+
+  const postEvent = async () => {
+    let ev = {
+      title: `${tareaRef.current.value} - ${operadorRef.current.value}`,
+      start: moment(datosEv.start).format("YYYY-MM-DD HH:mm"),
+      end: moment(datosEv.end).format("YYYY-MM-DD HH:mm"),
+      allDay: datosEv.allDay,
+      priority: parseInt(prioridadRef.current.value),
+      f: "nueva tarea",
+      ft: "Registro",
+    };
+
+    if (tareaRef.current.value === "") {
+      toastr.info("Debes ingresar la tarea a realizar");
+    } else if (operadorRef.current.value === "") {
+      toastr.info("Debes seleccionar el operador");
+    } else if (prioridadRef.current.value === "") {
+      toastr.info("Debes seleccionar la prioridad de la tarea");
+    } else {
+      saveEvents([...events, ev]);
+
+      await axios
+        .post("/api/tareas", ev)
+        .then((res) => {
+          if (res.status === 200) {
+            toastr.success("El evento se registro correctamente");
+            saveReg(false);
+
+            mandarMail(ev);
           }
+        })
+        .catch((error) => {
+          console.log(error);
 
-          arr.push(evarr);
+          toastr.error("Ocurrio un error al registrar el evento");
+        });
+    }
+  };
 
-          guardarEvents(arr);
+  const getEvents = async () => {
+    await axios
+      .get("/api/tareas", {
+        params: {
+          f: "traer tareas",
+        },
+      })
+      .then((res) => {
+        if (res.data.length > 0) {
+          saveEvents(res.data);
+        } else if (res.data.length === 0) {
+          toastr.info("No hay tareas registradas");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+
+        toastr.error("Ocurrio un error al cargar los eventos", "ATENCION");
+      });
+
+    await axios
+      .get("/api/tareas", {
+        params: {
+          f: "traer operadores",
+        },
+      })
+      .then((res) => {
+        if (res.data.length > 0) {
+          guardarOperadores(res.data);
+        } else if (res.data.length === 0) {
+          toastr.info("No hay operadores registrados");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error al traer el listado de operadores");
+      });
+  };
+
+  const putEvent = async (data) => {
+    await axios
+      .put("/api/tareas", data)
+      .then((res) => {
+        if (res.status === 200) {
+          toastr.success("El evento se actualizo correctamente");
+          mandarMail(data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+
+        toastr.error("Ocurrio un error al registrar el evento");
+      });
+  };
+
+  const deleteEvents = async (id) => {
+    await axios
+      .delete(`/api/tareas`, {
+        params: {
+          id: id,
+          f: "eliminar tarea",
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          toastr.success("Evento eliminado correctamente");
+          getEvents();
+
+          let index = events
+            .map(function (item) {
+              return item.id;
+            })
+            .indexOf(id);
+
+          let ev = events.splice(index, 1);
+
+          saveEvents([...events, ev]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error al eliminar el evento");
+      });
+  };
+
+  const mandarMail = (array) => {
+    fetch("/api/mail/mailtareas", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(array),
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          toastr.info("Se envio un email con la notificacion de la novedad");
         }
       })
       .catch((error) => {
         console.log(error);
       });
   };
+  // --------------------------------------
 
-  const localizer = momentLocalizer(moment);
+  useSWR("/api/tareas", getEvents);
+
+  if (isLoading === true) return <Skeleton />;
 
   return (
-    <Layout>
-      <div className="container list mt-4 border border-dark p-4 alert alert-dark">
-        <h1 className="">
-          <strong>
-            <u> Calendario de dias Festivos</u>
-          </strong>
-        </h1>
-
-        {!events ? (<Spinner />)
-          : (
-            <div className="mt-4 border border-dark list">
-              <Calendar
-                style={{ height: "80vh" }}
-                localizer={localizer}
-                events={events}
-                startAccessor="start"
-                endAccessor="end"
-                messages={{
-                  next: "Sig",
-                  previous: "Ant",
-                  today: "Hoy",
-                  month: "Mes",
-                  week: "Semana",
-                  day: "Día",
-                }}
-                defaultView="week"
-              />
-            </div>
-          )}
-
-
-      </div>
-    </Layout>
+    <>
+      {!usu ? (
+        <Layout>
+          <Redirect />
+        </Layout>
+      ) : usu ? (
+        <>
+          <Layout>
+            <FormCalendar
+              events={events}
+              edit={edit}
+              handleDateSelect={handleDateSelect}
+              selEvent={selEvent}
+              editEnable={editEnable}
+              delet={delet}
+              deleteEnable={deleteEnable}
+              eventSelected={eventSelected}
+              cerrarEvento={cerrarEvento}
+              reg={reg}
+              operadores={operadores}
+              datosEv={datosEv}
+              postEvent={postEvent}
+              tareaRef={tareaRef}
+              operadorRef={operadorRef}
+              prioridadRef={prioridadRef}
+            />
+          </Layout>
+        </>
+      ) : null}
+    </>
   );
-};
+}
 
 export default calendario;

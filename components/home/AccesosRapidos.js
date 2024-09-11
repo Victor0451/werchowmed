@@ -105,6 +105,20 @@ const AccesosRapidos = ({ usu }) => {
               </p>
             </div>
           </div>
+          <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
+            <div className="card-header">Registro de Tareas</div>
+            <div className="card-body">
+              <a
+                className="btn btn-primary btn-block "
+                href="/calendario/calendario"
+              >
+                Registrar
+              </a>
+              <p className="card-text mt-2">
+                Gestion de tareas diarias por parte del personal
+              </p>
+            </div>
+          </div>
           {usu.perfil === 1 || usu.perfil === 3 ? (
             <>
               <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">

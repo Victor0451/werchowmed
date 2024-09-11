@@ -108,6 +108,11 @@ export type pacientes = $Result.DefaultSelection<Prisma.$pacientesPayload>
  * 
  */
 export type ausencias = $Result.DefaultSelection<Prisma.$ausenciasPayload>
+/**
+ * Model tareas
+ * 
+ */
+export type tareas = $Result.DefaultSelection<Prisma.$tareasPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -420,6 +425,16 @@ export class PrismaClient<
     * ```
     */
   get ausencias(): Prisma.ausenciasDelegate<ExtArgs>;
+
+  /**
+   * `prisma.tareas`: Exposes CRUD operations for the **tareas** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Tareas
+    * const tareas = await prisma.tareas.findMany()
+    * ```
+    */
+  get tareas(): Prisma.tareasDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -908,7 +923,8 @@ export namespace Prisma {
     planes_visitas: 'planes_visitas',
     promociones: 'promociones',
     pacientes: 'pacientes',
-    ausencias: 'ausencias'
+    ausencias: 'ausencias',
+    tareas: 'tareas'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -925,7 +941,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'aUT_PRAC' | 'cAJA' | 'cONSULTA' | 'eNFERMER' | 'fARMACIA' | 'mEDICOS_TURNOS' | 'pRACTICA' | 'pRACT_ENFER' | 'pRESTADO' | 'uSOS' | 'uSOSFA' | 'adherent_provi' | 'nosocios' | 'planes_odontologicos' | 'planes_socio' | 'planes_visitas' | 'promociones' | 'pacientes' | 'ausencias'
+      modelProps: 'aUT_PRAC' | 'cAJA' | 'cONSULTA' | 'eNFERMER' | 'fARMACIA' | 'mEDICOS_TURNOS' | 'pRACTICA' | 'pRACT_ENFER' | 'pRESTADO' | 'uSOS' | 'uSOSFA' | 'adherent_provi' | 'nosocios' | 'planes_odontologicos' | 'planes_socio' | 'planes_visitas' | 'promociones' | 'pacientes' | 'ausencias' | 'tareas'
       txIsolationLevel: Prisma.TransactionIsolationLevel
     },
     model: {
@@ -2183,6 +2199,72 @@ export namespace Prisma {
           }
         }
       }
+      tareas: {
+        payload: Prisma.$tareasPayload<ExtArgs>
+        fields: Prisma.tareasFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.tareasFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$tareasPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.tareasFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$tareasPayload>
+          }
+          findFirst: {
+            args: Prisma.tareasFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$tareasPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.tareasFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$tareasPayload>
+          }
+          findMany: {
+            args: Prisma.tareasFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$tareasPayload>[]
+          }
+          create: {
+            args: Prisma.tareasCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$tareasPayload>
+          }
+          createMany: {
+            args: Prisma.tareasCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          delete: {
+            args: Prisma.tareasDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$tareasPayload>
+          }
+          update: {
+            args: Prisma.tareasUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$tareasPayload>
+          }
+          deleteMany: {
+            args: Prisma.tareasDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          updateMany: {
+            args: Prisma.tareasUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          upsert: {
+            args: Prisma.tareasUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$tareasPayload>
+          }
+          aggregate: {
+            args: Prisma.TareasAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateTareas>
+          }
+          groupBy: {
+            args: Prisma.tareasGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<TareasGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.tareasCountArgs<ExtArgs>,
+            result: $Utils.Optional<TareasCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2346,9 +2428,6 @@ export namespace Prisma {
 
   export type AUT_PRACAvgAggregateOutputType = {
     ANULADO: number | null
-    PRECIO_05: number | null
-    PRECIO_06: number | null
-    PRECIO_07: number | null
     PRECIO_08: number | null
     PRECIO_09: number | null
     PRECIO_16: number | null
@@ -2361,9 +2440,6 @@ export namespace Prisma {
 
   export type AUT_PRACSumAggregateOutputType = {
     ANULADO: number | null
-    PRECIO_05: number | null
-    PRECIO_06: number | null
-    PRECIO_07: number | null
     PRECIO_08: number | null
     PRECIO_09: number | null
     PRECIO_16: number | null
@@ -2393,13 +2469,13 @@ export namespace Prisma {
     PRECIO_04: string | null
     SUC_04: string | null
     COD_PRES05: string | null
-    PRECIO_05: number | null
+    PRECIO_05: string | null
     SUC_05: string | null
     COD_PRES06: string | null
-    PRECIO_06: number | null
+    PRECIO_06: string | null
     SUC_06: string | null
     COD_PRES07: string | null
-    PRECIO_07: number | null
+    PRECIO_07: string | null
     SUC_07: string | null
     COD_PRES08: string | null
     PRECIO_08: number | null
@@ -2462,13 +2538,13 @@ export namespace Prisma {
     PRECIO_04: string | null
     SUC_04: string | null
     COD_PRES05: string | null
-    PRECIO_05: number | null
+    PRECIO_05: string | null
     SUC_05: string | null
     COD_PRES06: string | null
-    PRECIO_06: number | null
+    PRECIO_06: string | null
     SUC_06: string | null
     COD_PRES07: string | null
-    PRECIO_07: number | null
+    PRECIO_07: string | null
     SUC_07: string | null
     COD_PRES08: string | null
     PRECIO_08: number | null
@@ -2585,9 +2661,6 @@ export namespace Prisma {
 
   export type AUT_PRACAvgAggregateInputType = {
     ANULADO?: true
-    PRECIO_05?: true
-    PRECIO_06?: true
-    PRECIO_07?: true
     PRECIO_08?: true
     PRECIO_09?: true
     PRECIO_16?: true
@@ -2600,9 +2673,6 @@ export namespace Prisma {
 
   export type AUT_PRACSumAggregateInputType = {
     ANULADO?: true
-    PRECIO_05?: true
-    PRECIO_06?: true
-    PRECIO_07?: true
     PRECIO_08?: true
     PRECIO_09?: true
     PRECIO_16?: true
@@ -2926,13 +2996,13 @@ export namespace Prisma {
     PRECIO_04: string | null
     SUC_04: string | null
     COD_PRES05: string | null
-    PRECIO_05: number | null
+    PRECIO_05: string | null
     SUC_05: string | null
     COD_PRES06: string | null
-    PRECIO_06: number | null
+    PRECIO_06: string | null
     SUC_06: string | null
     COD_PRES07: string | null
-    PRECIO_07: number | null
+    PRECIO_07: string | null
     SUC_07: string | null
     COD_PRES08: string | null
     PRECIO_08: number | null
@@ -3156,13 +3226,13 @@ export namespace Prisma {
       PRECIO_04: string | null
       SUC_04: string | null
       COD_PRES05: string | null
-      PRECIO_05: number | null
+      PRECIO_05: string | null
       SUC_05: string | null
       COD_PRES06: string | null
-      PRECIO_06: number | null
+      PRECIO_06: string | null
       SUC_06: string | null
       COD_PRES07: string | null
-      PRECIO_07: number | null
+      PRECIO_07: string | null
       SUC_07: string | null
       COD_PRES08: string | null
       PRECIO_08: number | null
@@ -3616,13 +3686,13 @@ export namespace Prisma {
     readonly PRECIO_04: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_04: FieldRef<"AUT_PRAC", 'String'>
     readonly COD_PRES05: FieldRef<"AUT_PRAC", 'String'>
-    readonly PRECIO_05: FieldRef<"AUT_PRAC", 'Float'>
+    readonly PRECIO_05: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_05: FieldRef<"AUT_PRAC", 'String'>
     readonly COD_PRES06: FieldRef<"AUT_PRAC", 'String'>
-    readonly PRECIO_06: FieldRef<"AUT_PRAC", 'Float'>
+    readonly PRECIO_06: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_06: FieldRef<"AUT_PRAC", 'String'>
     readonly COD_PRES07: FieldRef<"AUT_PRAC", 'String'>
-    readonly PRECIO_07: FieldRef<"AUT_PRAC", 'Float'>
+    readonly PRECIO_07: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_07: FieldRef<"AUT_PRAC", 'String'>
     readonly COD_PRES08: FieldRef<"AUT_PRAC", 'String'>
     readonly PRECIO_08: FieldRef<"AUT_PRAC", 'Float'>
@@ -22520,6 +22590,929 @@ export namespace Prisma {
 
 
   /**
+   * Model tareas
+   */
+
+  export type AggregateTareas = {
+    _count: TareasCountAggregateOutputType | null
+    _avg: TareasAvgAggregateOutputType | null
+    _sum: TareasSumAggregateOutputType | null
+    _min: TareasMinAggregateOutputType | null
+    _max: TareasMaxAggregateOutputType | null
+  }
+
+  export type TareasAvgAggregateOutputType = {
+    idevents: number | null
+    allDay: number | null
+    priority: number | null
+  }
+
+  export type TareasSumAggregateOutputType = {
+    idevents: number | null
+    allDay: number | null
+    priority: number | null
+  }
+
+  export type TareasMinAggregateOutputType = {
+    idevents: number | null
+    title: string | null
+    allDay: number | null
+    start: string | null
+    end: string | null
+    priority: number | null
+  }
+
+  export type TareasMaxAggregateOutputType = {
+    idevents: number | null
+    title: string | null
+    allDay: number | null
+    start: string | null
+    end: string | null
+    priority: number | null
+  }
+
+  export type TareasCountAggregateOutputType = {
+    idevents: number
+    title: number
+    allDay: number
+    start: number
+    end: number
+    priority: number
+    _all: number
+  }
+
+
+  export type TareasAvgAggregateInputType = {
+    idevents?: true
+    allDay?: true
+    priority?: true
+  }
+
+  export type TareasSumAggregateInputType = {
+    idevents?: true
+    allDay?: true
+    priority?: true
+  }
+
+  export type TareasMinAggregateInputType = {
+    idevents?: true
+    title?: true
+    allDay?: true
+    start?: true
+    end?: true
+    priority?: true
+  }
+
+  export type TareasMaxAggregateInputType = {
+    idevents?: true
+    title?: true
+    allDay?: true
+    start?: true
+    end?: true
+    priority?: true
+  }
+
+  export type TareasCountAggregateInputType = {
+    idevents?: true
+    title?: true
+    allDay?: true
+    start?: true
+    end?: true
+    priority?: true
+    _all?: true
+  }
+
+  export type TareasAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which tareas to aggregate.
+     */
+    where?: tareasWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of tareas to fetch.
+     */
+    orderBy?: tareasOrderByWithRelationInput | tareasOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: tareasWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` tareas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` tareas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned tareas
+    **/
+    _count?: true | TareasCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TareasAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TareasSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TareasMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TareasMaxAggregateInputType
+  }
+
+  export type GetTareasAggregateType<T extends TareasAggregateArgs> = {
+        [P in keyof T & keyof AggregateTareas]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTareas[P]>
+      : GetScalarType<T[P], AggregateTareas[P]>
+  }
+
+
+
+
+  export type tareasGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: tareasWhereInput
+    orderBy?: tareasOrderByWithAggregationInput | tareasOrderByWithAggregationInput[]
+    by: TareasScalarFieldEnum[] | TareasScalarFieldEnum
+    having?: tareasScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TareasCountAggregateInputType | true
+    _avg?: TareasAvgAggregateInputType
+    _sum?: TareasSumAggregateInputType
+    _min?: TareasMinAggregateInputType
+    _max?: TareasMaxAggregateInputType
+  }
+
+  export type TareasGroupByOutputType = {
+    idevents: number
+    title: string | null
+    allDay: number | null
+    start: string | null
+    end: string | null
+    priority: number | null
+    _count: TareasCountAggregateOutputType | null
+    _avg: TareasAvgAggregateOutputType | null
+    _sum: TareasSumAggregateOutputType | null
+    _min: TareasMinAggregateOutputType | null
+    _max: TareasMaxAggregateOutputType | null
+  }
+
+  type GetTareasGroupByPayload<T extends tareasGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TareasGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TareasGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TareasGroupByOutputType[P]>
+            : GetScalarType<T[P], TareasGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type tareasSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    idevents?: boolean
+    title?: boolean
+    allDay?: boolean
+    start?: boolean
+    end?: boolean
+    priority?: boolean
+  }, ExtArgs["result"]["tareas"]>
+
+  export type tareasSelectScalar = {
+    idevents?: boolean
+    title?: boolean
+    allDay?: boolean
+    start?: boolean
+    end?: boolean
+    priority?: boolean
+  }
+
+
+  export type $tareasPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "tareas"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      idevents: number
+      title: string | null
+      allDay: number | null
+      start: string | null
+      end: string | null
+      priority: number | null
+    }, ExtArgs["result"]["tareas"]>
+    composites: {}
+  }
+
+
+  type tareasGetPayload<S extends boolean | null | undefined | tareasDefaultArgs> = $Result.GetResult<Prisma.$tareasPayload, S>
+
+  type tareasCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<tareasFindManyArgs, 'select' | 'include'> & {
+      select?: TareasCountAggregateInputType | true
+    }
+
+  export interface tareasDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['tareas'], meta: { name: 'tareas' } }
+    /**
+     * Find zero or one Tareas that matches the filter.
+     * @param {tareasFindUniqueArgs} args - Arguments to find a Tareas
+     * @example
+     * // Get one Tareas
+     * const tareas = await prisma.tareas.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends tareasFindUniqueArgs<ExtArgs>>(
+      args: SelectSubset<T, tareasFindUniqueArgs<ExtArgs>>
+    ): Prisma__tareasClient<$Result.GetResult<Prisma.$tareasPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
+
+    /**
+     * Find one Tareas that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {tareasFindUniqueOrThrowArgs} args - Arguments to find a Tareas
+     * @example
+     * // Get one Tareas
+     * const tareas = await prisma.tareas.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends tareasFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, tareasFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__tareasClient<$Result.GetResult<Prisma.$tareasPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find the first Tareas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {tareasFindFirstArgs} args - Arguments to find a Tareas
+     * @example
+     * // Get one Tareas
+     * const tareas = await prisma.tareas.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends tareasFindFirstArgs<ExtArgs>>(
+      args?: SelectSubset<T, tareasFindFirstArgs<ExtArgs>>
+    ): Prisma__tareasClient<$Result.GetResult<Prisma.$tareasPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
+
+    /**
+     * Find the first Tareas that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {tareasFindFirstOrThrowArgs} args - Arguments to find a Tareas
+     * @example
+     * // Get one Tareas
+     * const tareas = await prisma.tareas.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends tareasFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, tareasFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__tareasClient<$Result.GetResult<Prisma.$tareasPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Tareas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {tareasFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Tareas
+     * const tareas = await prisma.tareas.findMany()
+     * 
+     * // Get first 10 Tareas
+     * const tareas = await prisma.tareas.findMany({ take: 10 })
+     * 
+     * // Only select the `idevents`
+     * const tareasWithIdeventsOnly = await prisma.tareas.findMany({ select: { idevents: true } })
+     * 
+    **/
+    findMany<T extends tareasFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, tareasFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$tareasPayload<ExtArgs>, T, 'findMany'>>
+
+    /**
+     * Create a Tareas.
+     * @param {tareasCreateArgs} args - Arguments to create a Tareas.
+     * @example
+     * // Create one Tareas
+     * const Tareas = await prisma.tareas.create({
+     *   data: {
+     *     // ... data to create a Tareas
+     *   }
+     * })
+     * 
+    **/
+    create<T extends tareasCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, tareasCreateArgs<ExtArgs>>
+    ): Prisma__tareasClient<$Result.GetResult<Prisma.$tareasPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
+
+    /**
+     * Create many Tareas.
+     *     @param {tareasCreateManyArgs} args - Arguments to create many Tareas.
+     *     @example
+     *     // Create many Tareas
+     *     const tareas = await prisma.tareas.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends tareasCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, tareasCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Tareas.
+     * @param {tareasDeleteArgs} args - Arguments to delete one Tareas.
+     * @example
+     * // Delete one Tareas
+     * const Tareas = await prisma.tareas.delete({
+     *   where: {
+     *     // ... filter to delete one Tareas
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends tareasDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, tareasDeleteArgs<ExtArgs>>
+    ): Prisma__tareasClient<$Result.GetResult<Prisma.$tareasPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
+
+    /**
+     * Update one Tareas.
+     * @param {tareasUpdateArgs} args - Arguments to update one Tareas.
+     * @example
+     * // Update one Tareas
+     * const tareas = await prisma.tareas.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends tareasUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, tareasUpdateArgs<ExtArgs>>
+    ): Prisma__tareasClient<$Result.GetResult<Prisma.$tareasPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
+
+    /**
+     * Delete zero or more Tareas.
+     * @param {tareasDeleteManyArgs} args - Arguments to filter Tareas to delete.
+     * @example
+     * // Delete a few Tareas
+     * const { count } = await prisma.tareas.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends tareasDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, tareasDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tareas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {tareasUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Tareas
+     * const tareas = await prisma.tareas.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends tareasUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, tareasUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Tareas.
+     * @param {tareasUpsertArgs} args - Arguments to update or create a Tareas.
+     * @example
+     * // Update or create a Tareas
+     * const tareas = await prisma.tareas.upsert({
+     *   create: {
+     *     // ... data to create a Tareas
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Tareas we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends tareasUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, tareasUpsertArgs<ExtArgs>>
+    ): Prisma__tareasClient<$Result.GetResult<Prisma.$tareasPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
+
+    /**
+     * Count the number of Tareas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {tareasCountArgs} args - Arguments to filter Tareas to count.
+     * @example
+     * // Count the number of Tareas
+     * const count = await prisma.tareas.count({
+     *   where: {
+     *     // ... the filter for the Tareas we want to count
+     *   }
+     * })
+    **/
+    count<T extends tareasCountArgs>(
+      args?: Subset<T, tareasCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TareasCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Tareas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TareasAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TareasAggregateArgs>(args: Subset<T, TareasAggregateArgs>): Prisma.PrismaPromise<GetTareasAggregateType<T>>
+
+    /**
+     * Group by Tareas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {tareasGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends tareasGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: tareasGroupByArgs['orderBy'] }
+        : { orderBy?: tareasGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, tareasGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTareasGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the tareas model
+   */
+  readonly fields: tareasFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for tareas.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__tareasClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+
+
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+  }
+
+
+
+  /**
+   * Fields of the tareas model
+   */ 
+  interface tareasFieldRefs {
+    readonly idevents: FieldRef<"tareas", 'Int'>
+    readonly title: FieldRef<"tareas", 'String'>
+    readonly allDay: FieldRef<"tareas", 'Int'>
+    readonly start: FieldRef<"tareas", 'String'>
+    readonly end: FieldRef<"tareas", 'String'>
+    readonly priority: FieldRef<"tareas", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+
+  /**
+   * tareas findUnique
+   */
+  export type tareasFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the tareas
+     */
+    select?: tareasSelect<ExtArgs> | null
+    /**
+     * Filter, which tareas to fetch.
+     */
+    where: tareasWhereUniqueInput
+  }
+
+
+  /**
+   * tareas findUniqueOrThrow
+   */
+  export type tareasFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the tareas
+     */
+    select?: tareasSelect<ExtArgs> | null
+    /**
+     * Filter, which tareas to fetch.
+     */
+    where: tareasWhereUniqueInput
+  }
+
+
+  /**
+   * tareas findFirst
+   */
+  export type tareasFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the tareas
+     */
+    select?: tareasSelect<ExtArgs> | null
+    /**
+     * Filter, which tareas to fetch.
+     */
+    where?: tareasWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of tareas to fetch.
+     */
+    orderBy?: tareasOrderByWithRelationInput | tareasOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for tareas.
+     */
+    cursor?: tareasWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` tareas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` tareas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of tareas.
+     */
+    distinct?: TareasScalarFieldEnum | TareasScalarFieldEnum[]
+  }
+
+
+  /**
+   * tareas findFirstOrThrow
+   */
+  export type tareasFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the tareas
+     */
+    select?: tareasSelect<ExtArgs> | null
+    /**
+     * Filter, which tareas to fetch.
+     */
+    where?: tareasWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of tareas to fetch.
+     */
+    orderBy?: tareasOrderByWithRelationInput | tareasOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for tareas.
+     */
+    cursor?: tareasWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` tareas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` tareas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of tareas.
+     */
+    distinct?: TareasScalarFieldEnum | TareasScalarFieldEnum[]
+  }
+
+
+  /**
+   * tareas findMany
+   */
+  export type tareasFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the tareas
+     */
+    select?: tareasSelect<ExtArgs> | null
+    /**
+     * Filter, which tareas to fetch.
+     */
+    where?: tareasWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of tareas to fetch.
+     */
+    orderBy?: tareasOrderByWithRelationInput | tareasOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing tareas.
+     */
+    cursor?: tareasWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` tareas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` tareas.
+     */
+    skip?: number
+    distinct?: TareasScalarFieldEnum | TareasScalarFieldEnum[]
+  }
+
+
+  /**
+   * tareas create
+   */
+  export type tareasCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the tareas
+     */
+    select?: tareasSelect<ExtArgs> | null
+    /**
+     * The data needed to create a tareas.
+     */
+    data?: XOR<tareasCreateInput, tareasUncheckedCreateInput>
+  }
+
+
+  /**
+   * tareas createMany
+   */
+  export type tareasCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many tareas.
+     */
+    data: tareasCreateManyInput | tareasCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * tareas update
+   */
+  export type tareasUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the tareas
+     */
+    select?: tareasSelect<ExtArgs> | null
+    /**
+     * The data needed to update a tareas.
+     */
+    data: XOR<tareasUpdateInput, tareasUncheckedUpdateInput>
+    /**
+     * Choose, which tareas to update.
+     */
+    where: tareasWhereUniqueInput
+  }
+
+
+  /**
+   * tareas updateMany
+   */
+  export type tareasUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update tareas.
+     */
+    data: XOR<tareasUpdateManyMutationInput, tareasUncheckedUpdateManyInput>
+    /**
+     * Filter which tareas to update
+     */
+    where?: tareasWhereInput
+  }
+
+
+  /**
+   * tareas upsert
+   */
+  export type tareasUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the tareas
+     */
+    select?: tareasSelect<ExtArgs> | null
+    /**
+     * The filter to search for the tareas to update in case it exists.
+     */
+    where: tareasWhereUniqueInput
+    /**
+     * In case the tareas found by the `where` argument doesn't exist, create a new tareas with this data.
+     */
+    create: XOR<tareasCreateInput, tareasUncheckedCreateInput>
+    /**
+     * In case the tareas was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<tareasUpdateInput, tareasUncheckedUpdateInput>
+  }
+
+
+  /**
+   * tareas delete
+   */
+  export type tareasDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the tareas
+     */
+    select?: tareasSelect<ExtArgs> | null
+    /**
+     * Filter which tareas to delete.
+     */
+    where: tareasWhereUniqueInput
+  }
+
+
+  /**
+   * tareas deleteMany
+   */
+  export type tareasDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which tareas to delete
+     */
+    where?: tareasWhereInput
+  }
+
+
+  /**
+   * tareas without action
+   */
+  export type tareasDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the tareas
+     */
+    select?: tareasSelect<ExtArgs> | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -22983,6 +23976,18 @@ export namespace Prisma {
   export type AusenciasScalarFieldEnum = (typeof AusenciasScalarFieldEnum)[keyof typeof AusenciasScalarFieldEnum]
 
 
+  export const TareasScalarFieldEnum: {
+    idevents: 'idevents',
+    title: 'title',
+    allDay: 'allDay',
+    start: 'start',
+    end: 'end',
+    priority: 'priority'
+  };
+
+  export type TareasScalarFieldEnum = (typeof TareasScalarFieldEnum)[keyof typeof TareasScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -23071,13 +24076,13 @@ export namespace Prisma {
     PRECIO_04?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_04?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES05?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_05?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_05?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_05?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES06?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_06?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_06?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_06?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES07?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_07?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_07?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_07?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES08?: StringNullableFilter<"AUT_PRAC"> | string | null
     PRECIO_08?: FloatNullableFilter<"AUT_PRAC"> | number | null
@@ -23213,13 +24218,13 @@ export namespace Prisma {
     PRECIO_04?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_04?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES05?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_05?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_05?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_05?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES06?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_06?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_06?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_06?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES07?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_07?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_07?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_07?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES08?: StringNullableFilter<"AUT_PRAC"> | string | null
     PRECIO_08?: FloatNullableFilter<"AUT_PRAC"> | number | null
@@ -23358,13 +24363,13 @@ export namespace Prisma {
     PRECIO_04?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_04?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     COD_PRES05?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
-    PRECIO_05?: FloatNullableWithAggregatesFilter<"AUT_PRAC"> | number | null
+    PRECIO_05?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_05?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     COD_PRES06?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
-    PRECIO_06?: FloatNullableWithAggregatesFilter<"AUT_PRAC"> | number | null
+    PRECIO_06?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_06?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     COD_PRES07?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
-    PRECIO_07?: FloatNullableWithAggregatesFilter<"AUT_PRAC"> | number | null
+    PRECIO_07?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_07?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     COD_PRES08?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     PRECIO_08?: FloatNullableWithAggregatesFilter<"AUT_PRAC"> | number | null
@@ -25280,6 +26285,65 @@ export namespace Prisma {
     operador?: StringNullableWithAggregatesFilter<"ausencias"> | string | null
   }
 
+  export type tareasWhereInput = {
+    AND?: tareasWhereInput | tareasWhereInput[]
+    OR?: tareasWhereInput[]
+    NOT?: tareasWhereInput | tareasWhereInput[]
+    idevents?: IntFilter<"tareas"> | number
+    title?: StringNullableFilter<"tareas"> | string | null
+    allDay?: IntNullableFilter<"tareas"> | number | null
+    start?: StringNullableFilter<"tareas"> | string | null
+    end?: StringNullableFilter<"tareas"> | string | null
+    priority?: IntNullableFilter<"tareas"> | number | null
+  }
+
+  export type tareasOrderByWithRelationInput = {
+    idevents?: SortOrder
+    title?: SortOrderInput | SortOrder
+    allDay?: SortOrderInput | SortOrder
+    start?: SortOrderInput | SortOrder
+    end?: SortOrderInput | SortOrder
+    priority?: SortOrderInput | SortOrder
+  }
+
+  export type tareasWhereUniqueInput = Prisma.AtLeast<{
+    idevents?: number
+    AND?: tareasWhereInput | tareasWhereInput[]
+    OR?: tareasWhereInput[]
+    NOT?: tareasWhereInput | tareasWhereInput[]
+    title?: StringNullableFilter<"tareas"> | string | null
+    allDay?: IntNullableFilter<"tareas"> | number | null
+    start?: StringNullableFilter<"tareas"> | string | null
+    end?: StringNullableFilter<"tareas"> | string | null
+    priority?: IntNullableFilter<"tareas"> | number | null
+  }, "idevents">
+
+  export type tareasOrderByWithAggregationInput = {
+    idevents?: SortOrder
+    title?: SortOrderInput | SortOrder
+    allDay?: SortOrderInput | SortOrder
+    start?: SortOrderInput | SortOrder
+    end?: SortOrderInput | SortOrder
+    priority?: SortOrderInput | SortOrder
+    _count?: tareasCountOrderByAggregateInput
+    _avg?: tareasAvgOrderByAggregateInput
+    _max?: tareasMaxOrderByAggregateInput
+    _min?: tareasMinOrderByAggregateInput
+    _sum?: tareasSumOrderByAggregateInput
+  }
+
+  export type tareasScalarWhereWithAggregatesInput = {
+    AND?: tareasScalarWhereWithAggregatesInput | tareasScalarWhereWithAggregatesInput[]
+    OR?: tareasScalarWhereWithAggregatesInput[]
+    NOT?: tareasScalarWhereWithAggregatesInput | tareasScalarWhereWithAggregatesInput[]
+    idevents?: IntWithAggregatesFilter<"tareas"> | number
+    title?: StringNullableWithAggregatesFilter<"tareas"> | string | null
+    allDay?: IntNullableWithAggregatesFilter<"tareas"> | number | null
+    start?: StringNullableWithAggregatesFilter<"tareas"> | string | null
+    end?: StringNullableWithAggregatesFilter<"tareas"> | string | null
+    priority?: IntNullableWithAggregatesFilter<"tareas"> | number | null
+  }
+
   export type AUT_PRACCreateInput = {
     ESP_PRAC?: string | null
     CODIGOS?: string | null
@@ -25299,13 +26363,13 @@ export namespace Prisma {
     PRECIO_04?: string | null
     SUC_04?: string | null
     COD_PRES05?: string | null
-    PRECIO_05?: number | null
+    PRECIO_05?: string | null
     SUC_05?: string | null
     COD_PRES06?: string | null
-    PRECIO_06?: number | null
+    PRECIO_06?: string | null
     SUC_06?: string | null
     COD_PRES07?: string | null
-    PRECIO_07?: number | null
+    PRECIO_07?: string | null
     SUC_07?: string | null
     COD_PRES08?: string | null
     PRECIO_08?: number | null
@@ -25367,13 +26431,13 @@ export namespace Prisma {
     PRECIO_04?: string | null
     SUC_04?: string | null
     COD_PRES05?: string | null
-    PRECIO_05?: number | null
+    PRECIO_05?: string | null
     SUC_05?: string | null
     COD_PRES06?: string | null
-    PRECIO_06?: number | null
+    PRECIO_06?: string | null
     SUC_06?: string | null
     COD_PRES07?: string | null
-    PRECIO_07?: number | null
+    PRECIO_07?: string | null
     SUC_07?: string | null
     COD_PRES08?: string | null
     PRECIO_08?: number | null
@@ -25436,13 +26500,13 @@ export namespace Prisma {
     PRECIO_04?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_04?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES05?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_05?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_05?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_05?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES06?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_06?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_06?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_06?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES07?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_07?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_07?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_07?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES08?: NullableStringFieldUpdateOperationsInput | string | null
     PRECIO_08?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -25504,13 +26568,13 @@ export namespace Prisma {
     PRECIO_04?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_04?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES05?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_05?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_05?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_05?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES06?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_06?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_06?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_06?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES07?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_07?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_07?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_07?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES08?: NullableStringFieldUpdateOperationsInput | string | null
     PRECIO_08?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -25573,13 +26637,13 @@ export namespace Prisma {
     PRECIO_04?: string | null
     SUC_04?: string | null
     COD_PRES05?: string | null
-    PRECIO_05?: number | null
+    PRECIO_05?: string | null
     SUC_05?: string | null
     COD_PRES06?: string | null
-    PRECIO_06?: number | null
+    PRECIO_06?: string | null
     SUC_06?: string | null
     COD_PRES07?: string | null
-    PRECIO_07?: number | null
+    PRECIO_07?: string | null
     SUC_07?: string | null
     COD_PRES08?: string | null
     PRECIO_08?: number | null
@@ -25642,13 +26706,13 @@ export namespace Prisma {
     PRECIO_04?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_04?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES05?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_05?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_05?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_05?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES06?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_06?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_06?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_06?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES07?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_07?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_07?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_07?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES08?: NullableStringFieldUpdateOperationsInput | string | null
     PRECIO_08?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -25710,13 +26774,13 @@ export namespace Prisma {
     PRECIO_04?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_04?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES05?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_05?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_05?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_05?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES06?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_06?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_06?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_06?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES07?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_07?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_07?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_07?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES08?: NullableStringFieldUpdateOperationsInput | string | null
     PRECIO_08?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -27974,6 +29038,66 @@ export namespace Prisma {
     operador?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type tareasCreateInput = {
+    title?: string | null
+    allDay?: number | null
+    start?: string | null
+    end?: string | null
+    priority?: number | null
+  }
+
+  export type tareasUncheckedCreateInput = {
+    idevents?: number
+    title?: string | null
+    allDay?: number | null
+    start?: string | null
+    end?: string | null
+    priority?: number | null
+  }
+
+  export type tareasUpdateInput = {
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    allDay?: NullableIntFieldUpdateOperationsInput | number | null
+    start?: NullableStringFieldUpdateOperationsInput | string | null
+    end?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type tareasUncheckedUpdateInput = {
+    idevents?: IntFieldUpdateOperationsInput | number
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    allDay?: NullableIntFieldUpdateOperationsInput | number | null
+    start?: NullableStringFieldUpdateOperationsInput | string | null
+    end?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type tareasCreateManyInput = {
+    idevents?: number
+    title?: string | null
+    allDay?: number | null
+    start?: string | null
+    end?: string | null
+    priority?: number | null
+  }
+
+  export type tareasUpdateManyMutationInput = {
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    allDay?: NullableIntFieldUpdateOperationsInput | number | null
+    start?: NullableStringFieldUpdateOperationsInput | string | null
+    end?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type tareasUncheckedUpdateManyInput = {
+    idevents?: IntFieldUpdateOperationsInput | number
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    allDay?: NullableIntFieldUpdateOperationsInput | number | null
+    start?: NullableStringFieldUpdateOperationsInput | string | null
+    end?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -28108,9 +29232,6 @@ export namespace Prisma {
 
   export type AUT_PRACAvgOrderByAggregateInput = {
     ANULADO?: SortOrder
-    PRECIO_05?: SortOrder
-    PRECIO_06?: SortOrder
-    PRECIO_07?: SortOrder
     PRECIO_08?: SortOrder
     PRECIO_09?: SortOrder
     PRECIO_16?: SortOrder
@@ -28261,9 +29382,6 @@ export namespace Prisma {
 
   export type AUT_PRACSumOrderByAggregateInput = {
     ANULADO?: SortOrder
-    PRECIO_05?: SortOrder
-    PRECIO_06?: SortOrder
-    PRECIO_07?: SortOrder
     PRECIO_08?: SortOrder
     PRECIO_09?: SortOrder
     PRECIO_16?: SortOrder
@@ -29698,6 +30816,45 @@ export namespace Prisma {
     estado?: SortOrder
   }
 
+  export type tareasCountOrderByAggregateInput = {
+    idevents?: SortOrder
+    title?: SortOrder
+    allDay?: SortOrder
+    start?: SortOrder
+    end?: SortOrder
+    priority?: SortOrder
+  }
+
+  export type tareasAvgOrderByAggregateInput = {
+    idevents?: SortOrder
+    allDay?: SortOrder
+    priority?: SortOrder
+  }
+
+  export type tareasMaxOrderByAggregateInput = {
+    idevents?: SortOrder
+    title?: SortOrder
+    allDay?: SortOrder
+    start?: SortOrder
+    end?: SortOrder
+    priority?: SortOrder
+  }
+
+  export type tareasMinOrderByAggregateInput = {
+    idevents?: SortOrder
+    title?: SortOrder
+    allDay?: SortOrder
+    start?: SortOrder
+    end?: SortOrder
+    priority?: SortOrder
+  }
+
+  export type tareasSumOrderByAggregateInput = {
+    idevents?: SortOrder
+    allDay?: SortOrder
+    priority?: SortOrder
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
@@ -30046,6 +31203,10 @@ export namespace Prisma {
      * @deprecated Use ausenciasDefaultArgs instead
      */
     export type ausenciasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ausenciasDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use tareasDefaultArgs instead
+     */
+    export type tareasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = tareasDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

@@ -48,6 +48,11 @@ const Adimn = ({ userData }) => {
           Gen. Caja
         </a>
       </li>
+      <li>
+        <a href="/calendario/calendario" className="nav-link dropdown-toggle">
+          Reg. Tareas
+        </a>
+      </li>
       {userData.perfil === 1 || userData.perfil === 3 ? (
         <>
           <li>

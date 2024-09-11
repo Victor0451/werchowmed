@@ -500,6 +500,15 @@ exports.Prisma.AusenciasScalarFieldEnum = {
   operador: 'operador'
 };
 
+exports.Prisma.TareasScalarFieldEnum = {
+  idevents: 'idevents',
+  title: 'title',
+  allDay: 'allDay',
+  start: 'start',
+  end: 'end',
+  priority: 'priority'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -530,7 +539,8 @@ exports.Prisma.ModelName = {
   planes_visitas: 'planes_visitas',
   promociones: 'promociones',
   pacientes: 'pacientes',
-  ausencias: 'ausencias'
+  ausencias: 'ausencias',
+  tareas: 'tareas'
 };
 
 /**
