@@ -61,7 +61,7 @@ const FormCalendar = ({
           haciendo click en la hora de inicio y si soltar, arrastrar el cursor
           hasta la hora de fin. Esto abrira una ventana para poder ingresar el
           detalle de la tarea, operador y su prioridad. Una vez finalizada la
-          carga de datos, hacer click en "Registrar Tarera".
+          carga de datos, hacer click en "Registrar Tarea".
         </div>
 
         <div className="alert alert-info border border-dark text-center text-uppercase">
@@ -76,7 +76,7 @@ const FormCalendar = ({
           haciendo click en la hora de inicio y si soltar, arrastrar el cursor
           hasta la hora de fin. Esto abrira una ventana para poder ingresar el
           detalle de la tarea, operador y su prioridad. Una vez finalizada la
-          carga de datos, hacer click en "Registrar Tarera".
+          carga de datos, hacer click en "Registrar Tarea".
         </div>
 
         {edit === true ? (

@@ -13,6 +13,7 @@ import { registrarHistoria } from "../../utils/funciones";
 import moment from "moment";
 import FormRegAusencias from "../../components/servicios/FormRegAusencias";
 import ListadoAusencias from "../../components/servicios/ListadoAusencias";
+import { confirmAlert } from "react-confirm-alert";
 
 const Ausencias = () => {
   let medicoRef = React.createRef();
@@ -118,34 +119,54 @@ const Ausencias = () => {
     } else if (ausen.desde > ausen.hasta) {
       guardarErrores("La fecha DESDE no puede ser mayor que la fecha HASTA.");
     } else {
-      await axios
-        .post(`/api/servicios`, ausen)
-        .then((res) => {
-          if (res.status === 200) {
-            toastr.success(
-              "Ausencia Justificada y registrada con exito",
-              "ATENCION"
-            );
+      await confirmAlert({
+        title: "ATENCION",
+        message: "¿Estas seguro de registrar la ausencia del prestador?",
+        buttons: [
+          {
+            label: "Si",
+            onClick: () => {
+              axios
+                .post(`/api/servicios`, ausen)
+                .then((res) => {
+                  if (res.status === 200) {
+                    toastr.success(
+                      "Ausencia Justificada y registrada con exito",
+                      "ATENCION"
+                    );
 
-            putAusencia(ausen.cod_pres);
+                    putAusencia(ausen.cod_pres);
 
-            let accion = `Se registro ausencia del prestadro: ${
-              ausen.cod_pres
-            } - ${ausen.prestador}, por motivo de: ${
-              ausen.motivo
-            }. En el periodo de ${moment(ausen.desde).format(
-              "DD/MM/YYYY"
-            )} hasta ${moment(ausen.hasta).format("DD/MM/YYYY")}.`;
+                    let accion = `Se registro ausencia del prestadro: ${
+                      ausen.cod_pres
+                    } - ${ausen.prestador}, por motivo de: ${
+                      ausen.motivo
+                    }. En el periodo de ${moment(ausen.desde).format(
+                      "DD/MM/YYYY"
+                    )} hasta ${moment(ausen.hasta).format("DD/MM/YYYY")}.`;
 
-            registrarHistoria(accion, usu.usuario);
+                    registrarHistoria(accion, usu.usuario);
 
-            traerMedicos();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          toastr.error("Ocurrio un error al registrar la ausencia", "ATENCION");
-        });
+                    traerMedicos();
+                  }
+                })
+                .catch((error) => {
+                  console.log(error);
+                  toastr.error(
+                    "Ocurrio un error al registrar la ausencia",
+                    "ATENCION"
+                  );
+                });
+            },
+          },
+          {
+            label: "No",
+            onClick: () => {
+              toastr.info("Accion cancelada, la ausencia no fue registrada.");
+            },
+          },
+        ],
+      });
     }
   };
 
@@ -160,6 +181,108 @@ const Ausencias = () => {
     document.body.innerHTML = contenidoOrg;
 
     window.location.replace("/servicios/ausencias");
+  };
+
+  const reincorporarAusencia = async (row) => {
+    await confirmAlert({
+      title: "ATENCION",
+      message: "¿Estas seguro de reincorporar al prestador seleccionado?",
+      buttons: [
+        {
+          label: "Si",
+          onClick: () => {
+            let ausen = {
+              idausencia: row.idausencia,
+              estado: 0,
+              f: "rein ausencia",
+            };
+
+            axios
+              .put(`/api/servicios`, ausen)
+              .then((res) => {
+                if (res.status === 200) {
+                  toastr.success(
+                    "Prestador reincorporado con exito",
+                    "ATENCION"
+                  );
+
+                  let accion = `Se registro la reincorporacion del prestadro: ${row.cod_pres} - ${row.prestador}.`;
+
+                  registrarHistoria(accion, usu.usuario);
+
+                  traerMedicos();
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+                toastr.error(
+                  "Ocurrio un error al registrar la ausencia",
+                  "ATENCION"
+                );
+              });
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {
+            toastr.info(
+              "Accion cancelada, el estado de la ausencia no cambio."
+            );
+          },
+        },
+      ],
+    });
+  };
+
+  const eliminarAusencia = async (row) => {
+    await confirmAlert({
+      title: "ATENCION",
+      message: "¿Estas seguro de eliminar este registro?",
+      buttons: [
+        {
+          label: "Si",
+          onClick: () => {
+            axios
+              .delete(`/api/servicios`, {
+                params: {
+                  idausencia: row.idausencia,
+                  f: "dele ausencia",
+                },
+              })
+              .then((res) => {
+                if (res.status === 200) {
+                  toastr.success("Registro eliminada", "ATENCION");
+
+                  let accion = `Se elimino el siguiente registro: "Ausencia del prestadro: ${
+                    row.cod_pres
+                  } - ${row.prestador}, por motivo de: ${
+                    row.motivo
+                  }. En el periodo de ${moment(row.desde).format(
+                    "DD/MM/YYYY"
+                  )} hasta ${moment(row.hasta).format("DD/MM/YYYY")}".`;
+
+                  registrarHistoria(accion, usu.usuario);
+
+                  traerMedicos();
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+                toastr.error(
+                  "Ocurrio un error al registrar la ausencia",
+                  "ATENCION"
+                );
+              });
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {
+            toastr.info("Accion cancelada, el registro no fue eliminado.");
+          },
+        },
+      ],
+    });
   };
 
   useSWR("/api/servicios", traerMedicos);
@@ -187,7 +310,12 @@ const Ausencias = () => {
               regAusencia={regAusencia}
             />
 
-            <ListadoAusencias listado={listAusen} imprimir={imprimir} />
+            <ListadoAusencias
+              listado={listAusen}
+              imprimir={imprimir}
+              reincorporarAusencia={reincorporarAusencia}
+              eliminarAusencia={eliminarAusencia}
+            />
           </Layout>
         </>
       ) : null}

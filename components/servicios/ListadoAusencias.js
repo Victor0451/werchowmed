@@ -4,7 +4,13 @@ import matchSorter from "match-sorter";
 import moment from "moment";
 import ExportarAusencias from "./ExportarAusencias";
 
-const ListadoAusencias = ({ listado, imprimir, f }) => {
+const ListadoAusencias = ({
+  listado,
+  imprimir,
+  f,
+  reincorporarAusencia,
+  eliminarAusencia,
+}) => {
   return (
     <div>
       <div id="list" className="container list mt-4 border border-dark p-4">
@@ -25,14 +31,14 @@ const ListadoAusencias = ({ listado, imprimir, f }) => {
               {
                 Header: "Listado de Ausencias",
                 columns: [
-                  {
-                    Header: "Cod. Prestador",
-                    id: "cod_pres",
-                    accessor: (d) => d.cod_pres,
-                    filterMethod: (filter, rows) =>
-                      matchSorter(rows, filter.value, { keys: ["cod_pres"] }),
-                    filterAll: true,
-                  },
+                  // {
+                  //   Header: "Cod. Prestador",
+                  //   id: "cod_pres",
+                  //   accessor: (d) => d.cod_pres,
+                  //   filterMethod: (filter, rows) =>
+                  //     matchSorter(rows, filter.value, { keys: ["cod_pres"] }),
+                  //   filterAll: true,
+                  // },
                   {
                     Header: "Prestador",
                     id: "prestador",
@@ -40,6 +46,7 @@ const ListadoAusencias = ({ listado, imprimir, f }) => {
                     filterMethod: (filter, rows) =>
                       matchSorter(rows, filter.value, { keys: ["prestador"] }),
                     filterAll: true,
+                    width: 200,
                   },
 
                   {
@@ -49,6 +56,7 @@ const ListadoAusencias = ({ listado, imprimir, f }) => {
                     filterMethod: (filter, rows) =>
                       matchSorter(rows, filter.value, { keys: ["motivo"] }),
                     filterAll: true,
+                    width: 150,
                   },
 
                   {
@@ -59,6 +67,7 @@ const ListadoAusencias = ({ listado, imprimir, f }) => {
                     filterMethod: (filter, rows) =>
                       matchSorter(rows, filter.value, { keys: ["desde"] }),
                     filterAll: true,
+                    width: 120,
                   },
 
                   {
@@ -69,6 +78,7 @@ const ListadoAusencias = ({ listado, imprimir, f }) => {
                     filterMethod: (filter, rows) =>
                       matchSorter(rows, filter.value, { keys: ["hasta"] }),
                     filterAll: true,
+                    width: 120,
                   },
 
                   {
@@ -80,6 +90,7 @@ const ListadoAusencias = ({ listado, imprimir, f }) => {
                         keys: ["observacion"],
                       }),
                     filterAll: true,
+                    width: 200,
                   },
 
                   {
@@ -94,6 +105,32 @@ const ListadoAusencias = ({ listado, imprimir, f }) => {
                           <>Vigente</>
                         ) : row.original.estado === 0 ? (
                           <>Reincorporado</>
+                        ) : null}
+                      </div>
+                    ),
+                  },
+
+                  {
+                    Header: "Accion",
+                    filterMethod: (filter, rows) =>
+                      matchSorter(rows, filter.value, { keys: ["accion"] }),
+                    filterAll: true,
+                    width: 80,
+                    Cell: (row) => (
+                      <div>
+                        {row.original.estado === 1 ? (
+                          <>
+                            <i
+                              className="fa fa-check-circle btn btn-success btn-sm"
+                              aria-hidden="true"
+                              onClick={() => reincorporarAusencia(row.original)}
+                            ></i>
+                            <i
+                              className="fa fa-trash btn btn-danger btn-sm ml-1"
+                              aria-hidden="true"
+                              onClick={() => eliminarAusencia(row.original)}
+                            ></i>
+                          </>
                         ) : null}
                       </div>
                     ),

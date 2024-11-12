@@ -1223,6 +1223,25 @@ export default async function handler(req, res) {
          WHERE COD_PRES=${req.body.codPres}
 `;
       res.status(200).json(updateAusente);
+    } else if (req.body.f && req.body.f === "rein ausencia") {
+      const reinPrest = await Serv.$queryRaw`
+         
+         UPDATE ausencias
+         SET 
+            estado = ${req.body.estado}            
+         WHERE idausencia=${req.body.idausencia}
+`;
+      res.status(200).json(reinPrest);
+    }
+  } else if (req.method === "DELETE") {
+    if (req.query.f && req.query.f === "dele ausencia") {
+      const delAusencia = await Serv.ausencias.delete({
+        where: {
+          idausencia: parseInt(req.query.idausencia),
+        },
+      });
+
+      res.status(200).json(delAusencia);
     }
   }
 }
