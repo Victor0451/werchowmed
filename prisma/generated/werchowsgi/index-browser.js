@@ -6,44 +6,46 @@ const {
   objectEnumValues,
   makeStrictEnum,
   Public,
+  detectRuntime,
 } = require('./runtime/index-browser')
 
 
 const Prisma = {}
 
 exports.Prisma = Prisma
+exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 4.17.0-dev.38
- * Query Engine version: e6267db1c1bc827b8eb87f644288c3cb0800ec89
+ * Prisma Client JS version: 5.4.2
+ * Query Engine version: ac9d7041ed77bcc8a8dbd2ab6616b39013829574
  */
 Prisma.prismaVersion = {
-  client: "4.17.0-dev.38",
-  engine: "e6267db1c1bc827b8eb87f644288c3cb0800ec89"
+  client: "5.4.2",
+  engine: "ac9d7041ed77bcc8a8dbd2ab6616b39013829574"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
-  throw new Error(`PrismaClientKnownRequestError is unable to be run in the browser.
+  throw new Error(`PrismaClientKnownRequestError is unable to be run ${runtimeDescription}.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )};
 Prisma.PrismaClientUnknownRequestError = () => {
-  throw new Error(`PrismaClientUnknownRequestError is unable to be run in the browser.
+  throw new Error(`PrismaClientUnknownRequestError is unable to be run ${runtimeDescription}.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )}
 Prisma.PrismaClientRustPanicError = () => {
-  throw new Error(`PrismaClientRustPanicError is unable to be run in the browser.
+  throw new Error(`PrismaClientRustPanicError is unable to be run ${runtimeDescription}.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )}
 Prisma.PrismaClientInitializationError = () => {
-  throw new Error(`PrismaClientInitializationError is unable to be run in the browser.
+  throw new Error(`PrismaClientInitializationError is unable to be run ${runtimeDescription}.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )}
 Prisma.PrismaClientValidationError = () => {
-  throw new Error(`PrismaClientValidationError is unable to be run in the browser.
+  throw new Error(`PrismaClientValidationError is unable to be run ${runtimeDescription}.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )}
 Prisma.NotFoundError = () => {
-  throw new Error(`NotFoundError is unable to be run in the browser.
+  throw new Error(`NotFoundError is unable to be run ${runtimeDescription}.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )}
 Prisma.Decimal = Decimal
@@ -52,19 +54,19 @@ Prisma.Decimal = Decimal
  * Re-export of sql-template-tag
  */
 Prisma.sql = () => {
-  throw new Error(`sqltag is unable to be run in the browser.
+  throw new Error(`sqltag is unable to be run ${runtimeDescription}.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )}
 Prisma.empty = () => {
-  throw new Error(`empty is unable to be run in the browser.
+  throw new Error(`empty is unable to be run ${runtimeDescription}.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )}
 Prisma.join = () => {
-  throw new Error(`join is unable to be run in the browser.
+  throw new Error(`join is unable to be run ${runtimeDescription}.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )}
 Prisma.raw = () => {
-  throw new Error(`raw is unable to be run in the browser.
+  throw new Error(`raw is unable to be run ${runtimeDescription}.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )}
 Prisma.validator = Public.validator
@@ -73,11 +75,11 @@ Prisma.validator = Public.validator
 * Extensions
 */
 Prisma.getExtensionContext = () => {
-  throw new Error(`Extensions.getExtensionContext is unable to be run in the browser.
+  throw new Error(`Extensions.getExtensionContext is unable to be run ${runtimeDescription}.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )}
 Prisma.defineExtension = () => {
-  throw new Error(`Extensions.defineExtension is unable to be run in the browser.
+  throw new Error(`Extensions.defineExtension is unable to be run ${runtimeDescription}.
 In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
 )}
 
@@ -322,7 +324,8 @@ exports.Prisma.Detalle_orden_pagoScalarFieldEnum = {
   prestador: 'prestador',
   importe: 'importe',
   operador_carga: 'operador_carga',
-  fecha: 'fecha'
+  fecha: 'fecha',
+  servicio: 'servicio'
 };
 
 exports.Prisma.EmpresasScalarFieldEnum = {
@@ -535,10 +538,8 @@ exports.Prisma.OperadorScalarFieldEnum = {
   contrasena: 'contrasena',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  puestom: 'puestom',
   perfil: 'perfil',
   estado: 'estado',
-  puestow: 'puestow',
   codigo: 'codigo',
   medicos: 'medicos',
   sucursal: 'sucursal',
@@ -549,7 +550,9 @@ exports.Prisma.OperadorScalarFieldEnum = {
   administracion: 'administracion',
   campanas: 'campanas',
   socios: 'socios',
-  sepelio: 'sepelio'
+  sepelio: 'sepelio',
+  gestion: 'gestion',
+  contabilidad: 'contabilidad'
 };
 
 exports.Prisma.Ordenes_pagoScalarFieldEnum = {
@@ -755,8 +758,7 @@ exports.Prisma.Tareas_sucursalesScalarFieldEnum = {
   end: 'end',
   priority: 'priority',
   sucursal: 'sucursal',
-  operador: 'operador',
-  leido: 'leido'
+  operador: 'operador'
 };
 
 exports.Prisma.Tipo_contratosScalarFieldEnum = {
@@ -793,14 +795,14 @@ exports.Prisma.Turno_bajasScalarFieldEnum = {
 };
 
 exports.Prisma.VacacionesScalarFieldEnum = {
-  id: 'id',
-  start: 'start',
-  end: 'end',
-  allDay: 'allDay',
-  priority: 'priority',
-  title: 'title',
-  user: 'user',
-  detail: 'detail'
+  idvacaciones: 'idvacaciones',
+  empleado: 'empleado',
+  inicio: 'inicio',
+  fin: 'fin',
+  dias: 'dias',
+  observacion: 'observacion',
+  operador: 'operador',
+  fecha: 'fecha'
 };
 
 exports.Prisma.Motivos_atencionScalarFieldEnum = {
@@ -849,6 +851,88 @@ exports.Prisma.CarteraScalarFieldEnum = {
   mes: 'mes',
   ano: 'ano',
   idcartera: 'idcartera'
+};
+
+exports.Prisma.Conceptos_liquidacionScalarFieldEnum = {
+  idconcepto: 'idconcepto',
+  concepto: 'concepto',
+  formula: 'formula'
+};
+
+exports.Prisma.Gasto_lutoScalarFieldEnum = {
+  idgastoluto: 'idgastoluto',
+  gasto1: 'gasto1',
+  gasto2: 'gasto2'
+};
+
+exports.Prisma.Legajo_operadorScalarFieldEnum = {
+  idlegajo: 'idlegajo',
+  operador: 'operador',
+  cuil: 'cuil',
+  fecha_ingreso: 'fecha_ingreso',
+  antiguedad: 'antiguedad',
+  categoria: 'categoria',
+  tiempo_trabajo: 'tiempo_trabajo',
+  fecha_pago: 'fecha_pago',
+  contratacion: 'contratacion',
+  idempresa: 'idempresa',
+  estado: 'estado'
+};
+
+exports.Prisma.PuestosScalarFieldEnum = {
+  idpuesto: 'idpuesto',
+  operador: 'operador',
+  puestow: 'puestow',
+  seriew: 'seriew',
+  puestom: 'puestom',
+  seriem: 'seriem',
+  puesto_sm: 'puesto_sm',
+  serie_sm: 'serie_sm',
+  puesto_isj: 'puesto_isj',
+  serie_isj: 'serie_isj'
+};
+
+exports.Prisma.Recibo_liquidacionScalarFieldEnum = {
+  idrecibo: 'idrecibo',
+  periodo: 'periodo',
+  fecha: 'fecha',
+  operador: 'operador',
+  total_neto: 'total_neto',
+  total_letra: 'total_letra',
+  forma_pago: 'forma_pago',
+  fecha_deposito: 'fecha_deposito',
+  banco: 'banco',
+  empresa: 'empresa',
+  empresa_cuit: 'empresa_cuit',
+  operador_cuil: 'operador_cuil',
+  idlegajo: 'idlegajo',
+  fecha_ingreso: 'fecha_ingreso',
+  anti: 'anti',
+  categoria: 'categoria',
+  seccion: 'seccion'
+};
+
+exports.Prisma.Recibo_movimientosScalarFieldEnum = {
+  idmovimiento: 'idmovimiento',
+  idrecibo: 'idrecibo',
+  cuil: 'cuil',
+  concepto: 'concepto',
+  remu_ren: 'remu_ren',
+  remu_exe: 'remu_exe',
+  descuento: 'descuento'
+};
+
+exports.Prisma.ReintegrosScalarFieldEnum = {
+  idreintegro: 'idreintegro',
+  entidad: 'entidad',
+  contrato: 'contrato',
+  socio: 'socio',
+  dni: 'dni',
+  norden: 'norden',
+  importe: 'importe',
+  observacion: 'observacion',
+  operador: 'operador',
+  fecha: 'fecha'
 };
 
 exports.Prisma.SortOrder = {
@@ -925,20 +1009,47 @@ exports.Prisma.ModelName = {
   prestamos_plan_cuotas: 'prestamos_plan_cuotas',
   prestamos_tasas: 'prestamos_tasas',
   certificado_estudiantes: 'certificado_estudiantes',
-  cartera: 'cartera'
+  cartera: 'cartera',
+  conceptos_liquidacion: 'conceptos_liquidacion',
+  gasto_luto: 'gasto_luto',
+  legajo_operador: 'legajo_operador',
+  puestos: 'puestos',
+  recibo_liquidacion: 'recibo_liquidacion',
+  recibo_movimientos: 'recibo_movimientos',
+  reintegros: 'reintegros'
 };
 
 /**
- * Create the Client
+ * This is a stub Prisma Client that will error at runtime if called.
  */
 class PrismaClient {
   constructor() {
-    throw new Error(
-      `PrismaClient is unable to be run in the browser.
-In case this error is unexpected for you, please report it in https://github.com/prisma/prisma/issues`,
-    )
+    return new Proxy(this, {
+      get(target, prop) {
+        const runtime = detectRuntime()
+        const edgeRuntimeName = {
+          'workerd': 'Cloudflare Workers',
+          'deno': 'Deno and Deno Deploy',
+          'netlify': 'Netlify Edge Functions',
+          'edge-light': 'Vercel Edge Functions',
+        }[runtime]
+
+        let message = 'PrismaClient is unable to run in '
+        if (edgeRuntimeName !== undefined) {
+          message += edgeRuntimeName + '. As an alternative, try Accelerate: https://pris.ly/d/accelerate.'
+        } else {
+          message += 'this browser environment, or has been bundled for the browser (running in `' + runtime + '`).'
+        }
+        
+        message += `
+If this is unexpected, please open an issue: https://github.com/prisma/prisma/issues`
+
+        throw new Error(message)
+      }
+    })
   }
 }
+
 exports.PrismaClient = PrismaClient
 
 Object.assign(exports, Prisma)

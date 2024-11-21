@@ -303,6 +303,7 @@ model detalle_orden_pago {
   importe        String?   @db.VarChar(255)
   operador_carga String?   @db.VarChar(255)
   fecha          DateTime? @db.Date
+  servicio       String?   @db.VarChar(255)
 }
 
 model empresas {
@@ -515,7 +516,7 @@ model movimiento_caja_sucursales {
   importe          Float?    @db.Float
   operador_carga   String?   @db.VarChar(255)
   idcaja           Int?
-  empresa          String?   @db.VarChar(1)
+  empresa          String?   @db.VarChar(5)
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
@@ -573,10 +574,8 @@ model operador {
   contrasena     String   @db.VarChar(255)
   createdAt      DateTime @db.DateTime(0)
   updatedAt      DateTime @db.DateTime(0)
-  puestom        Int?
   perfil         Int?
   estado         Boolean?
-  puestow        Int?
   codigo         Int?
   medicos        Boolean?
   sucursal       String?  @db.VarChar(255)
@@ -588,6 +587,8 @@ model operador {
   campanas       Boolean?
   socios         Boolean?
   sepelio        Boolean?
+  gestion        Boolean?
+  contabilidad   Boolean?
 }
 
 model ordenes_pago {
@@ -801,15 +802,14 @@ model tablero_efectividad {
 }
 
 model tareas_sucursales {
-  idevents Int       @id @default(autoincrement())
-  title    String?   @db.VarChar(255)
-  allDay   Int?      @db.TinyInt
-  start    DateTime? @db.DateTime(0)
-  end      DateTime? @db.DateTime(0)
+  idevents Int     @id @default(autoincrement())
+  title    String? @db.VarChar(2000)
+  allDay   Int?    @db.TinyInt
+  start    String? @db.VarChar(255)
+  end      String? @db.VarChar(255)
   priority Int?
-  sucursal String?   @db.VarChar(255)
-  operador String?   @db.VarChar(255)
-  leido    Boolean?
+  sucursal String? @db.VarChar(255)
+  operador String? @db.VarChar(255)
 }
 
 model tipo_contratos {
@@ -846,14 +846,14 @@ model turno_bajas {
 }
 
 model vacaciones {
-  id       String    @id @db.VarChar(255)
-  start    DateTime? @db.DateTime(0)
-  end      DateTime? @db.DateTime(0)
-  allDay   Int?      @db.TinyInt
-  priority Int?      @db.TinyInt
-  title    String?   @db.VarChar(500)
-  user     String?   @db.VarChar(255)
-  detail   String?   @db.VarChar(1000)
+  idvacaciones Int       @id @default(autoincrement())
+  empleado     String?   @db.VarChar(255)
+  inicio       DateTime? @db.Date
+  fin          DateTime? @db.Date
+  dias         Int?
+  observacion  String?   @db.VarChar(1000)
+  operador     String?   @db.VarChar(255)
+  fecha        DateTime? @db.Date
 }
 
 model motivos_atencion {
@@ -887,7 +887,7 @@ model certificado_estudiantes {
 }
 
 model cartera {
-  contrato  Int?      @unique(map: "contrato")
+  contrato  Int?
   socio     String?   @db.VarChar(30)
   alta      DateTime? @db.Date
   grupo     Int?
@@ -904,4 +904,156 @@ model cartera {
   idcartera Int       @id @default(autoincrement())
 
   @@index([zona], map: "zona")
+}
+
+model conceptos_liquidacion {
+  idconcepto Int     @id @default(autoincrement())
+  concepto   String? @db.VarChar(500)
+  formula    String? @db.VarChar(500)
+}
+
+model gasto_luto {
+  idgastoluto Int  @id @default(autoincrement())
+  gasto1      Int?
+  gasto2      Int?
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model grupos {
+  CODIGO    Int?
+  DESCRIP   String? @db.VarChar(30)
+  IVA       String? @db.VarChar(30)
+  CUIT      String? @db.VarChar(13)
+  DOMICILIO String? @db.VarChar(30)
+  ORDEN     String? @db.VarChar(1)
+  LIN_ALTA  String? @db.VarChar(10)
+  LIN_BAJA  String? @db.VarChar(10)
+  TOTALIZA  Int?    @db.TinyInt
+  PAGINA    Int?    @db.TinyInt
+  TITULO1   String? @db.VarChar(80)
+  TITULO2   String? @db.VarChar(80)
+  DIA       Int?
+  MES       Int?
+  ANO       Int?
+  SUCURSAL  String? @db.VarChar(1)
+  MARCA     String? @db.VarChar(2)
+  CONVENIO  String? @db.VarChar(5)
+
+  @@ignore
+}
+
+model legajo_operador {
+  idlegajo       Int       @id @default(autoincrement())
+  operador       String?   @db.VarChar(255)
+  cuil           String?   @db.VarChar(255)
+  fecha_ingreso  DateTime? @db.Date
+  antiguedad     Int?
+  categoria      String?   @db.VarChar(255)
+  tiempo_trabajo String?   @db.VarChar(255)
+  fecha_pago     String?   @db.VarChar(255)
+  contratacion   String?   @db.VarChar(255)
+  idempresa      Int?
+  estado         Boolean?
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model localida {
+  CODIGO  Int?
+  DETALLE String? @db.VarChar(15)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model producto {
+  CODIGO   Int?
+  DESCRIP  String?   @db.VarChar(30)
+  ACTIVO   Int?      @db.TinyInt
+  COD_PERS Int?
+  COD_SUP  Int?
+  SUCURSAL String?   @db.VarChar(1)
+  ALTA     DateTime? @db.Date
+  BAJA     DateTime? @db.Date
+  NRO_DOC  Int?
+  FEC_NAC  DateTime? @db.Date
+  PLAN     Int?
+
+  @@ignore
+}
+
+model puestos {
+  idpuesto   Int     @id @default(autoincrement())
+  operador   String? @db.VarChar(255)
+  puestow    Int?
+  seriew     Int?
+  puestom    Int?
+  seriem     Int?
+  puesto_sm  Int?
+  serie_sm   Int?
+  puesto_isj Int?
+  serie_isj  Int?
+}
+
+model recibo_liquidacion {
+  idrecibo       Int       @id @default(autoincrement())
+  periodo        String?   @db.VarChar(255)
+  fecha          DateTime? @db.Date
+  operador       String?   @db.VarChar(255)
+  total_neto     Float?    @db.Float
+  total_letra    String?   @db.VarChar(500)
+  forma_pago     String?   @db.VarChar(255)
+  fecha_deposito DateTime? @db.Date
+  banco          String?   @db.VarChar(255)
+  empresa        String?   @db.VarChar(255)
+  empresa_cuit   String?   @db.VarChar(255)
+  operador_cuil  String?   @db.VarChar(255)
+  idlegajo       Int?
+  fecha_ingreso  DateTime? @db.Date
+  anti           Int?
+  categoria      String?   @db.VarChar(255)
+  seccion        String?   @db.VarChar(255)
+}
+
+model recibo_movimientos {
+  idmovimiento Int     @id @default(autoincrement())
+  idrecibo     Int?
+  cuil         String? @db.VarChar(255)
+  concepto     String? @db.VarChar(255)
+  remu_ren     Float?  @db.Float
+  remu_exe     Float?  @db.Float
+  descuento    Float?  @db.Float
+}
+
+model reintegros {
+  idreintegro Int       @id @default(autoincrement())
+  entidad     String?   @db.VarChar(255)
+  contrato    Int?
+  socio       String?   @db.VarChar(500)
+  dni         Int?
+  norden      String?   @db.VarChar(255)
+  importe     Float?    @db.Float
+  observacion String?   @db.VarChar(1000)
+  operador    String?   @db.VarChar(255)
+  fecha       DateTime? @db.Date
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model zonas {
+  CODIGO   Int?
+  DESCRIP  String? @db.VarChar(30)
+  COBRADOR Int?    @db.TinyInt
+  COMISION Float?
+  SUCURSAL String? @db.VarChar(1)
+  RECIBOS  Int?
+  IMPORTE  Float?
+  SERIE    Int?
+  ORDEN    String? @db.VarChar(1)
+  LIN_ALTA String? @db.VarChar(10)
+  LIN_BAJA String? @db.VarChar(10)
+  TOTALIZA Int?    @db.TinyInt
+  PAGINA   Int?    @db.TinyInt
+  TITULO1  String? @db.VarChar(80)
+  TITULO2  String? @db.VarChar(80)
+
+  @@ignore
 }
