@@ -29,9 +29,18 @@ export default async function handler(req, res) {
       const ordenesPorDia = await Serv.$queryRaw`
          
          SELECT 
-            SERVICIO, 
+         
+            SERVICIO as "DETALLE", 
             COUNT(ORDEN) "CANTIDAD",
-            SUM(IMPORTE)  "IMPORTE"
+            SUM(IMPORTE)  "IMPORTE",
+            "53"  as "CODIGO",  
+            "0201020200"  as "CUENTA",
+            "I" as "MOVIM",
+            "0" as "TIPO", 
+            "0" as "SERIE",
+            "0" as "NUMERO",
+            "0" as "CUIT"                    
+
         FROM USOS
         WHERE RENDIDO = 0
         AND FECHA = ${req.query.fecha}
@@ -185,6 +194,35 @@ export default async function handler(req, res) {
         .status(200)
         .json(
           JSON.stringify(checkCaja, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.query.f && req.query.f === "traer cuentas") {
+      const mae = await Serv.$queryRaw`
+          SELECT 
+               *                               
+          FROM subcta
+          WHERE MOVIM in (${req.query.movim}, 'A')
+`;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(mae, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.query.f && req.query.f === "traer tipo facturas") {
+      const mae = await SGI.$queryRaw`
+          SELECT 
+               *                               
+          FROM tipo_facturas          
+`;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(mae, (key, value) =>
             typeof value === "bigint" ? value.toString() : value
           )
         );

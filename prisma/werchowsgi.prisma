@@ -139,7 +139,7 @@ model campanas {
 }
 
 model campanatemporal {
-  SUCURSAL          String?   @db.VarChar(1)
+  SUCURSAL          String?   @db.VarChar(2)
   CONTRATO          Int
   NRO_DOC           Int?
   APELLIDOS         String?   @db.VarChar(15)

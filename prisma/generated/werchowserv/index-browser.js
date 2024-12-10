@@ -509,6 +509,14 @@ exports.Prisma.TareasScalarFieldEnum = {
   priority: 'priority'
 };
 
+exports.Prisma.SubctaScalarFieldEnum = {
+  CODI: 'CODI',
+  DESC: 'DESC',
+  CUEN: 'CUEN',
+  MOVIM: 'MOVIM',
+  id: 'id'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -540,7 +548,8 @@ exports.Prisma.ModelName = {
   promociones: 'promociones',
   pacientes: 'pacientes',
   ausencias: 'ausencias',
-  tareas: 'tareas'
+  tareas: 'tareas',
+  subcta: 'subcta'
 };
 
 /**

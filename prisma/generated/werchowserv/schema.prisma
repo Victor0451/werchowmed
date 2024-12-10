@@ -37,7 +37,7 @@ model AUT_PRAC {
   PRECIO_07  String?   @db.VarChar(255)
   SUC_07     String?   @db.VarChar(1)
   COD_PRES08 String?   @db.VarChar(5)
-  PRECIO_08  Float?
+  PRECIO_08  String?   @db.VarChar(255)
   SUC_08     String?   @db.VarChar(1)
   COD_PRES09 String?   @db.VarChar(5)
   PRECIO_09  Float?
@@ -80,16 +80,16 @@ model AUT_PRAC {
 
 model CAJA {
   SUCURSAL  String?   @db.VarChar(1)
-  PUESTO    String?   @db.VarChar(2)
+  PUESTO    String?   @db.VarChar(10)
   CODIGO    Int?
   MOVIM     String?   @db.VarChar(1)
   CUENTA    String?   @db.VarChar(255)
   IMPORTE   Float?
-  TIPO      String?   @db.VarChar(1)
+  TIPO      String?   @db.VarChar(255)
   SERIE     Int?
   NUMERO    Int?
-  CUIT      String?   @db.VarChar(13)
-  DETALLE   String?   @db.VarChar(255)
+  CUIT      String?   @db.VarChar(255)
+  DETALLE   String?   @db.VarChar(1000)
   DET_AUX   String?   @db.VarChar(50)
   FECHA     DateTime? @db.Date
   FEC_COMP  String?   @db.VarChar(255)
@@ -509,4 +509,21 @@ model tareas {
   start    String? @db.VarChar(255)
   end      String? @db.VarChar(255)
   priority Int?
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model planes {
+  PLAN     String? @db.VarChar(1)
+  SUB_PLAN String? @db.VarChar(2)
+  DESCRIP  String? @db.VarChar(20)
+
+  @@ignore
+}
+
+model subcta {
+  CODI  Int?
+  DESC  String? @db.VarChar(35)
+  CUEN  String? @db.VarChar(14)
+  MOVIM String? @db.VarChar(14)
+  id    Int     @id @default(autoincrement())
 }

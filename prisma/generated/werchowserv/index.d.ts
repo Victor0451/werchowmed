@@ -113,6 +113,11 @@ export type ausencias = $Result.DefaultSelection<Prisma.$ausenciasPayload>
  * 
  */
 export type tareas = $Result.DefaultSelection<Prisma.$tareasPayload>
+/**
+ * Model subcta
+ * 
+ */
+export type subcta = $Result.DefaultSelection<Prisma.$subctaPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -435,6 +440,16 @@ export class PrismaClient<
     * ```
     */
   get tareas(): Prisma.tareasDelegate<ExtArgs>;
+
+  /**
+   * `prisma.subcta`: Exposes CRUD operations for the **subcta** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Subctas
+    * const subctas = await prisma.subcta.findMany()
+    * ```
+    */
+  get subcta(): Prisma.subctaDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -924,7 +939,8 @@ export namespace Prisma {
     promociones: 'promociones',
     pacientes: 'pacientes',
     ausencias: 'ausencias',
-    tareas: 'tareas'
+    tareas: 'tareas',
+    subcta: 'subcta'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -941,7 +957,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'aUT_PRAC' | 'cAJA' | 'cONSULTA' | 'eNFERMER' | 'fARMACIA' | 'mEDICOS_TURNOS' | 'pRACTICA' | 'pRACT_ENFER' | 'pRESTADO' | 'uSOS' | 'uSOSFA' | 'adherent_provi' | 'nosocios' | 'planes_odontologicos' | 'planes_socio' | 'planes_visitas' | 'promociones' | 'pacientes' | 'ausencias' | 'tareas'
+      modelProps: 'aUT_PRAC' | 'cAJA' | 'cONSULTA' | 'eNFERMER' | 'fARMACIA' | 'mEDICOS_TURNOS' | 'pRACTICA' | 'pRACT_ENFER' | 'pRESTADO' | 'uSOS' | 'uSOSFA' | 'adherent_provi' | 'nosocios' | 'planes_odontologicos' | 'planes_socio' | 'planes_visitas' | 'promociones' | 'pacientes' | 'ausencias' | 'tareas' | 'subcta'
       txIsolationLevel: Prisma.TransactionIsolationLevel
     },
     model: {
@@ -2265,6 +2281,72 @@ export namespace Prisma {
           }
         }
       }
+      subcta: {
+        payload: Prisma.$subctaPayload<ExtArgs>
+        fields: Prisma.subctaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.subctaFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$subctaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.subctaFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$subctaPayload>
+          }
+          findFirst: {
+            args: Prisma.subctaFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$subctaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.subctaFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$subctaPayload>
+          }
+          findMany: {
+            args: Prisma.subctaFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$subctaPayload>[]
+          }
+          create: {
+            args: Prisma.subctaCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$subctaPayload>
+          }
+          createMany: {
+            args: Prisma.subctaCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          delete: {
+            args: Prisma.subctaDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$subctaPayload>
+          }
+          update: {
+            args: Prisma.subctaUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$subctaPayload>
+          }
+          deleteMany: {
+            args: Prisma.subctaDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          updateMany: {
+            args: Prisma.subctaUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          upsert: {
+            args: Prisma.subctaUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$subctaPayload>
+          }
+          aggregate: {
+            args: Prisma.SubctaAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateSubcta>
+          }
+          groupBy: {
+            args: Prisma.subctaGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<SubctaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.subctaCountArgs<ExtArgs>,
+            result: $Utils.Optional<SubctaCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2428,7 +2510,6 @@ export namespace Prisma {
 
   export type AUT_PRACAvgAggregateOutputType = {
     ANULADO: number | null
-    PRECIO_08: number | null
     PRECIO_09: number | null
     PRECIO_16: number | null
     PRECIO_17: number | null
@@ -2440,7 +2521,6 @@ export namespace Prisma {
 
   export type AUT_PRACSumAggregateOutputType = {
     ANULADO: number | null
-    PRECIO_08: number | null
     PRECIO_09: number | null
     PRECIO_16: number | null
     PRECIO_17: number | null
@@ -2478,7 +2558,7 @@ export namespace Prisma {
     PRECIO_07: string | null
     SUC_07: string | null
     COD_PRES08: string | null
-    PRECIO_08: number | null
+    PRECIO_08: string | null
     SUC_08: string | null
     COD_PRES09: string | null
     PRECIO_09: number | null
@@ -2547,7 +2627,7 @@ export namespace Prisma {
     PRECIO_07: string | null
     SUC_07: string | null
     COD_PRES08: string | null
-    PRECIO_08: number | null
+    PRECIO_08: string | null
     SUC_08: string | null
     COD_PRES09: string | null
     PRECIO_09: number | null
@@ -2661,7 +2741,6 @@ export namespace Prisma {
 
   export type AUT_PRACAvgAggregateInputType = {
     ANULADO?: true
-    PRECIO_08?: true
     PRECIO_09?: true
     PRECIO_16?: true
     PRECIO_17?: true
@@ -2673,7 +2752,6 @@ export namespace Prisma {
 
   export type AUT_PRACSumAggregateInputType = {
     ANULADO?: true
-    PRECIO_08?: true
     PRECIO_09?: true
     PRECIO_16?: true
     PRECIO_17?: true
@@ -3005,7 +3083,7 @@ export namespace Prisma {
     PRECIO_07: string | null
     SUC_07: string | null
     COD_PRES08: string | null
-    PRECIO_08: number | null
+    PRECIO_08: string | null
     SUC_08: string | null
     COD_PRES09: string | null
     PRECIO_09: number | null
@@ -3235,7 +3313,7 @@ export namespace Prisma {
       PRECIO_07: string | null
       SUC_07: string | null
       COD_PRES08: string | null
-      PRECIO_08: number | null
+      PRECIO_08: string | null
       SUC_08: string | null
       COD_PRES09: string | null
       PRECIO_09: number | null
@@ -3695,7 +3773,7 @@ export namespace Prisma {
     readonly PRECIO_07: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_07: FieldRef<"AUT_PRAC", 'String'>
     readonly COD_PRES08: FieldRef<"AUT_PRAC", 'String'>
-    readonly PRECIO_08: FieldRef<"AUT_PRAC", 'Float'>
+    readonly PRECIO_08: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_08: FieldRef<"AUT_PRAC", 'String'>
     readonly COD_PRES09: FieldRef<"AUT_PRAC", 'String'>
     readonly PRECIO_09: FieldRef<"AUT_PRAC", 'Float'>
@@ -23513,6 +23591,914 @@ export namespace Prisma {
 
 
   /**
+   * Model subcta
+   */
+
+  export type AggregateSubcta = {
+    _count: SubctaCountAggregateOutputType | null
+    _avg: SubctaAvgAggregateOutputType | null
+    _sum: SubctaSumAggregateOutputType | null
+    _min: SubctaMinAggregateOutputType | null
+    _max: SubctaMaxAggregateOutputType | null
+  }
+
+  export type SubctaAvgAggregateOutputType = {
+    CODI: number | null
+    id: number | null
+  }
+
+  export type SubctaSumAggregateOutputType = {
+    CODI: number | null
+    id: number | null
+  }
+
+  export type SubctaMinAggregateOutputType = {
+    CODI: number | null
+    DESC: string | null
+    CUEN: string | null
+    MOVIM: string | null
+    id: number | null
+  }
+
+  export type SubctaMaxAggregateOutputType = {
+    CODI: number | null
+    DESC: string | null
+    CUEN: string | null
+    MOVIM: string | null
+    id: number | null
+  }
+
+  export type SubctaCountAggregateOutputType = {
+    CODI: number
+    DESC: number
+    CUEN: number
+    MOVIM: number
+    id: number
+    _all: number
+  }
+
+
+  export type SubctaAvgAggregateInputType = {
+    CODI?: true
+    id?: true
+  }
+
+  export type SubctaSumAggregateInputType = {
+    CODI?: true
+    id?: true
+  }
+
+  export type SubctaMinAggregateInputType = {
+    CODI?: true
+    DESC?: true
+    CUEN?: true
+    MOVIM?: true
+    id?: true
+  }
+
+  export type SubctaMaxAggregateInputType = {
+    CODI?: true
+    DESC?: true
+    CUEN?: true
+    MOVIM?: true
+    id?: true
+  }
+
+  export type SubctaCountAggregateInputType = {
+    CODI?: true
+    DESC?: true
+    CUEN?: true
+    MOVIM?: true
+    id?: true
+    _all?: true
+  }
+
+  export type SubctaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which subcta to aggregate.
+     */
+    where?: subctaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of subctas to fetch.
+     */
+    orderBy?: subctaOrderByWithRelationInput | subctaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: subctaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` subctas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` subctas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned subctas
+    **/
+    _count?: true | SubctaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SubctaAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SubctaSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SubctaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SubctaMaxAggregateInputType
+  }
+
+  export type GetSubctaAggregateType<T extends SubctaAggregateArgs> = {
+        [P in keyof T & keyof AggregateSubcta]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSubcta[P]>
+      : GetScalarType<T[P], AggregateSubcta[P]>
+  }
+
+
+
+
+  export type subctaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: subctaWhereInput
+    orderBy?: subctaOrderByWithAggregationInput | subctaOrderByWithAggregationInput[]
+    by: SubctaScalarFieldEnum[] | SubctaScalarFieldEnum
+    having?: subctaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SubctaCountAggregateInputType | true
+    _avg?: SubctaAvgAggregateInputType
+    _sum?: SubctaSumAggregateInputType
+    _min?: SubctaMinAggregateInputType
+    _max?: SubctaMaxAggregateInputType
+  }
+
+  export type SubctaGroupByOutputType = {
+    CODI: number | null
+    DESC: string | null
+    CUEN: string | null
+    MOVIM: string | null
+    id: number
+    _count: SubctaCountAggregateOutputType | null
+    _avg: SubctaAvgAggregateOutputType | null
+    _sum: SubctaSumAggregateOutputType | null
+    _min: SubctaMinAggregateOutputType | null
+    _max: SubctaMaxAggregateOutputType | null
+  }
+
+  type GetSubctaGroupByPayload<T extends subctaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SubctaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SubctaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SubctaGroupByOutputType[P]>
+            : GetScalarType<T[P], SubctaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type subctaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    CODI?: boolean
+    DESC?: boolean
+    CUEN?: boolean
+    MOVIM?: boolean
+    id?: boolean
+  }, ExtArgs["result"]["subcta"]>
+
+  export type subctaSelectScalar = {
+    CODI?: boolean
+    DESC?: boolean
+    CUEN?: boolean
+    MOVIM?: boolean
+    id?: boolean
+  }
+
+
+  export type $subctaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "subcta"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      CODI: number | null
+      DESC: string | null
+      CUEN: string | null
+      MOVIM: string | null
+      id: number
+    }, ExtArgs["result"]["subcta"]>
+    composites: {}
+  }
+
+
+  type subctaGetPayload<S extends boolean | null | undefined | subctaDefaultArgs> = $Result.GetResult<Prisma.$subctaPayload, S>
+
+  type subctaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<subctaFindManyArgs, 'select' | 'include'> & {
+      select?: SubctaCountAggregateInputType | true
+    }
+
+  export interface subctaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['subcta'], meta: { name: 'subcta' } }
+    /**
+     * Find zero or one Subcta that matches the filter.
+     * @param {subctaFindUniqueArgs} args - Arguments to find a Subcta
+     * @example
+     * // Get one Subcta
+     * const subcta = await prisma.subcta.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends subctaFindUniqueArgs<ExtArgs>>(
+      args: SelectSubset<T, subctaFindUniqueArgs<ExtArgs>>
+    ): Prisma__subctaClient<$Result.GetResult<Prisma.$subctaPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
+
+    /**
+     * Find one Subcta that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {subctaFindUniqueOrThrowArgs} args - Arguments to find a Subcta
+     * @example
+     * // Get one Subcta
+     * const subcta = await prisma.subcta.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends subctaFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, subctaFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__subctaClient<$Result.GetResult<Prisma.$subctaPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find the first Subcta that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {subctaFindFirstArgs} args - Arguments to find a Subcta
+     * @example
+     * // Get one Subcta
+     * const subcta = await prisma.subcta.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends subctaFindFirstArgs<ExtArgs>>(
+      args?: SelectSubset<T, subctaFindFirstArgs<ExtArgs>>
+    ): Prisma__subctaClient<$Result.GetResult<Prisma.$subctaPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
+
+    /**
+     * Find the first Subcta that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {subctaFindFirstOrThrowArgs} args - Arguments to find a Subcta
+     * @example
+     * // Get one Subcta
+     * const subcta = await prisma.subcta.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends subctaFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, subctaFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__subctaClient<$Result.GetResult<Prisma.$subctaPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Subctas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {subctaFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Subctas
+     * const subctas = await prisma.subcta.findMany()
+     * 
+     * // Get first 10 Subctas
+     * const subctas = await prisma.subcta.findMany({ take: 10 })
+     * 
+     * // Only select the `CODI`
+     * const subctaWithCODIOnly = await prisma.subcta.findMany({ select: { CODI: true } })
+     * 
+    **/
+    findMany<T extends subctaFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, subctaFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$subctaPayload<ExtArgs>, T, 'findMany'>>
+
+    /**
+     * Create a Subcta.
+     * @param {subctaCreateArgs} args - Arguments to create a Subcta.
+     * @example
+     * // Create one Subcta
+     * const Subcta = await prisma.subcta.create({
+     *   data: {
+     *     // ... data to create a Subcta
+     *   }
+     * })
+     * 
+    **/
+    create<T extends subctaCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, subctaCreateArgs<ExtArgs>>
+    ): Prisma__subctaClient<$Result.GetResult<Prisma.$subctaPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
+
+    /**
+     * Create many Subctas.
+     *     @param {subctaCreateManyArgs} args - Arguments to create many Subctas.
+     *     @example
+     *     // Create many Subctas
+     *     const subcta = await prisma.subcta.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends subctaCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, subctaCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Subcta.
+     * @param {subctaDeleteArgs} args - Arguments to delete one Subcta.
+     * @example
+     * // Delete one Subcta
+     * const Subcta = await prisma.subcta.delete({
+     *   where: {
+     *     // ... filter to delete one Subcta
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends subctaDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, subctaDeleteArgs<ExtArgs>>
+    ): Prisma__subctaClient<$Result.GetResult<Prisma.$subctaPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
+
+    /**
+     * Update one Subcta.
+     * @param {subctaUpdateArgs} args - Arguments to update one Subcta.
+     * @example
+     * // Update one Subcta
+     * const subcta = await prisma.subcta.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends subctaUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, subctaUpdateArgs<ExtArgs>>
+    ): Prisma__subctaClient<$Result.GetResult<Prisma.$subctaPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
+
+    /**
+     * Delete zero or more Subctas.
+     * @param {subctaDeleteManyArgs} args - Arguments to filter Subctas to delete.
+     * @example
+     * // Delete a few Subctas
+     * const { count } = await prisma.subcta.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends subctaDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, subctaDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Subctas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {subctaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Subctas
+     * const subcta = await prisma.subcta.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends subctaUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, subctaUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Subcta.
+     * @param {subctaUpsertArgs} args - Arguments to update or create a Subcta.
+     * @example
+     * // Update or create a Subcta
+     * const subcta = await prisma.subcta.upsert({
+     *   create: {
+     *     // ... data to create a Subcta
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Subcta we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends subctaUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, subctaUpsertArgs<ExtArgs>>
+    ): Prisma__subctaClient<$Result.GetResult<Prisma.$subctaPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
+
+    /**
+     * Count the number of Subctas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {subctaCountArgs} args - Arguments to filter Subctas to count.
+     * @example
+     * // Count the number of Subctas
+     * const count = await prisma.subcta.count({
+     *   where: {
+     *     // ... the filter for the Subctas we want to count
+     *   }
+     * })
+    **/
+    count<T extends subctaCountArgs>(
+      args?: Subset<T, subctaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SubctaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Subcta.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubctaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SubctaAggregateArgs>(args: Subset<T, SubctaAggregateArgs>): Prisma.PrismaPromise<GetSubctaAggregateType<T>>
+
+    /**
+     * Group by Subcta.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {subctaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends subctaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: subctaGroupByArgs['orderBy'] }
+        : { orderBy?: subctaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, subctaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubctaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the subcta model
+   */
+  readonly fields: subctaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for subcta.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__subctaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+
+
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+  }
+
+
+
+  /**
+   * Fields of the subcta model
+   */ 
+  interface subctaFieldRefs {
+    readonly CODI: FieldRef<"subcta", 'Int'>
+    readonly DESC: FieldRef<"subcta", 'String'>
+    readonly CUEN: FieldRef<"subcta", 'String'>
+    readonly MOVIM: FieldRef<"subcta", 'String'>
+    readonly id: FieldRef<"subcta", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+
+  /**
+   * subcta findUnique
+   */
+  export type subctaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the subcta
+     */
+    select?: subctaSelect<ExtArgs> | null
+    /**
+     * Filter, which subcta to fetch.
+     */
+    where: subctaWhereUniqueInput
+  }
+
+
+  /**
+   * subcta findUniqueOrThrow
+   */
+  export type subctaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the subcta
+     */
+    select?: subctaSelect<ExtArgs> | null
+    /**
+     * Filter, which subcta to fetch.
+     */
+    where: subctaWhereUniqueInput
+  }
+
+
+  /**
+   * subcta findFirst
+   */
+  export type subctaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the subcta
+     */
+    select?: subctaSelect<ExtArgs> | null
+    /**
+     * Filter, which subcta to fetch.
+     */
+    where?: subctaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of subctas to fetch.
+     */
+    orderBy?: subctaOrderByWithRelationInput | subctaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for subctas.
+     */
+    cursor?: subctaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` subctas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` subctas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of subctas.
+     */
+    distinct?: SubctaScalarFieldEnum | SubctaScalarFieldEnum[]
+  }
+
+
+  /**
+   * subcta findFirstOrThrow
+   */
+  export type subctaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the subcta
+     */
+    select?: subctaSelect<ExtArgs> | null
+    /**
+     * Filter, which subcta to fetch.
+     */
+    where?: subctaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of subctas to fetch.
+     */
+    orderBy?: subctaOrderByWithRelationInput | subctaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for subctas.
+     */
+    cursor?: subctaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` subctas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` subctas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of subctas.
+     */
+    distinct?: SubctaScalarFieldEnum | SubctaScalarFieldEnum[]
+  }
+
+
+  /**
+   * subcta findMany
+   */
+  export type subctaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the subcta
+     */
+    select?: subctaSelect<ExtArgs> | null
+    /**
+     * Filter, which subctas to fetch.
+     */
+    where?: subctaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of subctas to fetch.
+     */
+    orderBy?: subctaOrderByWithRelationInput | subctaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing subctas.
+     */
+    cursor?: subctaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` subctas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` subctas.
+     */
+    skip?: number
+    distinct?: SubctaScalarFieldEnum | SubctaScalarFieldEnum[]
+  }
+
+
+  /**
+   * subcta create
+   */
+  export type subctaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the subcta
+     */
+    select?: subctaSelect<ExtArgs> | null
+    /**
+     * The data needed to create a subcta.
+     */
+    data?: XOR<subctaCreateInput, subctaUncheckedCreateInput>
+  }
+
+
+  /**
+   * subcta createMany
+   */
+  export type subctaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many subctas.
+     */
+    data: subctaCreateManyInput | subctaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * subcta update
+   */
+  export type subctaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the subcta
+     */
+    select?: subctaSelect<ExtArgs> | null
+    /**
+     * The data needed to update a subcta.
+     */
+    data: XOR<subctaUpdateInput, subctaUncheckedUpdateInput>
+    /**
+     * Choose, which subcta to update.
+     */
+    where: subctaWhereUniqueInput
+  }
+
+
+  /**
+   * subcta updateMany
+   */
+  export type subctaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update subctas.
+     */
+    data: XOR<subctaUpdateManyMutationInput, subctaUncheckedUpdateManyInput>
+    /**
+     * Filter which subctas to update
+     */
+    where?: subctaWhereInput
+  }
+
+
+  /**
+   * subcta upsert
+   */
+  export type subctaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the subcta
+     */
+    select?: subctaSelect<ExtArgs> | null
+    /**
+     * The filter to search for the subcta to update in case it exists.
+     */
+    where: subctaWhereUniqueInput
+    /**
+     * In case the subcta found by the `where` argument doesn't exist, create a new subcta with this data.
+     */
+    create: XOR<subctaCreateInput, subctaUncheckedCreateInput>
+    /**
+     * In case the subcta was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<subctaUpdateInput, subctaUncheckedUpdateInput>
+  }
+
+
+  /**
+   * subcta delete
+   */
+  export type subctaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the subcta
+     */
+    select?: subctaSelect<ExtArgs> | null
+    /**
+     * Filter which subcta to delete.
+     */
+    where: subctaWhereUniqueInput
+  }
+
+
+  /**
+   * subcta deleteMany
+   */
+  export type subctaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which subctas to delete
+     */
+    where?: subctaWhereInput
+  }
+
+
+  /**
+   * subcta without action
+   */
+  export type subctaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the subcta
+     */
+    select?: subctaSelect<ExtArgs> | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -23988,6 +24974,17 @@ export namespace Prisma {
   export type TareasScalarFieldEnum = (typeof TareasScalarFieldEnum)[keyof typeof TareasScalarFieldEnum]
 
 
+  export const SubctaScalarFieldEnum: {
+    CODI: 'CODI',
+    DESC: 'DESC',
+    CUEN: 'CUEN',
+    MOVIM: 'MOVIM',
+    id: 'id'
+  };
+
+  export type SubctaScalarFieldEnum = (typeof SubctaScalarFieldEnum)[keyof typeof SubctaScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -24085,7 +25082,7 @@ export namespace Prisma {
     PRECIO_07?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_07?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES08?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_08?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_08?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_08?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES09?: StringNullableFilter<"AUT_PRAC"> | string | null
     PRECIO_09?: FloatNullableFilter<"AUT_PRAC"> | number | null
@@ -24227,7 +25224,7 @@ export namespace Prisma {
     PRECIO_07?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_07?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES08?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_08?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_08?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_08?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES09?: StringNullableFilter<"AUT_PRAC"> | string | null
     PRECIO_09?: FloatNullableFilter<"AUT_PRAC"> | number | null
@@ -24372,7 +25369,7 @@ export namespace Prisma {
     PRECIO_07?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_07?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     COD_PRES08?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
-    PRECIO_08?: FloatNullableWithAggregatesFilter<"AUT_PRAC"> | number | null
+    PRECIO_08?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_08?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     COD_PRES09?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     PRECIO_09?: FloatNullableWithAggregatesFilter<"AUT_PRAC"> | number | null
@@ -26344,6 +27341,60 @@ export namespace Prisma {
     priority?: IntNullableWithAggregatesFilter<"tareas"> | number | null
   }
 
+  export type subctaWhereInput = {
+    AND?: subctaWhereInput | subctaWhereInput[]
+    OR?: subctaWhereInput[]
+    NOT?: subctaWhereInput | subctaWhereInput[]
+    CODI?: IntNullableFilter<"subcta"> | number | null
+    DESC?: StringNullableFilter<"subcta"> | string | null
+    CUEN?: StringNullableFilter<"subcta"> | string | null
+    MOVIM?: StringNullableFilter<"subcta"> | string | null
+    id?: IntFilter<"subcta"> | number
+  }
+
+  export type subctaOrderByWithRelationInput = {
+    CODI?: SortOrderInput | SortOrder
+    DESC?: SortOrderInput | SortOrder
+    CUEN?: SortOrderInput | SortOrder
+    MOVIM?: SortOrderInput | SortOrder
+    id?: SortOrder
+  }
+
+  export type subctaWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: subctaWhereInput | subctaWhereInput[]
+    OR?: subctaWhereInput[]
+    NOT?: subctaWhereInput | subctaWhereInput[]
+    CODI?: IntNullableFilter<"subcta"> | number | null
+    DESC?: StringNullableFilter<"subcta"> | string | null
+    CUEN?: StringNullableFilter<"subcta"> | string | null
+    MOVIM?: StringNullableFilter<"subcta"> | string | null
+  }, "id">
+
+  export type subctaOrderByWithAggregationInput = {
+    CODI?: SortOrderInput | SortOrder
+    DESC?: SortOrderInput | SortOrder
+    CUEN?: SortOrderInput | SortOrder
+    MOVIM?: SortOrderInput | SortOrder
+    id?: SortOrder
+    _count?: subctaCountOrderByAggregateInput
+    _avg?: subctaAvgOrderByAggregateInput
+    _max?: subctaMaxOrderByAggregateInput
+    _min?: subctaMinOrderByAggregateInput
+    _sum?: subctaSumOrderByAggregateInput
+  }
+
+  export type subctaScalarWhereWithAggregatesInput = {
+    AND?: subctaScalarWhereWithAggregatesInput | subctaScalarWhereWithAggregatesInput[]
+    OR?: subctaScalarWhereWithAggregatesInput[]
+    NOT?: subctaScalarWhereWithAggregatesInput | subctaScalarWhereWithAggregatesInput[]
+    CODI?: IntNullableWithAggregatesFilter<"subcta"> | number | null
+    DESC?: StringNullableWithAggregatesFilter<"subcta"> | string | null
+    CUEN?: StringNullableWithAggregatesFilter<"subcta"> | string | null
+    MOVIM?: StringNullableWithAggregatesFilter<"subcta"> | string | null
+    id?: IntWithAggregatesFilter<"subcta"> | number
+  }
+
   export type AUT_PRACCreateInput = {
     ESP_PRAC?: string | null
     CODIGOS?: string | null
@@ -26372,7 +27423,7 @@ export namespace Prisma {
     PRECIO_07?: string | null
     SUC_07?: string | null
     COD_PRES08?: string | null
-    PRECIO_08?: number | null
+    PRECIO_08?: string | null
     SUC_08?: string | null
     COD_PRES09?: string | null
     PRECIO_09?: number | null
@@ -26440,7 +27491,7 @@ export namespace Prisma {
     PRECIO_07?: string | null
     SUC_07?: string | null
     COD_PRES08?: string | null
-    PRECIO_08?: number | null
+    PRECIO_08?: string | null
     SUC_08?: string | null
     COD_PRES09?: string | null
     PRECIO_09?: number | null
@@ -26509,7 +27560,7 @@ export namespace Prisma {
     PRECIO_07?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_07?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES08?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_08?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_08?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_08?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES09?: NullableStringFieldUpdateOperationsInput | string | null
     PRECIO_09?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -26577,7 +27628,7 @@ export namespace Prisma {
     PRECIO_07?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_07?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES08?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_08?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_08?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_08?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES09?: NullableStringFieldUpdateOperationsInput | string | null
     PRECIO_09?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -26646,7 +27697,7 @@ export namespace Prisma {
     PRECIO_07?: string | null
     SUC_07?: string | null
     COD_PRES08?: string | null
-    PRECIO_08?: number | null
+    PRECIO_08?: string | null
     SUC_08?: string | null
     COD_PRES09?: string | null
     PRECIO_09?: number | null
@@ -26715,7 +27766,7 @@ export namespace Prisma {
     PRECIO_07?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_07?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES08?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_08?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_08?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_08?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES09?: NullableStringFieldUpdateOperationsInput | string | null
     PRECIO_09?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -26783,7 +27834,7 @@ export namespace Prisma {
     PRECIO_07?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_07?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES08?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_08?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_08?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_08?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES09?: NullableStringFieldUpdateOperationsInput | string | null
     PRECIO_09?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -29098,6 +30149,59 @@ export namespace Prisma {
     priority?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
+  export type subctaCreateInput = {
+    CODI?: number | null
+    DESC?: string | null
+    CUEN?: string | null
+    MOVIM?: string | null
+  }
+
+  export type subctaUncheckedCreateInput = {
+    CODI?: number | null
+    DESC?: string | null
+    CUEN?: string | null
+    MOVIM?: string | null
+    id?: number
+  }
+
+  export type subctaUpdateInput = {
+    CODI?: NullableIntFieldUpdateOperationsInput | number | null
+    DESC?: NullableStringFieldUpdateOperationsInput | string | null
+    CUEN?: NullableStringFieldUpdateOperationsInput | string | null
+    MOVIM?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type subctaUncheckedUpdateInput = {
+    CODI?: NullableIntFieldUpdateOperationsInput | number | null
+    DESC?: NullableStringFieldUpdateOperationsInput | string | null
+    CUEN?: NullableStringFieldUpdateOperationsInput | string | null
+    MOVIM?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type subctaCreateManyInput = {
+    CODI?: number | null
+    DESC?: string | null
+    CUEN?: string | null
+    MOVIM?: string | null
+    id?: number
+  }
+
+  export type subctaUpdateManyMutationInput = {
+    CODI?: NullableIntFieldUpdateOperationsInput | number | null
+    DESC?: NullableStringFieldUpdateOperationsInput | string | null
+    CUEN?: NullableStringFieldUpdateOperationsInput | string | null
+    MOVIM?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type subctaUncheckedUpdateManyInput = {
+    CODI?: NullableIntFieldUpdateOperationsInput | number | null
+    DESC?: NullableStringFieldUpdateOperationsInput | string | null
+    CUEN?: NullableStringFieldUpdateOperationsInput | string | null
+    MOVIM?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -29232,7 +30336,6 @@ export namespace Prisma {
 
   export type AUT_PRACAvgOrderByAggregateInput = {
     ANULADO?: SortOrder
-    PRECIO_08?: SortOrder
     PRECIO_09?: SortOrder
     PRECIO_16?: SortOrder
     PRECIO_17?: SortOrder
@@ -29382,7 +30485,6 @@ export namespace Prisma {
 
   export type AUT_PRACSumOrderByAggregateInput = {
     ANULADO?: SortOrder
-    PRECIO_08?: SortOrder
     PRECIO_09?: SortOrder
     PRECIO_16?: SortOrder
     PRECIO_17?: SortOrder
@@ -30855,6 +31957,40 @@ export namespace Prisma {
     priority?: SortOrder
   }
 
+  export type subctaCountOrderByAggregateInput = {
+    CODI?: SortOrder
+    DESC?: SortOrder
+    CUEN?: SortOrder
+    MOVIM?: SortOrder
+    id?: SortOrder
+  }
+
+  export type subctaAvgOrderByAggregateInput = {
+    CODI?: SortOrder
+    id?: SortOrder
+  }
+
+  export type subctaMaxOrderByAggregateInput = {
+    CODI?: SortOrder
+    DESC?: SortOrder
+    CUEN?: SortOrder
+    MOVIM?: SortOrder
+    id?: SortOrder
+  }
+
+  export type subctaMinOrderByAggregateInput = {
+    CODI?: SortOrder
+    DESC?: SortOrder
+    CUEN?: SortOrder
+    MOVIM?: SortOrder
+    id?: SortOrder
+  }
+
+  export type subctaSumOrderByAggregateInput = {
+    CODI?: SortOrder
+    id?: SortOrder
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
@@ -31207,6 +32343,10 @@ export namespace Prisma {
      * @deprecated Use tareasDefaultArgs instead
      */
     export type tareasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = tareasDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use subctaDefaultArgs instead
+     */
+    export type subctaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = subctaDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany
