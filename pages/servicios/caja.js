@@ -14,11 +14,15 @@ import NuevaCaja from "../../components/caja/NuevaCaja";
 import FormCaja from "../../components/caja/FormCaja";
 
 const Caja = () => {
+  let serieIRef = React.createRef();
+  let nFacturaIRef = React.createRef();
   let descripcionIRef = React.createRef();
-  let cantidadIRef = React.createRef();
+  let cuitIRef = React.createRef();
   let importeIRef = React.createRef();
+  let serieERef = React.createRef();
+  let nFacturaERef = React.createRef();
   let descripcionERef = React.createRef();
-  let cantidadERef = React.createRef();
+  let cuitERef = React.createRef();
   let importeERef = React.createRef();
 
   const [ordenes, guardarOrdenes] = useState(null);
@@ -27,6 +31,12 @@ const Caja = () => {
   const [errores, guadrarErrores] = useState(null);
   const [fechaOrd, guadrarFechaOrd] = useState(null);
   const [flag, guardarFlag] = useState(false);
+  const [cuentas, guardarCuentas] = useState([]);
+  const [tipoFac, guardartipoFac] = useState([]);
+  const [codigoSel, guardarCodigoSel] = useState("");
+  const [facturaSel, guardarFacturaSel] = useState("");
+  const [nCuentaSel, guardarNcuentaSel] = useState("");
+  const [cuenDescSel, guardarCuenDescSel] = useState("");
 
   const { usu } = useWerchow();
 
@@ -64,7 +74,6 @@ const Caja = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
         let ing = [];
 
         let arr = res.data;
@@ -87,18 +96,30 @@ const Caja = () => {
   };
 
   const regEgreso = () => {
+    guadrarErrores(null);
+
     let egre = {
-      detalle: descripcionERef.current.value,
-      cantidad: cantidadERef.current.value,
-      importe: importeERef.current.value,
+      CODIGO: codigoSel,
+      CUENTA: nCuentaSel,
+      MOVIM: "E",
+      IMPORTE: importeERef.current.value,
+      TIPO: facturaSel,
+      SERIE: serieERef.current.value,
+      NUMERO: nFacturaERef.current.value,
+      CUIT: cuitERef.current.value,
+      DETALLE: descripcionERef.current.value,
     };
 
-    if (egre.descripcion === "") {
-      guadrarErrores("Debes ingresar una descripcion");
-    } else if (egre.cantidad === "") {
-      guadrarErrores("Debes ingresar una cantidad");
-    } else if (egre.importe === "") {
-      guadrarErrores("Debes ingresar un importe");
+    if (egre.CODIGO === "") {
+      guadrarErrores("Debes seleccionar la cuenta de la imputacion");
+    } else if (egre.IMPORTE === "") {
+      guadrarErrores("Debes ingresar el importe de la imputacion");
+    } else if (egre.TIPO === "") {
+      guadrarErrores("Debes seleccionar el tipo de factura");
+    } else if (egre.SERIE === "") {
+      guadrarErrores("Debes ingresar el numero de serie de la factura");
+    } else if (egre.NUMERO === "") {
+      guadrarErrores("Debes ingresar el numero de serie de la factura");
     } else {
       guardarEgresos([...egresos, egre]);
       toastr.info("Se precargo el egreso exitosamente", "ATENCION");
@@ -106,18 +127,30 @@ const Caja = () => {
   };
 
   const regIngreso = () => {
+    guadrarErrores(null);
+
     let ingre = {
-      SERVICIO: descripcionIRef.current.value,
-      CANTIDAD: cantidadIRef.current.value,
+      CODIGO: codigoSel,
+      CUENTA: nCuentaSel,
+      MOVIM: "I",
       IMPORTE: importeIRef.current.value,
+      TIPO: facturaSel,
+      SERIE: serieIRef.current.value,
+      NUMERO: nFacturaIRef.current.value,
+      CUIT: cuitIRef.current.value,
+      DETALLE: descripcionIRef.current.value,
     };
 
-    if (ingre.descripcion === "") {
-      guadrarErrores("Debes ingresar una descripcion");
-    } else if (ingre.cantidad === "") {
-      guadrarErrores("Debes ingresar una cantidad");
-    } else if (ingre.importe === "") {
-      guadrarErrores("Debes ingresar un importe");
+    if (ingre.CODIGO === "") {
+      guadrarErrores("Debes seleccionar la cuenta de la imputacion");
+    } else if (ingre.IMPORTE === "") {
+      guadrarErrores("Debes ingresar el importe de la imputacion");
+    } else if (ingre.TIPO === "") {
+      guadrarErrores("Debes seleccionar el tipo de factura");
+    } else if (ingre.SERIE === "") {
+      guadrarErrores("Debes ingresar el numero de serie de la factura");
+    } else if (ingre.NUMERO === "") {
+      guadrarErrores("Debes ingresar el numero de serie de la factura");
     } else {
       guardarIngresos([...ingresos, ingre]);
       toastr.info("Se precargo el ingreso exitosamente", "ATENCION");
@@ -146,7 +179,7 @@ const Caja = () => {
       }
     } else if (f === "E") {
       for (let i = 0; i < arr.length; i++) {
-        total += parseFloat(arr[i].importe);
+        total += parseFloat(arr[i].IMPORTE);
       }
     }
 
@@ -185,13 +218,14 @@ const Caja = () => {
       };
 
       for (let i = 0; i < ingresos.length; i++) {
-        caja.CODIGO = 53;
-        caja.CUENTA = "0201020200";
-        caja.MOVIM = "I";
+        caja.CODIGO = ingresos[i].CODIGO;
+        caja.CUENTA = ingresos[i].CUENTA;
+        caja.MOVIM = ingresos[i].MOVIM;
         caja.IMPORTE = ingresos[i].IMPORTE;
-        caja.TIPO = "X";
-        caja.DETALLE = ingresos[i].SERVICIO;
-        caja.NUMERO = 1;
+        caja.TIPO = ingresos[i].TIPO;
+        caja.DETALLE = ingresos[i].DETALLE;
+        caja.NUMERO = ingresos[i].NUMERO;
+        caja.CUIT = ingresos[i].CUIT;
 
         totI += parseFloat(ingresos[i].IMPORTE);
 
@@ -199,15 +233,16 @@ const Caja = () => {
       }
 
       for (let j = 0; j < egresos.length; j++) {
-        caja.CODIGO = 60;
-        caja.CUENTA = "0505060600";
-        caja.MOVIM = "E";
-        caja.IMPORTE = egresos[j].importe;
-        caja.TIPO = "A";
-        caja.DETALLE = egresos[j].detalle;
-        caja.NUMERO = 1;
+        caja.CODIGO = egresos[j].CODIGO;
+        caja.CUENTA = egresos[j].CUENTA;
+        caja.MOVIM = egresos[j].MOVIM;
+        caja.IMPORTE = egresos[j].IMPORTE;
+        caja.TIPO = egresos[j].TIPO;
+        caja.DETALLE = egresos[j].DETALLE;
+        caja.NUMERO = egresos[j].NUMERO;
+        caja.CUIT = egresos[j].CUIT;
 
-        totE += parseFloat(egresos[j].importe);
+        totE += parseFloat(egresos[j].IMPORTE);
 
         postCaja(caja, 0);
       }
@@ -219,6 +254,7 @@ const Caja = () => {
       caja.TIPO = "X";
       caja.DETALLE = "VALORES A DEPOSITAR";
       caja.NUMERO = 1;
+      caja.CUIT = "0";
 
       postCaja(caja, 0);
 
@@ -229,6 +265,7 @@ const Caja = () => {
       caja.TIPO = "";
       caja.DETALLE = "SALDO INICIAL";
       caja.NUMERO = 0;
+      caja.CUIT = "0";
 
       postCaja(caja, 1);
     } else if (flag === true) {
@@ -253,14 +290,13 @@ const Caja = () => {
 
           updateRendido();
 
-          let accion = `El operador ${usu.usuario} cerro caja de la otero con fecha: ${caja.FECHA}`;
+          let accion = `El operador ${usu.usuario} cerro caja de Clinica Otero con fecha: ${caja.FECHA}`;
 
           registrarHistoria(accion, usu.usuario);
 
           setTimeout(() => {
-            // Router.push(`/servicios/emision`);
             Router.reload();
-          }, 500);
+          }, 1000);
         }
       })
       .catch((error) => {
@@ -321,9 +357,79 @@ const Caja = () => {
       });
   };
 
+  const traerTipoFac = async () => {
+    await axios
+      .get("/api/caja", {
+        params: {
+          f: "traer tipo facturas",
+        },
+      })
+      .then((res) => {
+        if (res.data) {
+          let tipoFac = res.data;
+          guardartipoFac(tipoFac);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error al generar el listado de recibos");
+      });
+  };
+
+  const tarerCuentas = async (movim) => {
+    await axios
+      .get("/api/caja", {
+        params: {
+          f: "traer cuentas",
+          movim: movim,
+        },
+      })
+      .then((res) => {
+        if (res.data) {
+          let movim = res.data;
+          guardarCuentas(movim);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error("Ocurrio un error al generar el listado de cuentas");
+      });
+  };
+
   const traerInfo = () => {
     traerOrdenesSinRendir(usu.usuario, usu.sucursal);
     chekCaja(usu.usuario);
+    traerTipoFac();
+  };
+
+  const handleChange = async (f, value) => {
+    if (f === "cuenta") {
+      let split = value.split("-");
+
+      let cod = split[0];
+      let nCuen = split[1];
+      let cuenDesc = split[2];
+
+      guardarCodigoSel(cod);
+
+      guardarNcuentaSel(nCuen);
+
+      guardarCuenDescSel(cuenDesc);
+    } else if (f === "comprobante") {
+      guardarFacturaSel(value);
+    }
+  };
+
+  const eliminarImpuPrecargado = (index, movim) => {
+    if (movim === "I") {
+      ingresos.splice(index, 1);
+
+      guardarIngresos([...ingresos]);
+    } else if (movim === "E") {
+      egresos.splice(index, 1);
+
+      guardarEgresos([...egresos]);
+    }
   };
 
   useSWR("/api/caja", traerInfo);
@@ -352,15 +458,24 @@ const Caja = () => {
                     ingresos={ingresos}
                     errores={errores}
                     egresos={egresos}
+                    cuentas={cuentas}
+                    tipoFac={tipoFac}
                     descripcionIRef={descripcionIRef}
-                    cantidadIRef={cantidadIRef}
+                    serieIRef={serieIRef}
+                    nFacturaIRef={nFacturaIRef}
                     importeIRef={importeIRef}
                     descripcionERef={descripcionERef}
-                    cantidadERef={cantidadERef}
+                    serieERef={serieERef}
+                    nFacturaERef={nFacturaERef}
                     importeERef={importeERef}
+                    cuitIRef={cuitIRef}
+                    cuitERef={cuitERef}
                     regEgreso={regEgreso}
                     regIngreso={regIngreso}
                     calcTotalMovimientos={calcTotalMovimientos}
+                    tarerCuentas={tarerCuentas}
+                    handleChange={handleChange}
+                    eliminarImpuPrecargado={eliminarImpuPrecargado}
                   />
                 </div>
 
@@ -377,10 +492,6 @@ const Caja = () => {
                         onClick={regCaja}
                       >
                         Registar Movimientos
-                      </button>
-
-                      <button className=" btn btn-primary " onClick={imprimir}>
-                        Imprimir
                       </button>
                     </div>
                   </div>

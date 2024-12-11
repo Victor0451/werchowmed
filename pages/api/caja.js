@@ -153,15 +153,15 @@ export default async function handler(req, res) {
       const checkCaja = await Serv.$queryRaw`
            
            SELECT 
-                DETALLE,
-                SUM(IMPORTE) "IMPORTE",
-                COUNT(*) "CANTIDAD"
+                CONCAT(DETALLE,"   -->   ", TIPO,"  N°:  " ,NUMERO ) as 'DETALLE',
+                IMPORTE
+                
             FROM CAJA 
             WHERE MOVIM = 'E'
             AND DETALLE != 'VALORES A DEPOSITAR'
             AND FECHA = ${new Date(req.query.fecha)}
 
-            GROUP BY DETALLE
+            
       `;
       res
         .status(200)

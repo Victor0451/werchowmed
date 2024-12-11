@@ -44,7 +44,7 @@ const Adimn = ({ userData }) => {
         </a>
       </li>
       <li>
-        <a href="/servicios/cajapato" className="nav-link dropdown-toggle">
+        <a href="/servicios/caja" className="nav-link dropdown-toggle">
           Gen. Caja
         </a>
       </li>
@@ -55,12 +55,6 @@ const Adimn = ({ userData }) => {
       </li>
       {userData.perfil === 1 || userData.perfil === 3 ? (
         <>
-          <li>
-            <a href="/servicios/caja" className="nav-link dropdown-toggle">
-              Gen. Caja Admin
-            </a>
-          </li>
-
           <li>
             <a
               href="/servicios/listadocajas"
