@@ -125,7 +125,8 @@ const ListadoOrdenesEmitidas = ({
                 {
                   Header: "Fecha",
                   id: "FECHA",
-                  accessor: (d) => moment(d.FECHA).utcOffset("+0300").format("DD/MM/YYYY"),
+                  accessor: (d) =>
+                    moment(d.FECHA).utcOffset("+0300").format("DD/MM/YYYY"),
                   filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["FECHA"] }),
                   filterAll: true,
@@ -179,83 +180,89 @@ const ListadoOrdenesEmitidas = ({
 
                   Cell: (row) => (
                     <div>
-                      {row.original.SERVICIO === "ORDE" ? (
-                        <button
-                          className="btn btn-primary btn-sm"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            generarImpresion(
-                              row.original.iduso,
-                              row.original.NRO_DOC,
-                              row.original.ORDEN,
-                              "O"
-                            );
-                          }}
-                        >
-                          Imprimir
-                        </button>
-                      ) : row.original.SERVICIO === "FARM" ? (
-                        <button
-                          className="btn btn-primary btn-sm"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            generarImpresion(
-                              row.original.iduso,
-                              row.original.NRO_DOC,
-                              row.original.ORDEN,
-                              "F"
-                            );
-                          }}
-                        >
-                          Imprimir
-                        </button>
-                      ) : row.original.SERVICIO === "ENFE" ? (
-                        <button
-                          className="btn btn-primary btn-sm"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            generarImpresion(
-                              row.original.iduso,
-                              row.original.NRO_DOC,
-                              row.original.ORDEN,
-                              "E"
-                            );
-                          }}
-                        >
-                          Imprimir
-                        </button>
-                      ) : (
+                      {perfil === 1 || perfil === 3 ? (
                         <>
+                          {row.original.SERVICIO === "ORDE" ? (
+                            <button
+                              className="btn btn-primary btn-sm"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                generarImpresion(
+                                  row.original.iduso,
+                                  row.original.NRO_DOC,
+                                  row.original.ORDEN,
+                                  "O"
+                                );
+                              }}
+                            >
+                              Imprimir
+                            </button>
+                          ) : row.original.SERVICIO === "FARM" ? (
+                            <button
+                              className="btn btn-primary btn-sm"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                generarImpresion(
+                                  row.original.iduso,
+                                  row.original.NRO_DOC,
+                                  row.original.ORDEN,
+                                  "F"
+                                );
+                              }}
+                            >
+                              Imprimir
+                            </button>
+                          ) : row.original.SERVICIO === "ENFE" ? (
+                            <button
+                              className="btn btn-primary btn-sm"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                generarImpresion(
+                                  row.original.iduso,
+                                  row.original.NRO_DOC,
+                                  row.original.ORDEN,
+                                  "E"
+                                );
+                              }}
+                            >
+                              Imprimir
+                            </button>
+                          ) : (
+                            <>
+                              <button
+                                className="btn btn-primary btn-sm"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  generarImpresion(
+                                    row.original.iduso,
+                                    row.original.NRO_DOC,
+                                    row.original.ORDEN,
+                                    "P"
+                                  );
+                                }}
+                              >
+                                Imprimir
+                              </button>
+                            </>
+                          )}
+
                           <button
-                            className="btn btn-primary btn-sm"
+                            className="btn btn-danger btn-sm ml-1"
                             onClick={(e) => {
                               e.preventDefault();
-                              generarImpresion(
-                                row.original.iduso,
-                                row.original.NRO_DOC,
+                              anularOrdenes(
                                 row.original.ORDEN,
-                                "P"
+                                row.original.SERVICIO,
+                                row.original.iduso
                               );
                             }}
                           >
-                            Imprimir
+                            Anular
                           </button>
                         </>
+                      ) : (
+                        "No autorizado."
                       )}
-
-                      <button
-                        className="btn btn-danger btn-sm ml-1"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          anularOrdenes(
-                            row.original.ORDEN,
-                            row.original.SERVICIO,
-                            row.original.iduso
-                          );
-                        }}
-                      >
-                        Anular
-                      </button>
                     </div>
                   ),
                 },
