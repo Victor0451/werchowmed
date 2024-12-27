@@ -261,7 +261,7 @@ const ListadoOrdenesEmitidas = ({
                           </button>
                         </>
                       ) : (
-                        "No autorizado."
+                        "Sin Acciones."
                       )}
                     </div>
                   ),
