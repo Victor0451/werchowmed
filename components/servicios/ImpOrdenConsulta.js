@@ -13,7 +13,7 @@ const ImpOrdenConsulta = ({
   calcularTotalPracticas,
   flag,
 }) => {
-  if (!socio) return <Spinner />;
+  if (!socio && !orden) return <Spinner />;
 
   return (
     <div className=" p-2 borderImp list">
