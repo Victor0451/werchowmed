@@ -1116,12 +1116,17 @@ const Emision = () => {
     // ahora es solo para cabrera en la otero
 
     if (
+      detalleMed.OTERO === 1 &&
       detalleMed.COD_PRES === "C_OCB" &&
       pra.DESCRIP.match(/ECOGRAFIA.*/) &&
       priUso === 0
     ) {
       pra.IMPORTE = 7000;
-    } else if (pra.CODIGOS === "30.05.05" && priUso === 0) {
+    } else if (
+      detalleMed.OTERO === 1 &&
+      pra.CODIGOS === "30.05.05" &&
+      priUso === 0
+    ) {
       pra.IMPORTE = 9000;
     }
 
