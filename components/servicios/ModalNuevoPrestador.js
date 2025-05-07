@@ -90,6 +90,7 @@ const ModalNuevoPrestador = ({
                       <option value="PERICO">Perico</option>
                       <option value="EL CARMEN">El Carmen</option>
                       <option value="SAN PEDRO">San Pedro</option>
+                      <option value="SAN MIGUEL">San Miguel</option>                      
                     </select>
                   </div>
 

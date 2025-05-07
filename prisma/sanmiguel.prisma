@@ -1,0 +1,309 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "./generated/sanmiguel"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("SANMIGUEL_URL")
+}
+
+model adherent {
+  SUCURSAL   String?   @db.VarChar(1)
+  CONTRATO   Int?
+  NRO_DOC    Int?
+  APELLIDOS  String?   @db.VarChar(100)
+  NOMBRES    String?   @db.VarChar(100)
+  NACIMIENTO DateTime? @db.Date
+  SEXO       String?   @db.VarChar(1)
+  ALTA       DateTime? @db.Date
+  BAJA       DateTime? @db.Date
+  VIGENCIA   DateTime? @db.Date
+  PARENT     Int?
+  OBRA_SOC   Int?
+  SEGURO     Int?      @db.TinyInt
+  PRODUCTOR  Int?
+  PLAN       String?   @db.VarChar(255)
+  ORDEN      Int?
+  EDAD       Int?
+  ESTADO     Boolean?
+  idadherent Int       @id @default(autoincrement())
+
+  @@index([CONTRATO, ALTA, BAJA], map: "idxconfec")
+}
+
+model bajas {
+  SUCURSAL   String?   @db.VarChar(1)
+  CONTRATO   Int
+  NRO_DOC    Int?
+  APELLIDOS  String?   @db.VarChar(100)
+  NOMBRES    String?   @db.VarChar(100)
+  NACIMIENTO DateTime? @db.Date
+  CALLE      String?   @db.VarChar(100)
+  LOCALIDAD  String?   @db.VarChar(100)
+  NRO_CALLE  Int?
+  BARRIO     String?   @db.VarChar(100)
+  DOMI_COBR  String?   @db.VarChar(100)
+  DOM_LAB    String?   @db.VarChar(100)
+  ZONA       Int?
+  ALTA       DateTime? @db.Date
+  VIGENCIA   DateTime? @db.Date
+  GRUPO      Int?
+  SEXO       String?   @db.VarChar(1)
+  ADHERENTES Int?
+  OPERADOR   Int?
+  OBRA_SOC   Int?
+  PRODUCTOR  Int?
+  PLAN       String?   @db.VarChar(1)
+  SUB_PLAN   String?   @db.VarChar(1)
+  EMPRESA    String?   @db.VarChar(1)
+  EDAD       Int?
+  COD_POST   Int?
+  TELEFONO   String?   @db.VarChar(100)
+  MOVIL      String?   @db.VarChar(100)
+  EDAD_PROM  Float?
+  MAIL       String?   @db.VarChar(100)
+  idbaja     Int       @id @default(autoincrement())
+  BAJA       DateTime? @db.Date
+}
+
+model caja {
+  SUCURSAL    String? @db.VarChar(10)
+  PUESTO      Int?
+  CODIGO      Int?
+  MOVIM       String? @db.VarChar(1)
+  CUENTA      String? @db.VarChar(255)
+  CUENTA_DESC String? @db.VarChar(255)
+  IMPORTE     Float?  @db.Float
+  TIPO        String? @db.VarChar(255)
+  SERIE       Int?
+  NUMERO      Int?
+  CUIT        String? @db.VarChar(255)
+  DETALLE     String? @db.VarChar(1000)
+  FECHA       String? @db.VarChar(255)
+  FEC_COMP    String? @db.VarChar(255)
+  HORA        String? @db.VarChar(255)
+  OPERADOR    String? @db.VarChar(255)
+  idmovim     Int     @id @default(autoincrement())
+}
+
+model cuo_fija {
+  CONTRATO Int?
+  IMPORTE  Float?
+  CUO_ANT  Float?
+  DESDE    DateTime? @db.Date
+  VENCIM   DateTime? @db.Date
+  OPERADOR String?   @db.VarChar(255)
+  idcuota  Int       @id @default(autoincrement())
+}
+
+model gestioncaso {
+  idgestion               Int      @id @default(autoincrement())
+  idcaso                  Int?
+  contrato                Int?
+  operador                String?  @db.VarChar(45)
+  accion                  String?  @db.VarChar(255)
+  observacion             String?  @db.VarChar(1000)
+  fechaaccion             String?  @db.VarChar(255)
+  nuevaaccion             String?  @db.VarChar(100)
+  fechanuevaaccion        String?  @db.VarChar(255)
+  realizado               Boolean? @default(true)
+  observacion_nuevaaccion String?  @db.VarChar(1000)
+}
+
+model grupos {
+  CODIGO    Int?
+  DESCRIP   String? @db.VarChar(30)
+  IVA       String? @db.VarChar(30)
+  CUIT      String? @db.VarChar(13)
+  DOMICILIO String? @db.VarChar(30)
+  ORDEN     String? @db.VarChar(1)
+  LIN_ALTA  String? @db.VarChar(10)
+  LIN_BAJA  String? @db.VarChar(10)
+  TOTALIZA  Int?    @db.TinyInt
+  PAGINA    Int?    @db.TinyInt
+  TITULO1   String? @db.VarChar(80)
+  TITULO2   String? @db.VarChar(80)
+  DIA       Int?
+  MES       Int?
+  ANO       Int?
+  SUCURSAL  String? @db.VarChar(1)
+  MARCA     String? @db.VarChar(2)
+  CONVENIO  String? @db.VarChar(5)
+  id        Int     @id @default(autoincrement())
+}
+
+model historia {
+  CONTRATO   Int?
+  OPERADOR   String? @db.VarChar(255)
+  ACCION     String? @db.VarChar(1000)
+  idhistoria Int     @id @default(autoincrement())
+  FECHA      String? @db.VarChar(255)
+}
+
+model localidad {
+  CODIGO      Int?
+  DETALLE     String? @db.VarChar(15)
+  idlocalidad Int     @id @default(autoincrement())
+}
+
+model maestro {
+  SUCURSAL   String?   @db.VarChar(1)
+  CONTRATO   Int
+  NRO_DOC    Int?
+  APELLIDOS  String?   @db.VarChar(100)
+  NOMBRES    String?   @db.VarChar(100)
+  NACIMIENTO DateTime? @db.Date
+  CALLE      String?   @db.VarChar(100)
+  LOCALIDAD  String?   @db.VarChar(100)
+  NRO_CALLE  Int?
+  BARRIO     String?   @db.VarChar(100)
+  DOMI_COBR  String?   @db.VarChar(100)
+  DOM_LAB    String?   @db.VarChar(100)
+  ZONA       Int?
+  ALTA       DateTime? @db.Date
+  VIGENCIA   DateTime? @db.Date
+  GRUPO      Int?
+  SEXO       String?   @db.VarChar(1)
+  ADHERENTES Int?
+  OPERADOR   String?   @db.VarChar(255)
+  OBRA_SOC   Int?
+  PRODUCTOR  Int?
+  PLAN       String?   @db.VarChar(255)
+  EMPRESA    String?   @db.VarChar(10)
+  EDAD       Int?
+  COD_POST   Int?
+  TELEFONO   String?   @db.VarChar(100)
+  MOVIL      String?   @db.VarChar(100)
+  EDAD_PROM  Float?
+  MAIL       String?   @db.VarChar(100)
+  idmaestro  Int       @id @default(autoincrement())
+}
+
+model maestro_cuentas {
+  idcuenta    Int     @id @default(autoincrement())
+  contrato    Int?
+  dni         Int?
+  grupo       Int?
+  cuenta      String? @db.VarChar(255)
+  observacion String? @db.VarChar(1000)
+}
+
+model obra_soc {
+  CODIGO     Int?
+  NOMBRE     String?   @db.VarChar(20)
+  DETALLE    String?   @db.VarChar(45)
+  DOMICILIO  String?   @db.VarChar(30)
+  FECHA_SUSP DateTime? @db.Date
+  OPERADOR   Int?
+  ACTUALIZA  String?   @db.VarChar(13)
+  SUSPENDIDO Int?      @db.TinyInt
+  id         Int       @id @default(autoincrement())
+}
+
+model operador {
+  id             Int      @id @default(autoincrement())
+  nombre         String   @db.VarChar(255)
+  apellido       String   @db.VarChar(255)
+  usuario        String   @db.VarChar(255)
+  contrasena     String   @db.VarChar(255)
+  createdAt      DateTime @db.DateTime(0)
+  updatedAt      DateTime @db.DateTime(0)
+  perfil         Int?
+  estado         Boolean?
+  codigo         Int?
+  medicos        Boolean?
+  sucursal       String?  @db.VarChar(255)
+  prestamos      Boolean?
+  ordenpago      Boolean?
+  clubwerchow    Boolean?
+  ventas         Boolean?
+  administracion Boolean?
+  campanas       Boolean?
+  socios         Boolean?
+  sepelio        Boolean?
+  gestion        Boolean?
+  contabilidad   Boolean?
+  cobranza       Boolean?
+}
+
+model pago_bco {
+  NRO_DOC  Int?
+  CONTRATO Int?
+  COD_SUC  String?   @db.VarChar(3)
+  NRO_CTA  String?   @db.VarChar(9)
+  FEC_ACR  String?   @db.VarChar(6)
+  IMPORTE  Float?
+  MARCA    String?   @db.VarChar(1)
+  MES      Int?
+  ANO      Int?
+  DIA_PAGO DateTime? @db.Date
+  SUCURSAL String?   @db.VarChar(1)
+  SEGURO   Float?
+  id       Int       @id @default(autoincrement())
+
+  @@index([CONTRATO], map: "order 1")
+  @@index([NRO_DOC], map: "order 2")
+}
+
+model pagos {
+  CONTRATO   Int?
+  NRO_RECIBO Int?
+  SERIE      Int?
+  DIA_REN    DateTime? @db.Date
+  DIA_CAR    DateTime? @db.Date
+  DIA_EMI    DateTime? @db.Date
+  DIA_PAG    DateTime? @db.Date
+  HORA_CAR   String?   @db.VarChar(8)
+  MES        Int?
+  ANO        Int?
+  IMPORTE    Float?
+  MAN_COM    String?   @db.VarChar(1)
+  MOVIM      String?   @db.VarChar(1)
+  OPERADOR   String?   @db.VarChar(255)
+  SUCURSAL   String?   @db.VarChar(1)
+  PUESTO     Int?
+  ZONA       Int?
+  EMPRESA    String?   @db.VarChar(255)
+  DNI        Int?
+  RENDIDO    Int?
+  FECHA_CAJA String?   @db.VarChar(255)
+  id         Int       @id @default(autoincrement())
+  MED_PAG    String?   @db.VarChar(255)
+
+  @@index([CONTRATO, DIA_PAG, MES, ANO, MOVIM, NRO_RECIBO], map: "idx")
+}
+
+model planes {
+  PLAN    String? @db.VarChar(10)
+  DESCRIP String? @db.VarChar(255)
+  idplan  Int     @id @default(autoincrement())
+}
+
+model subcta {
+  CODI  Int?
+  DESC  String? @db.VarChar(35)
+  CUEN  String? @db.VarChar(14)
+  MOVIM String? @db.VarChar(14)
+  id    Int     @id @default(autoincrement())
+}
+
+model zonas {
+  CODIGO   Int?
+  DESCRIP  String? @db.VarChar(30)
+  COBRADOR Int?    @db.TinyInt
+  COMISION Float?
+  SUCURSAL String? @db.VarChar(1)
+  RECIBOS  Int?
+  IMPORTE  Float?
+  SERIE    Int?
+  ORDEN    String? @db.VarChar(1)
+  LIN_ALTA String? @db.VarChar(10)
+  LIN_BAJA String? @db.VarChar(10)
+  TOTALIZA Int?    @db.TinyInt
+  PAGINA   Int?    @db.TinyInt
+  TITULO1  String? @db.VarChar(80)
+  TITULO2  String? @db.VarChar(80)
+  idzona   Int     @id @default(autoincrement())
+}

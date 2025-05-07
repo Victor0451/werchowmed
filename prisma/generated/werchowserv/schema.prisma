@@ -17,64 +17,64 @@ model AUT_PRAC {
   ANULADO    Int?      @db.TinyInt
   COD_PRES01 String?   @db.VarChar(5)
   PRECIO_01  String?   @db.VarChar(255)
-  SUC_01     String?   @db.VarChar(1)
+  SUC_01     String?   @db.VarChar(5)
   COD_PRES02 String?   @db.VarChar(255)
   PRECIO_02  String?   @db.VarChar(255)
-  SUC_02     String?   @db.VarChar(1)
+  SUC_02     String?   @db.VarChar(5)
   COD_PRES03 String?   @db.VarChar(5)
   PRECIO_03  String?   @db.VarChar(255)
-  SUC_03     String?   @db.VarChar(1)
+  SUC_03     String?   @db.VarChar(5)
   COD_PRES04 String?   @db.VarChar(5)
   PRECIO_04  String?   @db.VarChar(255)
-  SUC_04     String?   @db.VarChar(1)
+  SUC_04     String?   @db.VarChar(5)
   COD_PRES05 String?   @db.VarChar(5)
   PRECIO_05  String?   @db.VarChar(255)
-  SUC_05     String?   @db.VarChar(1)
+  SUC_05     String?   @db.VarChar(5)
   COD_PRES06 String?   @db.VarChar(5)
   PRECIO_06  String?   @db.VarChar(255)
-  SUC_06     String?   @db.VarChar(1)
+  SUC_06     String?   @db.VarChar(5)
   COD_PRES07 String?   @db.VarChar(5)
   PRECIO_07  String?   @db.VarChar(255)
-  SUC_07     String?   @db.VarChar(1)
+  SUC_07     String?   @db.VarChar(5)
   COD_PRES08 String?   @db.VarChar(5)
   PRECIO_08  String?   @db.VarChar(255)
-  SUC_08     String?   @db.VarChar(1)
+  SUC_08     String?   @db.VarChar(5)
   COD_PRES09 String?   @db.VarChar(5)
-  PRECIO_09  Float?
-  SUC_09     String?   @db.VarChar(1)
+  PRECIO_09  String?   @db.VarChar(255)
+  SUC_09     String?   @db.VarChar(5)
   COD_PRES10 String?   @db.VarChar(5)
   PRECIO_10  String?   @db.VarChar(255)
-  SUC_10     String?   @db.VarChar(1)
+  SUC_10     String?   @db.VarChar(5)
   COD_PRES11 String?   @db.VarChar(5)
   PRECIO_11  String?   @db.VarChar(255)
-  SUC_11     String?   @db.VarChar(1)
+  SUC_11     String?   @db.VarChar(5)
   COD_PRES12 String?   @db.VarChar(5)
   PRECIO_12  String?   @db.VarChar(255)
-  SUC_12     String?   @db.VarChar(1)
+  SUC_12     String?   @db.VarChar(5)
   COD_PRES13 String?   @db.VarChar(5)
   PRECIO_13  String?   @db.VarChar(255)
-  SUC_13     String?   @db.VarChar(1)
+  SUC_13     String?   @db.VarChar(5)
   COD_PRES14 String?   @db.VarChar(5)
   PRECIO_14  String?   @db.VarChar(255)
-  SUC_14     String?   @db.VarChar(1)
+  SUC_14     String?   @db.VarChar(5)
   COD_PRES15 String?   @db.VarChar(5)
   PRECIO_15  String?   @db.VarChar(255)
-  SUC_15     String?   @db.VarChar(1)
+  SUC_15     String?   @db.VarChar(5)
   COD_PRES16 String?   @db.VarChar(5)
-  PRECIO_16  Float?
-  SUC_16     String?   @db.VarChar(1)
+  PRECIO_16  String?   @db.VarChar(255)
+  SUC_16     String?   @db.VarChar(5)
   COD_PRES17 String?   @db.VarChar(5)
-  PRECIO_17  Float?
-  SUC_17     String?   @db.VarChar(1)
+  PRECIO_17  String?   @db.VarChar(255)
+  SUC_17     String?   @db.VarChar(5)
   COD_PRES18 String?   @db.VarChar(5)
-  PRECIO_18  Float?
-  SUC_18     String?   @db.VarChar(1)
+  PRECIO_18  String?   @db.VarChar(255)
+  SUC_18     String?   @db.VarChar(5)
   COD_PRES19 String?   @db.VarChar(5)
-  PRECIO_19  Float?
-  SUC_19     String?   @db.VarChar(1)
+  PRECIO_19  String?   @db.VarChar(255)
+  SUC_19     String?   @db.VarChar(5)
   COD_PRES20 String?   @db.VarChar(5)
-  PRECIO_20  Float?
-  SUC_20     String?   @db.VarChar(1)
+  PRECIO_20  String?   @db.VarChar(255)
+  SUC_20     String?   @db.VarChar(5)
   idpractica Int       @id @default(autoincrement())
 }
 
@@ -255,7 +255,7 @@ model OPTICA {
 }
 
 model PRACTICA {
-  SUC_PRA    String?   @db.VarChar(1)
+  SUC_PRA    String?   @db.VarChar(5)
   CONTRATO   Int?
   NRO_DNI    Int?
   FECHA      DateTime? @db.Date
@@ -283,7 +283,7 @@ model PRESTADO {
   NOMBRE      String?   @db.VarChar(255)
   ESPEC       String?   @db.VarChar(15)
   LIS_ESPE    String?   @db.VarChar(30)
-  SUC         String?   @db.VarChar(1)
+  SUC         String?   @db.VarChar(5)
   DIRECCION   String?   @db.VarChar(255)
   LOCALIDAD   String?   @db.VarChar(15)
   TELEFONOS   String?   @db.VarChar(15)
@@ -333,7 +333,7 @@ model SERVICIO {
 }
 
 model USOS {
-  SUC           String?   @db.VarChar(1)
+  SUC           String?   @db.VarChar(5)
   ORDEN         String?   @db.VarChar(12)
   CONTRATO      Int?
   NRO_ADH       Int?
@@ -526,4 +526,10 @@ model subcta {
   CUEN  String? @db.VarChar(14)
   MOVIM String? @db.VarChar(14)
   id    Int     @id @default(autoincrement())
+}
+
+model sucursal {
+  idsucursal Int     @id @default(autoincrement())
+  sucursal   String? @db.VarChar(255)
+  codigo     String? @db.VarChar(255)
 }

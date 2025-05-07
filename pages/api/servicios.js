@@ -352,7 +352,7 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer sucursales") {
-      const traeSucursales = await SGI.$queryRaw`         
+      const traeSucursales = await Serv.$queryRaw`         
           SELECT codigo, sucursal
           FROM sucursal 
       `;

@@ -4,7 +4,12 @@ import matchSorter from "match-sorter";
 import Spinner from "../layout/Spinner";
 import moment from "moment";
 
-const ListadoSocios = ({ listado, Seleccionar, SeleccionarM }) => {
+const ListadoSocios = ({
+  listado,
+  Seleccionar,
+  SeleccionarM,
+  SeleccionarSM,
+}) => {
   return (
     <div
       className="modal fade"
@@ -90,7 +95,9 @@ const ListadoSocios = ({ listado, Seleccionar, SeleccionarM }) => {
                             Header: "Alta",
                             id: "ALTA",
                             accessor: (d) =>
-                              moment(d.ALTA).utcOffset("+0300").format("DD/MM/YYYY"),
+                              moment(d.ALTA)
+                                .utcOffset("+0300")
+                                .format("DD/MM/YYYY"),
                             filterMethod: (filter, rows) =>
                               matchSorter(rows, filter.value, {
                                 keys: ["ALTA"],
@@ -130,6 +137,16 @@ const ListadoSocios = ({ listado, Seleccionar, SeleccionarM }) => {
                                 data-dismiss="modal"
                                 onClick={() =>
                                   SeleccionarM(row.original.CONTRATO)
+                                }
+                              >
+                                Seleccionar
+                              </button>
+                            ) : row.original.EMPRESA === "SAN MIGUEL" ? (
+                              <button
+                                className="btn btn-sm btn-info"
+                                data-dismiss="modal"
+                                onClick={() =>
+                                  SeleccionarSM(row.original.CONTRATO)
                                 }
                               >
                                 Seleccionar

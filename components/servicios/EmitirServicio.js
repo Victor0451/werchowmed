@@ -75,6 +75,7 @@ const EmitirServicio = ({
   arancelEnfDomi,
   indexSel,
   priUsoBio,
+ 
 }) => {
   if (!ficha) return <Spinner />;
 
