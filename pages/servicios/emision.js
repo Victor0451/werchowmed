@@ -79,6 +79,7 @@ const Emision = () => {
   const [farmaDescReg, guardarFarmaDescReg] = useState([]);
   const [promos, guardarPromociones] = useState([]);
   const [historialUsos, guardarHistorialUsos] = useState([]);
+  const [SM, guardarSM] = useState("");
 
   const { usu } = useWerchow();
 
@@ -91,6 +92,7 @@ const Emision = () => {
     guardarErrores(null);
     guardarPagos(null);
     guardarAdhs(null);
+    guardarSM("");
 
     let contrato = "";
 
@@ -204,6 +206,7 @@ const Emision = () => {
     guardarErrores(null);
     guardarPagos(null);
     guardarAdhs(null);
+    guardarSM("");
 
     if (dniRef.current.value !== "") {
       let dni = dniRef.current.value;
@@ -303,6 +306,7 @@ const Emision = () => {
     guardarErrores(null);
     guardarPagos(null);
     guardarAdhs(null);
+    guardarSM("");
 
     let contrato = "";
 
@@ -414,6 +418,7 @@ const Emision = () => {
     guardarErrores(null);
     guardarPagos(null);
     guardarAdhs(null);
+    guardarSM("");
 
     if (dniRef.current.value !== "") {
       let dni = dniRef.current.value;
@@ -505,6 +510,222 @@ const Emision = () => {
     }
   };
 
+  const buscarTitularSM = async (hc) => {
+    guardarFicha(null);
+    guardarErrores(null);
+    guardarPagos(null);
+    guardarAdhs(null);
+    guardarSM("");
+
+    let contrato = "";
+
+    if (hc) {
+      contrato = hc;
+    } else {
+      contrato = contratoRef.current.value;
+    }
+
+    if (contrato === "") {
+      guardarErrores("Debes Ingresar Un Numero De Contrato");
+    } else {
+      await axios
+        .get(`/api/socios`, {
+          params: {
+            f: "san miguel contrato",
+            ficha: contrato,
+          },
+        })
+        .then((res) => {
+          if (res.data.length === 0) {
+            toastr.error(
+              "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
+              "ATENCION"
+            );
+            const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
+            guardarErrores(errores);
+          } else {
+            guardarSM("SM");
+            guardarFlag(true);
+
+            setInterval(() => {
+              traerNOrden(usu.sucursal);
+            }, 1000);
+
+            let ficha = res.data;
+
+            guardarFicha(ficha);
+
+            traerAdhsSM(ficha[0].CONTRATO);
+
+            if (
+              ficha[0].GRUPO === 666 ||
+              ficha[0].GRUPO === 1001 ||
+              ficha[0].GRUPO === 1005 ||
+              ficha[0].GRUPO === 1006 ||
+              ficha[0].GRUPO === 3444 ||
+              ficha[0].GRUPO === 3666 ||
+              ficha[0].GRUPO === 3777 ||
+              ficha[0].GRUPO === 3888 ||
+              ficha[0].GRUPO === 3999 ||
+              ficha[0].GRUPO === 4004 ||
+              ficha[0].GRUPO === 7777 ||
+              ficha[0].GRUPO === 8500
+            ) {
+              toastr.warning(
+                "¡¡CUIDADO!!, El socio pertenece a un grupo moroso",
+                "ATENCION"
+              );
+
+              confirmAlert({
+                title: "ATENCION",
+                message: `El socio ${ficha[0].CONTRATO} - ${ficha[0].APELLIDOS}, ${ficha[0].NOMBRES} esta en estado moroso (¡¡¡GRUPO ${ficha[0].GRUPO}!!!), por tal motivo todos sus servicios medicos estan suspendidos hasta regularizar su situacion.`,
+                buttons: [
+                  {
+                    label: "OK",
+                    onClick: () => {
+                      Router.reload();
+                    },
+                  },
+                  // {
+                  //   label: 'No',
+                  //   onClick: () => alert('Click No')
+                  // }
+                ],
+              });
+            } else if (
+              ficha[0].GRUPO === 3400 ||
+              ficha[0].GRUPO === 3600 ||
+              ficha[0].GRUPO === 3700 ||
+              ficha[0].GRUPO === 3800 ||
+              ficha[0].GRUPO === 3900 ||
+              ficha[0].GRUPO === 4000 ||
+              ficha[0].GRUPO > 5000
+            ) {
+              toastr.warning(
+                `El socio usa tarjeta como medio de pago - grupo ${ficha[0].GRUPO}`,
+                "ATENCION"
+              );
+              traerPagosBcoSM(ficha[0].CONTRATO);
+            } else if (ficha[0].GRUPO === 6) {
+              toastr.warning(
+                `El socio es policia - grupo ${ficha[0].GRUPO}`,
+                "ATENCION"
+              );
+              traerPagosBcoSM(ficha[0].CONTRATO);
+            } else if (ficha[0].GRUPO === 1000) {
+              traerPagosSM(ficha[0].CONTRATO);
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
+  const buscarTitularDniSM = async (e) => {
+    e.preventDefault();
+
+    guardarFicha(null);
+    guardarErrores(null);
+    guardarPagos(null);
+    guardarAdhs(null);
+    guardarSM("");
+
+    if (dniRef.current.value !== "") {
+      let dni = dniRef.current.value;
+
+      await axios
+        .get(`/api/socios`, {
+          params: {
+            f: "san miguel",
+            dni: dni,
+          },
+        })
+        .then((res) => {
+          if (res.data.length === 0) {
+            toastr.error(
+              "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
+              "ATENCION"
+            );
+            const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
+            guardarErrores(errores);
+          } else {
+            guardarSM("SM");
+            guardarFlag(true);
+
+            setInterval(() => {
+              traerNOrden(usu.sucursal);
+            }, 1000);
+
+            let ficha = res.data;
+
+            guardarFicha(ficha);
+
+            traerAdhsSM(ficha[0].CONTRATO);
+
+            if (
+              ficha[0].GRUPO === 1001 ||
+              ficha[0].GRUPO === 1005 ||
+              ficha[0].GRUPO === 1006 ||
+              ficha[0].GRUPO === 3444 ||
+              ficha[0].GRUPO === 3666 ||
+              ficha[0].GRUPO === 3777 ||
+              ficha[0].GRUPO === 3888 ||
+              ficha[0].GRUPO === 3999 ||
+              ficha[0].GRUPO === 4004 ||
+              ficha[0].GRUPO === 7777 ||
+              ficha[0].GRUPO === 8500
+            ) {
+              toastr.warning(
+                "¡¡CUIDADO!!, El socio pertenece a un grupo moroso",
+                "ATENCION"
+              );
+
+              confirmAlert({
+                title: "ATENCION",
+                message: `El socio ${ficha[0].CONTRATO} - ${ficha[0].APELLIDOS}, ${ficha[0].NOMBRES} esta en estado moroso, por tal motivo todos sus servicios estan en dados de baja.`,
+                buttons: [
+                  {
+                    label: "OK",
+                    onClick: () => {
+                      Router.reload();
+                    },
+                  },
+                  // {
+                  //   label: 'No',
+                  //   onClick: () => alert('Click No')
+                  // }
+                ],
+              });
+            } else if (
+              ficha[0].GRUPO === 3400 ||
+              ficha[0].GRUPO === 3600 ||
+              ficha[0].GRUPO === 3700 ||
+              ficha[0].GRUPO === 3800 ||
+              ficha[0].GRUPO === 3900 ||
+              ficha[0].GRUPO === 4000 ||
+              ficha[0].GRUPO > 5000
+            ) {
+              toastr.warning(
+                `El socio usa tarjeta como medio de pago - grupo ${ficha.grupo}`,
+                "ATENCION"
+              );
+              traerPagosBcoSM(ficha[0].CONTRATO);
+            } else {
+              traerPagosSM(ficha[0].CONTRATO);
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (contratoRef.current.value === "") {
+      const errores = "Debes Ingresar Un Numero De Contrato";
+      guardarErrores(errores);
+    }
+  };
+
   const traerPagos = async (contrato) => {
     await axios
       .get(`/api/socios`, {
@@ -530,6 +751,24 @@ const Emision = () => {
           f: "traer pagos",
           ficha: contrato,
           empre: "MUTUAL",
+        },
+      })
+      .then((res) => {
+        guardarPagos(res.data);
+      })
+      .catch((error) => {
+        toastr.error("Ocurrio un error al traer los pagos", "ATENCION");
+        console.log(error);
+      });
+  };
+
+  const traerPagosSM = async (contrato) => {
+    await axios
+      .get(`/api/socios`, {
+        params: {
+          f: "traer pagos",
+          ficha: contrato,
+          empre: "SAN MIGUEL",
         },
       })
       .then((res) => {
@@ -577,6 +816,24 @@ const Emision = () => {
       });
   };
 
+  const traerPagosBcoSM = async (contrato) => {
+    await axios
+      .get(`/api/socios`, {
+        params: {
+          f: "traer pagosb",
+          ficha: contrato,
+          empre: "SAN MIGUEL",
+        },
+      })
+      .then((res) => {
+        guardarPagos(res.data);
+      })
+      .catch((error) => {
+        toastr.error("Ocurrio un error al traer los pagos", "ATENCION");
+        console.log(error);
+      });
+  };
+
   const traerAdhs = async (contrato) => {
     await axios
       .get(`/api/socios`, {
@@ -601,6 +858,24 @@ const Emision = () => {
         params: {
           f: "mutual adh",
           contrato: contrato,
+        },
+      })
+      .then((res) => {
+        guardarAdhs(res.data);
+
+        traerAdhProvi(contrato, res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const traerAdhsSM = async (contrato) => {
+    await axios
+      .get(`/api/socios`, {
+        params: {
+          ficha: contrato,
+          f: "adh san miguel",
         },
       })
       .then((res) => {
@@ -657,12 +932,35 @@ const Emision = () => {
       });
   };
 
+  const listSociosSM = async () => {
+    await axios
+      .get(`/api/socios`, {
+        params: {
+          f: "san miguel titulares",
+        },
+      })
+      .then((res) => {
+        guardarListSocios(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error(
+          "Ocurrio un error al traer el listado de socios",
+          "ATENCION"
+        );
+      });
+  };
+
   const Seleccionar = async (contrato) => {
     buscarTitular(contrato);
   };
 
   const SeleccionarM = async (contrato) => {
     buscarTitularM(contrato);
+  };
+
+  const SeleccionarSM = async (contrato) => {
+    buscarTitularSM(contrato);
   };
 
   const contarFisios = async (contrato) => {
@@ -915,6 +1213,10 @@ const Emision = () => {
       f: "reg uso",
     };
 
+    if (SM === "SM") {
+      uso.SUC = "SM";
+    }
+
     if (detalleMed.PROMO === 1 && detalleMed.OTERO === 0) {
       if (priUso === 0) {
         if (socio.GRUPO === 55 || socio.GRUPO === 66) {
@@ -1014,6 +1316,10 @@ const Emision = () => {
       SUC: usu.sucursal,
       f: "reg consul",
     };
+
+    if (SM === "SM") {
+      consul.SUC = "SM";
+    }
 
     await axios
       .post(`/api/servicios`, consul)
@@ -1211,6 +1517,10 @@ const Emision = () => {
       f: "reg uso",
     };
 
+    if (SM === "SM") {
+      uso.SUC = "SM";
+    }
+
     await axios
       .post(`/api/servicios`, uso)
       .then((res) => {
@@ -1256,6 +1566,10 @@ const Emision = () => {
         DESCRIP: pracSocio[i].DESCRIP,
         f: "reg practica",
       };
+
+      if (SM === "SM") {
+        practi.SUC_PRA = "SM";
+      }
 
       await axios
         .post(`/api/servicios`, practi)
@@ -1354,6 +1668,10 @@ const Emision = () => {
         f: "reg uso",
       };
 
+      if (SM === "SM") {
+        uso.SUC = "SM";
+      }
+
       await axios
         .post(`/api/servicios`, uso)
         .then((res) => {
@@ -1401,6 +1719,10 @@ const Emision = () => {
       SUC: usu.sucursal,
       f: "reg farmacia",
     };
+
+    if (SM === "SM") {
+      farma.SUC = "SM";
+    }
 
     await axios
       .post(`/api/servicios`, farma)
@@ -1536,6 +1858,10 @@ const Emision = () => {
       f: "reg uso",
     };
 
+    if (SM === "SM") {
+      uso.SUC = "SM";
+    }
+
     await axios
       .post(`/api/servicios`, uso)
       .then((res) => {
@@ -1579,6 +1905,10 @@ const Emision = () => {
       NRO_DNI: socio.NRO_DOC,
       f: "reg enfermeria",
     };
+
+    if (SM === "SM") {
+      enfer.SUC = "SM";
+    }
 
     await axios
       .post(`/api/servicios`, enfer)
@@ -1698,6 +2028,10 @@ const Emision = () => {
       f: "reg plan odontologico",
     };
 
+    if (SM === "SM") {
+      plan.sucursal = "SM";
+    }
+
     await axios
       .get(`/api/servicios`, {
         params: {
@@ -1788,6 +2122,10 @@ const Emision = () => {
       contencion: false,
       f: "reg plan odontologico",
     };
+
+    if (SM === "SM") {
+      plan.sucursal = "SM";
+    }
 
     await axios
       .get(`/api/servicios`, {
@@ -2341,6 +2679,10 @@ const Emision = () => {
                   SeleccionarM={SeleccionarM}
                   codNoSocioRef={codNoSocioRef}
                   consultarCodigo={consultarCodigo}
+                  buscarTitularSM={buscarTitularSM}
+                  buscarTitularDniSM={buscarTitularDniSM}
+                  listSociosSM={listSociosSM}
+                  SeleccionarSM={SeleccionarSM}
                 />
               ) : flag === true ? (
                 <>

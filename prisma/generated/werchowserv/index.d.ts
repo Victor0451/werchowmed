@@ -118,6 +118,11 @@ export type tareas = $Result.DefaultSelection<Prisma.$tareasPayload>
  * 
  */
 export type subcta = $Result.DefaultSelection<Prisma.$subctaPayload>
+/**
+ * Model sucursal
+ * 
+ */
+export type sucursal = $Result.DefaultSelection<Prisma.$sucursalPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -450,6 +455,16 @@ export class PrismaClient<
     * ```
     */
   get subcta(): Prisma.subctaDelegate<ExtArgs>;
+
+  /**
+   * `prisma.sucursal`: Exposes CRUD operations for the **sucursal** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Sucursals
+    * const sucursals = await prisma.sucursal.findMany()
+    * ```
+    */
+  get sucursal(): Prisma.sucursalDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -940,7 +955,8 @@ export namespace Prisma {
     pacientes: 'pacientes',
     ausencias: 'ausencias',
     tareas: 'tareas',
-    subcta: 'subcta'
+    subcta: 'subcta',
+    sucursal: 'sucursal'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -957,7 +973,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'aUT_PRAC' | 'cAJA' | 'cONSULTA' | 'eNFERMER' | 'fARMACIA' | 'mEDICOS_TURNOS' | 'pRACTICA' | 'pRACT_ENFER' | 'pRESTADO' | 'uSOS' | 'uSOSFA' | 'adherent_provi' | 'nosocios' | 'planes_odontologicos' | 'planes_socio' | 'planes_visitas' | 'promociones' | 'pacientes' | 'ausencias' | 'tareas' | 'subcta'
+      modelProps: 'aUT_PRAC' | 'cAJA' | 'cONSULTA' | 'eNFERMER' | 'fARMACIA' | 'mEDICOS_TURNOS' | 'pRACTICA' | 'pRACT_ENFER' | 'pRESTADO' | 'uSOS' | 'uSOSFA' | 'adherent_provi' | 'nosocios' | 'planes_odontologicos' | 'planes_socio' | 'planes_visitas' | 'promociones' | 'pacientes' | 'ausencias' | 'tareas' | 'subcta' | 'sucursal'
       txIsolationLevel: Prisma.TransactionIsolationLevel
     },
     model: {
@@ -2347,6 +2363,72 @@ export namespace Prisma {
           }
         }
       }
+      sucursal: {
+        payload: Prisma.$sucursalPayload<ExtArgs>
+        fields: Prisma.sucursalFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.sucursalFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$sucursalPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.sucursalFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$sucursalPayload>
+          }
+          findFirst: {
+            args: Prisma.sucursalFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$sucursalPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.sucursalFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$sucursalPayload>
+          }
+          findMany: {
+            args: Prisma.sucursalFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$sucursalPayload>[]
+          }
+          create: {
+            args: Prisma.sucursalCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$sucursalPayload>
+          }
+          createMany: {
+            args: Prisma.sucursalCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          delete: {
+            args: Prisma.sucursalDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$sucursalPayload>
+          }
+          update: {
+            args: Prisma.sucursalUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$sucursalPayload>
+          }
+          deleteMany: {
+            args: Prisma.sucursalDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          updateMany: {
+            args: Prisma.sucursalUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          upsert: {
+            args: Prisma.sucursalUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$sucursalPayload>
+          }
+          aggregate: {
+            args: Prisma.SucursalAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateSucursal>
+          }
+          groupBy: {
+            args: Prisma.sucursalGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<SucursalGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.sucursalCountArgs<ExtArgs>,
+            result: $Utils.Optional<SucursalCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2510,23 +2592,11 @@ export namespace Prisma {
 
   export type AUT_PRACAvgAggregateOutputType = {
     ANULADO: number | null
-    PRECIO_09: number | null
-    PRECIO_16: number | null
-    PRECIO_17: number | null
-    PRECIO_18: number | null
-    PRECIO_19: number | null
-    PRECIO_20: number | null
     idpractica: number | null
   }
 
   export type AUT_PRACSumAggregateOutputType = {
     ANULADO: number | null
-    PRECIO_09: number | null
-    PRECIO_16: number | null
-    PRECIO_17: number | null
-    PRECIO_18: number | null
-    PRECIO_19: number | null
-    PRECIO_20: number | null
     idpractica: number | null
   }
 
@@ -2561,7 +2631,7 @@ export namespace Prisma {
     PRECIO_08: string | null
     SUC_08: string | null
     COD_PRES09: string | null
-    PRECIO_09: number | null
+    PRECIO_09: string | null
     SUC_09: string | null
     COD_PRES10: string | null
     PRECIO_10: string | null
@@ -2582,19 +2652,19 @@ export namespace Prisma {
     PRECIO_15: string | null
     SUC_15: string | null
     COD_PRES16: string | null
-    PRECIO_16: number | null
+    PRECIO_16: string | null
     SUC_16: string | null
     COD_PRES17: string | null
-    PRECIO_17: number | null
+    PRECIO_17: string | null
     SUC_17: string | null
     COD_PRES18: string | null
-    PRECIO_18: number | null
+    PRECIO_18: string | null
     SUC_18: string | null
     COD_PRES19: string | null
-    PRECIO_19: number | null
+    PRECIO_19: string | null
     SUC_19: string | null
     COD_PRES20: string | null
-    PRECIO_20: number | null
+    PRECIO_20: string | null
     SUC_20: string | null
     idpractica: number | null
   }
@@ -2630,7 +2700,7 @@ export namespace Prisma {
     PRECIO_08: string | null
     SUC_08: string | null
     COD_PRES09: string | null
-    PRECIO_09: number | null
+    PRECIO_09: string | null
     SUC_09: string | null
     COD_PRES10: string | null
     PRECIO_10: string | null
@@ -2651,19 +2721,19 @@ export namespace Prisma {
     PRECIO_15: string | null
     SUC_15: string | null
     COD_PRES16: string | null
-    PRECIO_16: number | null
+    PRECIO_16: string | null
     SUC_16: string | null
     COD_PRES17: string | null
-    PRECIO_17: number | null
+    PRECIO_17: string | null
     SUC_17: string | null
     COD_PRES18: string | null
-    PRECIO_18: number | null
+    PRECIO_18: string | null
     SUC_18: string | null
     COD_PRES19: string | null
-    PRECIO_19: number | null
+    PRECIO_19: string | null
     SUC_19: string | null
     COD_PRES20: string | null
-    PRECIO_20: number | null
+    PRECIO_20: string | null
     SUC_20: string | null
     idpractica: number | null
   }
@@ -2741,23 +2811,11 @@ export namespace Prisma {
 
   export type AUT_PRACAvgAggregateInputType = {
     ANULADO?: true
-    PRECIO_09?: true
-    PRECIO_16?: true
-    PRECIO_17?: true
-    PRECIO_18?: true
-    PRECIO_19?: true
-    PRECIO_20?: true
     idpractica?: true
   }
 
   export type AUT_PRACSumAggregateInputType = {
     ANULADO?: true
-    PRECIO_09?: true
-    PRECIO_16?: true
-    PRECIO_17?: true
-    PRECIO_18?: true
-    PRECIO_19?: true
-    PRECIO_20?: true
     idpractica?: true
   }
 
@@ -3086,7 +3144,7 @@ export namespace Prisma {
     PRECIO_08: string | null
     SUC_08: string | null
     COD_PRES09: string | null
-    PRECIO_09: number | null
+    PRECIO_09: string | null
     SUC_09: string | null
     COD_PRES10: string | null
     PRECIO_10: string | null
@@ -3107,19 +3165,19 @@ export namespace Prisma {
     PRECIO_15: string | null
     SUC_15: string | null
     COD_PRES16: string | null
-    PRECIO_16: number | null
+    PRECIO_16: string | null
     SUC_16: string | null
     COD_PRES17: string | null
-    PRECIO_17: number | null
+    PRECIO_17: string | null
     SUC_17: string | null
     COD_PRES18: string | null
-    PRECIO_18: number | null
+    PRECIO_18: string | null
     SUC_18: string | null
     COD_PRES19: string | null
-    PRECIO_19: number | null
+    PRECIO_19: string | null
     SUC_19: string | null
     COD_PRES20: string | null
-    PRECIO_20: number | null
+    PRECIO_20: string | null
     SUC_20: string | null
     idpractica: number
     _count: AUT_PRACCountAggregateOutputType | null
@@ -3316,7 +3374,7 @@ export namespace Prisma {
       PRECIO_08: string | null
       SUC_08: string | null
       COD_PRES09: string | null
-      PRECIO_09: number | null
+      PRECIO_09: string | null
       SUC_09: string | null
       COD_PRES10: string | null
       PRECIO_10: string | null
@@ -3337,19 +3395,19 @@ export namespace Prisma {
       PRECIO_15: string | null
       SUC_15: string | null
       COD_PRES16: string | null
-      PRECIO_16: number | null
+      PRECIO_16: string | null
       SUC_16: string | null
       COD_PRES17: string | null
-      PRECIO_17: number | null
+      PRECIO_17: string | null
       SUC_17: string | null
       COD_PRES18: string | null
-      PRECIO_18: number | null
+      PRECIO_18: string | null
       SUC_18: string | null
       COD_PRES19: string | null
-      PRECIO_19: number | null
+      PRECIO_19: string | null
       SUC_19: string | null
       COD_PRES20: string | null
-      PRECIO_20: number | null
+      PRECIO_20: string | null
       SUC_20: string | null
       idpractica: number
     }, ExtArgs["result"]["aUT_PRAC"]>
@@ -3776,7 +3834,7 @@ export namespace Prisma {
     readonly PRECIO_08: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_08: FieldRef<"AUT_PRAC", 'String'>
     readonly COD_PRES09: FieldRef<"AUT_PRAC", 'String'>
-    readonly PRECIO_09: FieldRef<"AUT_PRAC", 'Float'>
+    readonly PRECIO_09: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_09: FieldRef<"AUT_PRAC", 'String'>
     readonly COD_PRES10: FieldRef<"AUT_PRAC", 'String'>
     readonly PRECIO_10: FieldRef<"AUT_PRAC", 'String'>
@@ -3797,19 +3855,19 @@ export namespace Prisma {
     readonly PRECIO_15: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_15: FieldRef<"AUT_PRAC", 'String'>
     readonly COD_PRES16: FieldRef<"AUT_PRAC", 'String'>
-    readonly PRECIO_16: FieldRef<"AUT_PRAC", 'Float'>
+    readonly PRECIO_16: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_16: FieldRef<"AUT_PRAC", 'String'>
     readonly COD_PRES17: FieldRef<"AUT_PRAC", 'String'>
-    readonly PRECIO_17: FieldRef<"AUT_PRAC", 'Float'>
+    readonly PRECIO_17: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_17: FieldRef<"AUT_PRAC", 'String'>
     readonly COD_PRES18: FieldRef<"AUT_PRAC", 'String'>
-    readonly PRECIO_18: FieldRef<"AUT_PRAC", 'Float'>
+    readonly PRECIO_18: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_18: FieldRef<"AUT_PRAC", 'String'>
     readonly COD_PRES19: FieldRef<"AUT_PRAC", 'String'>
-    readonly PRECIO_19: FieldRef<"AUT_PRAC", 'Float'>
+    readonly PRECIO_19: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_19: FieldRef<"AUT_PRAC", 'String'>
     readonly COD_PRES20: FieldRef<"AUT_PRAC", 'String'>
-    readonly PRECIO_20: FieldRef<"AUT_PRAC", 'Float'>
+    readonly PRECIO_20: FieldRef<"AUT_PRAC", 'String'>
     readonly SUC_20: FieldRef<"AUT_PRAC", 'String'>
     readonly idpractica: FieldRef<"AUT_PRAC", 'Int'>
   }
@@ -24499,6 +24557,888 @@ export namespace Prisma {
 
 
   /**
+   * Model sucursal
+   */
+
+  export type AggregateSucursal = {
+    _count: SucursalCountAggregateOutputType | null
+    _avg: SucursalAvgAggregateOutputType | null
+    _sum: SucursalSumAggregateOutputType | null
+    _min: SucursalMinAggregateOutputType | null
+    _max: SucursalMaxAggregateOutputType | null
+  }
+
+  export type SucursalAvgAggregateOutputType = {
+    idsucursal: number | null
+  }
+
+  export type SucursalSumAggregateOutputType = {
+    idsucursal: number | null
+  }
+
+  export type SucursalMinAggregateOutputType = {
+    idsucursal: number | null
+    sucursal: string | null
+    codigo: string | null
+  }
+
+  export type SucursalMaxAggregateOutputType = {
+    idsucursal: number | null
+    sucursal: string | null
+    codigo: string | null
+  }
+
+  export type SucursalCountAggregateOutputType = {
+    idsucursal: number
+    sucursal: number
+    codigo: number
+    _all: number
+  }
+
+
+  export type SucursalAvgAggregateInputType = {
+    idsucursal?: true
+  }
+
+  export type SucursalSumAggregateInputType = {
+    idsucursal?: true
+  }
+
+  export type SucursalMinAggregateInputType = {
+    idsucursal?: true
+    sucursal?: true
+    codigo?: true
+  }
+
+  export type SucursalMaxAggregateInputType = {
+    idsucursal?: true
+    sucursal?: true
+    codigo?: true
+  }
+
+  export type SucursalCountAggregateInputType = {
+    idsucursal?: true
+    sucursal?: true
+    codigo?: true
+    _all?: true
+  }
+
+  export type SucursalAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which sucursal to aggregate.
+     */
+    where?: sucursalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of sucursals to fetch.
+     */
+    orderBy?: sucursalOrderByWithRelationInput | sucursalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: sucursalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` sucursals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` sucursals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned sucursals
+    **/
+    _count?: true | SucursalCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SucursalAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SucursalSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SucursalMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SucursalMaxAggregateInputType
+  }
+
+  export type GetSucursalAggregateType<T extends SucursalAggregateArgs> = {
+        [P in keyof T & keyof AggregateSucursal]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSucursal[P]>
+      : GetScalarType<T[P], AggregateSucursal[P]>
+  }
+
+
+
+
+  export type sucursalGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: sucursalWhereInput
+    orderBy?: sucursalOrderByWithAggregationInput | sucursalOrderByWithAggregationInput[]
+    by: SucursalScalarFieldEnum[] | SucursalScalarFieldEnum
+    having?: sucursalScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SucursalCountAggregateInputType | true
+    _avg?: SucursalAvgAggregateInputType
+    _sum?: SucursalSumAggregateInputType
+    _min?: SucursalMinAggregateInputType
+    _max?: SucursalMaxAggregateInputType
+  }
+
+  export type SucursalGroupByOutputType = {
+    idsucursal: number
+    sucursal: string | null
+    codigo: string | null
+    _count: SucursalCountAggregateOutputType | null
+    _avg: SucursalAvgAggregateOutputType | null
+    _sum: SucursalSumAggregateOutputType | null
+    _min: SucursalMinAggregateOutputType | null
+    _max: SucursalMaxAggregateOutputType | null
+  }
+
+  type GetSucursalGroupByPayload<T extends sucursalGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SucursalGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SucursalGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SucursalGroupByOutputType[P]>
+            : GetScalarType<T[P], SucursalGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type sucursalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    idsucursal?: boolean
+    sucursal?: boolean
+    codigo?: boolean
+  }, ExtArgs["result"]["sucursal"]>
+
+  export type sucursalSelectScalar = {
+    idsucursal?: boolean
+    sucursal?: boolean
+    codigo?: boolean
+  }
+
+
+  export type $sucursalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "sucursal"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      idsucursal: number
+      sucursal: string | null
+      codigo: string | null
+    }, ExtArgs["result"]["sucursal"]>
+    composites: {}
+  }
+
+
+  type sucursalGetPayload<S extends boolean | null | undefined | sucursalDefaultArgs> = $Result.GetResult<Prisma.$sucursalPayload, S>
+
+  type sucursalCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<sucursalFindManyArgs, 'select' | 'include'> & {
+      select?: SucursalCountAggregateInputType | true
+    }
+
+  export interface sucursalDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['sucursal'], meta: { name: 'sucursal' } }
+    /**
+     * Find zero or one Sucursal that matches the filter.
+     * @param {sucursalFindUniqueArgs} args - Arguments to find a Sucursal
+     * @example
+     * // Get one Sucursal
+     * const sucursal = await prisma.sucursal.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends sucursalFindUniqueArgs<ExtArgs>>(
+      args: SelectSubset<T, sucursalFindUniqueArgs<ExtArgs>>
+    ): Prisma__sucursalClient<$Result.GetResult<Prisma.$sucursalPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
+
+    /**
+     * Find one Sucursal that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {sucursalFindUniqueOrThrowArgs} args - Arguments to find a Sucursal
+     * @example
+     * // Get one Sucursal
+     * const sucursal = await prisma.sucursal.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends sucursalFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, sucursalFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__sucursalClient<$Result.GetResult<Prisma.$sucursalPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find the first Sucursal that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {sucursalFindFirstArgs} args - Arguments to find a Sucursal
+     * @example
+     * // Get one Sucursal
+     * const sucursal = await prisma.sucursal.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends sucursalFindFirstArgs<ExtArgs>>(
+      args?: SelectSubset<T, sucursalFindFirstArgs<ExtArgs>>
+    ): Prisma__sucursalClient<$Result.GetResult<Prisma.$sucursalPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
+
+    /**
+     * Find the first Sucursal that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {sucursalFindFirstOrThrowArgs} args - Arguments to find a Sucursal
+     * @example
+     * // Get one Sucursal
+     * const sucursal = await prisma.sucursal.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends sucursalFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, sucursalFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__sucursalClient<$Result.GetResult<Prisma.$sucursalPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Sucursals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {sucursalFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Sucursals
+     * const sucursals = await prisma.sucursal.findMany()
+     * 
+     * // Get first 10 Sucursals
+     * const sucursals = await prisma.sucursal.findMany({ take: 10 })
+     * 
+     * // Only select the `idsucursal`
+     * const sucursalWithIdsucursalOnly = await prisma.sucursal.findMany({ select: { idsucursal: true } })
+     * 
+    **/
+    findMany<T extends sucursalFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, sucursalFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$sucursalPayload<ExtArgs>, T, 'findMany'>>
+
+    /**
+     * Create a Sucursal.
+     * @param {sucursalCreateArgs} args - Arguments to create a Sucursal.
+     * @example
+     * // Create one Sucursal
+     * const Sucursal = await prisma.sucursal.create({
+     *   data: {
+     *     // ... data to create a Sucursal
+     *   }
+     * })
+     * 
+    **/
+    create<T extends sucursalCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, sucursalCreateArgs<ExtArgs>>
+    ): Prisma__sucursalClient<$Result.GetResult<Prisma.$sucursalPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
+
+    /**
+     * Create many Sucursals.
+     *     @param {sucursalCreateManyArgs} args - Arguments to create many Sucursals.
+     *     @example
+     *     // Create many Sucursals
+     *     const sucursal = await prisma.sucursal.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends sucursalCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, sucursalCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Sucursal.
+     * @param {sucursalDeleteArgs} args - Arguments to delete one Sucursal.
+     * @example
+     * // Delete one Sucursal
+     * const Sucursal = await prisma.sucursal.delete({
+     *   where: {
+     *     // ... filter to delete one Sucursal
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends sucursalDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, sucursalDeleteArgs<ExtArgs>>
+    ): Prisma__sucursalClient<$Result.GetResult<Prisma.$sucursalPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
+
+    /**
+     * Update one Sucursal.
+     * @param {sucursalUpdateArgs} args - Arguments to update one Sucursal.
+     * @example
+     * // Update one Sucursal
+     * const sucursal = await prisma.sucursal.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends sucursalUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, sucursalUpdateArgs<ExtArgs>>
+    ): Prisma__sucursalClient<$Result.GetResult<Prisma.$sucursalPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
+
+    /**
+     * Delete zero or more Sucursals.
+     * @param {sucursalDeleteManyArgs} args - Arguments to filter Sucursals to delete.
+     * @example
+     * // Delete a few Sucursals
+     * const { count } = await prisma.sucursal.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends sucursalDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, sucursalDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sucursals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {sucursalUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Sucursals
+     * const sucursal = await prisma.sucursal.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends sucursalUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, sucursalUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Sucursal.
+     * @param {sucursalUpsertArgs} args - Arguments to update or create a Sucursal.
+     * @example
+     * // Update or create a Sucursal
+     * const sucursal = await prisma.sucursal.upsert({
+     *   create: {
+     *     // ... data to create a Sucursal
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Sucursal we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends sucursalUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, sucursalUpsertArgs<ExtArgs>>
+    ): Prisma__sucursalClient<$Result.GetResult<Prisma.$sucursalPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
+
+    /**
+     * Count the number of Sucursals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {sucursalCountArgs} args - Arguments to filter Sucursals to count.
+     * @example
+     * // Count the number of Sucursals
+     * const count = await prisma.sucursal.count({
+     *   where: {
+     *     // ... the filter for the Sucursals we want to count
+     *   }
+     * })
+    **/
+    count<T extends sucursalCountArgs>(
+      args?: Subset<T, sucursalCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SucursalCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Sucursal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SucursalAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SucursalAggregateArgs>(args: Subset<T, SucursalAggregateArgs>): Prisma.PrismaPromise<GetSucursalAggregateType<T>>
+
+    /**
+     * Group by Sucursal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {sucursalGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends sucursalGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: sucursalGroupByArgs['orderBy'] }
+        : { orderBy?: sucursalGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, sucursalGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSucursalGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the sucursal model
+   */
+  readonly fields: sucursalFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for sucursal.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__sucursalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+
+
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+  }
+
+
+
+  /**
+   * Fields of the sucursal model
+   */ 
+  interface sucursalFieldRefs {
+    readonly idsucursal: FieldRef<"sucursal", 'Int'>
+    readonly sucursal: FieldRef<"sucursal", 'String'>
+    readonly codigo: FieldRef<"sucursal", 'String'>
+  }
+    
+
+  // Custom InputTypes
+
+  /**
+   * sucursal findUnique
+   */
+  export type sucursalFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the sucursal
+     */
+    select?: sucursalSelect<ExtArgs> | null
+    /**
+     * Filter, which sucursal to fetch.
+     */
+    where: sucursalWhereUniqueInput
+  }
+
+
+  /**
+   * sucursal findUniqueOrThrow
+   */
+  export type sucursalFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the sucursal
+     */
+    select?: sucursalSelect<ExtArgs> | null
+    /**
+     * Filter, which sucursal to fetch.
+     */
+    where: sucursalWhereUniqueInput
+  }
+
+
+  /**
+   * sucursal findFirst
+   */
+  export type sucursalFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the sucursal
+     */
+    select?: sucursalSelect<ExtArgs> | null
+    /**
+     * Filter, which sucursal to fetch.
+     */
+    where?: sucursalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of sucursals to fetch.
+     */
+    orderBy?: sucursalOrderByWithRelationInput | sucursalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for sucursals.
+     */
+    cursor?: sucursalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` sucursals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` sucursals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of sucursals.
+     */
+    distinct?: SucursalScalarFieldEnum | SucursalScalarFieldEnum[]
+  }
+
+
+  /**
+   * sucursal findFirstOrThrow
+   */
+  export type sucursalFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the sucursal
+     */
+    select?: sucursalSelect<ExtArgs> | null
+    /**
+     * Filter, which sucursal to fetch.
+     */
+    where?: sucursalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of sucursals to fetch.
+     */
+    orderBy?: sucursalOrderByWithRelationInput | sucursalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for sucursals.
+     */
+    cursor?: sucursalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` sucursals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` sucursals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of sucursals.
+     */
+    distinct?: SucursalScalarFieldEnum | SucursalScalarFieldEnum[]
+  }
+
+
+  /**
+   * sucursal findMany
+   */
+  export type sucursalFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the sucursal
+     */
+    select?: sucursalSelect<ExtArgs> | null
+    /**
+     * Filter, which sucursals to fetch.
+     */
+    where?: sucursalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of sucursals to fetch.
+     */
+    orderBy?: sucursalOrderByWithRelationInput | sucursalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing sucursals.
+     */
+    cursor?: sucursalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` sucursals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` sucursals.
+     */
+    skip?: number
+    distinct?: SucursalScalarFieldEnum | SucursalScalarFieldEnum[]
+  }
+
+
+  /**
+   * sucursal create
+   */
+  export type sucursalCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the sucursal
+     */
+    select?: sucursalSelect<ExtArgs> | null
+    /**
+     * The data needed to create a sucursal.
+     */
+    data?: XOR<sucursalCreateInput, sucursalUncheckedCreateInput>
+  }
+
+
+  /**
+   * sucursal createMany
+   */
+  export type sucursalCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many sucursals.
+     */
+    data: sucursalCreateManyInput | sucursalCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * sucursal update
+   */
+  export type sucursalUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the sucursal
+     */
+    select?: sucursalSelect<ExtArgs> | null
+    /**
+     * The data needed to update a sucursal.
+     */
+    data: XOR<sucursalUpdateInput, sucursalUncheckedUpdateInput>
+    /**
+     * Choose, which sucursal to update.
+     */
+    where: sucursalWhereUniqueInput
+  }
+
+
+  /**
+   * sucursal updateMany
+   */
+  export type sucursalUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update sucursals.
+     */
+    data: XOR<sucursalUpdateManyMutationInput, sucursalUncheckedUpdateManyInput>
+    /**
+     * Filter which sucursals to update
+     */
+    where?: sucursalWhereInput
+  }
+
+
+  /**
+   * sucursal upsert
+   */
+  export type sucursalUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the sucursal
+     */
+    select?: sucursalSelect<ExtArgs> | null
+    /**
+     * The filter to search for the sucursal to update in case it exists.
+     */
+    where: sucursalWhereUniqueInput
+    /**
+     * In case the sucursal found by the `where` argument doesn't exist, create a new sucursal with this data.
+     */
+    create: XOR<sucursalCreateInput, sucursalUncheckedCreateInput>
+    /**
+     * In case the sucursal was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<sucursalUpdateInput, sucursalUncheckedUpdateInput>
+  }
+
+
+  /**
+   * sucursal delete
+   */
+  export type sucursalDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the sucursal
+     */
+    select?: sucursalSelect<ExtArgs> | null
+    /**
+     * Filter which sucursal to delete.
+     */
+    where: sucursalWhereUniqueInput
+  }
+
+
+  /**
+   * sucursal deleteMany
+   */
+  export type sucursalDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which sucursals to delete
+     */
+    where?: sucursalWhereInput
+  }
+
+
+  /**
+   * sucursal without action
+   */
+  export type sucursalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the sucursal
+     */
+    select?: sucursalSelect<ExtArgs> | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -24985,6 +25925,15 @@ export namespace Prisma {
   export type SubctaScalarFieldEnum = (typeof SubctaScalarFieldEnum)[keyof typeof SubctaScalarFieldEnum]
 
 
+  export const SucursalScalarFieldEnum: {
+    idsucursal: 'idsucursal',
+    sucursal: 'sucursal',
+    codigo: 'codigo'
+  };
+
+  export type SucursalScalarFieldEnum = (typeof SucursalScalarFieldEnum)[keyof typeof SucursalScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -25085,7 +26034,7 @@ export namespace Prisma {
     PRECIO_08?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_08?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES09?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_09?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_09?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_09?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES10?: StringNullableFilter<"AUT_PRAC"> | string | null
     PRECIO_10?: StringNullableFilter<"AUT_PRAC"> | string | null
@@ -25106,19 +26055,19 @@ export namespace Prisma {
     PRECIO_15?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_15?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES16?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_16?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_16?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_16?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES17?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_17?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_17?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_17?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES18?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_18?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_18?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_18?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES19?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_19?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_19?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_19?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES20?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_20?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_20?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_20?: StringNullableFilter<"AUT_PRAC"> | string | null
     idpractica?: IntFilter<"AUT_PRAC"> | number
   }
@@ -25227,7 +26176,7 @@ export namespace Prisma {
     PRECIO_08?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_08?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES09?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_09?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_09?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_09?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES10?: StringNullableFilter<"AUT_PRAC"> | string | null
     PRECIO_10?: StringNullableFilter<"AUT_PRAC"> | string | null
@@ -25248,19 +26197,19 @@ export namespace Prisma {
     PRECIO_15?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_15?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES16?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_16?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_16?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_16?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES17?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_17?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_17?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_17?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES18?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_18?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_18?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_18?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES19?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_19?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_19?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_19?: StringNullableFilter<"AUT_PRAC"> | string | null
     COD_PRES20?: StringNullableFilter<"AUT_PRAC"> | string | null
-    PRECIO_20?: FloatNullableFilter<"AUT_PRAC"> | number | null
+    PRECIO_20?: StringNullableFilter<"AUT_PRAC"> | string | null
     SUC_20?: StringNullableFilter<"AUT_PRAC"> | string | null
   }, "idpractica">
 
@@ -25372,7 +26321,7 @@ export namespace Prisma {
     PRECIO_08?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_08?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     COD_PRES09?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
-    PRECIO_09?: FloatNullableWithAggregatesFilter<"AUT_PRAC"> | number | null
+    PRECIO_09?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_09?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     COD_PRES10?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     PRECIO_10?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
@@ -25393,19 +26342,19 @@ export namespace Prisma {
     PRECIO_15?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_15?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     COD_PRES16?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
-    PRECIO_16?: FloatNullableWithAggregatesFilter<"AUT_PRAC"> | number | null
+    PRECIO_16?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_16?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     COD_PRES17?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
-    PRECIO_17?: FloatNullableWithAggregatesFilter<"AUT_PRAC"> | number | null
+    PRECIO_17?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_17?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     COD_PRES18?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
-    PRECIO_18?: FloatNullableWithAggregatesFilter<"AUT_PRAC"> | number | null
+    PRECIO_18?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_18?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     COD_PRES19?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
-    PRECIO_19?: FloatNullableWithAggregatesFilter<"AUT_PRAC"> | number | null
+    PRECIO_19?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_19?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     COD_PRES20?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
-    PRECIO_20?: FloatNullableWithAggregatesFilter<"AUT_PRAC"> | number | null
+    PRECIO_20?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     SUC_20?: StringNullableWithAggregatesFilter<"AUT_PRAC"> | string | null
     idpractica?: IntWithAggregatesFilter<"AUT_PRAC"> | number
   }
@@ -27395,6 +28344,50 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"subcta"> | number
   }
 
+  export type sucursalWhereInput = {
+    AND?: sucursalWhereInput | sucursalWhereInput[]
+    OR?: sucursalWhereInput[]
+    NOT?: sucursalWhereInput | sucursalWhereInput[]
+    idsucursal?: IntFilter<"sucursal"> | number
+    sucursal?: StringNullableFilter<"sucursal"> | string | null
+    codigo?: StringNullableFilter<"sucursal"> | string | null
+  }
+
+  export type sucursalOrderByWithRelationInput = {
+    idsucursal?: SortOrder
+    sucursal?: SortOrderInput | SortOrder
+    codigo?: SortOrderInput | SortOrder
+  }
+
+  export type sucursalWhereUniqueInput = Prisma.AtLeast<{
+    idsucursal?: number
+    AND?: sucursalWhereInput | sucursalWhereInput[]
+    OR?: sucursalWhereInput[]
+    NOT?: sucursalWhereInput | sucursalWhereInput[]
+    sucursal?: StringNullableFilter<"sucursal"> | string | null
+    codigo?: StringNullableFilter<"sucursal"> | string | null
+  }, "idsucursal">
+
+  export type sucursalOrderByWithAggregationInput = {
+    idsucursal?: SortOrder
+    sucursal?: SortOrderInput | SortOrder
+    codigo?: SortOrderInput | SortOrder
+    _count?: sucursalCountOrderByAggregateInput
+    _avg?: sucursalAvgOrderByAggregateInput
+    _max?: sucursalMaxOrderByAggregateInput
+    _min?: sucursalMinOrderByAggregateInput
+    _sum?: sucursalSumOrderByAggregateInput
+  }
+
+  export type sucursalScalarWhereWithAggregatesInput = {
+    AND?: sucursalScalarWhereWithAggregatesInput | sucursalScalarWhereWithAggregatesInput[]
+    OR?: sucursalScalarWhereWithAggregatesInput[]
+    NOT?: sucursalScalarWhereWithAggregatesInput | sucursalScalarWhereWithAggregatesInput[]
+    idsucursal?: IntWithAggregatesFilter<"sucursal"> | number
+    sucursal?: StringNullableWithAggregatesFilter<"sucursal"> | string | null
+    codigo?: StringNullableWithAggregatesFilter<"sucursal"> | string | null
+  }
+
   export type AUT_PRACCreateInput = {
     ESP_PRAC?: string | null
     CODIGOS?: string | null
@@ -27426,7 +28419,7 @@ export namespace Prisma {
     PRECIO_08?: string | null
     SUC_08?: string | null
     COD_PRES09?: string | null
-    PRECIO_09?: number | null
+    PRECIO_09?: string | null
     SUC_09?: string | null
     COD_PRES10?: string | null
     PRECIO_10?: string | null
@@ -27447,19 +28440,19 @@ export namespace Prisma {
     PRECIO_15?: string | null
     SUC_15?: string | null
     COD_PRES16?: string | null
-    PRECIO_16?: number | null
+    PRECIO_16?: string | null
     SUC_16?: string | null
     COD_PRES17?: string | null
-    PRECIO_17?: number | null
+    PRECIO_17?: string | null
     SUC_17?: string | null
     COD_PRES18?: string | null
-    PRECIO_18?: number | null
+    PRECIO_18?: string | null
     SUC_18?: string | null
     COD_PRES19?: string | null
-    PRECIO_19?: number | null
+    PRECIO_19?: string | null
     SUC_19?: string | null
     COD_PRES20?: string | null
-    PRECIO_20?: number | null
+    PRECIO_20?: string | null
     SUC_20?: string | null
   }
 
@@ -27494,7 +28487,7 @@ export namespace Prisma {
     PRECIO_08?: string | null
     SUC_08?: string | null
     COD_PRES09?: string | null
-    PRECIO_09?: number | null
+    PRECIO_09?: string | null
     SUC_09?: string | null
     COD_PRES10?: string | null
     PRECIO_10?: string | null
@@ -27515,19 +28508,19 @@ export namespace Prisma {
     PRECIO_15?: string | null
     SUC_15?: string | null
     COD_PRES16?: string | null
-    PRECIO_16?: number | null
+    PRECIO_16?: string | null
     SUC_16?: string | null
     COD_PRES17?: string | null
-    PRECIO_17?: number | null
+    PRECIO_17?: string | null
     SUC_17?: string | null
     COD_PRES18?: string | null
-    PRECIO_18?: number | null
+    PRECIO_18?: string | null
     SUC_18?: string | null
     COD_PRES19?: string | null
-    PRECIO_19?: number | null
+    PRECIO_19?: string | null
     SUC_19?: string | null
     COD_PRES20?: string | null
-    PRECIO_20?: number | null
+    PRECIO_20?: string | null
     SUC_20?: string | null
     idpractica?: number
   }
@@ -27563,7 +28556,7 @@ export namespace Prisma {
     PRECIO_08?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_08?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES09?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_09?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_09?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_09?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES10?: NullableStringFieldUpdateOperationsInput | string | null
     PRECIO_10?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27584,19 +28577,19 @@ export namespace Prisma {
     PRECIO_15?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_15?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES16?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_16?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_16?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_16?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES17?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_17?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_17?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_17?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES18?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_18?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_18?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_18?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES19?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_19?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_19?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_19?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES20?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_20?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_20?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_20?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -27631,7 +28624,7 @@ export namespace Prisma {
     PRECIO_08?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_08?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES09?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_09?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_09?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_09?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES10?: NullableStringFieldUpdateOperationsInput | string | null
     PRECIO_10?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27652,19 +28645,19 @@ export namespace Prisma {
     PRECIO_15?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_15?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES16?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_16?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_16?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_16?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES17?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_17?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_17?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_17?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES18?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_18?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_18?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_18?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES19?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_19?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_19?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_19?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES20?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_20?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_20?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_20?: NullableStringFieldUpdateOperationsInput | string | null
     idpractica?: IntFieldUpdateOperationsInput | number
   }
@@ -27700,7 +28693,7 @@ export namespace Prisma {
     PRECIO_08?: string | null
     SUC_08?: string | null
     COD_PRES09?: string | null
-    PRECIO_09?: number | null
+    PRECIO_09?: string | null
     SUC_09?: string | null
     COD_PRES10?: string | null
     PRECIO_10?: string | null
@@ -27721,19 +28714,19 @@ export namespace Prisma {
     PRECIO_15?: string | null
     SUC_15?: string | null
     COD_PRES16?: string | null
-    PRECIO_16?: number | null
+    PRECIO_16?: string | null
     SUC_16?: string | null
     COD_PRES17?: string | null
-    PRECIO_17?: number | null
+    PRECIO_17?: string | null
     SUC_17?: string | null
     COD_PRES18?: string | null
-    PRECIO_18?: number | null
+    PRECIO_18?: string | null
     SUC_18?: string | null
     COD_PRES19?: string | null
-    PRECIO_19?: number | null
+    PRECIO_19?: string | null
     SUC_19?: string | null
     COD_PRES20?: string | null
-    PRECIO_20?: number | null
+    PRECIO_20?: string | null
     SUC_20?: string | null
     idpractica?: number
   }
@@ -27769,7 +28762,7 @@ export namespace Prisma {
     PRECIO_08?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_08?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES09?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_09?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_09?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_09?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES10?: NullableStringFieldUpdateOperationsInput | string | null
     PRECIO_10?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27790,19 +28783,19 @@ export namespace Prisma {
     PRECIO_15?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_15?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES16?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_16?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_16?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_16?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES17?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_17?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_17?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_17?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES18?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_18?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_18?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_18?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES19?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_19?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_19?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_19?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES20?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_20?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_20?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_20?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -27837,7 +28830,7 @@ export namespace Prisma {
     PRECIO_08?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_08?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES09?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_09?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_09?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_09?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES10?: NullableStringFieldUpdateOperationsInput | string | null
     PRECIO_10?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27858,19 +28851,19 @@ export namespace Prisma {
     PRECIO_15?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_15?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES16?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_16?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_16?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_16?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES17?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_17?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_17?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_17?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES18?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_18?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_18?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_18?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES19?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_19?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_19?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_19?: NullableStringFieldUpdateOperationsInput | string | null
     COD_PRES20?: NullableStringFieldUpdateOperationsInput | string | null
-    PRECIO_20?: NullableFloatFieldUpdateOperationsInput | number | null
+    PRECIO_20?: NullableStringFieldUpdateOperationsInput | string | null
     SUC_20?: NullableStringFieldUpdateOperationsInput | string | null
     idpractica?: IntFieldUpdateOperationsInput | number
   }
@@ -30202,6 +31195,45 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
   }
 
+  export type sucursalCreateInput = {
+    sucursal?: string | null
+    codigo?: string | null
+  }
+
+  export type sucursalUncheckedCreateInput = {
+    idsucursal?: number
+    sucursal?: string | null
+    codigo?: string | null
+  }
+
+  export type sucursalUpdateInput = {
+    sucursal?: NullableStringFieldUpdateOperationsInput | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type sucursalUncheckedUpdateInput = {
+    idsucursal?: IntFieldUpdateOperationsInput | number
+    sucursal?: NullableStringFieldUpdateOperationsInput | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type sucursalCreateManyInput = {
+    idsucursal?: number
+    sucursal?: string | null
+    codigo?: string | null
+  }
+
+  export type sucursalUpdateManyMutationInput = {
+    sucursal?: NullableStringFieldUpdateOperationsInput | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type sucursalUncheckedUpdateManyInput = {
+    idsucursal?: IntFieldUpdateOperationsInput | number
+    sucursal?: NullableStringFieldUpdateOperationsInput | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -30236,17 +31268,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -30336,12 +31357,6 @@ export namespace Prisma {
 
   export type AUT_PRACAvgOrderByAggregateInput = {
     ANULADO?: SortOrder
-    PRECIO_09?: SortOrder
-    PRECIO_16?: SortOrder
-    PRECIO_17?: SortOrder
-    PRECIO_18?: SortOrder
-    PRECIO_19?: SortOrder
-    PRECIO_20?: SortOrder
     idpractica?: SortOrder
   }
 
@@ -30485,12 +31500,6 @@ export namespace Prisma {
 
   export type AUT_PRACSumOrderByAggregateInput = {
     ANULADO?: SortOrder
-    PRECIO_09?: SortOrder
-    PRECIO_16?: SortOrder
-    PRECIO_17?: SortOrder
-    PRECIO_18?: SortOrder
-    PRECIO_19?: SortOrder
-    PRECIO_20?: SortOrder
     idpractica?: SortOrder
   }
 
@@ -30541,22 +31550,6 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -30571,6 +31564,17 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type CAJACountOrderByAggregateInput = {
@@ -30669,6 +31673,22 @@ export namespace Prisma {
     ASIENTO?: SortOrder
     CANT_AFIL?: SortOrder
     iditem?: SortOrder
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type CONSULTACountOrderByAggregateInput = {
@@ -31991,6 +33011,32 @@ export namespace Prisma {
     id?: SortOrder
   }
 
+  export type sucursalCountOrderByAggregateInput = {
+    idsucursal?: SortOrder
+    sucursal?: SortOrder
+    codigo?: SortOrder
+  }
+
+  export type sucursalAvgOrderByAggregateInput = {
+    idsucursal?: SortOrder
+  }
+
+  export type sucursalMaxOrderByAggregateInput = {
+    idsucursal?: SortOrder
+    sucursal?: SortOrder
+    codigo?: SortOrder
+  }
+
+  export type sucursalMinOrderByAggregateInput = {
+    idsucursal?: SortOrder
+    sucursal?: SortOrder
+    codigo?: SortOrder
+  }
+
+  export type sucursalSumOrderByAggregateInput = {
+    idsucursal?: SortOrder
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
@@ -32007,16 +33053,16 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
@@ -32073,17 +33119,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -32144,7 +33179,7 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | null
     notIn?: number[] | null
@@ -32152,12 +33187,7 @@ export namespace Prisma {
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -32185,6 +33215,22 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedBigIntNullableFilter<$PrismaModel = never> = {
@@ -32347,6 +33393,10 @@ export namespace Prisma {
      * @deprecated Use subctaDefaultArgs instead
      */
     export type subctaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = subctaDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use sucursalDefaultArgs instead
+     */
+    export type sucursalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = sucursalDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

@@ -605,6 +605,9 @@ function Administracion(props) {
     } else if (nuSucRef.current.value === "SAN PEDRO") {
       data.SUC = "P";
       data.LOCALIDAD = nuSucRef.current.value;
+    } else if (nuSucRef.current.value === "SAN MIGUEL") {
+      data.SUC = "SM";
+      data.LOCALIDAD = nuSucRef.current.value;
     }
 
     if (promoRef.current.value === "0") {

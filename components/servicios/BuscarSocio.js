@@ -18,6 +18,10 @@ const BuscarSocio = ({
   emp,
   codNoSocioRef,
   consultarCodigo,
+  buscarTitularSM,
+  buscarTitularDniSM,
+  listSociosSM,
+  SeleccionarSM,
 }) => {
   return (
     <div className="container border border-dark list mt-4 p-4">
@@ -78,14 +82,10 @@ const BuscarSocio = ({
           </h2>
 
           <div className="border border-dark p-4">
-            <div className="row mb-4">
-              <div className=" col-md-3">
-                <h5 className="mt-4 mb-4">
-                  <strong>
-                    <u>Ingrese N° de Ficha</u>
-                  </strong>
-                </h5>
-              </div>
+            <h4>
+              <u>Buscar por N° de Socio</u>
+            </h4>
+            <div className="row mb-4 mt-4">
               <div className="form-group col-md-4">
                 <label>
                   <strong>
@@ -124,6 +124,17 @@ const BuscarSocio = ({
                   Mutual
                 </button>
               </div>
+              <div className="form-group col-md-2 mt-4">
+                <button
+                  className="btn btn-block btn-secondary"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    buscarTitularSM();
+                  }}
+                >
+                  San Miguel
+                </button>
+              </div>
               {errores && (
                 <div className="mt-2 form-group alert alert-danger col-md-12 text-center text-uppercase">
                   {errores}
@@ -137,14 +148,10 @@ const BuscarSocio = ({
 
         <form>
           <div className="border border-dark p-4">
-            <div className="row mb-4">
-              <div className="col-md-3">
-                <h5 className=" mt-4 mb-4">
-                  <strong>
-                    <u>Ingrese N° DNI</u>
-                  </strong>
-                </h5>
-              </div>
+            <h4>
+              <u>Buscar por N° de DNI</u>
+            </h4>
+            <div className="row mb-4 mt-4">
               <div className="form-group col-md-4">
                 <label>
                   <strong>
@@ -177,6 +184,14 @@ const BuscarSocio = ({
                   Mutual
                 </button>
               </div>
+              <div className="form-group col-md-2 mt-4">
+                <button
+                  className="btn btn-block btn-secondary"
+                  onClick={buscarTitularDniSM}
+                >
+                  San Miguel
+                </button>
+              </div>
               {errores && (
                 <div className="mt-2 form-group alert alert-danger col-md-12 text-center text-uppercase">
                   {errores}
@@ -190,15 +205,11 @@ const BuscarSocio = ({
 
         <div className="">
           <div className="border border-dark p-4">
-            <div className="row mb-4 d-flex justify-content-center">
-              <div className="col-md-3">
-                <h5 className=" mt-4 mb-4">
-                  <strong>
-                    <u>Buscar Por Apellido</u>
-                  </strong>
-                </h5>
-              </div>
+            <h4>
+              <u>Buscar por Apellido y Nombre</u>
+            </h4>
 
+            <div className="row mt-4 mb-4 d-flex justify-content-center">
               <div className="form-group col-md-4 mt-4">
                 <button
                   className="btn btn-block btn-primary"
@@ -219,6 +230,16 @@ const BuscarSocio = ({
                   Mutual
                 </button>
               </div>
+              <div className="form-group col-md-4 mt-4">
+                <button
+                  className="btn btn-block btn-secondary"
+                  data-toggle="modal"
+                  data-target="#listSocio"
+                  onClick={() => listSociosSM()}
+                >
+                  San Miguel
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -228,6 +249,7 @@ const BuscarSocio = ({
         listado={listado}
         Seleccionar={Seleccionar}
         SeleccionarM={SeleccionarM}
+        SeleccionarSM={SeleccionarSM}
       />
     </div>
   );

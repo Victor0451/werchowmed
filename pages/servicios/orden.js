@@ -73,6 +73,46 @@ const Orden = () => {
                               .then((resAP) => {
                                 if (resAP.data.length > 0) {
                                   guardarSocio(resAP.data[0]);
+                                } else if (!resAP.data[0]) {
+                                  axios
+                                    .get(`/api/socios`, {
+                                      params: {
+                                        f: "san miguel",
+                                        dni: dni,
+                                      },
+                                    })
+                                    .then((resSM) => {
+                                      if (resSM.data.length > 0) {
+                                        guardarSocio(resSM.data[0]);
+                                      } else if (!resSM.data[0]) {
+                                        axios
+                                          .get(`/api/socios`, {
+                                            params: {
+                                              f: "adh san miguel dni",
+                                              dni: dni,
+                                            },
+                                          })
+                                          .then((resSMAd) => {
+                                            if (resSMAd.data.length > 0) {
+                                              guardarSocio(resSMAd.data[0]);
+                                            }
+                                          })
+                                          .catch((error) => {
+                                            console.log(error);
+                                            toastr.error(
+                                              "Ocurrio un error al traer al socio",
+                                              "ATENCION"
+                                            );
+                                          });
+                                      }
+                                    })
+                                    .catch((error) => {
+                                      console.log(error);
+                                      toastr.error(
+                                        "Ocurrio un error al traer al socio",
+                                        "ATENCION"
+                                      );
+                                    });
                                 } else {
                                   toastr.warning(
                                     "No se encuentra el beneficiario",

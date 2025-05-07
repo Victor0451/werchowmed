@@ -1,4 +1,4 @@
-import { Werchow, SGI, Camp, Sep, Serv } from "../../libs/config";
+import { Werchow, SGI, Sep, Serv, SanMiguel } from "../../libs/config";
 import moment from "moment";
 //import { PrismaClient as WerchowSepClient } from '../../../prisma/generated/werchowsep'
 
@@ -348,6 +348,55 @@ export default async function handler(req, res) {
             typeof value === "bigint" ? value.toString() : value
           )
         );
+    } else if (req.query.f && req.query.f === "san miguel titulares") {
+      const mut = await SanMiguel.$queryRaw`
+                      SELECT
+                          m.CONTRATO, 
+                          m.GRUPO, 
+                          m.SUCURSAL, 
+                          m.NRO_DOC, 
+                          m.APELLIDOS,
+                          m.NOMBRES, 
+                          m.ALTA, 
+                          m.VIGENCIA, 
+                          m.DOM_LAB, 
+                          m.PLAN,                          
+                          m.CALLE, 
+                          m.NRO_CALLE,
+                          m.BARRIO, 
+                          m.NACIMIENTO, 
+                          m.TELEFONO, 
+                          m.MOVIL, 
+                          m.MAIL, 
+                          c.IMPORTE, 
+                          m.PRODUCTOR, 
+                          m.LOCALIDAD, 
+                          m.DOM_LAB ,                           
+                          "T" as "perfil", 
+                          o.NOMBRE "OBRA_SOC",
+                          o.CODIGO "COD_OBRA", 
+                          m.ADHERENTES, 
+                          TIMESTAMPDIFF(YEAR,m.NACIMIENTO,CURDATE()) "EDAD",  
+                          m.SEXO,
+                          CASE 
+                              WHEN m.EMPRESA = "W" THEN  "WERCHOW"
+                              WHEN m.EMPRESA = "M" THEN  "MUTUAL"
+                              WHEN m.EMPRESA = "SM" THEN  "SAN MIGUEL"
+                              ELSE  null
+                          END 'EMPRESA'                        
+                          FROM maestro as m
+                          INNER JOIN cuo_fija as c on c.CONTRATO = m.CONTRATO
+                          INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC                         
+  
+              `;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(mut, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
     } else if (req.query.f && req.query.f === "mutual adh") {
       const mutAdh = await Werchow.$queryRaw`
         SELECT
@@ -466,6 +515,186 @@ export default async function handler(req, res) {
             typeof value === "bigint" ? value.toString() : value
           )
         );
+    } else if (req.query.f && req.query.f === "san miguel contrato") {
+      const mae = await SanMiguel.$queryRaw`
+            SELECT
+                m.CONTRATO, 
+                m.GRUPO, 
+                m.SUCURSAL, 
+                m.NRO_DOC, 
+                m.APELLIDOS,
+                m.NOMBRES, 
+                m.ALTA, 
+                m.VIGENCIA, 
+                m.DOM_LAB, 
+                m.PLAN,
+                m.CALLE, 
+                m.NRO_CALLE,
+                m.BARRIO, 
+                m.NACIMIENTO, 
+                m.TELEFONO, 
+                m.MOVIL, 
+                m.MAIL, 
+                c.IMPORTE, 
+                m.PRODUCTOR, 
+                m.LOCALIDAD, 
+                m.DOM_LAB ,               
+                "T" as "perfil", 
+                o.NOMBRE "OBRA_SOC",
+                o.CODIGO "COD_OBRA", 
+                m.ADHERENTES, 
+                TIMESTAMPDIFF(YEAR,m.NACIMIENTO,CURDATE()) "EDAD",  
+                m.SEXO,
+                CASE 
+                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
+                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
+                    WHEN m.EMPRESA = "SM" THEN  "SAN MIGUEL"
+                    ELSE  null
+                END 'EMPRESA'                        
+                FROM maestro as m
+                INNER JOIN cuo_fija as c on c.CONTRATO = m.CONTRATO
+                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
+                WHERE m.CONTRATO = ${req.query.ficha}
+
+    `;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(mae, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    }
+    if (req.query.f && req.query.f === "san miguel") {
+      const mae = await SanMiguel.$queryRaw`
+            SELECT
+                m.CONTRATO, 
+                m.GRUPO, 
+                m.SUCURSAL, 
+                m.NRO_DOC, 
+                m.APELLIDOS,
+                m.NOMBRES, 
+                m.ALTA, 
+                m.VIGENCIA, 
+                m.DOM_LAB, 
+                m.PLAN,               
+                m.CALLE, 
+                m.NRO_CALLE,
+                m.BARRIO, 
+                m.NACIMIENTO, 
+                m.TELEFONO, 
+                m.MOVIL, 
+                m.MAIL, 
+                c.IMPORTE, 
+                m.PRODUCTOR, 
+                m.LOCALIDAD, 
+                m.DOM_LAB ,                 
+                "T" as "perfil", 
+                o.NOMBRE "OBRA_SOC",
+                o.CODIGO "COD_OBRA", 
+                m.ADHERENTES, 
+                TIMESTAMPDIFF(YEAR,m.NACIMIENTO,CURDATE()) "EDAD",  
+                m.SEXO,
+                CASE 
+                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
+                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
+                    WHEN m.EMPRESA = "SM" THEN  "SAN MIGUEL"
+                    ELSE  null
+                END 'EMPRESA'                        
+                FROM maestro as m
+                INNER JOIN cuo_fija as c on c.CONTRATO = m.CONTRATO
+                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
+                WHERE m.NRO_DOC = ${req.query.dni}
+
+    `;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(mae, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.query.f && req.query.f === "adh san miguel") {
+      const adh = await SanMiguel.$queryRaw`
+          SELECT
+                a.CONTRATO, 
+                a.SUCURSAL, 
+                a.NRO_DOC, 
+                a.NACIMIENTO,             
+                a.SEXO,
+                a.APELLIDOS, 
+                a.NOMBRES, 
+                a.ALTA, 
+                a.VIGENCIA, 
+                a.NACIMIENTO,
+                m.GRUPO,
+                o.NOMBRE "OBRA_SOC",
+                o.CODIGO "COD_OBRA",                 
+                TIMESTAMPDIFF(YEAR,a.NACIMIENTO,CURDATE()) "EDAD",                
+                CASE 
+                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
+                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
+                    ELSE  null
+                END 'EMPRESA'    ,
+                "A" as "perfil",
+                a.BAJA,
+                a.EDAD 'FALLE'
+                FROM adherent as a
+                INNER JOIN maestro as m on a.CONTRATO = m.CONTRATO                  
+                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
+                WHERE a.CONTRATO = ${req.query.ficha}
+                AND BAJA IS NULL
+
+    `;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(adh, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.query.f && req.query.f === "adh san miguel dni") {
+      const mutAdh = await SanMiguel.$queryRaw`
+            SELECT
+                a.CONTRATO, 
+                a.SUCURSAL, 
+                a.NRO_DOC, 
+                a.NACIMIENTO,             
+                a.SEXO,
+                a.APELLIDOS, 
+                a.NOMBRES, 
+                a.ALTA, 
+                a.VIGENCIA, 
+                a.NACIMIENTO,
+                m.GRUPO,
+                o.NOMBRE "OBRA_SOC",
+                o.CODIGO "COD_OBRA",                 
+                TIMESTAMPDIFF(YEAR,a.NACIMIENTO,CURDATE()) "EDAD",                
+                CASE 
+                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
+                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
+                    ELSE  null
+                END 'EMPRESA'    ,
+                "A" as "perfil",
+                a.EDAD 'FALLE'
+                FROM adherent as a
+                INNER JOIN maestro as m on a.CONTRATO = m.CONTRATO                  
+                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
+                WHERE a.NRO_DOC = ${req.query.dni}
+                AND BAJA IS NULL
+
+    `;
+
+      res
+        .status(200)
+        .json(
+          JSON.stringify(mutAdh, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
     } else if (req.query.f && req.query.f === "traer grupo") {
       const grup = await Werchow.$queryRaw`
             SELECT
@@ -503,6 +732,18 @@ export default async function handler(req, res) {
         });
 
         res.status(200).json(pagos);
+      } else if (req.query.empre === "SAN MIGUEL") {
+        const pagos = await SanMiguel.pagos.findMany({
+          where: {
+            CONTRATO: parseInt(req.query.ficha),
+            MOVIM: "P",
+          },
+          orderBy: {
+            DIA_PAG: "desc",
+          },
+        });
+
+        res.status(200).json(pagos);
       }
     } else if (req.query.f && req.query.f === "traer pagosb") {
       if (req.query.empre === "WERCHOW") {
@@ -517,6 +758,16 @@ export default async function handler(req, res) {
         res.status(200).json(pagos);
       } else if (req.query.empre === "MUTUAL") {
         const pagos = await Werchow.pago_bcom.findMany({
+          where: {
+            CONTRATO: parseInt(req.query.ficha),
+          },
+          orderBy: {
+            DIA_PAGO: "desc",
+          },
+        });
+        res.status(200).json(pagos);
+      } else if (req.query.empre === "SAN MIGUEL") {
+        const pagos = await SanMiguel.pago_bco.findMany({
           where: {
             CONTRATO: parseInt(req.query.ficha),
           },

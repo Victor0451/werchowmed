@@ -517,6 +517,12 @@ exports.Prisma.SubctaScalarFieldEnum = {
   id: 'id'
 };
 
+exports.Prisma.SucursalScalarFieldEnum = {
+  idsucursal: 'idsucursal',
+  sucursal: 'sucursal',
+  codigo: 'codigo'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -549,7 +555,8 @@ exports.Prisma.ModelName = {
   pacientes: 'pacientes',
   ausencias: 'ausencias',
   tareas: 'tareas',
-  subcta: 'subcta'
+  subcta: 'subcta',
+  sucursal: 'sucursal'
 };
 
 /**

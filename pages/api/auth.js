@@ -66,6 +66,7 @@ export default async function handler(req, res) {
                         campanas: user.campanas,
                         socios: user.socios,
                         sepelio: user.sepelio,
+                        contabilidad: user.contabilidad,
                         administracion: user.administracion,
                         createdAt: user.createdAt,
                         updatedAt: user.updatedAt,
