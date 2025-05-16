@@ -13,6 +13,7 @@ import moment from "moment";
 import toastr from "toastr";
 import AusenciasPrestadores from "../components/servicios/AusenciasPrestadores";
 import jsCookie from "js-cookie";
+import Router from "next/router";
 
 const home = () => {
   const { isLoading } = useUser();
@@ -20,92 +21,120 @@ const home = () => {
   const [visitas, guardarVisitas] = useState([]);
   const [detVisi, guardarDetVisi] = useState(null);
   const [listAusen, guardarAusen] = useState([]);
+  const [sucur, guardarSucur] = useState("");
 
   const traerInfo = async () => {
-    await axios
-      .get(`/api/turnos`, {
-        params: {
-          f: "turnos del dia",
-        },
-      })
-      .then((res) => {
-        if (res.data.length > 0) {
-          guardarListTurno(res.data);
-        } else if (res.data.length === 0) {
-          toastr.info(
-            "No hay turnos registrados para el dia de hoy",
+    if (!jsCookie.get("sucur")) {
+      toastr.error("NO TIENES SUCURSAL SELECCIONADA, INICIA SESION NUEVAMENTE");
+
+      jsCookie.remove("token");
+      jsCookie.remove("usuario");
+
+      setTimeout(() => {
+        Router.push("/");
+      }, 1500);
+    } else {
+      let suc = jsCookie.get("sucur");
+
+      if (suc === "W") {
+        guardarSucur("Casa Central");
+      } else if (suc === "L") {
+        guardarSucur("Palpala");
+      } else if (suc === "R") {
+        guardarSucur("Perico");
+      } else if (suc === "C") {
+        guardarSucur("El Carmen");
+      } else if (suc === "P") {
+        guardarSucur("San Pedro");
+      } else if (suc === "O") {
+        guardarSucur("Otero");
+      }
+
+      await axios
+        .get(`/api/turnos`, {
+          params: {
+            f: "turnos del dia",
+          },
+        })
+        .then((res) => {
+          if (res.data.length > 0) {
+            guardarListTurno(res.data);
+          } else if (res.data.length === 0) {
+            toastr.info(
+              "No hay turnos registrados para el dia de hoy",
+              "ATENCION"
+            );
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toastr.error(
+            "Ocurrio un error al traer el listado de turnos",
             "ATENCION"
           );
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toastr.error(
-          "Ocurrio un error al traer el listado de turnos",
-          "ATENCION"
-        );
-      });
+        });
 
-    await axios
-      .get(`/api/turnos`, {
-        params: {
-          f: "traer visitas planes",
-        },
-      })
-      .then((res) => {
-        if (res.data.length > 0) {
-          let evs = res.data;
+      await axios
+        .get(`/api/turnos`, {
+          params: {
+            f: "traer visitas planes",
+          },
+        })
+        .then((res) => {
+          if (res.data.length > 0) {
+            let evs = res.data;
 
-          let arr = [];
+            let arr = [];
 
-          for (let i = 0; i < evs.length; i++) {
-            let evarr = {
-              title: evs[i].title,
-              allDay: evs[i].allDay,
-              start: moment(evs[i].start).format("YYYY-MM-DD"),
-              end: moment(evs[i].end).format("YYYY-MM-DD"),
-              nvisita: evs[i].nvisita,
-              pago: evs[i].pago,
-            };
+            for (let i = 0; i < evs.length; i++) {
+              let evarr = {
+                title: evs[i].title,
+                allDay: evs[i].allDay,
+                start: moment(evs[i].start).format("YYYY-MM-DD"),
+                end: moment(evs[i].end).format("YYYY-MM-DD"),
+                nvisita: evs[i].nvisita,
+                pago: evs[i].pago,
+              };
 
-            if (evarr.allDay === 1) {
-              evarr.allDay = true;
-            } else if (evarr.allDay === 0) {
-              evarr.allDay = false;
+              if (evarr.allDay === 1) {
+                evarr.allDay = true;
+              } else if (evarr.allDay === 0) {
+                evarr.allDay = false;
+              }
+
+              arr.push(evarr);
+
+              guardarVisitas(arr);
             }
-
-            arr.push(evarr);
-
-            guardarVisitas(arr);
           }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-    await axios
-      .get(`/api/servicios`, {
-        params: {
-          f: "listado ausencias vigentes",
-        },
-      })
-      .then((res) => {
-        if (res.data.length !== 0) {
-          if (usu) {
-            parImpar(res.data, usu.perfil);
+      await axios
+        .get(`/api/servicios`, {
+          params: {
+            f: "listado ausencias vigentes",
+          },
+        })
+        .then((res) => {
+          if (res.data.length !== 0) {
+            if (usu) {
+              parImpar(res.data, usu.perfil);
+            }
           }
-        }
 
-        guardarAusen(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        toastr.error(
-          "Ocurrio un error al traer el listado de Ausencias",
-          "ATENCION"
-        );
-      });
+          guardarAusen(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          toastr.error(
+            "Ocurrio un error al traer el listado de Ausencias",
+            "ATENCION"
+          );
+        });
+    }
   };
 
   const eventSelected = (eventInfo) => {
@@ -171,6 +200,11 @@ const home = () => {
                       <u>Sistema de Servicios Medicos</u>
                     </strong>
                   </h2>
+                  <h4 className="mt-2 mb-4">
+                    <strong>
+                      <u>Estas en Sucursal</u>: {sucur}
+                    </strong>
+                  </h4>
                 </div>
                 <div className="col-md-4 d-flex justify-content-end">
                   <img src="/img/logo.png" className="mt-2 werchowlogo" />

@@ -14,6 +14,7 @@ import BuscarSocio from "../../components/servicios/BuscarSocio";
 import EmitirServicio from "../../components/servicios/EmitirServicio";
 import { registrarHistoria } from "../../utils/funciones";
 import ModalHistorialUsos from "../../components/servicios/ModalHistorialUsos";
+import jsCookie from "js-cookie";
 
 const Emision = () => {
   let contratoRef = React.createRef();
@@ -80,6 +81,7 @@ const Emision = () => {
   const [promos, guardarPromociones] = useState([]);
   const [historialUsos, guardarHistorialUsos] = useState([]);
   const [SM, guardarSM] = useState("");
+  const [sucur, guardarSucur] = useState("");
 
   const { usu } = useWerchow();
 
@@ -1186,7 +1188,7 @@ const Emision = () => {
 
   const registrarOrdenUsos = async () => {
     const uso = {
-      SUC: usu.sucursal,
+      SUC: sucur,
       ORDEN: nOrden,
       CONTRATO: socio.CONTRATO,
       NRO_ADH: socio.ADHERENTES,
@@ -1313,7 +1315,7 @@ const Emision = () => {
       DIAGNOSTIC: "",
       ATENCION: 0,
       NRO_DNI: socio.NRO_DOC,
-      SUC: usu.sucursal,
+      SUC: sucur,
       f: "reg consul",
     };
 
@@ -1490,7 +1492,7 @@ const Emision = () => {
 
   const registrarPracticaUso = async () => {
     const uso = {
-      SUC: usu.sucursal,
+      SUC: sucur,
       ORDEN: nOrden,
       CONTRATO: socio.CONTRATO,
       NRO_ADH: socio.ADHERENTES,
@@ -1550,7 +1552,7 @@ const Emision = () => {
   let regPractica = async (orden) => {
     for (let i = 0; i < pracSocio.length; i++) {
       const practi = {
-        SUC_PRA: usu.sucursal,
+        SUC_PRA: sucur,
         CONTRATO: socio.CONTRATO,
         NRO_DNI: socio.NRO_DOC,
         FECHA: moment().format("YYYY-MM-DD"),
@@ -1642,7 +1644,7 @@ const Emision = () => {
       );
     } else {
       const uso = {
-        SUC: usu.sucursal,
+        SUC: sucur,
         ORDEN: nOrden,
         CONTRATO: socio.CONTRATO,
         NRO_ADH: socio.ADHERENTES,
@@ -1716,7 +1718,7 @@ const Emision = () => {
       CAN_MEDI: 2,
       MATRICULA: 0,
       HABILITA: 1,
-      SUC: usu.sucursal,
+      SUC: sucur,
       f: "reg farmacia",
     };
 
@@ -1833,7 +1835,7 @@ const Emision = () => {
 
   const registrarEnfermeriaUso = async () => {
     const uso = {
-      SUC: usu.sucursal,
+      SUC: sucur,
       ORDEN: nOrden,
       CONTRATO: socio.CONTRATO,
       NRO_ADH: socio.ADHERENTES,
@@ -1890,7 +1892,7 @@ const Emision = () => {
 
   let regEnfermeria = async (orden) => {
     const enfer = {
-      SUC: usu.sucursal,
+      SUC: sucur,
       CONTRATO: socio.CONTRATO,
       FECHA: moment().format("YYYY-MM-DD"),
       HORA: moment().format("HH:mm"),
@@ -2260,7 +2262,7 @@ const Emision = () => {
   };
 
   const traerNOrden = async (suc) => {
-    if (suc) {
+    if (sucur) {
       await axios
         .get(`/api/servicios`, {
           params: {
@@ -2271,7 +2273,7 @@ const Emision = () => {
           setTimeout(() => {
             if (!res.data[0]) {
             } else {
-              guardarNorden(`${suc}-${res.data[0].iduso + 1}`);
+              guardarNorden(`${sucur}-${res.data[0].iduso + 1}`);
             }
           }, 500);
         })
@@ -2636,6 +2638,11 @@ const Emision = () => {
   };
 
   const traerInfo = () => {
+    if (jsCookie.get("sucur")) {
+      let suc = jsCookie.get("sucur");
+      guardarSucur(suc);
+    }
+
     traerSucursales();
     traerEspecialidades();
     traerFarmacias();
@@ -2662,6 +2669,7 @@ const Emision = () => {
             <Layout>
               {flag === false ? (
                 <BuscarSocio
+                  sucur={sucur}
                   ficha={ficha}
                   contratoRef={contratoRef}
                   dniRef={dniRef}
