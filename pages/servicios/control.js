@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../components/layout/Layout";
+import useUser from "../../hook/useUser";
+import useWerchow from "../../hook/useWerchow";
+import useSWR from "swr";
+import { Skeleton } from "../../components/layout/Skeleton";
 import Redirect from "../../components/auth/RedirectToLogin";
-import moment from "moment";
 import axios from "axios";
 import jsCookie from "js-cookie";
 import toastr from "toastr";
@@ -14,6 +17,10 @@ import ListadoControlConsultasMedicos from "../../components/servicios/ListadoCo
 import ListadoControlUsosPorPrestador from "../../components/servicios/ListadoControlUsosPorPrestador";
 
 const Control = () => {
+  const { usu } = useWerchow();
+
+  const { isLoading } = useUser();
+
   let desdeRef = React.createRef();
   let hastaRef = React.createRef();
   let desdeRef2 = React.createRef();
@@ -24,33 +31,32 @@ const Control = () => {
   let hastaRef4 = React.createRef();
   let servicioRef = React.createRef();
   let medicoRef = React.createRef();
+  let sucursalRef = React.createRef();
 
-  const [user, guardarUsuario] = useState(null);
   const [medicos, guardarMedicos] = useState(null);
   const [listado, guardarListado] = useState(null);
-  const [listadoFa, guardarListadoFa] = useState(null);
   const [listado2, guardarListado2] = useState(null);
-  const [listadoFa2, guardarListadoFa2] = useState(null);
   const [listado3, guardarListado3] = useState(null);
-  const [listadoFa3, guardarListadoFa3] = useState(null);
   const [errores, guardarErrores] = useState(null);
   const [rango, guardarRango] = useState([]);
+  const [sucursales, guardarSucursales] = useState(null);
+  const [sucur, guardarSucur] = useState("");
 
   const traerListado = async () => {
     guardarListado(null);
     guardarListado2(null);
     guardarListado3(null);
-    guardarListadoFa(null);
-    guardarListadoFa2(null);
-    guardarListadoFa3(null);
 
     let desde = desdeRef.current.value;
     let hasta = hastaRef.current.value;
+    let sucur = sucursalRef.current.value;
 
     if (desde === "" || hasta === "") {
       guardarErrores("Los campos DESDE y HASTA no deben estar vacios");
     } else if (desde > hasta) {
       guardarErrores("El campo DESDE no puede ser mayor que el campo HASTA");
+    } else if (sucur === "no") {
+      guardarErrores("Debes seleccionar la sucursal");
     } else {
       let rango = {
         desde: desde,
@@ -59,54 +65,41 @@ const Control = () => {
 
       guardarRango(rango);
 
+      if (sucur === "W") {
+        guardarSucur("Casa Central");
+      } else if (sucur === "O") {
+        guardarSucur("Otero");
+      } else if (sucur === "L") {
+        guardarSucur("Palpala");
+      } else if (sucur === "R") {
+        guardarSucur("Perico");
+      } else if (sucur === "C") {
+        guardarSucur("El Carmen");
+      } else if (sucur === "P") {
+        guardarSucur("San Pedro");
+      } else if (sucur === "SM") {
+        guardarSucur("San Miguel");
+      }
+
       await axios
-        .get(`${ip}api/sgi/servicios/buscarordenes`, {
+        .get(`/api/servicios`, {
           params: {
+            f: "listado por sucursal",
             desde: desde,
             hasta: hasta,
+            sucur: sucur,
           },
         })
         .then((res) => {
-          if (res.data.length > 0) {
-            guardarListado(res.data);
-
-            toastr.success("Listado encontrado", "ATENCION");
-          } else if (res.data.length === 0) {
-            toastr.info(
-              "No se encuentran ordenes para este rango de fechas en el sistema de Otero",
-              "ATENCION"
-            );
-          }
+          console.log(res.data);
+          guardarListado(res.data);
         })
         .catch((error) => {
           console.log(error);
-
-          toastr.error("Ocurrio un error al buscar el listado", "ATENCION");
-        });
-
-      await axios
-        .get(`${ip}api/sgi/servicios/buscarordenesfa`, {
-          params: {
-            desde: desde,
-            hasta: hasta,
-          },
-        })
-        .then((res) => {
-          if (res.data.length > 0) {
-            guardarListadoFa(res.data);
-
-            toastr.success("Listado encontrado", "ATENCION");
-          } else if (res.data.length === 0) {
-            toastr.info(
-              "No se encuentran ordenes para este rango de fechas en el sistema de Casa Central",
-              "ATENCION"
-            );
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-
-          toastr.error("Ocurrio un error al buscar el listado", "ATENCION");
+          toastr.info(
+            "No se encuentran ordenes para este rango de fechas en el sistema de Otero",
+            "ATENCION"
+          );
         });
     }
   };
@@ -114,8 +107,6 @@ const Control = () => {
   const traerListadoConsultasMedicos = async () => {
     guardarListado(null);
     guardarListado2(null);
-    guardarListadoFa(null);
-    guardarListadoFa2(null);
 
     let desde = desdeRef2.current.value;
     let hasta = hastaRef2.current.value;
@@ -161,32 +152,6 @@ const Control = () => {
 
           toastr.error("Ocurrio un error al buscar el listado", "ATENCION");
         });
-
-      await axios
-        .get(`${ip}api/sgi/servicios/buscaconsultaspormedicofa`, {
-          params: {
-            medico: medico,
-            desde: desde,
-            hasta: hasta,
-          },
-        })
-        .then((res) => {
-          if (res.data.length > 0) {
-            guardarListadoFa2(res.data);
-
-            toastr.success("Listado encontrado", "ATENCION");
-          } else if (res.data.length === 0) {
-            toastr.info(
-              "No se encuentran ordenes para este rango de fechas en el sistema de Casa Central",
-              "ATENCION"
-            );
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-
-          toastr.error("Ocurrio un error al buscar el listado", "ATENCION");
-        });
     }
   };
 
@@ -194,9 +159,6 @@ const Control = () => {
     guardarListado(null);
     guardarListado2(null);
     guardarListado3(null);
-    guardarListadoFa(null);
-    guardarListadoFa2(null);
-    guardarListadoFa3(null);
 
     let desde = desdeRef3.current.value;
     let hasta = hastaRef3.current.value;
@@ -242,37 +204,10 @@ const Control = () => {
 
           toastr.error("Ocurrio un error al buscar el listado", "ATENCION");
         });
-
-      await axios
-        .get(`${ip}api/sgi/servicios/buscausosporprestadorfa`, {
-          params: {
-            desde: desde,
-            hasta: hasta,
-            servicio: servicio,
-          },
-        })
-        .then((res) => {
-          if (res.data.length > 0) {
-            console.log(res.data);
-            guardarListadoFa3(res.data);
-
-            toastr.success("Listado encontrado", "ATENCION");
-          } else if (res.data.length === 0) {
-            toastr.info(
-              "No se encuentran ordenes para este rango de fechas en el sistema de Casa Central",
-              "ATENCION"
-            );
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-
-          toastr.error("Ocurrio un error al buscar el listado", "ATENCION");
-        });
     }
   };
 
-  const traerMedicos = async (f) => {
+  const traerInfo = async (f) => {
     await axios
       .get(`${ip}api/sgi/servicios/traermedicostodos`)
       .then((res) => {
@@ -282,6 +217,23 @@ const Control = () => {
         console.log(error);
         toastr.error(
           "Ocurrio un error al traer el listado de Especialidades",
+          "ATENCION"
+        );
+      });
+
+    await axios
+      .get(`/api/servicios`, {
+        params: {
+          f: "traer sucursales",
+        },
+      })
+      .then((res) => {
+        guardarSucursales(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        toastr.error(
+          "Ocurrio un error al traer el listado de sucursales",
           "ATENCION"
         );
       });
@@ -306,7 +258,7 @@ const Control = () => {
 
     if (campo === "VALOR") {
       for (let i = 0; i < arr.length; i++) {
-        total += parseFloat(arr[i].VALOR);
+        total += parseFloat(arr[i].IMPORTE);
       }
 
       return total.toFixed(2);
@@ -337,148 +289,77 @@ const Control = () => {
     }
   };
 
-  let token = jsCookie.get("token");
+  useSWR("/api/servicios", traerInfo);
 
-  useEffect(() => {
-    if (!token) {
-      Router.push("/redirect");
-    } else {
-      let usuario = jsCookie.get("usuario");
-
-      if (usuario) {
-        let userData = JSON.parse(usuario);
-        guardarUsuario(userData.usuario);
-      }
-
-      traerMedicos();
-    }
-  }, []);
+  if (isLoading === true) return <Skeleton />;
 
   return (
-    <Layout>
-      <FormControlOrdenes
-        traerListado={traerListado}
-        traerListadoConsultasMedicos={traerListadoConsultasMedicos}
-        traerUsosPorPrestador={traerUsosPorPrestador}
-        desdeRef={desdeRef}
-        hastaRef={hastaRef}
-        errores={errores}
-        medicos={medicos}
-        medicoRef={medicoRef}
-        desdeRef2={desdeRef2}
-        hastaRef2={hastaRef2}
-        desdeRef3={desdeRef3}
-        hastaRef3={hastaRef3}
-        desdeRef4={desdeRef4}
-        hastaRef4={hastaRef4}
-        servicioRef={servicioRef}
-      />
+    <>
+      <>
+        {!usu ? (
+          <Layout>
+            <Redirect />
+          </Layout>
+        ) : usu ? (
+          <>
+            <Layout>
+              <FormControlOrdenes
+                traerListado={traerListado}
+                traerListadoConsultasMedicos={traerListadoConsultasMedicos}
+                traerUsosPorPrestador={traerUsosPorPrestador}
+                desdeRef={desdeRef}
+                hastaRef={hastaRef}
+                errores={errores}
+                medicos={medicos}
+                medicoRef={medicoRef}
+                desdeRef2={desdeRef2}
+                hastaRef2={hastaRef2}
+                desdeRef3={desdeRef3}
+                hastaRef3={hastaRef3}
+                desdeRef4={desdeRef4}
+                hastaRef4={hastaRef4}
+                servicioRef={servicioRef}
+                sucursalRef={sucursalRef}
+                sucursales={sucursales}
+              />
 
-      {listado && listadoFa ? (
-        <div className="container alert alert-info mt-4 mb-4 border border-dark text-uppercase text-center">
-          <strong>
-            Resumen Total: Ordenes = {listado.length + listadoFa.length} ||
-            Valor = $
-            {parseFloat(calcTotales(listado, "VALOR")) +
-              parseFloat(calcTotales(listadoFa, "VALOR"))}{" "}
-            || Coseguro = $
-            {parseFloat(calcTotales(listado, "COSEGURO")) +
-              parseFloat(calcTotales(listadoFa, "COSEGURO"))}{" "}
-            || Werchow = $
-            {parseFloat(calcTotales(listado, "WERCHOW")) +
-              parseFloat(calcTotales(listadoFa, "WERCHOW"))}
-          </strong>
-        </div>
-      ) : null}
+              {listado ? (
+                <>
+                  <ListadoControlOrdenes
+                    titulo={"Listado de Ordenes Otero"}
+                    listado={listado}
+                    rango={rango}
+                    imprimir={imprimir}
+                    calcTotales={calcTotales}
+                    sucur={sucur}
+                  />
+                </>
+              ) : null}
 
-      {listado2 && listadoFa2 ? (
-        <div className="container alert alert-info mt-4 mb-4 border border-dark text-uppercase text-center">
-          <strong>
-            Resumen Total: Ordenes = {listado2.length + listadoFa2.length} ||
-            Valor = $
-            {parseFloat(calcTotales(listado2, "VALOR")) +
-              parseFloat(calcTotales(listadoFa2, "VALOR"))}{" "}
-            || Coseguro = $
-            {parseFloat(calcTotales(listado2, "COSEGURO")) +
-              parseFloat(calcTotales(listadoFa2, "COSEGURO"))}{" "}
-            || Werchow = $
-            {parseFloat(calcTotales(listado2, "WERCHOW")) +
-              parseFloat(calcTotales(listadoFa2, "WERCHOW"))}
-          </strong>
-        </div>
-      ) : null}
+              {listado2 ? (
+                <ListadoControlConsultasMedicos
+                  titulo={"Listado de Ordenes Otero"}
+                  listado={listado2}
+                  rango={rango}
+                  imprimir={imprimir}
+                  calcTotales={calcTotales}
+                />
+              ) : null}
 
-      {listado3 && listadoFa3 ? (
-        <div className="container alert alert-info mt-4 mb-4 border border-dark text-uppercase text-center">
-          <strong>
-            Resumen Total: Usos ={" "}
-            {parseFloat(calcTotales(listado3, "USOS")) +
-              parseFloat(calcTotales(listadoFa3, "USOS"))}{" "}
-            || Importe = $
-            {parseFloat(calcTotales(listado3, "IMPORTE")) +
-              parseFloat(calcTotales(listadoFa3, "IMPORTE"))}
-          </strong>
-        </div>
-      ) : null}
-
-      {listado ? (
-        <ListadoControlOrdenes
-          titulo={"Listado de Ordenes Otero"}
-          listado={listado}
-          rango={rango}
-          imprimir={imprimir}
-        />
-      ) : null}
-
-      {listadoFa ? (
-        <ListadoControlOrdenes
-          titulo={"Listado de Ordenes Casa Central y Sucursales"}
-          listado={listadoFa}
-          rango={rango}
-          imprimir={imprimir}
-        />
-      ) : null}
-
-      {listado2 ? (
-        <ListadoControlConsultasMedicos
-          titulo={"Listado de Ordenes Otero"}
-          listado={listado2}
-          rango={rango}
-          imprimir={imprimir}
-          calcTotales={calcTotales}
-        />
-      ) : null}
-
-      {listadoFa2 ? (
-        <ListadoControlConsultasMedicos
-          titulo={"Listado de Ordenes Casa Central y Sucursales"}
-          listado={listadoFa2}
-          rango={rango}
-          imprimir={imprimir}
-          calcTotales={calcTotales}
-        />
-      ) : null}
-
-      {listado3 ? (
-        <ListadoControlUsosPorPrestador
-          titulo={"Listado de Ordenes Otero"}
-          listado={listado3}
-          rango={rango}
-          imprimir={imprimir}
-          calcTotales={calcTotales}
-        />
-      ) : null}
-
-      {listadoFa3 ? (
-        <ListadoControlUsosPorPrestador
-          titulo={"Listado de Ordenes Casa Central y Sucursales"}
-          listado={listadoFa3}
-          rango={rango}
-          imprimir={imprimir}
-          calcTotales={calcTotales}
-        />
-      ) : null}
-    </Layout>
+              {listado3 ? (
+                <ListadoControlUsosPorPrestador
+                  titulo={"Listado de Ordenes Otero"}
+                  listado={listado3}
+                  rango={rango}
+                  imprimir={imprimir}
+                  calcTotales={calcTotales}
+                />
+              ) : null}
+            </Layout>
+          </>
+        ) : null}
+      </>
+    </>
   );
 };
 
