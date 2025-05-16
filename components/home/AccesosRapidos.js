@@ -119,6 +119,19 @@ const AccesosRapidos = ({ usu }) => {
           {usu.perfil === 1 || usu.perfil === 3 ? (
             <>
               <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
+                <div className="card-header">Listado de Control.</div>
+                <div className="card-body">
+                  <a
+                    className="btn btn-primary btn-block "
+                    href="/servicios/control"
+                  >
+                    Ver Listado
+                  </a>
+                  <p className="card-text mt-2">Generar Listados de Control</p>
+                </div>
+              </div>
+
+              <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
                 <div className="card-header">Listado Cajas Generadas.</div>
                 <div className="card-body">
                   <a
@@ -130,6 +143,7 @@ const AccesosRapidos = ({ usu }) => {
                   <p className="card-text mt-2">Listado de Cajas generadas</p>
                 </div>
               </div>
+
               <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
                 <div className="card-header">Portal Prestador</div>
                 <div className="card-body">

@@ -56,6 +56,11 @@ const Adimn = ({ userData }) => {
       {userData.perfil === 1 || userData.perfil === 3 ? (
         <>
           <li>
+            <a href="/servicios/control" className="nav-link dropdown-toggle">
+              List. Control
+            </a>
+          </li>
+          <li>
             <a
               href="/servicios/listadocajas"
               className="nav-link dropdown-toggle"
