@@ -4,6 +4,7 @@ const LoginUsuario = ({
   iniciarSesion,
   usuarioRef,
   contrasenaRef,
+  SucursalRef,
   errores,
   alertas,
 }) => {
@@ -14,7 +15,11 @@ const LoginUsuario = ({
       </h1>
       <div className="row  ">
         <div className="form-group col-md-12">
-          <label>Usuario</label>
+          <label>
+            <b>
+              <u>Usuario</u>:
+            </b>
+          </label>
           <input
             type="text"
             className="form-control"
@@ -25,7 +30,11 @@ const LoginUsuario = ({
         </div>
 
         <div className="form-group col-md-12">
-          <label>Contraseña</label>
+          <label>
+            <b>
+              <u>Contraseña</u>:
+            </b>
+          </label>
           <input
             type="password"
             className="form-control"
@@ -33,6 +42,29 @@ const LoginUsuario = ({
             name="contrasena"
             ref={contrasenaRef}
           />
+        </div>
+
+        <div className="form-group col-md-12">
+          <label>
+            <b>
+              <u>Sucursal en la que te encuentras</u>:
+            </b>
+          </label>
+
+          <select className="custom-select" ref={SucursalRef}>
+            <option value="no">Selecciona una opcion</option>
+            <option value={"W"}>Casa Central</option>
+            <option value={"L"}>Palpala</option>
+            <option value={"R"}>Perico</option>
+            <option value={"C"}>El Carmen</option>
+            <option value={"O"}>Clinica Otero</option>
+          </select>
+        </div>
+
+        <div className=" form-group text-center alert alert-info border border-dark ">
+          Para poder gestionar mejor la producción de cada operador sobre todo
+          en caso de rotaciones y coberturas de personal, ahora debes
+          seleccionar la sucursal en donde estas trabajando o te toca cubrir.
         </div>
 
         <div className="col-md-12">

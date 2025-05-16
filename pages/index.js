@@ -9,6 +9,7 @@ import toastr from "toastr";
 const Login = () => {
   let usuarioRef = React.createRef();
   let contrasenaRef = React.createRef();
+  let SucursalRef = React.createRef();
 
   const [errores, guardarErrores] = useState(false);
   const [alertas, guardarAlertas] = useState(null);
@@ -17,12 +18,19 @@ const Login = () => {
     guardarErrores(null);
     let usuario = usuarioRef.current.value;
     let contrasena = contrasenaRef.current.value;
+    let sucur = SucursalRef.current.value;
 
     if (usuario === "") {
       guardarErrores("Debes ingresar un nombre de usuario");
     } else if (contrasena === "") {
       guardarErrores("Debes ingresar una contraseña");
+    } else if ((sucur === "no")) {
+      guardarErrores(
+        "Debes seleccionar la sucursal en la que estas trabajando"
+      );
     } else {
+      jsCookie.set("sucur", sucur);
+
       try {
         //headers
         const config = {
@@ -74,6 +82,7 @@ const Login = () => {
       <LoginUsuario
         usuarioRef={usuarioRef}
         contrasenaRef={contrasenaRef}
+        SucursalRef={SucursalRef}
         errores={errores}
         iniciarSesion={iniciarSesion}
         alertas={alertas}
