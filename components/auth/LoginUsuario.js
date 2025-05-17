@@ -54,17 +54,18 @@ const LoginUsuario = ({
           <select className="custom-select" ref={SucursalRef}>
             <option value="no">Selecciona una opcion</option>
             <option value={"W"}>Casa Central</option>
+            <option value={"O"}>Clinica Otero</option>
             <option value={"L"}>Palpala</option>
             <option value={"R"}>Perico</option>
             <option value={"C"}>El Carmen</option>
-            <option value={"O"}>Clinica Otero</option>
+            <option value={"P"}>San Pedro</option>
           </select>
         </div>
 
         <div className=" form-group text-center alert alert-info border border-dark ">
-          Para poder gestionar mejor la producción de cada operador sobre todo
-          en caso de rotaciones y coberturas de personal, ahora debes
-          seleccionar la sucursal en donde estas trabajando o te toca cubrir.
+          Para poder gestionar mejor la producción de cada operador en caso de
+          rotaciones y coberturas de personal, deberás seleccionar la sucursal
+          en donde te encuentras trabajando.
         </div>
 
         <div className="col-md-12">
