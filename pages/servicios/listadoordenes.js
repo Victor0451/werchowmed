@@ -10,6 +10,7 @@ import toastr from "toastr";
 import Router, { useRouter } from "next/router";
 import ListadoOrdenesEmitidas from "../../components/servicios/ListadoOrdenesEmitidas";
 import { confirmAlert } from "react-confirm-alert";
+import Restringed from "../../components/auth/Restringed";
 
 const listadoordenes = () => {
   let fechaRef = React.createRef();
@@ -190,22 +191,28 @@ const listadoordenes = () => {
         </Layout>
       ) : usu ? (
         <>
-          <Layout>
-            <ListadoOrdenesEmitidas
-              fechaRef={fechaRef}
-              ordenesDelDia={ordenesDelDia}
-              errores={errores}
-              resu={resu}
-              listado={listado}
-              totalImporte={totalImporte}
-              guardarResu={guardarResu}
-              traerOrdenesEmitidas={traerOrdenesEmitidas}
-              generarImpresion={generarImpresion}
-              anularOrdenes={anularOrdenes}
-              user={usu.usuario}
-              perfil={usu.perfil}
-            />
-          </Layout>
+          {usu.perfil === 1 || usu.perfil === 3 ? (
+            <Layout>
+              <ListadoOrdenesEmitidas
+                fechaRef={fechaRef}
+                ordenesDelDia={ordenesDelDia}
+                errores={errores}
+                resu={resu}
+                listado={listado}
+                totalImporte={totalImporte}
+                guardarResu={guardarResu}
+                traerOrdenesEmitidas={traerOrdenesEmitidas}
+                generarImpresion={generarImpresion}
+                anularOrdenes={anularOrdenes}
+                user={usu.usuario}
+                perfil={usu.perfil}
+              />
+            </Layout>
+          ) : (
+            <Layout>
+              <Restringed />
+            </Layout>
+          )}
         </>
       ) : null}
     </>

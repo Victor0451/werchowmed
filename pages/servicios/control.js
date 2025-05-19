@@ -15,6 +15,7 @@ import FormControlOrdenes from "../../components/servicios/FormControlOrdenes";
 import ListadoControlOrdenes from "../../components/servicios/ListadoControlOrdenes";
 import ListadoControlConsultasMedicos from "../../components/servicios/ListadoControlConsultasMedicos";
 import ListadoControlUsosPorPrestador from "../../components/servicios/ListadoControlUsosPorPrestador";
+import Restringed from "../../components/auth/Restringed";
 
 const Control = () => {
   const { usu } = useWerchow();
@@ -302,60 +303,66 @@ const Control = () => {
           </Layout>
         ) : usu ? (
           <>
-            <Layout>
-              <FormControlOrdenes
-                traerListado={traerListado}
-                traerListadoConsultasMedicos={traerListadoConsultasMedicos}
-                traerUsosPorPrestador={traerUsosPorPrestador}
-                desdeRef={desdeRef}
-                hastaRef={hastaRef}
-                errores={errores}
-                medicos={medicos}
-                medicoRef={medicoRef}
-                desdeRef2={desdeRef2}
-                hastaRef2={hastaRef2}
-                desdeRef3={desdeRef3}
-                hastaRef3={hastaRef3}
-                desdeRef4={desdeRef4}
-                hastaRef4={hastaRef4}
-                servicioRef={servicioRef}
-                sucursalRef={sucursalRef}
-                sucursales={sucursales}
-              />
+            {usu.perfil === 1 || usu.perfil === 3 ? (
+              <Layout>
+                <FormControlOrdenes
+                  traerListado={traerListado}
+                  traerListadoConsultasMedicos={traerListadoConsultasMedicos}
+                  traerUsosPorPrestador={traerUsosPorPrestador}
+                  desdeRef={desdeRef}
+                  hastaRef={hastaRef}
+                  errores={errores}
+                  medicos={medicos}
+                  medicoRef={medicoRef}
+                  desdeRef2={desdeRef2}
+                  hastaRef2={hastaRef2}
+                  desdeRef3={desdeRef3}
+                  hastaRef3={hastaRef3}
+                  desdeRef4={desdeRef4}
+                  hastaRef4={hastaRef4}
+                  servicioRef={servicioRef}
+                  sucursalRef={sucursalRef}
+                  sucursales={sucursales}
+                />
 
-              {listado ? (
-                <>
-                  <ListadoControlOrdenes
+                {listado ? (
+                  <>
+                    <ListadoControlOrdenes
+                      titulo={"Listado de Ordenes Otero"}
+                      listado={listado}
+                      rango={rango}
+                      imprimir={imprimir}
+                      calcTotales={calcTotales}
+                      sucur={sucur}
+                    />
+                  </>
+                ) : null}
+
+                {listado2 ? (
+                  <ListadoControlConsultasMedicos
                     titulo={"Listado de Ordenes Otero"}
-                    listado={listado}
+                    listado={listado2}
                     rango={rango}
                     imprimir={imprimir}
                     calcTotales={calcTotales}
-                    sucur={sucur}
                   />
-                </>
-              ) : null}
+                ) : null}
 
-              {listado2 ? (
-                <ListadoControlConsultasMedicos
-                  titulo={"Listado de Ordenes Otero"}
-                  listado={listado2}
-                  rango={rango}
-                  imprimir={imprimir}
-                  calcTotales={calcTotales}
-                />
-              ) : null}
-
-              {listado3 ? (
-                <ListadoControlUsosPorPrestador
-                  titulo={"Listado de Ordenes Otero"}
-                  listado={listado3}
-                  rango={rango}
-                  imprimir={imprimir}
-                  calcTotales={calcTotales}
-                />
-              ) : null}
-            </Layout>
+                {listado3 ? (
+                  <ListadoControlUsosPorPrestador
+                    titulo={"Listado de Ordenes Otero"}
+                    listado={listado3}
+                    rango={rango}
+                    imprimir={imprimir}
+                    calcTotales={calcTotales}
+                  />
+                ) : null}
+              </Layout>
+            ) : (
+              <Layout>
+                <Restringed />
+              </Layout>
+            )}
           </>
         ) : null}
       </>
