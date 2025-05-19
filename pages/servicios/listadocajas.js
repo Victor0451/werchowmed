@@ -12,6 +12,7 @@ import toastr from "toastr";
 import Router, { useRouter } from "next/router";
 import ListadoCajasGeneradas from "../../components/caja/ListadoCajasGeneradas";
 import ModalImprimirCaja from "../../components/caja/ModalImprimirCaja";
+import Restringed from "../../components/auth/Restringed";
 
 const ListadoCajas = () => {
   const [cajas, guardarCajas] = useState(null);
@@ -131,22 +132,38 @@ const ListadoCajas = () => {
   if (isLoading === true) return <Skeleton />;
 
   return (
-    <Layout>
-      <ListadoCajasGeneradas
-        listado={cajas}
-        traerMovimientos={traerMovimientos}
-        traerListadoControl={traerListadoControl}
-      />
+    <>
+      {!usu ? (
+        <Layout>
+          <Redirect />
+        </Layout>
+      ) : usu ? (
+        <>
+          {usu.perfil === 1 || usu.perfil === 3 ? (
+            <Layout>
+              <ListadoCajasGeneradas
+                listado={cajas}
+                traerMovimientos={traerMovimientos}
+                traerListadoControl={traerListadoControl}
+              />
 
-      <ModalImprimirCaja
-        ingresos={ingresos}
-        egresos={egresos}
-        calcTotal={calcTotal}
-        imprimir={imprimir}
-        listControl={listControl}
-        fec={fec}
-      />
-    </Layout>
+              <ModalImprimirCaja
+                ingresos={ingresos}
+                egresos={egresos}
+                calcTotal={calcTotal}
+                imprimir={imprimir}
+                listControl={listControl}
+                fec={fec}
+              />
+            </Layout>
+          ) : (
+            <Layout>
+              <Restringed />
+            </Layout>
+          )}
+        </>
+      ) : null}
+    </>
   );
 };
 
