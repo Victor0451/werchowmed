@@ -4,7 +4,6 @@ import Link from "next/link";
 const FormControlOrdenes = ({
   traerListado,
   traerListadoConsultasMedicos,
-  traerUsosPorPrestador,
   desdeRef,
   hastaRef,
   errores,
@@ -12,16 +11,13 @@ const FormControlOrdenes = ({
   medicoRef,
   desdeRef2,
   hastaRef2,
-  desdeRef3,
-  hastaRef3,
-  servicioRef,
   sucursales,
   sucursalRef,
 }) => {
   return (
     <div className="container border border-dark mt-4 p-4 list">
       <h2>
-        <u>Reportes de Control Servicios Medicos Otero</u>
+        <u>Reportes de Control</u>
       </h2>
 
       <div className="mt-4 accordion" id="accordionExample">
@@ -118,7 +114,7 @@ const FormControlOrdenes = ({
             </div>
           </div>
         </div>
-        {/* <div className="card">
+        <div className="card">
           <div className="card-header" id="headingTwo">
             <h2 className="mb-0">
               <button
@@ -155,7 +151,7 @@ const FormControlOrdenes = ({
                         <option value="no">Selecciona una opcion</option>
                         {medicos.map((m, index) => (
                           <option key={index} value={m.COD_PRES}>
-                            {m.NOMBRE}
+                            {m.NOMBRE} - {m.LIS_ESPE} - {m.SUC}
                           </option>
                         ))}
                       </select>
@@ -186,15 +182,6 @@ const FormControlOrdenes = ({
                     />
                   </div>
 
-                  <div className="col-md-4 mt-2">
-                    <button
-                      className="btn btn-primary mt-4"
-                      onClick={traerListadoConsultasMedicos}
-                    >
-                      Buscar
-                    </button>
-                  </div>
-
                   <div className="col-md-12 mt-2">
                     {errores ? (
                       <div className="border border-dark alert alert-danger text-center text-uppercase mt-4 mb-4">
@@ -202,95 +189,24 @@ const FormControlOrdenes = ({
                       </div>
                     ) : null}
                   </div>
+                </div>
+                <div className="d-flex justify-content-end">
+                  <button
+                    className="btn btn-primary mt-4"
+                    onClick={traerListadoConsultasMedicos}
+                  >
+                    Buscar
+                  </button>
+                  <Link href="/">
+                    <button className="btn btn-danger mt-4 ml-1">
+                      Cancelar
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="card">
-          <div className="card-header" id="headingThree">
-            <h2 className="mb-0">
-              <button
-                className="btn btn-block text-left collapsed"
-                type="button"
-                data-toggle="collapse"
-                data-target="#collapseThree"
-                aria-expanded="false"
-                aria-controls="collapseThree"
-              >
-                <strong>Cantidad de Usos por Prestador y Fecha</strong>
-              </button>
-            </h2>
-          </div>
-          <div
-            id="collapseThree"
-            className="collapse"
-            aria-labelledby="headingThree"
-            data-parent="#accordionExample"
-          >
-            <div className="card-body">
-              <div className="alert alert-info border border-dark text-center text-uppercase mt-4 mb-4">
-                Selecciona un rango de fechas para visualizar las ordenes
-                emitidas en el mismo.
-              </div>
-
-              <div className="border border-dark mt-4 mb-4 p-4">
-                <div className="row">
-                  <div className="col-md-4">
-                    <label>Desde</label>
-
-                    <input
-                      className="form-control"
-                      type="date"
-                      ref={desdeRef3}
-                    />
-                  </div>
-
-                  <div className="col-md-4">
-                    <label>Hasta</label>
-
-                    <input
-                      className="form-control"
-                      type="date"
-                      ref={hastaRef3}
-                    />
-                  </div>
-
-                  <div className="col-md-4">
-                    <label>Servicio Medico</label>
-
-                    <select
-                      className="form-control"
-                      defaultValue={"no"}
-                      ref={servicioRef}
-                    >
-                      <option value={"no"}>Eligue una opcion...</option>
-                      <option value={"ORDE"}>Ordenes Medicas</option>
-                      <option value={"P"}>Practicas Medicas</option>
-                    </select>
-                  </div>
-
-                  <div className="col-md-4 mt-2">
-                    <button
-                      className="btn btn-primary mt-4"
-                      onClick={traerUsosPorPrestador}
-                    >
-                      Buscar
-                    </button>
-                  </div>
-
-                  <div className="col-md-12 mt-2">
-                    {errores ? (
-                      <div className="border border-dark alert alert-danger text-center text-uppercase mt-4 mb-4">
-                        {errores}
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> */}
       </div>
     </div>
   );

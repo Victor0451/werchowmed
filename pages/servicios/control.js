@@ -26,18 +26,12 @@ const Control = () => {
   let hastaRef = React.createRef();
   let desdeRef2 = React.createRef();
   let hastaRef2 = React.createRef();
-  let desdeRef3 = React.createRef();
-  let hastaRef3 = React.createRef();
-  let desdeRef4 = React.createRef();
-  let hastaRef4 = React.createRef();
-  let servicioRef = React.createRef();
   let medicoRef = React.createRef();
   let sucursalRef = React.createRef();
 
   const [medicos, guardarMedicos] = useState(null);
   const [listado, guardarListado] = useState(null);
   const [listado2, guardarListado2] = useState(null);
-  const [listado3, guardarListado3] = useState(null);
   const [errores, guardarErrores] = useState(null);
   const [rango, guardarRango] = useState([]);
   const [sucursales, guardarSucursales] = useState(null);
@@ -46,7 +40,6 @@ const Control = () => {
   const traerListado = async () => {
     guardarListado(null);
     guardarListado2(null);
-    guardarListado3(null);
 
     let desde = desdeRef.current.value;
     let hasta = hastaRef.current.value;
@@ -92,7 +85,6 @@ const Control = () => {
           },
         })
         .then((res) => {
-          console.log(res.data);
           guardarListado(res.data);
         })
         .catch((error) => {
@@ -129,11 +121,12 @@ const Control = () => {
       guardarRango(rango);
 
       await axios
-        .get(`${ip}api/sgi/servicios/buscaconsultaspormedico`, {
+        .get(`/api/servicios`, {
           params: {
             medico: medico,
             desde: desde,
             hasta: hasta,
+            f: "listado por prestador",
           },
         })
         .then((res) => {
@@ -156,68 +149,20 @@ const Control = () => {
     }
   };
 
-  const traerUsosPorPrestador = async () => {
-    guardarListado(null);
-    guardarListado2(null);
-    guardarListado3(null);
-
-    let desde = desdeRef3.current.value;
-    let hasta = hastaRef3.current.value;
-    let servicio = servicioRef.current.value;
-
-    if (desde === "" || hasta === "") {
-      guardarErrores("Los campos DESDE y HASTA no deben estar vacios");
-    } else if (desde > hasta) {
-      guardarErrores("El campo DESDE no puede ser mayor que el campo HASTA");
-    } else if (servicio === "no") {
-      guardarErrores("debes elegir el tipo de servicio medico");
-    } else {
-      let rango = {
-        desde: desde,
-        hasta: hasta,
-        servicio: servicio,
-      };
-
-      guardarRango(rango);
-
-      await axios
-        .get(`${ip}api/sgi/servicios/buscausosporprestador`, {
-          params: {
-            desde: desde,
-            hasta: hasta,
-            servicio: servicio,
-          },
-        })
-        .then((res) => {
-          if (res.data.length > 0) {
-            guardarListado3(res.data);
-
-            toastr.success("Listado encontrado", "ATENCION");
-          } else if (res.data.length === 0) {
-            toastr.info(
-              "No se encuentran ordenes para este rango de fechas en el sistema de Otero",
-              "ATENCION"
-            );
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-
-          toastr.error("Ocurrio un error al buscar el listado", "ATENCION");
-        });
-    }
-  };
-
   const traerInfo = async (f) => {
     await axios
-      .get(`${ip}api/sgi/servicios/traermedicostodos`)
+      .get(`/api/servicios`, {
+        params: {
+          f: "list info prestadores",
+        },
+      })
       .then((res) => {
         guardarMedicos(res.data);
       })
       .catch((error) => {
         console.log(error);
         toastr.error(
-          "Ocurrio un error al traer el listado de Especialidades",
+          "Ocurrio un error al traer el listado de Medicos",
           "ATENCION"
         );
       });
@@ -308,7 +253,6 @@ const Control = () => {
                 <FormControlOrdenes
                   traerListado={traerListado}
                   traerListadoConsultasMedicos={traerListadoConsultasMedicos}
-                  traerUsosPorPrestador={traerUsosPorPrestador}
                   desdeRef={desdeRef}
                   hastaRef={hastaRef}
                   errores={errores}
@@ -316,11 +260,6 @@ const Control = () => {
                   medicoRef={medicoRef}
                   desdeRef2={desdeRef2}
                   hastaRef2={hastaRef2}
-                  desdeRef3={desdeRef3}
-                  hastaRef3={hastaRef3}
-                  desdeRef4={desdeRef4}
-                  hastaRef4={hastaRef4}
-                  servicioRef={servicioRef}
                   sucursalRef={sucursalRef}
                   sucursales={sucursales}
                 />
@@ -328,7 +267,7 @@ const Control = () => {
                 {listado ? (
                   <>
                     <ListadoControlOrdenes
-                      titulo={"Listado de Ordenes Otero"}
+                      titulo={"Listado de Ordenes Por Sucursal"}
                       listado={listado}
                       rango={rango}
                       imprimir={imprimir}
@@ -339,22 +278,13 @@ const Control = () => {
                 ) : null}
 
                 {listado2 ? (
-                  <ListadoControlConsultasMedicos
-                    titulo={"Listado de Ordenes Otero"}
+                  <ListadoControlOrdenes
+                    titulo={"Listado de Ordenes Por Prestador"}
                     listado={listado2}
                     rango={rango}
                     imprimir={imprimir}
                     calcTotales={calcTotales}
-                  />
-                ) : null}
-
-                {listado3 ? (
-                  <ListadoControlUsosPorPrestador
-                    titulo={"Listado de Ordenes Otero"}
-                    listado={listado3}
-                    rango={rango}
-                    imprimir={imprimir}
-                    calcTotales={calcTotales}
+                    sucur={sucur}
                   />
                 ) : null}
               </Layout>

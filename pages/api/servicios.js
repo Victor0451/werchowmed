@@ -773,7 +773,8 @@ export default async function handler(req, res) {
               PROMO1,
               PROMO2,
               CON_PAGA,
-              LIQUIDACION
+              LIQUIDACION,
+              COD_PRES
 
         FROM PRESTADO
         WHERE SUC is not null
@@ -841,36 +842,60 @@ export default async function handler(req, res) {
           u.SUC = ${req.query.sucur}
         AND u.FECHA BETWEEN ${req.query.desde} AND ${req.query.hasta}
         AND u.ANULADO = 0
-        ORDER BY u.FECHA DESC
+        ORDER BY u.HORA DESC
               `;
 
-      const usosFa = await Serv.$queryRaw`
+      res
+        .status(200)
+        .json(
+          JSON.stringify(usos, (key, value) =>
+            typeof value === "bigint" ? value.toString() : value
+          )
+        );
+    } else if (req.query.f && req.query.f === "listado por prestador") {
+      const usos = await Serv.$queryRaw`
          
          SELECT
+            (
+              CASE
+              WHEN u.SUC = 'W' 
+              THEN 'Casa Central'
+              WHEN u.SUC = 'O' 
+              THEN 'Otero'
+              WHEN u.SUC = 'L' 
+              THEN 'Palpala'
+              WHEN u.SUC = 'R' 
+              THEN 'Perico'
+              WHEN u.SUC = 'C' 
+              THEN 'El Carmen'
+              WHEN u.SUC = 'P' 
+              THEN 'San Pedro'
+              END
+              )'SUC',
+          u.ORDEN,
           u.CONTRATO,
           u.FECHA,
           u.HORA,
           u.NRO_DOC,
           p.NOMBRE,
           u.SERVICIO,
-          u.IMPORTE,          
-          'FOX' AS SISTEMA
+          u.IMPORTE,         
+          u.OPERADOR           
+        
         FROM
-          USOSFA AS u
+          USOS AS u
         INNER JOIN PRESTADO AS p ON p.COD_PRES = u.PRESTADO
         WHERE
-          u.SUC = ${req.query.sucur}
+          u.PRESTADO = ${req.query.medico}
         AND u.FECHA BETWEEN ${req.query.desde} AND ${req.query.hasta}
         AND u.ANULADO = 0
-        ORDER BY u.FECHA DESC
-`;
-
-      let historial = usos.concat(usosFa);
+        ORDER BY u.HORA DESC
+              `;
 
       res
         .status(200)
         .json(
-          JSON.stringify(historial, (key, value) =>
+          JSON.stringify(usos, (key, value) =>
             typeof value === "bigint" ? value.toString() : value
           )
         );
