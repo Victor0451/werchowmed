@@ -43,8 +43,8 @@ function PortalPrestador(props) {
         })
         .then((res) => {
           if (res.data.length > 0) {
-            jsCookie.set("codpres", res.data[0].COD_PRES);
-            jsCookie.set("prestado", res.data[0]);
+            jsCookie.set("codpres", res.data[0].COD_PRES, {expires: 1});
+            jsCookie.set("prestado", res.data[0], {expires: 1});
 
             guardarPrestado(res.data[0]);
           }

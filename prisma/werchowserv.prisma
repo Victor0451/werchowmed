@@ -356,7 +356,7 @@ model USOS {
   OPERADOR      String?   @db.VarChar(255)
   RENDIDO       Int?      @db.TinyInt
   FECHA_CIERRE  DateTime? @db.Date
-  EMPRESA       String?   @db.VarChar(1)
+  EMPRESA       String?   @db.VarChar(5)
   iduso         Int       @id @default(autoincrement())
   CONTROL       Boolean?
   NORDEN        String?   @db.VarChar(255)
@@ -459,6 +459,7 @@ model planes_socio {
   sucursal         String?   @db.VarChar(255)
   plan             String?   @db.VarChar(255)
   contencion       Boolean?
+  empresa          String?   @db.VarChar(5)
 }
 
 model planes_visitas {

@@ -17982,6 +17982,7 @@ export namespace Prisma {
     sucursal: string | null
     plan: string | null
     contencion: boolean | null
+    empresa: string | null
   }
 
   export type Planes_socioMaxAggregateOutputType = {
@@ -18000,6 +18001,7 @@ export namespace Prisma {
     sucursal: string | null
     plan: string | null
     contencion: boolean | null
+    empresa: string | null
   }
 
   export type Planes_socioCountAggregateOutputType = {
@@ -18018,6 +18020,7 @@ export namespace Prisma {
     sucursal: number
     plan: number
     contencion: number
+    empresa: number
     _all: number
   }
 
@@ -18056,6 +18059,7 @@ export namespace Prisma {
     sucursal?: true
     plan?: true
     contencion?: true
+    empresa?: true
   }
 
   export type Planes_socioMaxAggregateInputType = {
@@ -18074,6 +18078,7 @@ export namespace Prisma {
     sucursal?: true
     plan?: true
     contencion?: true
+    empresa?: true
   }
 
   export type Planes_socioCountAggregateInputType = {
@@ -18092,6 +18097,7 @@ export namespace Prisma {
     sucursal?: true
     plan?: true
     contencion?: true
+    empresa?: true
     _all?: true
   }
 
@@ -18197,6 +18203,7 @@ export namespace Prisma {
     sucursal: string | null
     plan: string | null
     contencion: boolean | null
+    empresa: string | null
     _count: Planes_socioCountAggregateOutputType | null
     _avg: Planes_socioAvgAggregateOutputType | null
     _sum: Planes_socioSumAggregateOutputType | null
@@ -18234,6 +18241,7 @@ export namespace Prisma {
     sucursal?: boolean
     plan?: boolean
     contencion?: boolean
+    empresa?: boolean
   }, ExtArgs["result"]["planes_socio"]>
 
   export type planes_socioSelectScalar = {
@@ -18252,6 +18260,7 @@ export namespace Prisma {
     sucursal?: boolean
     plan?: boolean
     contencion?: boolean
+    empresa?: boolean
   }
 
 
@@ -18274,6 +18283,7 @@ export namespace Prisma {
       sucursal: string | null
       plan: string | null
       contencion: boolean | null
+      empresa: string | null
     }, ExtArgs["result"]["planes_socio"]>
     composites: {}
   }
@@ -18683,6 +18693,7 @@ export namespace Prisma {
     readonly sucursal: FieldRef<"planes_socio", 'String'>
     readonly plan: FieldRef<"planes_socio", 'String'>
     readonly contencion: FieldRef<"planes_socio", 'Boolean'>
+    readonly empresa: FieldRef<"planes_socio", 'String'>
   }
     
 
@@ -25843,7 +25854,8 @@ export namespace Prisma {
     operador: 'operador',
     sucursal: 'sucursal',
     plan: 'plan',
-    contencion: 'contencion'
+    contencion: 'contencion',
+    empresa: 'empresa'
   };
 
   export type Planes_socioScalarFieldEnum = (typeof Planes_socioScalarFieldEnum)[keyof typeof Planes_socioScalarFieldEnum]
@@ -27885,6 +27897,7 @@ export namespace Prisma {
     sucursal?: StringNullableFilter<"planes_socio"> | string | null
     plan?: StringNullableFilter<"planes_socio"> | string | null
     contencion?: BoolNullableFilter<"planes_socio"> | boolean | null
+    empresa?: StringNullableFilter<"planes_socio"> | string | null
   }
 
   export type planes_socioOrderByWithRelationInput = {
@@ -27903,6 +27916,7 @@ export namespace Prisma {
     sucursal?: SortOrderInput | SortOrder
     plan?: SortOrderInput | SortOrder
     contencion?: SortOrderInput | SortOrder
+    empresa?: SortOrderInput | SortOrder
   }
 
   export type planes_socioWhereUniqueInput = Prisma.AtLeast<{
@@ -27924,6 +27938,7 @@ export namespace Prisma {
     sucursal?: StringNullableFilter<"planes_socio"> | string | null
     plan?: StringNullableFilter<"planes_socio"> | string | null
     contencion?: BoolNullableFilter<"planes_socio"> | boolean | null
+    empresa?: StringNullableFilter<"planes_socio"> | string | null
   }, "idplansocio">
 
   export type planes_socioOrderByWithAggregationInput = {
@@ -27942,6 +27957,7 @@ export namespace Prisma {
     sucursal?: SortOrderInput | SortOrder
     plan?: SortOrderInput | SortOrder
     contencion?: SortOrderInput | SortOrder
+    empresa?: SortOrderInput | SortOrder
     _count?: planes_socioCountOrderByAggregateInput
     _avg?: planes_socioAvgOrderByAggregateInput
     _max?: planes_socioMaxOrderByAggregateInput
@@ -27968,6 +27984,7 @@ export namespace Prisma {
     sucursal?: StringNullableWithAggregatesFilter<"planes_socio"> | string | null
     plan?: StringNullableWithAggregatesFilter<"planes_socio"> | string | null
     contencion?: BoolNullableWithAggregatesFilter<"planes_socio"> | boolean | null
+    empresa?: StringNullableWithAggregatesFilter<"planes_socio"> | string | null
   }
 
   export type planes_visitasWhereInput = {
@@ -30699,6 +30716,7 @@ export namespace Prisma {
     sucursal?: string | null
     plan?: string | null
     contencion?: boolean | null
+    empresa?: string | null
   }
 
   export type planes_socioUncheckedCreateInput = {
@@ -30717,6 +30735,7 @@ export namespace Prisma {
     sucursal?: string | null
     plan?: string | null
     contencion?: boolean | null
+    empresa?: string | null
   }
 
   export type planes_socioUpdateInput = {
@@ -30734,6 +30753,7 @@ export namespace Prisma {
     sucursal?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     contencion?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    empresa?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type planes_socioUncheckedUpdateInput = {
@@ -30752,6 +30772,7 @@ export namespace Prisma {
     sucursal?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     contencion?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    empresa?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type planes_socioCreateManyInput = {
@@ -30770,6 +30791,7 @@ export namespace Prisma {
     sucursal?: string | null
     plan?: string | null
     contencion?: boolean | null
+    empresa?: string | null
   }
 
   export type planes_socioUpdateManyMutationInput = {
@@ -30787,6 +30809,7 @@ export namespace Prisma {
     sucursal?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     contencion?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    empresa?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type planes_socioUncheckedUpdateManyInput = {
@@ -30805,6 +30828,7 @@ export namespace Prisma {
     sucursal?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     contencion?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    empresa?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type planes_visitasCreateInput = {
@@ -32707,6 +32731,7 @@ export namespace Prisma {
     sucursal?: SortOrder
     plan?: SortOrder
     contencion?: SortOrder
+    empresa?: SortOrder
   }
 
   export type planes_socioAvgOrderByAggregateInput = {
@@ -32734,6 +32759,7 @@ export namespace Prisma {
     sucursal?: SortOrder
     plan?: SortOrder
     contencion?: SortOrder
+    empresa?: SortOrder
   }
 
   export type planes_socioMinOrderByAggregateInput = {
@@ -32752,6 +32778,7 @@ export namespace Prisma {
     sucursal?: SortOrder
     plan?: SortOrder
     contencion?: SortOrder
+    empresa?: SortOrder
   }
 
   export type planes_socioSumOrderByAggregateInput = {

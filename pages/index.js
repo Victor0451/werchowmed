@@ -24,12 +24,12 @@ const Login = () => {
       guardarErrores("Debes ingresar un nombre de usuario");
     } else if (contrasena === "") {
       guardarErrores("Debes ingresar una contraseña");
-    } else if ((sucur === "no")) {
+    } else if (sucur === "no") {
       guardarErrores(
         "Debes seleccionar la sucursal en la que estas trabajando"
       );
     } else {
-      jsCookie.set("sucur", sucur);
+      jsCookie.set("sucur", sucur, { expires: 1 });
 
       try {
         //headers
@@ -50,8 +50,8 @@ const Login = () => {
         await axios.post(`/api/auth`, body, config).then((res) => {
           if (res.data.user.medicos === true) {
             let user = JSON.stringify(res.data.user);
-            jsCookie.set("token", res.data.token);
-            jsCookie.set("usuario", user);
+            jsCookie.set("token", res.data.token, { expires: 1 });
+            jsCookie.set("usuario", user, { expires: 1 });
             Router.push("/home");
           } else if (res.data.user.medicos === false) {
             toastr.info(

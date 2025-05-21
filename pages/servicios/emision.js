@@ -80,7 +80,7 @@ const Emision = () => {
   const [farmaDescReg, guardarFarmaDescReg] = useState([]);
   const [promos, guardarPromociones] = useState([]);
   const [historialUsos, guardarHistorialUsos] = useState([]);
-  const [SM, guardarSM] = useState("");
+  const [empresa, guardarEmpresa] = useState("");
   const [sucur, guardarSucur] = useState("");
 
   const { usu } = useWerchow();
@@ -94,7 +94,7 @@ const Emision = () => {
     guardarErrores(null);
     guardarPagos(null);
     guardarAdhs(null);
-    guardarSM("");
+    guardarEmpresa("");
 
     let contrato = "";
 
@@ -123,6 +123,8 @@ const Emision = () => {
             const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
             guardarErrores(errores);
           } else {
+            guardarEmpresa("W");
+
             guardarFlag(true);
 
             setInterval(() => {
@@ -208,7 +210,7 @@ const Emision = () => {
     guardarErrores(null);
     guardarPagos(null);
     guardarAdhs(null);
-    guardarSM("");
+    guardarEmpresa("");
 
     if (dniRef.current.value !== "") {
       let dni = dniRef.current.value;
@@ -229,6 +231,8 @@ const Emision = () => {
             const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
             guardarErrores(errores);
           } else {
+            guardarEmpresa("W");
+
             guardarFlag(true);
 
             setInterval(() => {
@@ -308,7 +312,7 @@ const Emision = () => {
     guardarErrores(null);
     guardarPagos(null);
     guardarAdhs(null);
-    guardarSM("");
+    guardarEmpresa("");
 
     let contrato = "";
 
@@ -337,6 +341,8 @@ const Emision = () => {
             const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
             guardarErrores(errores);
           } else {
+            guardarEmpresa("M");
+
             guardarFlag(true);
 
             setInterval(() => {
@@ -420,7 +426,7 @@ const Emision = () => {
     guardarErrores(null);
     guardarPagos(null);
     guardarAdhs(null);
-    guardarSM("");
+    guardarEmpresa("");
 
     if (dniRef.current.value !== "") {
       let dni = dniRef.current.value;
@@ -441,6 +447,8 @@ const Emision = () => {
             const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
             guardarErrores(errores);
           } else {
+            guardarEmpresa("M");
+
             guardarFlag(true);
 
             setInterval(() => {
@@ -517,7 +525,7 @@ const Emision = () => {
     guardarErrores(null);
     guardarPagos(null);
     guardarAdhs(null);
-    guardarSM("");
+    guardarEmpresa("");
 
     let contrato = "";
 
@@ -546,7 +554,7 @@ const Emision = () => {
             const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
             guardarErrores(errores);
           } else {
-            guardarSM("SM");
+            guardarEmpresa("SM");
             guardarFlag(true);
 
             setInterval(() => {
@@ -632,7 +640,7 @@ const Emision = () => {
     guardarErrores(null);
     guardarPagos(null);
     guardarAdhs(null);
-    guardarSM("");
+    guardarEmpresa("");
 
     if (dniRef.current.value !== "") {
       let dni = dniRef.current.value;
@@ -653,7 +661,8 @@ const Emision = () => {
             const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
             guardarErrores(errores);
           } else {
-            guardarSM("SM");
+            guardarEmpresa("SM");
+
             guardarFlag(true);
 
             setInterval(() => {
@@ -1207,17 +1216,13 @@ const Emision = () => {
       PUESTO: "",
       PRESTADO: detalleMed.COD_PRES,
       OPERADOR: usu.codigo,
-      EMPRESA: "W",
+      EMPRESA: empresa,
       RENDIDO: 0,
       ANULADO: 0,
       NUSOS: priUso + 1,
       OPERADOR: usu.usuario,
       f: "reg uso",
     };
-
-    if (SM === "SM") {
-      uso.SUC = "SM";
-    }
 
     if (detalleMed.PROMO === 1 && detalleMed.OTERO === 0) {
       if (priUso === 0) {
@@ -1318,10 +1323,6 @@ const Emision = () => {
       SUC: sucur,
       f: "reg consul",
     };
-
-    if (SM === "SM") {
-      consul.SUC = "SM";
-    }
 
     await axios
       .post(`/api/servicios`, consul)
@@ -1511,17 +1512,13 @@ const Emision = () => {
       PUESTO: "",
       PRESTADO: detalleMed.COD_PRES,
       OPERADOR: usu.codigo,
-      EMPRESA: "W",
+      EMPRESA: empresa,
       RENDIDO: 0,
       ANULADO: 0,
       NUSOS: priUso + 1,
       OPERADOR: usu.usuario,
       f: "reg uso",
     };
-
-    if (SM === "SM") {
-      uso.SUC = "SM";
-    }
 
     await axios
       .post(`/api/servicios`, uso)
@@ -1568,10 +1565,6 @@ const Emision = () => {
         DESCRIP: pracSocio[i].DESCRIP,
         f: "reg practica",
       };
-
-      if (SM === "SM") {
-        practi.SUC_PRA = "SM";
-      }
 
       await axios
         .post(`/api/servicios`, practi)
@@ -1663,16 +1656,12 @@ const Emision = () => {
         PUESTO: "",
         PRESTADO: farmaciaRef.current.value.substr(0, 5),
         OPERADOR: usu.usuario,
-        EMPRESA: "W",
+        EMPRESA: empresa,
         NUSOS: usosFarm + 1,
         RENDIDO: 0,
         ANULADO: 0,
         f: "reg uso",
       };
-
-      if (SM === "SM") {
-        uso.SUC = "SM";
-      }
 
       await axios
         .post(`/api/servicios`, uso)
@@ -1721,10 +1710,6 @@ const Emision = () => {
       SUC: sucur,
       f: "reg farmacia",
     };
-
-    if (SM === "SM") {
-      farma.SUC = "SM";
-    }
 
     await axios
       .post(`/api/servicios`, farma)
@@ -1854,15 +1839,11 @@ const Emision = () => {
       PUESTO: "",
       PRESTADO: detEnf.COD_PRES,
       OPERADOR: usu.usuario,
-      EMPRESA: "W",
+      EMPRESA: empresa,
       RENDIDO: 0,
       ANULADO: 0,
       f: "reg uso",
     };
-
-    if (SM === "SM") {
-      uso.SUC = "SM";
-    }
 
     await axios
       .post(`/api/servicios`, uso)
@@ -1907,10 +1888,6 @@ const Emision = () => {
       NRO_DNI: socio.NRO_DOC,
       f: "reg enfermeria",
     };
-
-    if (SM === "SM") {
-      enfer.SUC = "SM";
-    }
 
     await axios
       .post(`/api/servicios`, enfer)
@@ -2024,15 +2001,12 @@ const Emision = () => {
       prestador: detalleMed.COD_PRES,
       prestador_nombre: detalleMed.NOMBRE,
       operador: usu.usuario,
-      sucursal: usu.sucursal,
+      sucursal: sucur,
       plan: "ORTO",
       contencion: false,
+      empresa: empresa,
       f: "reg plan odontologico",
     };
-
-    if (SM === "SM") {
-      plan.sucursal = "SM";
-    }
 
     await axios
       .get(`/api/servicios`, {
@@ -2119,15 +2093,12 @@ const Emision = () => {
       prestador: detalleMed.COD_PRES,
       prestador_nombre: detalleMed.NOMBRE,
       operador: usu.usuario,
-      sucursal: usu.sucursal,
+      sucursal: sucur,
       plan: "CONT",
       contencion: false,
+      empresa: empresa,
       f: "reg plan odontologico",
     };
-
-    if (SM === "SM") {
-      plan.sucursal = "SM";
-    }
 
     await axios
       .get(`/api/servicios`, {
@@ -2669,7 +2640,6 @@ const Emision = () => {
             <Layout>
               {flag === false ? (
                 <BuscarSocio
-                  sucur={sucur}
                   ficha={ficha}
                   contratoRef={contratoRef}
                   dniRef={dniRef}
