@@ -1049,6 +1049,7 @@ export default async function handler(req, res) {
           sucursal: req.body.sucursal,
           plan: req.body.plan,
           contencion: req.body.contencion,
+          empresa: req.body.empresa,
         },
       });
 

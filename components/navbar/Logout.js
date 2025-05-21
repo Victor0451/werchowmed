@@ -5,6 +5,7 @@ const Logout = () => {
   const logout = () => {
     jsCookies.remove("token");
     jsCookies.remove("usuario");
+    jsCookies.remove("sucur");
   };
   return (
     <>

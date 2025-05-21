@@ -22,7 +22,6 @@ const BuscarSocio = ({
   buscarTitularDniSM,
   listSociosSM,
   SeleccionarSM,
-  sucur,
 }) => {
   return (
     <div className="container border border-dark list mt-4 p-4">
@@ -33,25 +32,6 @@ const BuscarSocio = ({
               <u>Emision de {titulo}</u>
             </strong>
           </h2>
-          <h4 className="mt-2 mb-4">
-            <strong>
-              <u>Estas en Sucursal</u>:
-              {sucur === "W" ? (
-                <> Casa Central</>
-              ) : sucur === "L" ? (
-                <> Palpala</>
-              ) : sucur === "R" ? (
-                <> Perico</>
-              ) : sucur === "C" ? (
-                <> El Carmen</>
-              ) : sucur === "P" ? (
-                <> San Pedro</>
-              ) : sucur === "O" ? (
-                <> Clinica Otero</>
-              ) : null}
-            
-            </strong>
-          </h4>
         </div>
         <div className="col-md-4 d-flex justify-content-end">
           {emp && emp === "W" ? (

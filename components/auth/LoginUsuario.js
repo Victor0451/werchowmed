@@ -58,6 +58,7 @@ const LoginUsuario = ({
             <option value={"L"}>Palpala</option>
             <option value={"R"}>Perico</option>
             <option value={"C"}>El Carmen</option>
+            <option value={"M"}>Monterrico</option>
             <option value={"P"}>San Pedro</option>
           </select>
         </div>

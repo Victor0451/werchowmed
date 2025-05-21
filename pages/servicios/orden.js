@@ -303,10 +303,10 @@ const Orden = () => {
   };
 
   if (router.query.dni) {
-    jsCookie.set("dnio", router.query.dni);
-    jsCookie.set("idusoo", router.query.iduso);
-    jsCookie.set("ordeno", router.query.orden);
-    jsCookie.set("fo", router.query.flag);
+    jsCookie.set("dnio", router.query.dni, { expires: 1 });
+    jsCookie.set("idusoo", router.query.iduso, { expires: 1 });
+    jsCookie.set("ordeno", router.query.orden, { expires: 1 });
+    jsCookie.set("fo", router.query.flag, { expires: 1 });
   }
 
   useEffect(() => {

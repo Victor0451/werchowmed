@@ -21,7 +21,6 @@ const home = () => {
   const [visitas, guardarVisitas] = useState([]);
   const [detVisi, guardarDetVisi] = useState(null);
   const [listAusen, guardarAusen] = useState([]);
-  const [sucur, guardarSucur] = useState("");
 
   const traerInfo = async () => {
     if (!jsCookie.get("sucur")) {
@@ -34,22 +33,6 @@ const home = () => {
         Router.push("/");
       }, 1500);
     } else {
-      let suc = jsCookie.get("sucur");
-
-      if (suc === "W") {
-        guardarSucur("Casa Central");
-      } else if (suc === "L") {
-        guardarSucur("Palpala");
-      } else if (suc === "R") {
-        guardarSucur("Perico");
-      } else if (suc === "C") {
-        guardarSucur("El Carmen");
-      } else if (suc === "P") {
-        guardarSucur("San Pedro");
-      } else if (suc === "O") {
-        guardarSucur("Otero");
-      }
-
       await axios
         .get(`/api/turnos`, {
           params: {
@@ -200,11 +183,6 @@ const home = () => {
                       <u>Sistema de Servicios Medicos</u>
                     </strong>
                   </h2>
-                  <h4 className="mt-2 mb-4">
-                    <strong>
-                      <u>Estas en Sucursal</u>: {sucur}
-                    </strong>
-                  </h4>
                 </div>
                 <div className="col-md-4 d-flex justify-content-end">
                   <img src="/img/logo.png" className="mt-2 werchowlogo" />

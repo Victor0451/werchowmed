@@ -456,7 +456,8 @@ exports.Prisma.Planes_socioScalarFieldEnum = {
   operador: 'operador',
   sucursal: 'sucursal',
   plan: 'plan',
-  contencion: 'contencion'
+  contencion: 'contencion',
+  empresa: 'empresa'
 };
 
 exports.Prisma.Planes_visitasScalarFieldEnum = {

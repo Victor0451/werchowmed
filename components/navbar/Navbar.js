@@ -6,7 +6,7 @@ import axios from "axios";
 import { ip } from "../../config/config";
 import toastr from "toastr";
 
-const Navbar = () => {
+const Navbar = ({ sucur }) => {
   const [userData, guardarUsuario] = useState({});
   const [msj, guardarMensajes] = useState(0);
   const [events, guardarEvents] = useState(0);
@@ -52,9 +52,31 @@ const Navbar = () => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a className="navbar-brand" href="/home">
-        Serv. Medicos
-      </a>
+      {!sucur ? (
+        <a className="navbar-brand" href="/home">
+          <u>Serv. Medicos</u>
+        </a>
+      ) : (
+        <a className="navbar-brand" href="/home">
+          <u>Sucursal</u>:
+          {sucur === "W" ? (
+            <> Casa Central</>
+          ) : sucur === "L" ? (
+            <> Palpala</>
+          ) : sucur === "R" ? (
+            <> Perico</>
+          ) : sucur === "C" ? (
+            <> El Carmen</>
+          ) : sucur === "M" ? (
+            <> Monterrico</>
+          ) : sucur === "P" ? (
+            <> San Pedro</>
+          ) : sucur === "O" ? (
+            <> Clinica Otero</>
+          ) : null}
+        </a>
+      )}
+
       <button
         className="navbar-toggler"
         type="button"

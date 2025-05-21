@@ -46,7 +46,7 @@ const reciboplan = () => {
   };
 
   if (router.query.id) {
-    jsCookie.set("idplan", router.query.id);
+    jsCookie.set("idplan", router.query.id, {expires: 1});
   }
 
   useEffect(() => {
