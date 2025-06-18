@@ -82,19 +82,19 @@ const ImpOrdenConsulta = ({
           {practicas.length > 0 ? (
             <div className="mt-2 col-md-12">
               <strong>
-                <u>Coseguro</u>: $ {calcularTotalPracticas(practicas)}
+                <u>Arancel</u>: $ {calcularTotalPracticas(practicas)}
               </strong>
             </div>
           ) : enfermeria.length > 0 ? (
             <div className="mt-2 col-md-12">
               <strong>
-                <u>Coseguro</u>: $ {enfermeria[0].IMPORTE}
+                <u>Arancel</u>: $ {enfermeria[0].IMPORTE}
               </strong>
             </div>
           ) : (
             <div className="mt-2 col-md-12">
               <strong>
-                <u>Coseguro</u>: $ {orden.IMPORTE}
+                <u>Arancel</u>: $ {orden.IMPORTE}
               </strong>
             </div>
           )}
@@ -176,16 +176,16 @@ const ImpOrdenConsulta = ({
             <div className="col-1">
               <strong>DNI Beneficiario</strong>
             </div>
-            <div className="col-1">
+            <div className="col-2">
               <strong>Prestador</strong>
             </div>
-            <div className="col-4">
+            <div className="col-3">
               <strong>Direccion</strong>
             </div>
-            <div className="col-2">
+            <div className="col-1">
               <strong>Telefonos</strong>
             </div>
-            <div className="col-4">
+            <div className="col-5">
               <strong>Atencion</strong>
             </div>
           </div>
@@ -193,9 +193,9 @@ const ImpOrdenConsulta = ({
           {!medico ? null : (
             <div className="d-flex justify-content-between border-bottom text-center descr">
               <div className="col-1 ">{orden.NRO_DOC}</div>
-              <div className="col-1">{medico.NOMBRE}</div>
-              <div className="col-4">{medico.DIRECCION}</div>
-              <div className="col-2">{medico.TELEFONOS}</div>
+              <div className="col-2">{medico.NOMBRE}</div>
+              <div className="col-3">{medico.DIRECCION}</div>
+              <div className="col-1">{medico.TELEFONOS}</div>
               <div className="col-5">
                 {medico.HORARIO1} - {medico.HORARIO2}
               </div>
