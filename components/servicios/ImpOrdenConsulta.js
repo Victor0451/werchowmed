@@ -40,7 +40,11 @@ const ImpOrdenConsulta = ({
           )}
         </div>
         <div className="mt-2 col-md-4 d-flex justify-content-end">
-          <img src="/img/logo.png" className="werchowlogo" />
+          {orden.EMPRESA === "SM" ? (
+            <img src="/img/logoSM.png" className="smlogo" />
+          ) : (
+            <img src="/img/logo.png" className="werchowlogo" />
+          )}
         </div>
       </div>
 
