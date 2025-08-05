@@ -15,25 +15,55 @@ import ModalImprimirCaja from "../../components/caja/ModalImprimirCaja";
 import Restringed from "../../components/auth/Restringed";
 
 const ListadoCajas = () => {
-  const [cajas, guardarCajas] = useState(null);
+  const [cajas, guardarCajas] = useState([]);
   const [ingresos, guardarIngresos] = useState(null);
   const [egresos, guardarEgresos] = useState(null);
   const [listControl, guardarListControl] = useState(null);
   const [fec, guardarFec] = useState(null);
+  const [operadores, guardarOperadores] = useState([]);
+  const [operadorSel, guardarOperadorSel] = useState("");
+  const [loading, guardarLoading] = useState(0);
 
   const { usu } = useWerchow();
 
   const { isLoading } = useUser();
 
+  const tarerOperadores = async () => {
+    await axios
+      .get("/api/caja", {
+        params: {
+          f: "operadores",
+        },
+      })
+      .then((res) => {
+        guardarOperadores(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+
+        toastr.error(
+          "Ocurrio un error al traer el listado de operadores",
+          "ATENCION"
+        );
+      });
+  };
+
   const traerCajas = async () => {
+    guardarLoading(1);
     await axios
       .get(`/api/caja`, {
         params: {
           f: "listado cajas",
+          operador: operadorSel,
         },
       })
       .then((res) => {
-        guardarCajas(res.data);
+        if (res.data.length > 0) {
+          guardarCajas(res.data);
+          guardarLoading(2);
+        } else {
+          guardarLoading(3);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -127,7 +157,13 @@ const ListadoCajas = () => {
     window.location.replace("/servicios/listadocajas");
   };
 
-  useSWR(usu ? "/api/caja" : null, traerCajas);
+  const handleChange = async (f, value) => {
+    if (f === "operador") {
+      guardarOperadorSel(value);
+    }
+  };
+
+  useSWR(usu ? "/api/caja" : null, tarerOperadores);
 
   if (isLoading === true) return <Skeleton />;
 
@@ -145,6 +181,10 @@ const ListadoCajas = () => {
                 listado={cajas}
                 traerMovimientos={traerMovimientos}
                 traerListadoControl={traerListadoControl}
+                operadores={operadores}
+                handleChange={handleChange}
+                traerCajas={traerCajas}
+                loading={loading}
               />
 
               <ModalImprimirCaja

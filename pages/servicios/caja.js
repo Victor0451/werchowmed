@@ -12,6 +12,7 @@ import Router from "next/router";
 import { registrarHistoria } from "../../utils/funciones";
 import NuevaCaja from "../../components/caja/NuevaCaja";
 import FormCaja from "../../components/caja/FormCaja";
+import jsCookie from "js-cookie";
 
 const Caja = () => {
   let serieIRef = React.createRef();
@@ -37,12 +38,14 @@ const Caja = () => {
   const [facturaSel, guardarFacturaSel] = useState("");
   const [nCuentaSel, guardarNcuentaSel] = useState("");
   const [cuenDescSel, guardarCuenDescSel] = useState("");
+  const [sucur, guardarSucur] = useState("");
 
   const { usu } = useWerchow();
 
   const { isLoading } = useUser();
 
   const traerOrdenesSinRendir = async (user, suc) => {
+    console.log(user, suc);
     await axios
       .get(`/api/caja`, {
         params: {
@@ -67,7 +70,7 @@ const Caja = () => {
     await axios
       .get(`/api/caja`, {
         params: {
-          suc: usu.sucursal,
+          suc: sucur,
           fecha: fecha,
           user: usu.usuario,
           f: "ordenes por dia",
@@ -309,6 +312,8 @@ const Caja = () => {
     let data = {
       f: "puntear rendido",
       fecha: fechaOrd,
+      operador: usu.usuario,
+      suc: sucur,
     };
 
     await axios
@@ -397,9 +402,13 @@ const Caja = () => {
   };
 
   const traerInfo = () => {
-    traerOrdenesSinRendir(usu.usuario, usu.sucursal);
-    chekCaja(usu.usuario);
-    traerTipoFac();
+    if (jsCookie.get("sucur")) {
+      let suc = jsCookie.get("sucur");
+      guardarSucur(suc);
+      traerOrdenesSinRendir(usu.usuario, suc);
+      chekCaja(usu.usuario);
+      traerTipoFac();
+    }
   };
 
   const handleChange = async (f, value) => {

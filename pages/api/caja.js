@@ -3,7 +3,14 @@ import { Werchow, SGI, Camp, Serv } from "../../libs/config";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
-    if (req.query.f && req.query.f === "ordenes sin rendir") {
+    if (req.query.f && req.query.f === "operadores") {
+      const operadores = await SGI.operador.findMany({
+        where: {
+          estado: true,
+        },
+      });
+      res.status(200).json(operadores);
+    } else if (req.query.f && req.query.f === "ordenes sin rendir") {
       const ordenesSinRendir = await Serv.$queryRaw`
          
          SELECT 
@@ -85,6 +92,7 @@ export default async function handler(req, res) {
                 WHERE C.FECHA = C1.FECHA
                 AND MOVIM = 'I'
                 AND DETALLE != 'SALDO INICIAL'
+                AND OPERADOR = ${req.query.operador}
                 ) 'INGRESOS',
                 
                 (
@@ -94,6 +102,7 @@ export default async function handler(req, res) {
                 WHERE C.FECHA = C2.FECHA
                 AND MOVIM = 'E'
                 AND DETALLE != 'VALORES A DEPOSITAR'
+                AND OPERADOR = ${req.query.operador}
                 ) 'EGRESOS',
                 
                 (
@@ -104,6 +113,7 @@ export default async function handler(req, res) {
                 WHERE C.FECHA = C1.FECHA
                 AND MOVIM = 'I'
                 AND DETALLE != 'SALDO INICIAL'
+                AND OPERADOR = ${req.query.operador}
                 )
                 -
                 (
@@ -112,11 +122,13 @@ export default async function handler(req, res) {
                 FROM CAJA as C2
                 WHERE C.FECHA = C2.FECHA
                 AND MOVIM = 'E'
-                AND DETALLE != 'VALORES A DEPOSITAR'
+                AND DETALLE != 'VALORES A DEPOSITAR'     
+                AND OPERADOR = ${req.query.operador}
                 )
                 )'VAL_DEPOSIT'
         
         FROM CAJA AS C
+        WHERE OPERADOR = ${req.query.operador}
         
         GROUP BY FECHA, OPERADOR
         ORDER BY FECHA DESC
@@ -266,7 +278,9 @@ export default async function handler(req, res) {
          SET 
             RENDIDO = 1,
             FECHA_CIERRE = ${moment().format("YYYY-MM-DD")}
-         WHERE FECHA = ${req.body.fecha}        
+         WHERE FECHA = ${req.body.fecha}   
+         AND OPERADOR = ${req.body.operador}   
+         AND SUC = ${req.body.suc}   
    `;
       res
         .status(200)
