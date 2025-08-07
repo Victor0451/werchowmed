@@ -76,12 +76,12 @@ const ListadoControlOrdenes = ({
                 },
                 {
                   Header: "Prestador",
-                  id: "NOMBRE",
-                  accessor: (d) => d.NOMBRE,
+                  id: "PRESTADO",
+                  accessor: (d) => d.PRESTADO,
                   filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["NOMBRE"] }),
+                    matchSorter(rows, filter.value, { keys: ["PRESTADO"] }),
                   filterAll: true,
-                  width: "200",
+                  width: "110",
                 },
 
                 {
@@ -156,7 +156,11 @@ const ListadoControlOrdenes = ({
         </h2>
 
         <div className="row mt-4 n border border-dark p-4 d-flex justify-content-center">
-          <ExportarListadoControl listado={listado} rango={rango} sucur={sucur} />
+          <ExportarListadoControl
+            listado={listado}
+            rango={rango}
+            sucur={sucur}
+          />
 
           <button className="ml-1 btn btn-primary" onClick={imprimir}>
             Imprimir

@@ -830,14 +830,14 @@ export default async function handler(req, res) {
           u.FECHA,
           u.HORA,
           u.NRO_DOC,
-          p.NOMBRE,
+          u.PRESTADO,
           u.SERVICIO,
           u.IMPORTE,         
           u.OPERADOR           
         
         FROM
           USOS AS u
-        INNER JOIN PRESTADO AS p ON p.COD_PRES = u.PRESTADO
+        
         WHERE
           u.SUC = ${req.query.sucur}
         AND u.FECHA BETWEEN ${req.query.desde} AND ${req.query.hasta}

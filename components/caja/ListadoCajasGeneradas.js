@@ -146,7 +146,10 @@ const ListadoCajasGeneradas = ({
                         <button
                           className="btn btn-primary btn-sm"
                           onClick={() => {
-                            traerMovimientos(row.original.FECHA);
+                            traerMovimientos(
+                              row.original.FECHA,
+                              row.original.OPERADOR
+                            );
                             traerListadoControl(
                               row.original.FECHA,
                               row.original.OPERADOR
