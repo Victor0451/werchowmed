@@ -85,6 +85,7 @@ const Control = () => {
           },
         })
         .then((res) => {
+          console.log(res.data);
           guardarListado(res.data);
         })
         .catch((error) => {

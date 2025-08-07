@@ -75,7 +75,7 @@ const ListadoCajas = () => {
       });
   };
 
-  const traerMovimientos = async (fecha) => {
+  const traerMovimientos = async (fecha, operador) => {
     guardarFec(fecha);
 
     await axios
@@ -83,6 +83,7 @@ const ListadoCajas = () => {
         params: {
           f: "traer ingresos",
           fecha: fecha,
+          operador: operador
         },
       })
       .then((res) => {

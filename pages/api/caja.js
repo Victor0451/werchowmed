@@ -151,7 +151,7 @@ export default async function handler(req, res) {
             WHERE MOVIM = 'I'
             AND DETALLE != 'SALDO INICIAL'
             AND FECHA = ${new Date(req.query.fecha)}
-
+            AND OPERADOR = ${req.query.operador}
             GROUP BY DETALLE
       `;
       res
@@ -172,7 +172,7 @@ export default async function handler(req, res) {
             WHERE MOVIM = 'E'
             AND DETALLE != 'VALORES A DEPOSITAR'
             AND FECHA = ${new Date(req.query.fecha)}
-
+            AND OPERADOR = ${req.query.operador}
             
       `;
       res
