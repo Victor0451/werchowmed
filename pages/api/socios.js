@@ -135,6 +135,7 @@ export default async function handler(req, res) {
                 INNER JOIN maestro as m on a.CONTRATO = m.CONTRATO                  
                 INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
                 WHERE a.CONTRATO = ${req.query.ficha}
+                AND a.BAJA IS NULL
                 
 
     `;
