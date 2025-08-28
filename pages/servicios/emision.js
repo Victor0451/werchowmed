@@ -1392,6 +1392,7 @@ const Emision = () => {
       DESCRIP: row.DESCRIP,
       CANTIDAD: cantidadRefP.current.value,
       IMPORTE: parseFloat(row.IMPORTE) * parseFloat(cantidadRefP.current.value),
+      IMP_LIQ: parseFloat(row.IMPORTE) * parseFloat(cantidadRefP.current.value),
       idpractica: row.idpractica,
     };
 
@@ -1481,12 +1482,19 @@ const Emision = () => {
     guardarPracSocio([...pracSocio]);
   };
 
-  const calcularTotalPracticas = (arr) => {
+  const calcularTotalPracticas = (arr, f) => {
     let total = 0;
 
-    for (let i = 0; i < arr.length; i++) {
-      total += parseFloat(arr[i].IMPORTE);
-    }
+    if (f === "I") {
+      for (let i = 0; i < arr.length; i++) {
+        total += parseFloat(arr[i].IMPORTE);
+      }
+
+      return total.toFixed(2);
+    } else if (f === "IL")
+      for (let i = 0; i < arr.length; i++) {
+        total += parseFloat(arr[i].IMP_LIQ);
+      }
 
     return total.toFixed(2);
   };
@@ -1506,8 +1514,8 @@ const Emision = () => {
       FEC_CAJA: moment().format("YYYY-MM-DD"),
       HORA: moment().format("HH:mm"),
       SERVICIO: `P${detalleMed.SERVICIO}`,
-      IMPORTE: calcularTotalPracticas(pracSocio),
-      IMP_LIQ: calcularTotalPracticas(pracSocio),
+      IMPORTE: calcularTotalPracticas(pracSocio, "I"),
+      IMP_LIQ: calcularTotalPracticas(pracSocio, "IL"),
       VALOR: "0",
       PUESTO: "",
       PRESTADO: detalleMed.COD_PRES,
@@ -1558,6 +1566,7 @@ const Emision = () => {
         PRAC_REA: detalleMed.SERVICIO,
         CANT_PRA: pracSocio[i].CANTIDAD,
         IMPORTE: pracSocio[i].IMPORTE,
+        IMP_LIQ: pracSocio[i].IMP_LIQ,
         ANULADO: 0,
         OPERADOR: usu.usuario,
         OPE_ANU: 0,
