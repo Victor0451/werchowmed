@@ -262,14 +262,15 @@ model PRACTICA {
   HORA       String?   @db.VarChar(5)
   NRO_ORDEN  String?   @db.VarChar(12)
   PRAC_REA   String?   @db.VarChar(11)
+  DESCRIP    String?   @db.VarChar(255)
   CANT_PRA   Int?
   IMPORTE    Float?
+  IMP_LIQ    Float?
   ANULADO    Int?      @db.TinyInt
   OPERADOR   String?   @db.VarChar(255)
   OPE_ANU    Int?
   COD_PRAC   String?   @db.VarChar(8)
   idpractica Int       @id @default(autoincrement())
-  DESCRIP    String?   @db.VarChar(255)
 }
 
 model PRACT_ENFER {

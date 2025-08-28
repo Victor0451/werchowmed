@@ -228,11 +228,11 @@ const ModalPractica = ({
                 ) : socio.GRUPO === 66 ||
                   (socio.GRUPO === 55 && nFisio === 8) ? (
                   <div className=" mt-4 border border-dark alert alert-info text-center text-uppercase">
-                    Total Practicas: ${calcularTotalPracticas(pracSocio)}
+                    Total Practicas: ${calcularTotalPracticas(pracSocio, "I")}
                   </div>
                 ) : (
                   <div className=" mt-4 border border-dark alert alert-info text-center text-uppercase">
-                    Total Practicas: ${calcularTotalPracticas(pracSocio)}
+                    Total Practicas: ${calcularTotalPracticas(pracSocio, "I")}
                   </div>
                 )}
               </>

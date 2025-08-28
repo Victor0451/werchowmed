@@ -980,6 +980,7 @@ export default async function handler(req, res) {
           PRAC_REA: req.body.PRAC_REA,
           CANT_PRA: parseInt(req.body.CANT_PRA),
           IMPORTE: parseFloat(req.body.IMPORTE),
+          IMP_LIQ: parseFloat(req.body.IMP_LIQ),
           ANULADO: req.body.ANULADO,
           OPERADOR: req.body.OPERADOR,
           OPE_ANU: parseInt(req.body.OPE_ANU),

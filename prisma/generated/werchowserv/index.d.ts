@@ -9470,6 +9470,7 @@ export namespace Prisma {
     NRO_DNI: number | null
     CANT_PRA: number | null
     IMPORTE: number | null
+    IMP_LIQ: number | null
     ANULADO: number | null
     OPE_ANU: number | null
     idpractica: number | null
@@ -9480,6 +9481,7 @@ export namespace Prisma {
     NRO_DNI: number | null
     CANT_PRA: number | null
     IMPORTE: number | null
+    IMP_LIQ: number | null
     ANULADO: number | null
     OPE_ANU: number | null
     idpractica: number | null
@@ -9493,14 +9495,15 @@ export namespace Prisma {
     HORA: string | null
     NRO_ORDEN: string | null
     PRAC_REA: string | null
+    DESCRIP: string | null
     CANT_PRA: number | null
     IMPORTE: number | null
+    IMP_LIQ: number | null
     ANULADO: number | null
     OPERADOR: string | null
     OPE_ANU: number | null
     COD_PRAC: string | null
     idpractica: number | null
-    DESCRIP: string | null
   }
 
   export type PRACTICAMaxAggregateOutputType = {
@@ -9511,14 +9514,15 @@ export namespace Prisma {
     HORA: string | null
     NRO_ORDEN: string | null
     PRAC_REA: string | null
+    DESCRIP: string | null
     CANT_PRA: number | null
     IMPORTE: number | null
+    IMP_LIQ: number | null
     ANULADO: number | null
     OPERADOR: string | null
     OPE_ANU: number | null
     COD_PRAC: string | null
     idpractica: number | null
-    DESCRIP: string | null
   }
 
   export type PRACTICACountAggregateOutputType = {
@@ -9529,14 +9533,15 @@ export namespace Prisma {
     HORA: number
     NRO_ORDEN: number
     PRAC_REA: number
+    DESCRIP: number
     CANT_PRA: number
     IMPORTE: number
+    IMP_LIQ: number
     ANULADO: number
     OPERADOR: number
     OPE_ANU: number
     COD_PRAC: number
     idpractica: number
-    DESCRIP: number
     _all: number
   }
 
@@ -9546,6 +9551,7 @@ export namespace Prisma {
     NRO_DNI?: true
     CANT_PRA?: true
     IMPORTE?: true
+    IMP_LIQ?: true
     ANULADO?: true
     OPE_ANU?: true
     idpractica?: true
@@ -9556,6 +9562,7 @@ export namespace Prisma {
     NRO_DNI?: true
     CANT_PRA?: true
     IMPORTE?: true
+    IMP_LIQ?: true
     ANULADO?: true
     OPE_ANU?: true
     idpractica?: true
@@ -9569,14 +9576,15 @@ export namespace Prisma {
     HORA?: true
     NRO_ORDEN?: true
     PRAC_REA?: true
+    DESCRIP?: true
     CANT_PRA?: true
     IMPORTE?: true
+    IMP_LIQ?: true
     ANULADO?: true
     OPERADOR?: true
     OPE_ANU?: true
     COD_PRAC?: true
     idpractica?: true
-    DESCRIP?: true
   }
 
   export type PRACTICAMaxAggregateInputType = {
@@ -9587,14 +9595,15 @@ export namespace Prisma {
     HORA?: true
     NRO_ORDEN?: true
     PRAC_REA?: true
+    DESCRIP?: true
     CANT_PRA?: true
     IMPORTE?: true
+    IMP_LIQ?: true
     ANULADO?: true
     OPERADOR?: true
     OPE_ANU?: true
     COD_PRAC?: true
     idpractica?: true
-    DESCRIP?: true
   }
 
   export type PRACTICACountAggregateInputType = {
@@ -9605,14 +9614,15 @@ export namespace Prisma {
     HORA?: true
     NRO_ORDEN?: true
     PRAC_REA?: true
+    DESCRIP?: true
     CANT_PRA?: true
     IMPORTE?: true
+    IMP_LIQ?: true
     ANULADO?: true
     OPERADOR?: true
     OPE_ANU?: true
     COD_PRAC?: true
     idpractica?: true
-    DESCRIP?: true
     _all?: true
   }
 
@@ -9710,14 +9720,15 @@ export namespace Prisma {
     HORA: string | null
     NRO_ORDEN: string | null
     PRAC_REA: string | null
+    DESCRIP: string | null
     CANT_PRA: number | null
     IMPORTE: number | null
+    IMP_LIQ: number | null
     ANULADO: number | null
     OPERADOR: string | null
     OPE_ANU: number | null
     COD_PRAC: string | null
     idpractica: number
-    DESCRIP: string | null
     _count: PRACTICACountAggregateOutputType | null
     _avg: PRACTICAAvgAggregateOutputType | null
     _sum: PRACTICASumAggregateOutputType | null
@@ -9747,14 +9758,15 @@ export namespace Prisma {
     HORA?: boolean
     NRO_ORDEN?: boolean
     PRAC_REA?: boolean
+    DESCRIP?: boolean
     CANT_PRA?: boolean
     IMPORTE?: boolean
+    IMP_LIQ?: boolean
     ANULADO?: boolean
     OPERADOR?: boolean
     OPE_ANU?: boolean
     COD_PRAC?: boolean
     idpractica?: boolean
-    DESCRIP?: boolean
   }, ExtArgs["result"]["pRACTICA"]>
 
   export type PRACTICASelectScalar = {
@@ -9765,14 +9777,15 @@ export namespace Prisma {
     HORA?: boolean
     NRO_ORDEN?: boolean
     PRAC_REA?: boolean
+    DESCRIP?: boolean
     CANT_PRA?: boolean
     IMPORTE?: boolean
+    IMP_LIQ?: boolean
     ANULADO?: boolean
     OPERADOR?: boolean
     OPE_ANU?: boolean
     COD_PRAC?: boolean
     idpractica?: boolean
-    DESCRIP?: boolean
   }
 
 
@@ -9787,14 +9800,15 @@ export namespace Prisma {
       HORA: string | null
       NRO_ORDEN: string | null
       PRAC_REA: string | null
+      DESCRIP: string | null
       CANT_PRA: number | null
       IMPORTE: number | null
+      IMP_LIQ: number | null
       ANULADO: number | null
       OPERADOR: string | null
       OPE_ANU: number | null
       COD_PRAC: string | null
       idpractica: number
-      DESCRIP: string | null
     }, ExtArgs["result"]["pRACTICA"]>
     composites: {}
   }
@@ -10196,14 +10210,15 @@ export namespace Prisma {
     readonly HORA: FieldRef<"PRACTICA", 'String'>
     readonly NRO_ORDEN: FieldRef<"PRACTICA", 'String'>
     readonly PRAC_REA: FieldRef<"PRACTICA", 'String'>
+    readonly DESCRIP: FieldRef<"PRACTICA", 'String'>
     readonly CANT_PRA: FieldRef<"PRACTICA", 'Int'>
     readonly IMPORTE: FieldRef<"PRACTICA", 'Float'>
+    readonly IMP_LIQ: FieldRef<"PRACTICA", 'Float'>
     readonly ANULADO: FieldRef<"PRACTICA", 'Int'>
     readonly OPERADOR: FieldRef<"PRACTICA", 'String'>
     readonly OPE_ANU: FieldRef<"PRACTICA", 'Int'>
     readonly COD_PRAC: FieldRef<"PRACTICA", 'String'>
     readonly idpractica: FieldRef<"PRACTICA", 'Int'>
-    readonly DESCRIP: FieldRef<"PRACTICA", 'String'>
   }
     
 
@@ -25658,14 +25673,15 @@ export namespace Prisma {
     HORA: 'HORA',
     NRO_ORDEN: 'NRO_ORDEN',
     PRAC_REA: 'PRAC_REA',
+    DESCRIP: 'DESCRIP',
     CANT_PRA: 'CANT_PRA',
     IMPORTE: 'IMPORTE',
+    IMP_LIQ: 'IMP_LIQ',
     ANULADO: 'ANULADO',
     OPERADOR: 'OPERADOR',
     OPE_ANU: 'OPE_ANU',
     COD_PRAC: 'COD_PRAC',
-    idpractica: 'idpractica',
-    DESCRIP: 'DESCRIP'
+    idpractica: 'idpractica'
   };
 
   export type PRACTICAScalarFieldEnum = (typeof PRACTICAScalarFieldEnum)[keyof typeof PRACTICAScalarFieldEnum]
@@ -26952,14 +26968,15 @@ export namespace Prisma {
     HORA?: StringNullableFilter<"PRACTICA"> | string | null
     NRO_ORDEN?: StringNullableFilter<"PRACTICA"> | string | null
     PRAC_REA?: StringNullableFilter<"PRACTICA"> | string | null
+    DESCRIP?: StringNullableFilter<"PRACTICA"> | string | null
     CANT_PRA?: IntNullableFilter<"PRACTICA"> | number | null
     IMPORTE?: FloatNullableFilter<"PRACTICA"> | number | null
+    IMP_LIQ?: FloatNullableFilter<"PRACTICA"> | number | null
     ANULADO?: IntNullableFilter<"PRACTICA"> | number | null
     OPERADOR?: StringNullableFilter<"PRACTICA"> | string | null
     OPE_ANU?: IntNullableFilter<"PRACTICA"> | number | null
     COD_PRAC?: StringNullableFilter<"PRACTICA"> | string | null
     idpractica?: IntFilter<"PRACTICA"> | number
-    DESCRIP?: StringNullableFilter<"PRACTICA"> | string | null
   }
 
   export type PRACTICAOrderByWithRelationInput = {
@@ -26970,14 +26987,15 @@ export namespace Prisma {
     HORA?: SortOrderInput | SortOrder
     NRO_ORDEN?: SortOrderInput | SortOrder
     PRAC_REA?: SortOrderInput | SortOrder
+    DESCRIP?: SortOrderInput | SortOrder
     CANT_PRA?: SortOrderInput | SortOrder
     IMPORTE?: SortOrderInput | SortOrder
+    IMP_LIQ?: SortOrderInput | SortOrder
     ANULADO?: SortOrderInput | SortOrder
     OPERADOR?: SortOrderInput | SortOrder
     OPE_ANU?: SortOrderInput | SortOrder
     COD_PRAC?: SortOrderInput | SortOrder
     idpractica?: SortOrder
-    DESCRIP?: SortOrderInput | SortOrder
   }
 
   export type PRACTICAWhereUniqueInput = Prisma.AtLeast<{
@@ -26992,13 +27010,14 @@ export namespace Prisma {
     HORA?: StringNullableFilter<"PRACTICA"> | string | null
     NRO_ORDEN?: StringNullableFilter<"PRACTICA"> | string | null
     PRAC_REA?: StringNullableFilter<"PRACTICA"> | string | null
+    DESCRIP?: StringNullableFilter<"PRACTICA"> | string | null
     CANT_PRA?: IntNullableFilter<"PRACTICA"> | number | null
     IMPORTE?: FloatNullableFilter<"PRACTICA"> | number | null
+    IMP_LIQ?: FloatNullableFilter<"PRACTICA"> | number | null
     ANULADO?: IntNullableFilter<"PRACTICA"> | number | null
     OPERADOR?: StringNullableFilter<"PRACTICA"> | string | null
     OPE_ANU?: IntNullableFilter<"PRACTICA"> | number | null
     COD_PRAC?: StringNullableFilter<"PRACTICA"> | string | null
-    DESCRIP?: StringNullableFilter<"PRACTICA"> | string | null
   }, "idpractica">
 
   export type PRACTICAOrderByWithAggregationInput = {
@@ -27009,14 +27028,15 @@ export namespace Prisma {
     HORA?: SortOrderInput | SortOrder
     NRO_ORDEN?: SortOrderInput | SortOrder
     PRAC_REA?: SortOrderInput | SortOrder
+    DESCRIP?: SortOrderInput | SortOrder
     CANT_PRA?: SortOrderInput | SortOrder
     IMPORTE?: SortOrderInput | SortOrder
+    IMP_LIQ?: SortOrderInput | SortOrder
     ANULADO?: SortOrderInput | SortOrder
     OPERADOR?: SortOrderInput | SortOrder
     OPE_ANU?: SortOrderInput | SortOrder
     COD_PRAC?: SortOrderInput | SortOrder
     idpractica?: SortOrder
-    DESCRIP?: SortOrderInput | SortOrder
     _count?: PRACTICACountOrderByAggregateInput
     _avg?: PRACTICAAvgOrderByAggregateInput
     _max?: PRACTICAMaxOrderByAggregateInput
@@ -27035,14 +27055,15 @@ export namespace Prisma {
     HORA?: StringNullableWithAggregatesFilter<"PRACTICA"> | string | null
     NRO_ORDEN?: StringNullableWithAggregatesFilter<"PRACTICA"> | string | null
     PRAC_REA?: StringNullableWithAggregatesFilter<"PRACTICA"> | string | null
+    DESCRIP?: StringNullableWithAggregatesFilter<"PRACTICA"> | string | null
     CANT_PRA?: IntNullableWithAggregatesFilter<"PRACTICA"> | number | null
     IMPORTE?: FloatNullableWithAggregatesFilter<"PRACTICA"> | number | null
+    IMP_LIQ?: FloatNullableWithAggregatesFilter<"PRACTICA"> | number | null
     ANULADO?: IntNullableWithAggregatesFilter<"PRACTICA"> | number | null
     OPERADOR?: StringNullableWithAggregatesFilter<"PRACTICA"> | string | null
     OPE_ANU?: IntNullableWithAggregatesFilter<"PRACTICA"> | number | null
     COD_PRAC?: StringNullableWithAggregatesFilter<"PRACTICA"> | string | null
     idpractica?: IntWithAggregatesFilter<"PRACTICA"> | number
-    DESCRIP?: StringNullableWithAggregatesFilter<"PRACTICA"> | string | null
   }
 
   export type PRACT_ENFERWhereInput = {
@@ -29578,13 +29599,14 @@ export namespace Prisma {
     HORA?: string | null
     NRO_ORDEN?: string | null
     PRAC_REA?: string | null
+    DESCRIP?: string | null
     CANT_PRA?: number | null
     IMPORTE?: number | null
+    IMP_LIQ?: number | null
     ANULADO?: number | null
     OPERADOR?: string | null
     OPE_ANU?: number | null
     COD_PRAC?: string | null
-    DESCRIP?: string | null
   }
 
   export type PRACTICAUncheckedCreateInput = {
@@ -29595,14 +29617,15 @@ export namespace Prisma {
     HORA?: string | null
     NRO_ORDEN?: string | null
     PRAC_REA?: string | null
+    DESCRIP?: string | null
     CANT_PRA?: number | null
     IMPORTE?: number | null
+    IMP_LIQ?: number | null
     ANULADO?: number | null
     OPERADOR?: string | null
     OPE_ANU?: number | null
     COD_PRAC?: string | null
     idpractica?: number
-    DESCRIP?: string | null
   }
 
   export type PRACTICAUpdateInput = {
@@ -29613,13 +29636,14 @@ export namespace Prisma {
     HORA?: NullableStringFieldUpdateOperationsInput | string | null
     NRO_ORDEN?: NullableStringFieldUpdateOperationsInput | string | null
     PRAC_REA?: NullableStringFieldUpdateOperationsInput | string | null
+    DESCRIP?: NullableStringFieldUpdateOperationsInput | string | null
     CANT_PRA?: NullableIntFieldUpdateOperationsInput | number | null
     IMPORTE?: NullableFloatFieldUpdateOperationsInput | number | null
+    IMP_LIQ?: NullableFloatFieldUpdateOperationsInput | number | null
     ANULADO?: NullableIntFieldUpdateOperationsInput | number | null
     OPERADOR?: NullableStringFieldUpdateOperationsInput | string | null
     OPE_ANU?: NullableIntFieldUpdateOperationsInput | number | null
     COD_PRAC?: NullableStringFieldUpdateOperationsInput | string | null
-    DESCRIP?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PRACTICAUncheckedUpdateInput = {
@@ -29630,14 +29654,15 @@ export namespace Prisma {
     HORA?: NullableStringFieldUpdateOperationsInput | string | null
     NRO_ORDEN?: NullableStringFieldUpdateOperationsInput | string | null
     PRAC_REA?: NullableStringFieldUpdateOperationsInput | string | null
+    DESCRIP?: NullableStringFieldUpdateOperationsInput | string | null
     CANT_PRA?: NullableIntFieldUpdateOperationsInput | number | null
     IMPORTE?: NullableFloatFieldUpdateOperationsInput | number | null
+    IMP_LIQ?: NullableFloatFieldUpdateOperationsInput | number | null
     ANULADO?: NullableIntFieldUpdateOperationsInput | number | null
     OPERADOR?: NullableStringFieldUpdateOperationsInput | string | null
     OPE_ANU?: NullableIntFieldUpdateOperationsInput | number | null
     COD_PRAC?: NullableStringFieldUpdateOperationsInput | string | null
     idpractica?: IntFieldUpdateOperationsInput | number
-    DESCRIP?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PRACTICACreateManyInput = {
@@ -29648,14 +29673,15 @@ export namespace Prisma {
     HORA?: string | null
     NRO_ORDEN?: string | null
     PRAC_REA?: string | null
+    DESCRIP?: string | null
     CANT_PRA?: number | null
     IMPORTE?: number | null
+    IMP_LIQ?: number | null
     ANULADO?: number | null
     OPERADOR?: string | null
     OPE_ANU?: number | null
     COD_PRAC?: string | null
     idpractica?: number
-    DESCRIP?: string | null
   }
 
   export type PRACTICAUpdateManyMutationInput = {
@@ -29666,13 +29692,14 @@ export namespace Prisma {
     HORA?: NullableStringFieldUpdateOperationsInput | string | null
     NRO_ORDEN?: NullableStringFieldUpdateOperationsInput | string | null
     PRAC_REA?: NullableStringFieldUpdateOperationsInput | string | null
+    DESCRIP?: NullableStringFieldUpdateOperationsInput | string | null
     CANT_PRA?: NullableIntFieldUpdateOperationsInput | number | null
     IMPORTE?: NullableFloatFieldUpdateOperationsInput | number | null
+    IMP_LIQ?: NullableFloatFieldUpdateOperationsInput | number | null
     ANULADO?: NullableIntFieldUpdateOperationsInput | number | null
     OPERADOR?: NullableStringFieldUpdateOperationsInput | string | null
     OPE_ANU?: NullableIntFieldUpdateOperationsInput | number | null
     COD_PRAC?: NullableStringFieldUpdateOperationsInput | string | null
-    DESCRIP?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PRACTICAUncheckedUpdateManyInput = {
@@ -29683,14 +29710,15 @@ export namespace Prisma {
     HORA?: NullableStringFieldUpdateOperationsInput | string | null
     NRO_ORDEN?: NullableStringFieldUpdateOperationsInput | string | null
     PRAC_REA?: NullableStringFieldUpdateOperationsInput | string | null
+    DESCRIP?: NullableStringFieldUpdateOperationsInput | string | null
     CANT_PRA?: NullableIntFieldUpdateOperationsInput | number | null
     IMPORTE?: NullableFloatFieldUpdateOperationsInput | number | null
+    IMP_LIQ?: NullableFloatFieldUpdateOperationsInput | number | null
     ANULADO?: NullableIntFieldUpdateOperationsInput | number | null
     OPERADOR?: NullableStringFieldUpdateOperationsInput | string | null
     OPE_ANU?: NullableIntFieldUpdateOperationsInput | number | null
     COD_PRAC?: NullableStringFieldUpdateOperationsInput | string | null
     idpractica?: IntFieldUpdateOperationsInput | number
-    DESCRIP?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PRACT_ENFERCreateInput = {
@@ -32050,14 +32078,15 @@ export namespace Prisma {
     HORA?: SortOrder
     NRO_ORDEN?: SortOrder
     PRAC_REA?: SortOrder
+    DESCRIP?: SortOrder
     CANT_PRA?: SortOrder
     IMPORTE?: SortOrder
+    IMP_LIQ?: SortOrder
     ANULADO?: SortOrder
     OPERADOR?: SortOrder
     OPE_ANU?: SortOrder
     COD_PRAC?: SortOrder
     idpractica?: SortOrder
-    DESCRIP?: SortOrder
   }
 
   export type PRACTICAAvgOrderByAggregateInput = {
@@ -32065,6 +32094,7 @@ export namespace Prisma {
     NRO_DNI?: SortOrder
     CANT_PRA?: SortOrder
     IMPORTE?: SortOrder
+    IMP_LIQ?: SortOrder
     ANULADO?: SortOrder
     OPE_ANU?: SortOrder
     idpractica?: SortOrder
@@ -32078,14 +32108,15 @@ export namespace Prisma {
     HORA?: SortOrder
     NRO_ORDEN?: SortOrder
     PRAC_REA?: SortOrder
+    DESCRIP?: SortOrder
     CANT_PRA?: SortOrder
     IMPORTE?: SortOrder
+    IMP_LIQ?: SortOrder
     ANULADO?: SortOrder
     OPERADOR?: SortOrder
     OPE_ANU?: SortOrder
     COD_PRAC?: SortOrder
     idpractica?: SortOrder
-    DESCRIP?: SortOrder
   }
 
   export type PRACTICAMinOrderByAggregateInput = {
@@ -32096,14 +32127,15 @@ export namespace Prisma {
     HORA?: SortOrder
     NRO_ORDEN?: SortOrder
     PRAC_REA?: SortOrder
+    DESCRIP?: SortOrder
     CANT_PRA?: SortOrder
     IMPORTE?: SortOrder
+    IMP_LIQ?: SortOrder
     ANULADO?: SortOrder
     OPERADOR?: SortOrder
     OPE_ANU?: SortOrder
     COD_PRAC?: SortOrder
     idpractica?: SortOrder
-    DESCRIP?: SortOrder
   }
 
   export type PRACTICASumOrderByAggregateInput = {
@@ -32111,6 +32143,7 @@ export namespace Prisma {
     NRO_DNI?: SortOrder
     CANT_PRA?: SortOrder
     IMPORTE?: SortOrder
+    IMP_LIQ?: SortOrder
     ANULADO?: SortOrder
     OPE_ANU?: SortOrder
     idpractica?: SortOrder

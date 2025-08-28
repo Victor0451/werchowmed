@@ -284,14 +284,15 @@ exports.Prisma.PRACTICAScalarFieldEnum = {
   HORA: 'HORA',
   NRO_ORDEN: 'NRO_ORDEN',
   PRAC_REA: 'PRAC_REA',
+  DESCRIP: 'DESCRIP',
   CANT_PRA: 'CANT_PRA',
   IMPORTE: 'IMPORTE',
+  IMP_LIQ: 'IMP_LIQ',
   ANULADO: 'ANULADO',
   OPERADOR: 'OPERADOR',
   OPE_ANU: 'OPE_ANU',
   COD_PRAC: 'COD_PRAC',
-  idpractica: 'idpractica',
-  DESCRIP: 'DESCRIP'
+  idpractica: 'idpractica'
 };
 
 exports.Prisma.PRACT_ENFERScalarFieldEnum = {
