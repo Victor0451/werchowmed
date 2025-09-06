@@ -18,24 +18,24 @@ const Navbar = ({ sucur }) => {
       let userData = JSON.parse(usuario);
       guardarUsuario(userData);
 
-      traerMensajes(userData.usuario);
+      // traerMensajes(userData.usuario);
       traerTareasSuc();
     }
   }, []);
 
-  const traerMensajes = async (id) => {
-    await axios
-      .get(`${ip}api/sgi/mails/listmsjsinleer/${id}`)
-      .then((res) => {
-        if (res.status === 200) {
-          guardarMensajes(res.data.length);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toastr.error("Ocurrio un error al traer los mensajes", "ATENCION");
-      });
-  };
+  // const traerMensajes = async (id) => {
+  //   await axios
+  //     .get(`${ip}api/sgi/mails/listmsjsinleer/${id}`)
+  //     .then((res) => {
+  //       if (res.status === 200) {
+  //         guardarMensajes(res.data.length);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       toastr.error("Ocurrio un error al traer los mensajes", "ATENCION");
+  //     });
+  // };
 
   const traerTareasSuc = async (id) => {
     await axios
