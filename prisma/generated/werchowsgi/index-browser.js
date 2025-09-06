@@ -469,17 +469,6 @@ exports.Prisma.Mails_adjuntosScalarFieldEnum = {
   tipo: 'tipo'
 };
 
-exports.Prisma.MbanconvScalarFieldEnum = {
-  id_mora: 'id_mora',
-  tipo: 'tipo',
-  mora: 'mora',
-  fichas: 'fichas',
-  morarec: 'morarec',
-  fichasrec: 'fichasrec',
-  mes: 'mes',
-  ano: 'ano'
-};
-
 exports.Prisma.Movimiento_caja_sucursalesScalarFieldEnum = {
   idmovimiento: 'idmovimiento',
   fecha_carga: 'fecha_carga',
@@ -615,21 +604,6 @@ exports.Prisma.Plan_detalleScalarFieldEnum = {
   id_plan: 'id_plan'
 };
 
-exports.Prisma.Plan_precioScalarFieldEnum = {
-  id_plan: 'id_plan',
-  plan: 'plan',
-  tipo_plan: 'tipo_plan',
-  codigo: 'codigo'
-};
-
-exports.Prisma.Porcentaje_liqScalarFieldEnum = {
-  porcliq_id: 'porcliq_id',
-  porcliq_nombre: 'porcliq_nombre',
-  porcliq_descrip: 'porcliq_descrip',
-  porcliq_cuotas: 'porcliq_cuotas',
-  porcliq_porcentaje: 'porcliq_porcentaje'
-};
-
 exports.Prisma.Prestamos_empleadosScalarFieldEnum = {
   idprestamo: 'idprestamo',
   empleado: 'empleado',
@@ -683,22 +657,10 @@ exports.Prisma.RehabilitacionesScalarFieldEnum = {
   idoperador: 'idoperador'
 };
 
-exports.Prisma.Rol_personalScalarFieldEnum = {
-  idrol: 'idrol',
-  rol: 'rol'
-};
-
 exports.Prisma.SucursalScalarFieldEnum = {
   idsucursal: 'idsucursal',
   sucursal: 'sucursal',
   codigo: 'codigo'
-};
-
-exports.Prisma.SueldosScalarFieldEnum = {
-  sld_id: 'sld_id',
-  sld_perfil: 'sld_perfil',
-  sld_basico: 'sld_basico',
-  sld_basicoant: 'sld_basicoant'
 };
 
 exports.Prisma.Tab_efScalarFieldEnum = {
@@ -808,24 +770,6 @@ exports.Prisma.Certificado_estudiantesScalarFieldEnum = {
   ncert: 'ncert'
 };
 
-exports.Prisma.CarteraScalarFieldEnum = {
-  contrato: 'contrato',
-  socio: 'socio',
-  alta: 'alta',
-  grupo: 'grupo',
-  adhs: 'adhs',
-  plan: 'plan',
-  sub_plan: 'sub_plan',
-  zona: 'zona',
-  cuota: 'cuota',
-  empresa: 'empresa',
-  sucursal: 'sucursal',
-  deuda: 'deuda',
-  mes: 'mes',
-  ano: 'ano',
-  idcartera: 'idcartera'
-};
-
 exports.Prisma.Conceptos_liquidacionScalarFieldEnum = {
   idconcepto: 'idconcepto',
   concepto: 'concepto',
@@ -928,6 +872,169 @@ exports.Prisma.Historial_lv_prestamosScalarFieldEnum = {
   cod_ptm_leg: 'cod_ptm_leg'
 };
 
+exports.Prisma.Cuota_prestamoScalarFieldEnum = {
+  cuoptm_id: 'cuoptm_id',
+  cuoptm_capital: 'cuoptm_capital',
+  cuoptm_cantidad: 'cuoptm_cantidad',
+  cuoptm_cuota: 'cuoptm_cuota',
+  cuoptm_cuotaant: 'cuoptm_cuotaant'
+};
+
+exports.Prisma.Cuotas_adeudadasScalarFieldEnum = {
+  id_deuda: 'id_deuda',
+  contrato: 'contrato',
+  monto_cuota: 'monto_cuota',
+  cuotas_adeudadas: 'cuotas_adeudadas'
+};
+
+exports.Prisma.LocalidadScalarFieldEnum = {
+  local_id: 'local_id',
+  local_descrip: 'local_descrip'
+};
+
+exports.Prisma.Obra_socScalarFieldEnum = {
+  CODIGO: 'CODIGO',
+  NOMBRE: 'NOMBRE',
+  DETALLE: 'DETALLE',
+  DOMICILIO: 'DOMICILIO',
+  FECHA_SUSP: 'FECHA_SUSP',
+  OPERADOR: 'OPERADOR',
+  ACTUALIZA: 'ACTUALIZA',
+  SUSPENDIDO: 'SUSPENDIDO',
+  id: 'id'
+};
+
+exports.Prisma.PlanificacionScalarFieldEnum = {
+  pln_ide: 'pln_ide',
+  pln_usu: 'pln_usu',
+  pln_dia: 'pln_dia',
+  pln_obs: 'pln_obs'
+};
+
+exports.Prisma.Poliza_5380ScalarFieldEnum = {
+  DNI: 'DNI',
+  TITULAR: 'TITULAR',
+  CONTRATO: 'CONTRATO',
+  ALTA: 'ALTA',
+  BAJA: 'BAJA',
+  GRUPO: 'GRUPO',
+  PLAN: 'PLAN',
+  ADH: 'ADH',
+  CUOTA: 'CUOTA',
+  INGRESO: 'INGRESO',
+  NACIMIENTO: 'NACIMIENTO',
+  CAPITAL: 'CAPITAL',
+  TIPO: 'TIPO'
+};
+
+exports.Prisma.PrestamosScalarFieldEnum = {
+  ptm_id: 'ptm_id',
+  ptm_fechacarga: 'ptm_fechacarga',
+  ptm_op: 'ptm_op',
+  ptm_ficha: 'ptm_ficha',
+  ptm_legajo: 'ptm_legajo',
+  ptm_ant: 'ptm_ant',
+  ptm_fechasol: 'ptm_fechasol',
+  ptm_renov: 'ptm_renov',
+  ptm_prestamo: 'ptm_prestamo',
+  ptm_cuotas: 'ptm_cuotas',
+  ptm_valcuota: 'ptm_valcuota',
+  ptm_neto: 'ptm_neto',
+  ptm_estado: 'ptm_estado',
+  cod_ptm_leg: 'cod_ptm_leg',
+  ptm_afi: 'ptm_afi',
+  capinoaut: 'capinoaut',
+  ptm_inicio: 'ptm_inicio',
+  ptm_fin: 'ptm_fin',
+  ptm_fechaingreso: 'ptm_fechaingreso'
+};
+
+exports.Prisma.Registro_diario_saldosScalarFieldEnum = {
+  reg_diario_id: 'reg_diario_id',
+  reg_diario_fecha: 'reg_diario_fecha',
+  reg_diario_movim: 'reg_diario_movim',
+  reg_diario_entidad: 'reg_diario_entidad',
+  reg_diario_ent_tipo: 'reg_diario_ent_tipo',
+  reg_diario_descrip: 'reg_diario_descrip',
+  reg_diario_saldo: 'reg_diario_saldo',
+  reg_diario_estado: 'reg_diario_estado',
+  reg_diario_usu: 'reg_diario_usu',
+  reg_diario_fecha_egreso: 'reg_diario_fecha_egreso',
+  reg_diario_item: 'reg_diario_item',
+  reg_diario_cancelado: 'reg_diario_cancelado',
+  reg_diario_cheque: 'reg_diario_cheque'
+};
+
+exports.Prisma.Registro_egreso_diarioScalarFieldEnum = {
+  reg_egre_id: 'reg_egre_id',
+  reg_egre_fecha: 'reg_egre_fecha',
+  reg_egre_entidad: 'reg_egre_entidad',
+  reg_egre_item: 'reg_egre_item',
+  reg_egre_detalle: 'reg_egre_detalle',
+  reg_egre_nro_cheque: 'reg_egre_nro_cheque',
+  reg_egre_fec_debito: 'reg_egre_fec_debito',
+  reg_egre_saldo: 'reg_egre_saldo',
+  reg_egre_cancelado: 'reg_egre_cancelado',
+  reg_egre_usu_carga: 'reg_egre_usu_carga'
+};
+
+exports.Prisma.Registro_ingreso_diarioScalarFieldEnum = {
+  reg_ing_id: 'reg_ing_id',
+  reg_ing_date: 'reg_ing_date',
+  reg_ing_entidad: 'reg_ing_entidad',
+  reg_ing_detalle: 'reg_ing_detalle',
+  reg_ing_saldo: 'reg_ing_saldo',
+  reg_ing_usu_car: 'reg_ing_usu_car'
+};
+
+exports.Prisma.Registro_sucursalScalarFieldEnum = {
+  reg_suc_id: 'reg_suc_id',
+  reg_suc_fecha: 'reg_suc_fecha',
+  reg_suc_usu: 'reg_suc_usu',
+  reg_sucursal: 'reg_sucursal',
+  reg_suc_caja: 'reg_suc_caja',
+  reg_suc_descrip: 'reg_suc_descrip',
+  reg_suc_monto: 'reg_suc_monto',
+  reg_suc_movim: 'reg_suc_movim',
+  reg_suc_item: 'reg_suc_item',
+  reg_suc_estado: 'reg_suc_estado'
+};
+
+exports.Prisma.SomScalarFieldEnum = {
+  CONTRATO: 'CONTRATO',
+  APE_NOM: 'APE_NOM',
+  ALTA: 'ALTA',
+  GRUPO: 'GRUPO',
+  ADHS: 'ADHS',
+  PLAN: 'PLAN',
+  SUB_PLAN: 'SUB_PLAN',
+  ZONA: 'ZONA',
+  CUOTA: 'CUOTA',
+  EMPRESA: 'EMPRESA',
+  SUCURSAL: 'SUCURSAL',
+  EDAD_PROM: 'EDAD_PROM',
+  PERMANEN: 'PERMANEN',
+  DEUDA: 'DEUDA'
+};
+
+exports.Prisma.SowScalarFieldEnum = {
+  CONTRATO: 'CONTRATO',
+  APE_NOM: 'APE_NOM',
+  ALTA: 'ALTA',
+  GRUPO: 'GRUPO',
+  ADHS: 'ADHS',
+  PLAN: 'PLAN',
+  SUB_PLAN: 'SUB_PLAN',
+  ZONA: 'ZONA',
+  CUOTA: 'CUOTA',
+  EMPRESA: 'EMPRESA',
+  SUCURSAL: 'SUCURSAL',
+  EDAD_PROM: 'EDAD_PROM',
+  PERMANEN: 'PERMANEN',
+  DEUDA: 'DEUDA',
+  idso: 'idso'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -969,7 +1076,6 @@ exports.Prisma.ModelName = {
   locador: 'locador',
   mails: 'mails',
   mails_adjuntos: 'mails_adjuntos',
-  mbanconv: 'mbanconv',
   movimiento_caja_sucursales: 'movimiento_caja_sucursales',
   noticia: 'noticia',
   novedades: 'novedades',
@@ -981,15 +1087,11 @@ exports.Prisma.ModelName = {
   plan_cuentas: 'plan_cuentas',
   plan_cuentas_x: 'plan_cuentas_x',
   plan_detalle: 'plan_detalle',
-  plan_precio: 'plan_precio',
-  porcentaje_liq: 'porcentaje_liq',
   prestamos_empleados: 'prestamos_empleados',
   prestamos_empleados_cobro: 'prestamos_empleados_cobro',
   registro_constancia_afiliacion: 'registro_constancia_afiliacion',
   rehabilitaciones: 'rehabilitaciones',
-  rol_personal: 'rol_personal',
   sucursal: 'sucursal',
-  sueldos: 'sueldos',
   tab_ef: 'tab_ef',
   tablero_efectividad: 'tablero_efectividad',
   tareas_sucursales: 'tareas_sucursales',
@@ -1001,7 +1103,6 @@ exports.Prisma.ModelName = {
   prestamos_plan_cuotas: 'prestamos_plan_cuotas',
   prestamos_tasas: 'prestamos_tasas',
   certificado_estudiantes: 'certificado_estudiantes',
-  cartera: 'cartera',
   conceptos_liquidacion: 'conceptos_liquidacion',
   gasto_luto: 'gasto_luto',
   legajo_operador: 'legajo_operador',
@@ -1010,7 +1111,20 @@ exports.Prisma.ModelName = {
   recibo_movimientos: 'recibo_movimientos',
   reintegros: 'reintegros',
   beneficios: 'beneficios',
-  historial_lv_prestamos: 'historial_lv_prestamos'
+  historial_lv_prestamos: 'historial_lv_prestamos',
+  cuota_prestamo: 'cuota_prestamo',
+  cuotas_adeudadas: 'cuotas_adeudadas',
+  localidad: 'localidad',
+  obra_soc: 'obra_soc',
+  planificacion: 'planificacion',
+  poliza_5380: 'poliza_5380',
+  prestamos: 'prestamos',
+  registro_diario_saldos: 'registro_diario_saldos',
+  registro_egreso_diario: 'registro_egreso_diario',
+  registro_ingreso_diario: 'registro_ingreso_diario',
+  registro_sucursal: 'registro_sucursal',
+  som: 'som',
+  sow: 'sow'
 };
 
 /**

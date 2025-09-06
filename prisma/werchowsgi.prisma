@@ -9,43 +9,6 @@ datasource db {
   url      = env("WERCHOWSGI_URL")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-model USOS {
-  SUC        String?   @db.VarChar(255)
-  ORDEN      String?   @db.VarChar(255)
-  CONTRATO   Int?
-  NRO_ADH    String?   @db.VarChar(255)
-  NRO_DOC    String?   @db.VarChar(255)
-  PLAN       String?   @db.VarChar(255)
-  EDAD       String?   @db.VarChar(255)
-  SEXO       String?   @db.VarChar(255)
-  OBRA_SOC   String?   @db.VarChar(255)
-  FECHA      String?   @db.VarChar(255)
-  FEC_CAJA   String?   @db.VarChar(255)
-  HORA       String?   @db.VarChar(255)
-  SERVICIO   String?   @db.VarChar(255)
-  COMPROBA   String?   @db.VarChar(255)
-  MODALIDAD  String?   @db.VarChar(255)
-  VALOR      String?   @db.VarChar(255)
-  IMPORTE    String?   @db.VarChar(255)
-  PUESTO     String?   @db.VarChar(255)
-  PRESTADO   String?   @db.VarChar(255)
-  ANULADO    String?   @db.VarChar(255)
-  OPERADOR   String?   @db.VarChar(255)
-  OPE_AUTO   String?   @db.VarChar(255)
-  FEC_USO    String?   @db.VarChar(255)
-  PEDIDO     String?   @db.VarChar(255)
-  NRO_RECETA String?   @db.VarChar(255)
-  COMP       String?   @db.VarChar(255)
-  EMPRESA    String?   @db.VarChar(255)
-  N_SERIE    String?   @db.VarChar(255)
-  N_RECIBO   String?   @db.VarChar(255)
-  IMP_NC     String?   @db.VarChar(255)
-  FECHAA     DateTime? @db.Date
-
-  @@ignore
-}
-
 model alta_novell {
   idnovell            Int       @id @default(autoincrement())
   fecha_recepcion     DateTime? @db.Date
@@ -447,17 +410,6 @@ model mails_adjuntos {
   tipo      String? @db.VarChar(255)
 }
 
-model mbanconv {
-  id_mora   Int     @id @default(autoincrement())
-  tipo      String? @db.VarChar(50)
-  mora      Int?
-  fichas    Int?
-  morarec   Int?
-  fichasrec Int?
-  mes       Int?
-  ano       Int?
-}
-
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model moram {
   contrato  Int?
@@ -651,21 +603,6 @@ model plan_detalle {
   id_plan        Int?
 }
 
-model plan_precio {
-  id_plan   Int     @id @default(autoincrement())
-  plan      String? @db.VarChar(255)
-  tipo_plan String? @db.VarChar(255)
-  codigo    String? @db.VarChar(255)
-}
-
-model porcentaje_liq {
-  porcliq_id         Int     @id @default(autoincrement())
-  porcliq_nombre     String? @db.VarChar(20)
-  porcliq_descrip    String? @db.VarChar(50)
-  porcliq_cuotas     Int?
-  porcliq_porcentaje Int?
-}
-
 model prestamos_empleados {
   idprestamo      Int       @id @default(autoincrement())
   empleado        String?   @db.VarChar(255)
@@ -719,11 +656,6 @@ model rehabilitaciones {
   idoperador Int?
 }
 
-model rol_personal {
-  idrol Int     @id @default(autoincrement())
-  rol   String? @db.VarChar(255)
-}
-
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model sub2 {
   EXPEDIEN  String?   @db.VarChar(255)
@@ -743,13 +675,6 @@ model sucursal {
   idsucursal Int     @id @default(autoincrement())
   sucursal   String? @db.VarChar(255)
   codigo     String? @db.VarChar(255)
-}
-
-model sueldos {
-  sld_id        Int     @id @default(autoincrement())
-  sld_perfil    String? @db.VarChar(20)
-  sld_basico    Float?  @db.Float
-  sld_basicoant Float?  @db.Float
 }
 
 model tab_ef {
@@ -857,26 +782,6 @@ model certificado_estudiantes {
   fecha         DateTime? @db.Date
   operador      String?   @db.VarChar(255)
   ncert         String?   @db.VarChar(255)
-}
-
-model cartera {
-  contrato  Int?
-  socio     String?   @db.VarChar(30)
-  alta      DateTime? @db.Date
-  grupo     Int?
-  adhs      Int?
-  plan      String?   @db.VarChar(2)
-  sub_plan  String?   @db.VarChar(2)
-  zona      Int?
-  cuota     Float?
-  empresa   String?   @db.VarChar(1)
-  sucursal  String?   @db.VarChar(1)
-  deuda     Int?
-  mes       Int?
-  ano       Int?
-  idcartera Int       @id @default(autoincrement())
-
-  @@index([zona], map: "zona")
 }
 
 model conceptos_liquidacion {
@@ -1049,4 +954,215 @@ model historial_lv_prestamos {
   fecha_subida DateTime? @db.Date
   empresa      String?   @db.VarChar(255)
   cod_ptm_leg  String?   @db.VarChar(255)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model PLAN2021 {
+  CUENTA    String? @db.VarChar(10)
+  DESCRIP   String? @db.VarChar(30)
+  IMPUTABLE Int?    @db.TinyInt
+  FIJA      Int?    @db.TinyInt
+  AUXI      String? @db.VarChar(10)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model cuentas {
+  CUIL      String?   @db.VarChar(11)
+  SUC_NUE   String?   @db.VarChar(3)
+  CTA_NUE   String?   @db.VarChar(9)
+  COD_SUC   String?   @db.VarChar(3)
+  SUC_VIE   String?   @db.VarChar(3)
+  CUENTA    String?   @db.VarChar(11)
+  APE_NOM   String?   @db.VarChar(40)
+  NRO_DOC   Int?
+  DOC_TIT   Int?
+  CONTRATO  Int?
+  PRODUCTOR Int?
+  GRUPO     Int?
+  FECHA_ACT DateTime? @db.Date
+  CONVENIO  Int?
+  PRI_MES   DateTime? @db.Date
+  NRO_TARJ  String?   @db.VarChar(16)
+  OPERADOR  Int?
+  CBU       String?   @db.VarChar(22)
+  DIA_COBRO Int?
+  VENC_TARJ DateTime? @db.Date
+
+  @@ignore
+}
+
+model cuota_prestamo {
+  cuoptm_id       Int    @id @default(autoincrement())
+  cuoptm_capital  Float? @db.Float
+  cuoptm_cantidad Int?
+  cuoptm_cuota    Float? @db.Float
+  cuoptm_cuotaant Float? @db.Float
+}
+
+model cuotas_adeudadas {
+  id_deuda         Int    @id
+  contrato         Int
+  monto_cuota      Float? @db.Float
+  cuotas_adeudadas Int?
+}
+
+model localidad {
+  local_id      Int     @id @default(autoincrement())
+  local_descrip String? @db.VarChar(50)
+}
+
+model obra_soc {
+  CODIGO     Int?
+  NOMBRE     String?   @db.VarChar(20)
+  DETALLE    String?   @db.VarChar(45)
+  DOMICILIO  String?   @db.VarChar(30)
+  FECHA_SUSP DateTime? @db.Date
+  OPERADOR   Int?
+  ACTUALIZA  String?   @db.VarChar(13)
+  SUSPENDIDO Int?      @db.TinyInt
+  id         Int       @id @default(autoincrement())
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model planes {
+  PLAN     String? @db.VarChar(1)
+  SUB_PLAN String? @db.VarChar(2)
+  DESCRIP  String? @db.VarChar(20)
+
+  @@ignore
+}
+
+model planificacion {
+  pln_ide Int       @id @default(autoincrement())
+  pln_usu Int?
+  pln_dia DateTime? @db.Date
+  pln_obs String?   @db.LongText
+}
+
+model poliza_5380 {
+  DNI        String  @id @db.VarChar(255)
+  TITULAR    String? @db.VarChar(255)
+  CONTRATO   String? @db.VarChar(255)
+  ALTA       String? @db.VarChar(255)
+  BAJA       String? @db.VarChar(255)
+  GRUPO      String? @db.VarChar(255)
+  PLAN       String? @db.VarChar(255)
+  ADH        String? @db.VarChar(255)
+  CUOTA      String? @db.VarChar(255)
+  INGRESO    String? @db.VarChar(255)
+  NACIMIENTO String? @db.VarChar(255)
+  CAPITAL    String? @db.VarChar(255)
+  TIPO       String? @db.VarChar(255)
+}
+
+model prestamos {
+  ptm_id           Int       @id @default(autoincrement())
+  ptm_fechacarga   DateTime? @db.Date
+  ptm_op           Int?
+  ptm_ficha        Int?
+  ptm_legajo       Int?
+  ptm_ant          Int?
+  ptm_fechasol     DateTime? @db.Date
+  ptm_renov        String?   @db.VarChar(5)
+  ptm_prestamo     Int?
+  ptm_cuotas       Int?
+  ptm_valcuota     Float?    @db.Float
+  ptm_neto         Float?    @db.Float
+  ptm_estado       String?   @db.VarChar(20)
+  cod_ptm_leg      String?   @db.VarChar(255)
+  ptm_afi          String?   @db.VarChar(255)
+  capinoaut        Boolean?
+  ptm_inicio       String?   @db.VarChar(255)
+  ptm_fin          String?   @db.VarChar(255)
+  ptm_fechaingreso DateTime? @db.Date
+}
+
+model registro_diario_saldos {
+  reg_diario_id           Int       @id @default(autoincrement())
+  reg_diario_fecha        DateTime? @db.Date
+  reg_diario_movim        String?   @db.VarChar(2)
+  reg_diario_entidad      Int?
+  reg_diario_ent_tipo     String?   @db.VarChar(2)
+  reg_diario_descrip      String?   @db.VarChar(100)
+  reg_diario_saldo        Float?    @db.Float
+  reg_diario_estado       String?   @db.VarChar(10)
+  reg_diario_usu          Int?
+  reg_diario_fecha_egreso DateTime? @db.Date
+  reg_diario_item         Int?
+  reg_diario_cancelado    String?   @db.VarChar(2)
+  reg_diario_cheque       Int?
+}
+
+model registro_egreso_diario {
+  reg_egre_id         Int       @id @default(autoincrement())
+  reg_egre_fecha      DateTime? @db.Date
+  reg_egre_entidad    Int?
+  reg_egre_item       Int?
+  reg_egre_detalle    String?   @db.VarChar(250)
+  reg_egre_nro_cheque Int?
+  reg_egre_fec_debito DateTime? @db.Date
+  reg_egre_saldo      Float?    @db.Float
+  reg_egre_cancelado  String?   @db.VarChar(2)
+  reg_egre_usu_carga  Int?
+}
+
+model registro_ingreso_diario {
+  reg_ing_id      Int       @id @default(autoincrement())
+  reg_ing_date    DateTime? @db.DateTime(0)
+  reg_ing_entidad Int?
+  reg_ing_detalle String?   @db.VarChar(250)
+  reg_ing_saldo   Float?    @db.Float
+  reg_ing_usu_car Int?
+}
+
+model registro_sucursal {
+  reg_suc_id      Int       @id @default(autoincrement())
+  reg_suc_fecha   DateTime? @db.Date
+  reg_suc_usu     Int?
+  reg_sucursal    Int?
+  reg_suc_caja    Int?
+  reg_suc_descrip String?   @db.LongText
+  reg_suc_monto   Float?    @db.Float
+  reg_suc_movim   String?   @db.VarChar(5)
+  reg_suc_item    Int?
+  reg_suc_estado  String?   @db.VarChar(10)
+}
+
+model som {
+  CONTRATO  Int       @id
+  APE_NOM   String?   @db.VarChar(30)
+  ALTA      DateTime? @db.Date
+  GRUPO     Int?
+  ADHS      Int?
+  PLAN      String?   @db.VarChar(2)
+  SUB_PLAN  String?   @db.VarChar(2)
+  ZONA      Int?
+  CUOTA     Float?
+  EMPRESA   String?   @db.VarChar(1)
+  SUCURSAL  String?   @db.VarChar(1)
+  EDAD_PROM Float?
+  PERMANEN  Float?
+  DEUDA     Int?
+}
+
+model sow {
+  CONTRATO  Int?      @unique(map: "contrato")
+  APE_NOM   String?   @db.VarChar(30)
+  ALTA      DateTime? @db.Date
+  GRUPO     Int?
+  ADHS      Int?
+  PLAN      String?   @db.VarChar(2)
+  SUB_PLAN  String?   @db.VarChar(2)
+  ZONA      Int?
+  CUOTA     Float?
+  EMPRESA   String?   @db.VarChar(1)
+  SUCURSAL  String?   @db.VarChar(1)
+  EDAD_PROM Float?
+  PERMANEN  Float?
+  DEUDA     Int?
+  idso      Int       @id @default(autoincrement())
+
+  @@index([ZONA], map: "zona")
 }
