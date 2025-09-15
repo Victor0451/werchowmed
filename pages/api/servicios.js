@@ -1,10 +1,10 @@
+import { werchow, sgi, serv, sep, camp, arch, club } from "../../libs/db/index";
 import moment from "moment";
-import { Werchow, SGI, Camp, Serv } from "../../libs/config";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
     if (req.query.f && req.query.f === "contar fisio") {
-      const contarFisio = await Serv.$queryRaw`
+      const contarFisio = await serv.query(`
             
       SELECT 
       
@@ -18,10 +18,12 @@ export default async function handler(req, res) {
           END 'N'            
       
       FROM PRACTICA
-      WHERE CONTRATO = ${req.query.contrato}
+      WHERE CONTRATO = ${parseInt(req.query.contrato)}
       AND PRAC_REA = 'FIS'
 
-`;
+`);
+
+      await serv.end();
 
       res
         .status(200)
@@ -31,18 +33,20 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "verificar consultas") {
-      const verificarConsultas = await Serv.$queryRaw`
+      const verificarConsultas = await serv.query(`
               
         SELECT 
             COUNT(CONTRATO) 'orde'
         FROM USOS
-        WHERE CONTRATO = ${req.query.contrato}
+        WHERE CONTRATO = ${parseInt(req.query.contrato)}
         AND SERVICIO = 'ORDE'
         AND YEAR(FECHA) = YEAR(CURDATE())
         AND MONTH(FECHA) = MONTH(CURDATE())
         AND ANULADO  = 0
   
-  `;
+  `);
+
+      await serv.end();
 
       res
         .status(200)
@@ -52,18 +56,20 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "verificar practicas") {
-      const verificarPracticas = await Serv.$queryRaw`
+      const verificarPracticas = await serv.query(`
                 
         SELECT 
             COUNT(CONTRATO) 'orde'
         FROM USOS
-        WHERE CONTRATO = ${req.query.contrato}
+        WHERE CONTRATO = ${parseInt(req.query.contrato)}
         AND SERVICIO NOT IN ('ORDE','FARM','ENF', 'PBIO')
         AND YEAR(FECHA) = YEAR(CURDATE())
         AND MONTH(FECHA) = MONTH(CURDATE())
         AND ANULADO  = 0
     
-    `;
+    `);
+
+      await serv.end();
 
       res
         .status(200)
@@ -73,19 +79,21 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "verificar cbio") {
-      const verificarPracticas = await Serv.$queryRaw`
+      const verificarPracticas = await serv.query(`
                 
         SELECT 
             COUNT(CONTRATO) 'orde'
         FROM USOS
-        WHERE CONTRATO = ${req.query.contrato}
+        WHERE CONTRATO = ${parseInt(req.query.contrato)}
         AND SERVICIO = 'PBIO'
         AND PRESTADO = 'C_BIO'
         AND YEAR(FECHA) = YEAR(CURDATE())
         AND MONTH(FECHA) = MONTH(CURDATE())
         AND ANULADO  = 0
     
-    `;
+    `);
+
+      await serv.end();
 
       res
         .status(200)
@@ -95,19 +103,28 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer adh provi") {
-      const adhProvi = await Serv.adherent_provi.findMany({
-        where: {
-          CONTRATO: parseInt(req.query.contrato),
-        },
-      });
+      const adhProvi = await serv.query(
+        `
+            SELECT *
+            FROM adherent_provi
+            WHERE CONTRATO= ${parseInt(req.query.contrato)}
+
+          `
+      );
+
+      await serv.end();
 
       res.status(200).json(adhProvi);
     } else if (req.query.f && req.query.f === "traer adh provi dni") {
-      const adhProviDni = await Serv.adherent_provi.findMany({
-        where: {
-          NRO_DOC: parseInt(req.query.dni),
-        },
-      });
+      const adhProviDni = await serv.query(
+        `
+        SELECT *
+        FROM adherent_provi
+        WHERE NRO_DOC= ${parseInt(req.query.dni)}
+      `
+      );
+
+      await serv.end();
 
       res.status(200).json(adhProviDni);
     } else if (req.query.f && req.query.f === "traer prac prest") {
@@ -115,13 +132,16 @@ export default async function handler(req, res) {
       let codPres = `COD_PRES${req.query.lugar}`;
       let id = `${req.query.id}`;
 
-      const pracPrest = await Serv.$queryRawUnsafe(
+      const pracPrest = await serv.query(
         `                
         SELECT CODIGOS, DESCRIP, ${impo} 'IMPORTE', idpractica
         FROM AUT_PRAC
         WHERE ${codPres} = '${id}'
        `
       );
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -130,11 +150,14 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer farmacias") {
-      const verificarPracticas = await Serv.$queryRaw`
+      const verificarPracticas = await serv.query(`
           SELECT
               *
           FROM FARMA
-      `;
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -143,16 +166,19 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "usos farmacia") {
-      const usosFarmacia = await Serv.$queryRaw`
+      const usosFarmacia = await serv.query(`
          SELECT 
             COUNT(CONTRATO) 'usos'
           FROM USOS
-          WHERE CONTRATO = ${req.query.contrato}
-          AND PRESTADO = ${req.query.prestado}
+          WHERE CONTRATO = ${parseInt(req.query.contrato)}
+          AND PRESTADO = '${req.query.prestado}'
           AND YEAR(FECHA) = YEAR(CURDATE())
           AND MONTH(FECHA) = MONTH(CURDATE())
           AND ANULADO in (NULL, 0)
-      `;
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -161,12 +187,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer farma desc") {
-      const usosFarmacia = await Serv.$queryRaw`
+      const usosFarmacia = await serv.query(`
         SELECT 
           *
         FROM FARMA
-        WHERE CODIGO = ${req.query.prestado}
-      `;
+        WHERE CODIGO = '${req.query.prestado}'
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -175,13 +204,16 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer enfermeria") {
-      const traerEnfermeria = await Serv.$queryRaw`
+      const traerEnfermeria = await serv.query(`
          
           SELECT COD_PRES, NOMBRE
           FROM PRESTADO
-          WHERE SUC = ${req.query.suc}
+          WHERE SUC = '${req.query.suc}'
           AND SUBSTR(LIS_ESPE,1,3) = 'ENF'    
-      `;
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -190,12 +222,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer pract enfermeria") {
-      const pracEnfer = await Serv.$queryRaw`
+      const pracEnfer = await serv.query(`
          
             SELECT 
                 *
             FROM PRACT_ENFER 
-      `;
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -204,12 +239,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer practicas") {
-      const pracEnfer = await Serv.$queryRaw`
+      const pracEnfer = await serv.query(`
          
          SELECT *
          FROM PRACTICA
-         WHERE NRO_ORDEN = ${req.query.orden}
-      `;
+         WHERE NRO_ORDEN = '${req.query.orden}'
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -218,12 +256,14 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer nombre farmacia") {
-      const pracEnfer = await Serv.$queryRaw`
+      const pracEnfer = await serv.query(`
          
           SELECT *
           FROM FARMA
-          WHERE CODIGO = ${req.query.farma}
-      `;
+          WHERE CODIGO = '${req.query.farma}'
+      `);
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -232,12 +272,14 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer farmacia") {
-      const pracEnfer = await Serv.$queryRaw`
+      const pracEnfer = await serv.query(`
          
          SELECT *
          FROM FARMACIA
-         WHERE NRO_ORDEN = ${req.query.orden}
-      `;
+         WHERE NRO_ORDEN = '${req.query.orden}'
+      `);
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -246,13 +288,16 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer enfermeria orden") {
-      const pracEnfer = await Serv.$queryRaw`
+      const pracEnfer = await serv.query(`
          
           SELECT e.PRACTICA, a.NOMBRE, e.IMPORTE, e.CANTIDAD
           FROM ENFERMER as e
           INNER JOIN PRESTADO as a on a.COD_PRES = e.DESTINO          
-          WHERE e.NRO_ORDEN = ${req.query.orden}
-      `;
+          WHERE e.NRO_ORDEN = '${req.query.orden}'
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -261,16 +306,19 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "arancel enfe domicilio") {
-      const calcArancel = await Werchow.$queryRaw`
+      const calcArancel = await werchow.query(`
          
          SELECT
             CONTRATO
         FROM
             maestro
         WHERE
-            CONTRATO = ${req.query.contrato}
+            CONTRATO = ${parseInt(req.query.contrato)}
         AND BARRIO REGEXP '25 de mayo|San martin|Belgrano|guemes|san cayetano|9 de julio|santa barbara|san ignacio|loyola' 
-      `;
+      `);
+
+      await werchow.end();
+
       res
         .status(200)
         .json(
@@ -279,14 +327,18 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer planes ortodoncia") {
-      const planesOrto = await Serv.$queryRaw`
+      const planesOrto = await serv.query(`
          
          SELECT 
            *
          FROM planes_odontologicos        
          WHERE estado = 1 
          AND plan = 'ORTO'
-      `;
+         
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -295,14 +347,17 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer planes implante") {
-      const planesImp = await Serv.$queryRaw`
+      const planesImp = await serv.query(`
          
          SELECT 
            *
          FROM planes_odontologicos        
          WHERE estado = 1 
          AND plan = 'CONT'
-      `;
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -311,13 +366,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer plan dni") {
-      const planPorDNI = await Serv.$queryRaw`
+      const planPorDNI = await serv.query(`
          
          SELECT 
            *
          FROM planes_socio
-         WHERE dni = ${req.query.dni}
-      `;
+         WHERE dni = ${parseInt(req.query.dni)}
+      `);
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -326,11 +383,14 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer norden") {
-      const nOrden = await Serv.$queryRaw`         
+      const nOrden = await serv.query(`         
          SELECT iduso
          FROM USOS
          ORDER BY iduso DESC
-      `;
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -339,11 +399,14 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer uso") {
-      const nOrden = await Serv.$queryRaw`         
+      const nOrden = await serv.query(`         
          SELECT *
          FROM USOS
-         where iduso = ${req.query.iduso}
-      `;
+         WHERE iduso = ${parseInt(req.query.iduso)}
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -352,10 +415,13 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer sucursales") {
-      const traeSucursales = await Serv.$queryRaw`         
+      const traeSucursales = await serv.query(`         
           SELECT codigo, sucursal
           FROM sucursal 
-      `;
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -364,11 +430,14 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer especialidades") {
-      const traerEspecialidades = await Serv.$queryRaw`         
+      const traerEspecialidades = await serv.query(`         
              SELECT ESPECIAL, NOMBRE
              FROM ESPECIAL 
              ORDER BY NOMBRE 
-      `;
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -381,12 +450,15 @@ export default async function handler(req, res) {
       let esp = req.query.esp;
 
       if (suc === "O") {
-        const traerEspecialidades = await Serv.$queryRaw`         
+        const traerEspecialidades = await serv.query(`         
           SELECT COD_PRES, NOMBRE
           FROM PRESTADO
           WHERE OTERO = 1
-          AND SUBSTR(LIS_ESPE,1,3) = ${esp}
- `;
+          AND SUBSTR(LIS_ESPE,1,3) = '${esp}'
+ `);
+
+        await serv.end();
+
         res
           .status(200)
           .json(
@@ -395,12 +467,15 @@ export default async function handler(req, res) {
             )
           );
       } else {
-        const traerEspecialidades = await Serv.$queryRaw`         
+        const traerEspecialidades = await serv.query(`         
            SELECT COD_PRES, NOMBRE
            FROM PRESTADO
-           WHERE SUC = ${suc} 
-           AND SUBSTR(LIS_ESPE,1,3) = ${esp}
- `;
+           WHERE SUC = '${suc}' 
+           AND SUBSTR(LIS_ESPE,1,3) = '${esp}'
+ `);
+
+        await serv.end();
+
         res
           .status(200)
           .json(
@@ -410,13 +485,16 @@ export default async function handler(req, res) {
           );
       }
     } else if (req.query.f && req.query.f === "listado prestadores") {
-      const listadoPrestadores = await Serv.$queryRaw`
+      const listadoPrestadores = await serv.query(`
          
           SELECT COD_PRES, NOMBRE, CON_PAGA, LOCALIDAD, SUC
           FROM PRESTADO
           WHERE SUC IS NOT NULL
           ORDER BY NOMBRE ASC
-      `;
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -425,7 +503,7 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer detalle medico") {
-      const detalleMedico = await Serv.$queryRaw`
+      const detalleMedico = await serv.query(`
          
         SELECT 
             COD_PRES, 
@@ -449,8 +527,11 @@ export default async function handler(req, res) {
             MODALIDAD
             
         FROM PRESTADO
-        WHERE COD_PRES = ${req.query.prestado}   
-      `;
+        WHERE COD_PRES = '${req.query.prestado}'   
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -459,11 +540,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "codigo no socio") {
-      const codNoSocio = await Serv.nosocios.findFirst({
-        where: {
-          codigo: parseInt(req.query.codNoSoc),
-        },
-      });
+      const codNoSocio = await serv.query(
+        `
+              SELECT *
+              FROM nosocios
+              WHERE codigo= ${parseInt(req.query.codNoSoc)}
+        `
+      );
+
+      await serv.end();
 
       res
         .status(200)
@@ -473,11 +558,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer no socio") {
-      const codNoSocio = await Serv.nosocios.findFirst({
-        where: {
-          dni: parseInt(req.query.dni),
-        },
-      });
+      const codNoSocio = await serv.query(
+        `
+        SELECT *
+        FROM nosocios
+        WHERE dni= ${parseInt(req.query.dni)}
+      `
+      );
+
+      await serv.end();
 
       res
         .status(200)
@@ -487,11 +576,14 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer promociones") {
-      const traerPromociones = await Serv.$queryRaw`
+      const traerPromociones = await serv.query(`
          
          SELECT * 
          FROM promociones
-    `;
+    `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -504,7 +596,7 @@ export default async function handler(req, res) {
         parseInt(req.query.perfil) === 1 ||
         parseInt(req.query.perfil) === 3
       ) {
-        const listadoOrdenes = await Serv.$queryRaw`
+        const listadoOrdenes = await serv.query(`
          
          SELECT 
                 iduso,
@@ -517,7 +609,10 @@ export default async function handler(req, res) {
             FROM USOS
             WHERE ANULADO in (NULL, 0) 
             ORDER BY iduso DESC
-    `;
+    `);
+
+        await serv.end();
+
         res
           .status(200)
           .json(
@@ -526,7 +621,7 @@ export default async function handler(req, res) {
             )
           );
       } else {
-        const listadoOrdenes = await Serv.$queryRaw`
+        const listadoOrdenes = await serv.query(`
          
          SELECT 
                 iduso,
@@ -538,9 +633,12 @@ export default async function handler(req, res) {
                 IMPORTE
             FROM USOS
             WHERE ANULADO in (NULL, 0) 
-            AND OPERADOR = ${req.query.usu}
+            AND OPERADOR = '${req.query.usu}'
             ORDER BY iduso DESC
-   `;
+   `);
+
+        await serv.end();
+
         res
           .status(200)
           .json(
@@ -550,7 +648,7 @@ export default async function handler(req, res) {
           );
       }
     } else if (req.query.f && req.query.f === "traer historial usos") {
-      const usos = await Serv.$queryRaw`
+      const usos = await serv.query(`
          
          SELECT
           u.CONTRATO,
@@ -568,9 +666,9 @@ export default async function handler(req, res) {
         WHERE
           u.CONTRATO = ${parseInt(req.query.contrato)}
         ORDER BY u.FECHA DESC
-              `;
+              `);
 
-      const usosFa = await Serv.$queryRaw`
+      const usosFa = await serv.query(`
          
          SELECT
           u.CONTRATO,
@@ -588,7 +686,9 @@ export default async function handler(req, res) {
         WHERE
           u.CONTRATO = ${parseInt(req.query.contrato)}
         ORDER BY u.FECHA DESC
-`;
+`);
+
+      await serv.end();
 
       let historial = usos.concat(usosFa);
 
@@ -600,14 +700,16 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "buscar plan") {
-      const planOdonto = await Serv.$queryRaw`
+      const planOdonto = await serv.query(`
          
          SELECT 
            *
         FROM planes_socio
         WHERE contrato = ${parseInt(req.query.contrato)}     
           
-         `;
+         `);
+
+      await serv.end();
 
       res
         .status(200)
@@ -617,13 +719,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "buscar plan dni") {
-      const planOdonto = await Serv.$queryRaw`
+      const planOdonto = await serv.query(`
          
          SELECT 
            *
         FROM planes_socio
         WHERE dni = ${parseInt(req.query.dni)}       
-         `;
+         `);
+
+      await serv.end();
 
       res
         .status(200)
@@ -633,13 +737,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer plan visitas") {
-      const planOdonto = await Serv.$queryRaw`
+      const planOdonto = await serv.query(`
          
          SELECT 
            *
         FROM planes_visitas
         WHERE idplan = ${parseInt(req.query.id)}       
-         `;
+         `);
+
+      await serv.end();
 
       res
         .status(200)
@@ -649,13 +755,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer plan orto") {
-      const planOdonto = await Serv.$queryRaw`
+      const planOdonto = await serv.query(`
     
          SELECT 
            *
          FROM planes_socio
          WHERE idplansocio = ${parseInt(req.query.id)}
-                  `;
+                  `);
+
+      await serv.end();
 
       res
         .status(200)
@@ -665,13 +773,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "listado ausencias") {
-      const listAusencias = await Serv.$queryRaw`
+      const listAusencias = await serv.query(`
     
          SELECT 
            *
          FROM ausencias
 
-                  `;
+                  `);
+
+      await serv.end();
 
       res
         .status(200)
@@ -681,14 +791,16 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "listado ausencias vigentes") {
-      const listAusencias = await Serv.$queryRaw`
+      const listAusencias = await serv.query(`
     
          SELECT 
            *
          FROM ausencias
          WHERE estado = 1
 
-                  `;
+                  `);
+
+      await serv.end();
 
       res
         .status(200)
@@ -698,7 +810,7 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer ordenes dia prestador") {
-      const nOrden = await Serv.$queryRaw`         
+      const nOrden = await serv.query(`         
          
          SELECT
           CONTRATO,
@@ -726,12 +838,14 @@ export default async function handler(req, res) {
         FROM
           USOS AS u
         WHERE
-          u.PRESTADO = ${req.query.codpres}
-        AND u.FECHA = ${req.query.fecha}
+          u.PRESTADO = '${req.query.codpres}'
+        AND u.FECHA = '${moment(req.query.fecha).format("YYYY-MM-DD")}'
 
 
        
-      `;
+      `);
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -740,7 +854,7 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "list info prestadores") {
-      const listPrest = await Serv.$queryRaw`         
+      const listPrest = await serv.query(`         
          
          SELECT 
               (
@@ -783,7 +897,9 @@ export default async function handler(req, res) {
         ORDER BY NOMBRE
 
        
-      `;
+      `);
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -792,11 +908,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "check nu prest") {
-      const checkPrest = await Serv.PRESTADO.findFirst({
-        where: {
-          COD_PRES: req.query.codPres,
-        },
-      });
+      const checkPrest = await serv.query(
+        `
+          SELECT * 
+          FROM PRESTADO
+          WHERE COD_PRES= '${req.query.codPres}'
+        `
+      );
+
+      await serv.end();
 
       res
         .status(200)
@@ -806,7 +926,7 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "listado por sucursal") {
-      const usos = await Serv.$queryRaw`
+      const usos = await serv.query(`
          
          SELECT
             (
@@ -833,17 +953,22 @@ export default async function handler(req, res) {
           u.PRESTADO,
           u.SERVICIO,
           u.IMPORTE,         
-          u.OPERADOR           
+          u.OPERADOR,
+          u.ANULADO           
         
         FROM
           USOS AS u
         
         WHERE
-          u.SUC = ${req.query.sucur}
-        AND u.FECHA BETWEEN ${req.query.desde} AND ${req.query.hasta}
-        AND u.ANULADO = 0
+          u.SUC = '${req.query.sucur}'
+        AND u.FECHA BETWEEN '${moment(req.query.desde).format(
+          "YYYY-MM-DD"
+        )}' AND '${moment(req.query.hasta).format("YYYY-MM-DD")}'
+        
         ORDER BY u.HORA DESC
-              `;
+              `);
+
+      await serv.end();
 
       res
         .status(200)
@@ -853,7 +978,7 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "listado por prestador") {
-      const usos = await Serv.$queryRaw`
+      const usos = await serv.query(`
          
          SELECT
             (
@@ -880,17 +1005,22 @@ export default async function handler(req, res) {
           p.NOMBRE,
           u.SERVICIO,
           u.IMPORTE,         
-          u.OPERADOR           
+          u.OPERADOR,
+          u.ANULADO           
         
         FROM
           USOS AS u
         INNER JOIN PRESTADO AS p ON p.COD_PRES = u.PRESTADO
         WHERE
-          u.PRESTADO = ${req.query.medico}
-        AND u.FECHA BETWEEN ${req.query.desde} AND ${req.query.hasta}
+          u.PRESTADO = '${req.query.medico}'
+        AND u.FECHA BETWEEN '${moment(req.query.desde).format(
+          "YYYY-MM-DD"
+        )}' AND '${moment(req.query.hasta).format("YYYY-MM-DD")}'
         AND u.ANULADO = 0
         ORDER BY u.HORA DESC
-              `;
+              `);
+
+      await serv.end();
 
       res
         .status(200)
@@ -902,247 +1032,478 @@ export default async function handler(req, res) {
     }
   } else if (req.method === "POST") {
     if (req.body.f && req.body.f === "reg adh provisorio") {
-      const adhProvi = await Serv.adherent_provi.create({
-        data: {
-          CONTRATO: parseInt(req.body.CONTRATO),
-          NRO_DOC: parseInt(req.body.NRO_DOC),
-          PLAN: req.body.PLAN,
-          APELLIDOS: req.body.APELLIDOS,
-          NOMBRES: req.body.NOMBRES,
-          NACIMIENTO: new Date(req.body.NACIMIENTO),
-          EMPRESA: req.body.EMPRESA,
-          ESTADO: req.body.ESTADO,
-        },
-      });
+      const adhProvi = await serv.query(
+        `
+              INSERT INTO adherent_provi
+              (
+                CONTRATO,
+                NRO_DOC,
+                PLAN,
+                APELLIDOS,
+                NOMBRES,
+                NACIMIENTO,
+                EMPRESA,
+                ESTADO
+              )
 
+              VALUES
+              (
+                 ${parseInt(req.body.CONTRATO)},
+                 ${parseInt(req.body.NRO_DOC)},
+                 '${req.body.PLAN}',
+                 '${req.body.APELLIDOS}',
+                 '${req.body.NOMBRES}',
+                 '${moment(req.body.NACIMIENTO).format("YYYY-MM-DD")}',
+                 '${req.body.EMPRESA}',
+                 ${req.body.ESTADO}
+              )
+            `
+      );
+
+      await serv.end();
       res.status(200).json(adhProvi);
     } else if (req.body.f && req.body.f === "reg uso") {
-      const regUso = await Serv.USOS.create({
-        data: {
-          SUC: req.body.SUC,
-          ORDEN: req.body.ORDEN,
-          CONTRATO: parseInt(req.body.CONTRATO),
-          NRO_ADH: parseInt(req.body.NRO_ADH),
-          NRO_DOC: parseInt(req.body.NRO_DOC),
-          PLAN: req.body.PLAN,
-          EDAD: parseInt(req.body.EDAD),
-          SEXO: req.body.SEXO,
-          OBRA_SOC: req.body.OBRA_SOC,
-          FECHA: new Date(req.body.FECHA),
-          FEC_CAJA: new Date(req.body.FEC_CAJA),
-          HORA: req.body.HORA,
-          SERVICIO: req.body.SERVICIO,
-          IMPORTE: parseFloat(req.body.IMPORTE),
-          IMP_LIQ: parseFloat(req.body.IMP_LIQ),
-          VALOR: req.body.VALOR,
-          PUESTO: req.body.PUESTO,
-          PRESTADO: req.body.PRESTADO,
-          OPERADOR: req.body.OPERADOR,
-          EMPRESA: req.body.EMPRESA,
-          RENDIDO: req.body.RENDIDO,
-          ANULADO: req.body.ANULADO,
-          NUSOS: parseInt(req.body.NUSOS),
-          OPERADOR: req.body.OPERADOR,
-        },
-      });
+      const regUso = await serv.query(
+        `
+        INSERT INTO USOS
+        (
+            SUC,
+            ORDEN,
+            CONTRATO,            
+            NRO_DOC,
+            PLAN,
+            EDAD,
+            SEXO,
+            OBRA_SOC,
+            FECHA,
+            FEC_CAJA,
+            HORA,
+            SERVICIO,
+            IMPORTE,
+            IMP_LIQ,
+            VALOR,
+            PUESTO,
+            PRESTADO,
+            OPERADOR,
+            EMPRESA,
+            RENDIDO,
+            ANULADO,
+            NUSOS
+            
+        )
+
+        VALUES
+        (
+           '${req.body.SUC}',
+           '${req.body.ORDEN}',
+           ${parseInt(req.body.CONTRATO)},           
+           ${parseInt(req.body.NRO_DOC)},
+           '${req.body.PLAN}',
+           ${parseInt(req.body.EDAD)},
+           '${req.body.SEXO}',
+           '${req.body.OBRA_SOC}',
+           '${moment(req.body.FECHA).format("YYYY-MM-DD")}',
+           '${moment(req.body.FEC_CAJA).format("YYYY-MM-DD")}',
+           '${req.body.HORA}',
+           '${req.body.SERVICIO}',
+           ${parseFloat(req.body.IMPORTE)},
+           ${parseFloat(req.body.IMP_LIQ)},
+           '${req.body.VALOR}',
+           '${req.body.PUESTO}',
+           '${req.body.PRESTADO}',
+           '${req.body.OPERADOR}',
+           '${req.body.EMPRESA}',
+           ${req.body.RENDIDO},
+           ${req.body.ANULADO},
+           ${parseInt(req.body.NUSOS)}
+           
+        )
+           
+      `
+      );
+
+      await serv.end();
 
       res.status(200).json(regUso);
     } else if (req.body.f && req.body.f === "reg consul") {
-      const regConsul = await Serv.CONSULTA.create({
-        data: {
-          CONTRATO: parseInt(req.body.CONTRATO),
-          FECHA: new Date(req.body.FECHA),
-          HORA: req.body.HORA,
-          NRO_ORDEN: req.body.NRO_ORDEN,
-          DESTINO: req.body.DESTINO,
-          COD_PRES: req.body.COD_PRES,
-          IMPORTE: parseFloat(req.body.IMPORTE),
-          ANULADO: parseInt(req.body.ANULADO),
-          OPERADOR: req.body.OPERADOR,
-          OPE_ANU: req.body.OPE_ANU,
-          DIAGNOSTIC: req.body.DIAGNOSTIC,
-          ATENCION: parseInt(req.body.ATENCION),
-          NRO_DNI: parseInt(req.body.NRO_DNI),
-          SUC: req.body.SUC,
-        },
-      });
+      const regConsul = await serv.query(
+        `
+         INSERT INTO CONSULTA
+         (
+            CONTRATO,
+            FECHA,
+            HORA,
+            NRO_ORDEN,
+            DESTINO,
+            COD_PRES,
+            IMPORTE,
+            ANULADO,
+            OPERADOR,
+            OPE_ANU,
+            DIAGNOSTIC,
+            ATENCION,
+            NRO_DNI,
+            SUC
+        )
+            
+        VALUES  
+        (
+           ${parseInt(req.body.CONTRATO)},
+           '${moment(req.body.FECHA).format("YYYY-MM-DD")}',
+           '${req.body.HORA}',
+           '${req.body.NRO_ORDEN}',
+           '${req.body.DESTINO}',
+           '${req.body.COD_PRES}',
+           ${parseFloat(req.body.IMPORTE)},
+           ${parseInt(req.body.ANULADO)},
+           '${req.body.OPERADOR}',
+           '${req.body.OPE_ANU}',
+           '${req.body.DIAGNOSTIC}',
+           ${parseInt(req.body.ATENCION)},
+           ${parseInt(req.body.NRO_DNI)},
+           '${req.body.SUC}'
+
+        )
+         `
+      );
+
+      await serv.end();
 
       res.status(200).json(regConsul);
     } else if (req.body.f && req.body.f === "reg practica") {
-      const regPrac = await Serv.PRACTICA.create({
-        data: {
-          SUC_PRA: req.body.SUC_PRA,
-          CONTRATO: parseInt(req.body.CONTRATO),
-          NRO_DNI: parseInt(req.body.NRO_DNI),
-          FECHA: new Date(req.body.FECHA),
-          HORA: req.body.HORA,
-          NRO_ORDEN: req.body.NRO_ORDEN,
-          PRAC_REA: req.body.PRAC_REA,
-          CANT_PRA: parseInt(req.body.CANT_PRA),
-          IMPORTE: parseFloat(req.body.IMPORTE),
-          IMP_LIQ: parseFloat(req.body.IMP_LIQ),
-          ANULADO: req.body.ANULADO,
-          OPERADOR: req.body.OPERADOR,
-          OPE_ANU: parseInt(req.body.OPE_ANU),
-          COD_PRAC: req.body.COD_PRAC,
-          DESCRIP: req.body.DESCRIP,
-        },
-      });
+      const regPrac = await serv.query(
+        `
+              INSERT INTO PRACTICA
+              (
+                 SUC_PRA,
+                CONTRATO,
+                NRO_DNI,
+                FECHA,
+                HORA,
+                NRO_ORDEN,
+                PRAC_REA,
+                CANT_PRA,
+                IMPORTE,
+                IMP_LIQ,
+                ANULADO,
+                OPERADOR,
+                OPE_ANU,
+                COD_PRAC,
+                DESCRIP
+              )
+
+              VALUES
+              (
+                 '${req.body.SUC_PRA}',
+                 ${parseInt(req.body.CONTRATO)},
+                 ${parseInt(req.body.NRO_DNI)},
+                 '${moment(req.body.FECHA).format("YYYY-MM-DD")}',
+                 '${req.body.HORA}',
+                 '${req.body.NRO_ORDEN}',
+                 '${req.body.PRAC_REA}',
+                 ${parseInt(req.body.CANT_PRA)},
+                 ${parseFloat(req.body.IMPORTE)},
+                 ${parseFloat(req.body.IMP_LIQ)},
+                 ${req.body.ANULADO},
+                 '${req.body.OPERADOR}',
+                 ${parseInt(req.body.OPE_ANU)},
+                 '${req.body.COD_PRAC}',
+                 '${req.body.DESCRIP}'
+          )
+            `
+      );
+
+      await serv.end();
 
       res.status(200).json(regPrac);
     } else if (req.body.f && req.body.f === "reg farmacia") {
-      const regPrac = await Serv.FARMACIA.create({
-        data: {
-          CONTRATO: parseInt(req.body.CONTRATO),
-          FECHA: new Date(req.body.FECHA),
-          HORA: req.body.HORA,
-          NRO_DOC: parseInt(req.body.NRO_DOC),
-          NRO_ORDEN: req.body.NRO_ORDEN,
-          DESTINO: req.body.DESTINO,
-          MODO: req.body.MODO,
-          IMPORTE: parseFloat(req.body.IMPORTE),
-          ANULADO: req.body.ANULADO,
-          OPERADOR: req.body.OPERADOR,
-          OPE_ANU: parseInt(req.body.OPE_ANU),
-          FEC_USO: new Date(req.body.FEC_USO),
-          CAN_MEDI: parseInt(req.body.CAN_MEDI),
-          MATRICULA: parseInt(req.body.MATRICULA),
-          HABILITA: req.body.HABILITA,
-          SUC: req.body.SUC,
-        },
-      });
+      const regPrac = await serv.query(
+        `
+            INSERT INTO FARMACIA
+            (
+              CONTRATO,
+              FECHA,
+              HORA,
+              NRO_DOC,
+              NRO_ORDEN,
+              DESTINO,
+              MODO,
+              IMPORTE,
+              ANULADO,
+              OPERADOR,
+              OPE_ANU,
+              FEC_USO,
+              CAN_MEDI,
+              MATRICULA,
+              HABILITA,
+              SUC
+            )
+
+            VALUES
+            (
+                ${parseInt(req.body.CONTRATO)},
+                '${moment(req.body.FECHA).format("YYYY-MM-DD")}',
+                '${req.body.HORA}',
+                ${parseInt(req.body.NRO_DOC)},
+                '${req.body.NRO_ORDEN}',
+                '${req.body.DESTINO}',
+                '${req.body.MODO}',
+                ${parseFloat(req.body.IMPORTE)},
+                ${req.body.ANULADO},
+                '${req.body.OPERADOR}',
+                ${parseInt(req.body.OPE_ANU)},
+                '${moment(req.body.FEC_USO).format("YYYY-MM-DD")}',
+                ${parseInt(req.body.CAN_MEDI)},
+                ${parseInt(req.body.MATRICULA)},
+                ${req.body.HABILITA},
+                '${req.body.SUC}'
+            )
+        `
+      );
+
+      await serv.end();
 
       res.status(200).json(regPrac);
     } else if (req.body.f && req.body.f === "reg enfermeria") {
-      const regEfer = await Serv.ENFERMER.create({
-        data: {
-          SUC: req.body.SUC,
-          CONTRATO: parseInt(req.body.CONTRATO),
-          FECHA: new Date(req.body.FECHA),
-          HORA: req.body.HORA,
-          NRO_ORDEN: req.body.NRO_ORDEN,
-          DESTINO: req.body.DESTINO,
-          IMPORTE: parseFloat(req.body.IMPORTE),
-          ANULADO: req.body.ANULADO,
-          PRACTICA: req.body.PRACTICA,
-          CANTIDAD: parseInt(req.body.CANTIDAD),
-          OPERADOR: req.body.OPERADOR,
-          OPE_ANU: parseInt(req.body.OPE_ANU),
-          NRO_DNI: parseInt(req.body.NRO_DNI),
-        },
-      });
+      const regEfer = await serv.query(
+        `
+            INSERT INTO ENFERMER
+            (
+              SUC,
+              CONTRATO,
+              FECHA,
+              HORA,
+              NRO_ORDEN,
+              DESTINO,
+              IMPORTE,
+              ANULADO,
+              PRACTICA,
+              CANTIDAD,
+              OPERADOR,
+              OPE_ANU,
+              NRO_DNI
+            )
+
+            VALUES
+            (
+              '${req.body.SUC}',
+              ${parseInt(req.body.CONTRATO)},
+              '${moment(req.body.FECHA).format("YYYY-MM-DD")}',
+              '${req.body.HORA}',
+              '${req.body.NRO_ORDEN}',
+              '${req.body.DESTINO}',
+              ${parseFloat(req.body.IMPORTE)},
+              ${req.body.ANULADO},
+              '${req.body.PRACTICA}',
+              ${parseInt(req.body.CANTIDAD)},
+              '${req.body.OPERADOR}',
+              ${parseInt(req.body.OPE_ANU)},
+              ${parseInt(req.body.NRO_DNI)}
+            )
+          `
+      );
+
+      await serv.end();
 
       res.status(200).json(regEfer);
     } else if (req.body.f && req.body.f === "reg plan odontologico") {
-      const regPlanOdonto = await Serv.planes_socio.create({
-        data: {
-          contrato: parseInt(req.body.contrato),
-          dni: parseInt(req.body.dni),
-          socio: req.body.socio,
-          fecha: new Date(req.body.fecha),
-          total: parseFloat(req.body.total),
-          pagado: parseFloat(req.body.pagado),
-          saldo: parseFloat(req.body.saldo),
-          estado: req.body.estado,
-          prestador: req.body.prestador,
-          prestador_nombre: req.body.prestador_nombre,
-          operador: req.body.operador,
-          sucursal: req.body.sucursal,
-          plan: req.body.plan,
-          contencion: req.body.contencion,
-          empresa: req.body.empresa,
-        },
-      });
+      const regPlanOdonto = await serv.query(
+        `
+              INSERT INTO planes_socio
+              (
+                contrato,
+                dni,
+                socio,
+                fecha,
+                total,
+                pagado,
+                saldo,
+                estado,
+                prestador,
+                prestador_nombre,
+                operador,
+                sucursal,
+                plan,
+                contencion,
+                empresa
+              )
+
+              VALUES 
+              (
+                   ${parseInt(req.body.contrato)},
+                   ${parseInt(req.body.dni)},
+                   '${req.body.socio}',
+                   '${moment(req.body.fecha).format("YYYY-MM-DD")}',
+                   ${parseFloat(req.body.total)},
+                   ${parseFloat(req.body.pagado)},
+                   ${parseFloat(req.body.saldo)},
+                   ${req.body.estado},
+                   '${req.body.prestador}',
+                   '${req.body.prestador_nombre}',
+                   '${req.body.operador}',
+                   '${req.body.sucursal}',
+                   '${req.body.plan}',
+                   ${req.body.contencion},
+                   '${req.body.empresa}'
+              )
+            
+            `
+      );
+      await serv.end();
 
       res.status(200).json(regPlanOdonto);
     } else if (req.body.f && req.body.f === "reg plan visitas") {
-      const regPlanVisitas = await Serv.planes_visitas.create({
-        data: {
-          idplan: parseInt(req.body.idplan),
-          nvisita: parseInt(req.body.nvisita),
-          pago: parseFloat(req.body.pago),
-          fecha: new Date(req.body.fecha),
-          pagado: req.body.pagado,
-          operador: req.body.operador,
-          plan: req.body.plan,
-        },
-      });
+      const regPlanVisitas = await serv.query(
+        `
+              INSERT INTO planes_visitas
+              (
+                idplan,
+                nvisita,
+                pago,
+                fecha,
+                pagado,
+                operador,
+                plan
+              )
+
+              VALUES
+              (
+                  ${parseInt(req.body.idplan)},
+                  ${parseInt(req.body.nvisita)},
+                  ${parseFloat(req.body.pago)},
+                  '${moment(req.body.fecha).format("YYYY-MM-DD")}',
+                  ${req.body.pagado},
+                  '${req.body.operador}',
+                  '${req.body.plan}'
+              )
+            `
+      );
+
+      await serv.end();
 
       res.status(200).json(regPlanVisitas);
     } else if (req.body.f && req.body.f === "reg ausencia") {
-      const regAusen = await Serv.ausencias.create({
-        data: {
-          prestador: req.body.prestador,
-          cod_pres: req.body.cod_pres,
-          motivo: req.body.motivo,
-          desde: new Date(req.body.desde),
-          hasta: new Date(req.body.hasta),
-          observacion: req.body.observacion,
-          estado: req.body.estado,
-          operador: req.body.operador,
-        },
-      });
+      const regAusen = await serv.query(
+        `
+        INSERT INTO ausencias
+        (
+          prestador,
+          cod_pres,
+          motivo,
+          desde,
+          hasta,
+          observacion,
+          estado,
+          operador
+        )
+
+        VALUES
+        (
+            '${req.body.prestador}',
+            '${req.body.cod_pres}',
+            '${req.body.motivo}',
+            '${moment(req.body.desde).format("YYYY-MM-DD")}',
+            '${moment(req.body.hasta).format("YYYY-MM-DD")}',
+            '${req.body.observacion}',
+            ${req.body.estado},
+            '${req.body.operador}'
+          )
+      `
+      );
+      await serv.end();
 
       res.status(200).json(regAusen);
     } else if (req.body.f && req.body.f === "reg prestador") {
-      const regPrestado = await Serv.PRESTADO.create({
-        data: {
-          COD_PRES: req.body.COD_PRES,
-          NOMBRE: req.body.NOMBRE,
-          ESPEC: req.body.ESPEC,
-          LIS_ESPE: req.body.LIS_ESPE,
-          SUC: req.body.SUC,
-          DIRECCION: req.body.DIRECCION,
-          LOCALIDAD: req.body.LOCALIDAD,
-          TELEFONOS: req.body.TELEFONO,
-          HORARIO1: req.body.HORARIO1,
-          HORARIO2: req.body.HORARIO2,
-          MODALIDAD: req.body.MODALIDAD,
-          AUSENTE: req.body.AUSENTE,
-          CON_PAGA: parseInt(req.body.CON_PAGA),
-          ALTA: new Date(req.body.ALTA),
-          OTERO: req.body.OTERO,
-          PROMO: req.body.PROMO,
-          LIQUIDACION: parseFloat(req.body.LIQUIDACION),
-          PROMO1: parseFloat(req.body.PROMO1),
-          PROMO2: parseFloat(req.body.PROMO2),
-        },
-      });
+      const regPrestado = await serv.query(
+        `
+          INSERT INTO PRESTADO
+          (
+            COD_PRES,
+            NOMBRE,
+            ESPEC,
+            LIS_ESPE,
+            SUC,
+            DIRECCION,
+            LOCALIDAD,
+            TELEFONOS,
+            HORARIO1,
+            HORARIO2,
+            MODALIDAD,
+            AUSENTE,
+            CON_PAGA,
+            ALTA,
+            OTERO,
+            PROMO,
+            LIQUIDACION,
+            PROMO1,
+            PROMO2,
+          )
+
+          VALUES
+          (
+             '${req.body.COD_PRES}',
+             '${req.body.NOMBRE}',
+             '${req.body.ESPEC}',
+             '${req.body.LIS_ESPE}',
+             '${req.body.SUC}',
+             '${req.body.DIRECCION}',
+             '${req.body.LOCALIDAD}',
+             ${req.body.TELEFONO}',
+             '${req.body.HORARIO1}',
+             '${req.body.HORARIO2}',
+             '${req.body.MODALIDAD}',
+             ${req.body.AUSENTE},
+             ${parseInt(req.body.CON_PAGA)},
+             '${moment(req.body.ALTA).format("YYYY-MM-DD")}',
+             ${req.body.OTERO},
+             ${req.body.PROMO},
+             ${parseFloat(req.body.LIQUIDACION)},
+             ${parseFloat(req.body.PROMO1)},
+             ${parseFloat(req.body.PROMO2)}
+          )
+        `
+      );
+
+      await serv.end();
 
       res.status(200).json(regPrestado);
     }
   } else if (req.method === "PUT") {
     if (req.body.f && req.body.f === "puntear codigo") {
-      const puntearCodigo = await Serv.nosocios.update({
-        data: {
-          estado: false,
-        },
-        where: {
-          idnosocio: parseInt(req.body.idnosocio),
-        },
-      });
+      const puntearCodigo = await serv.query(
+        `
+            UPDATE nosocios 
+            SET estado = false
+            WHERE idnosocio= ${parseInt(req.body.idnosocio)}
+        `
+      );
 
-      res.status(200);
+      await serv.end();
+
+      res.status(200).json(puntearCodigo);
     } else if (req.body.f && req.body.f === "anular orden") {
-      const anularOrden = await Serv.USOS.update({
-        data: {
-          ANULADO: 1,
-        },
-        where: {
-          iduso: parseInt(req.body.id),
-        },
-      });
+      const anularOrden = await serv.query(
+        `
+        UPDATE USOS
+        SET ANULADO = 1
+        WHERE iduso= ${parseInt(req.body.id)}
+      `
+      );
 
-      res.status(200);
+      await serv.end();
+
+      res.status(200).json(anularOrden);
     } else if (req.body.f && req.body.f === "anular practica") {
       if (req.body.servicio === "FARM") {
-        const anularFarm = await Serv.$queryRaw`
+        const anularFarm = await serv.query(`
          
           UPDATE FARMACIA
-          SET 
-              ANULADO = 1
-          WHERE NRO_ORDEN = ${req.body.orden}      
-  `;
+          SET ANULADO = 1
+          WHERE NRO_ORDEN = '${req.body.orden}'      
+  `);
+
+        await serv.end();
+
         res
           .status(200)
           .json(
@@ -1151,13 +1512,15 @@ export default async function handler(req, res) {
             )
           );
       } else if (req.body.servicio === "ENFE") {
-        const anularEnfer = await Serv.$queryRaw`
+        const anularEnfer = await serv.query(`
          
           UPDATE ENFERMER
-          SET 
-              ANULADO = 1
-          WHERE NRO_ORDEN = ${req.body.orden}      
-`;
+          SET ANULADO = 1
+          WHERE NRO_ORDEN = '${req.body.orden}'
+`);
+
+        await serv.end();
+
         res
           .status(200)
           .json(
@@ -1166,13 +1529,15 @@ export default async function handler(req, res) {
             )
           );
       } else {
-        const anularPrac = await Serv.$queryRaw`
+        const anularPrac = await serv.query(`
          
           UPDATE PRACTICA
-          SET 
-              ANULADO = 1
-          WHERE NRO_ORDEN = ${req.body.orden}      
-`;
+          SET ANULADO = 1
+          WHERE NRO_ORDEN = '${req.body.orden}'      
+`);
+
+        await serv.end();
+
         res
           .status(200)
           .json(
@@ -1182,12 +1547,15 @@ export default async function handler(req, res) {
           );
       }
     } else if (req.body.f && req.body.f === "update conpaga") {
-      const updateConPaga = await Serv.$queryRaw`
+      const updateConPaga = await serv.query(`
          
          UPDATE PRESTADO
          SET CON_PAGA = ${parseInt(req.body.CON_PAGA)}                
-         WHERE COD_PRES = ${req.body.COD_PRES} 
-`;
+         WHERE COD_PRES = '${req.body.COD_PRES}' 
+`);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -1196,12 +1564,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.body.f && req.body.f === "update liquidacion") {
-      const updateConPaga = await Serv.$queryRaw`
+      const updateConPaga = await serv.query(`
          
          UPDATE PRESTADO
          SET LIQUIDACION = ${parseFloat(req.body.LIQUIDACION)}                
-         WHERE COD_PRES = ${req.body.COD_PRES} 
-`;
+         WHERE COD_PRES = '${req.body.COD_PRES}' 
+`);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -1210,12 +1581,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.body.f && req.body.f === "update promo1") {
-      const updateConPaga = await Serv.$queryRaw`
+      const updateConPaga = await serv.query(`
          
          UPDATE PRESTADO
          SET PROMO1 = ${parseFloat(req.body.PROMO1)}                
-         WHERE COD_PRES = ${req.body.COD_PRES} 
-`;
+         WHERE COD_PRES = '${req.body.COD_PRES}' 
+`);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -1224,12 +1598,15 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.body.f && req.body.f === "update promo2") {
-      const updateConPaga = await Serv.$queryRaw`
+      const updateConPaga = await serv.query(`
          
          UPDATE PRESTADO
          SET PROMO2 = ${parseFloat(req.body.PROMO2)}                
-         WHERE COD_PRES = ${req.body.COD_PRES} 
-`;
+         WHERE COD_PRES = '${req.body.COD_PRES}' 
+`);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -1238,20 +1615,23 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.body.f && req.body.f === "update prestado") {
-      const updatePrestado = await Serv.$queryRaw`
+      const updatePrestado = await serv.query(`
          
          UPDATE PRESTADO
           SET              
               MATRICULA= ${req.body.MATRICULA},
-              DIRECCION= ${req.body.DIRECCION},
-              HORARIO1= ${req.body.HORARIO1},
-              HORARIO2= ${req.body.HORARIO2},                  
+              DIRECCION= '${req.body.DIRECCION}',
+              HORARIO1= '${req.body.HORARIO1}',
+              HORARIO2= '${req.body.HORARIO2}',                  
               PROMO= ${req.body.PROMO},
               PROMO1= ${parseInt(req.body.PROMO1)},
               PROMO2= ${parseInt(req.body.PROMO2)}
 
-        WHERE COD_PRES = ${req.body.COD_PRES}
-`;
+        WHERE COD_PRES = '${req.body.COD_PRES}'
+`);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -1260,14 +1640,17 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.body.f && req.body.f === "act pago visita") {
-      const updatePrestado = await Serv.$queryRaw`
+      const updatePrestado = await serv.query(`
          
          UPDATE planes_visitas
          SET 
              pagado = 1,
              pago = ${parseFloat(req.body.pag)}
          WHERE idvisita = ${parseInt(req.body.id)} 
-`;
+`);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -1276,14 +1659,17 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.body.f && req.body.f === "act plan") {
-      const updatePrestado = await Serv.$queryRaw`
+      const updatePrestado = await serv.query(`
          
          UPDATE planes_socio
          SET 
             pagado = pagado + ${parseFloat(req.body.pag)},
             saldo = saldo - ${parseFloat(req.body.pag)}
          WHERE idplansocio = ${parseInt(req.body.id)} 
-`;
+`);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -1296,7 +1682,7 @@ export default async function handler(req, res) {
       let codPres = `COD_PRES${req.body.lugar}`;
       let prestado = `${req.body.prestado}`;
 
-      const updateAutPrac = await Serv.$queryRawUnsafe(
+      const updateAutPrac = await serv.query(
         `     
         UPDATE AUT_PRAC
         SET  ${impo} = '${req.body.importe}'
@@ -1304,6 +1690,8 @@ export default async function handler(req, res) {
         AND idpractica = ${req.body.id}
        `
       );
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -1312,31 +1700,39 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.body.f && req.body.f === "act ausencia") {
-      const updateAusente = await Serv.$queryRaw`
+      const updateAusente = await serv.query(`
          
          UPDATE PRESTADO
          SET 
             AUSENTE = ${req.body.AUSENTE}            
-         WHERE COD_PRES=${req.body.codPres}
-`;
+         WHERE COD_PRES='${req.body.codPres}'
+`);
+
+      await serv.end();
+
       res.status(200).json(updateAusente);
     } else if (req.body.f && req.body.f === "rein ausencia") {
-      const reinPrest = await Serv.$queryRaw`
+      const reinPrest = await serv.query(`
          
          UPDATE ausencias
          SET 
             estado = ${req.body.estado}            
-         WHERE idausencia=${req.body.idausencia}
-`;
+         WHERE idausencia=${parseInt(req.body.idausencia)}
+`);
+      await serv.end();
+
       res.status(200).json(reinPrest);
     }
   } else if (req.method === "DELETE") {
     if (req.query.f && req.query.f === "dele ausencia") {
-      const delAusencia = await Serv.ausencias.delete({
-        where: {
-          idausencia: parseInt(req.query.idausencia),
-        },
-      });
+      const delAusencia = await serv.query(
+        `
+              DELETE FROM ausencias
+              WHERE idausencia = ${parseInt(req.query.idausencia)}
+            
+            `
+      );
+      await serv.end();
 
       res.status(200).json(delAusencia);
     }

@@ -1,17 +1,22 @@
+import { werchow, sgi, serv, sep, camp, arch, club } from "../../libs/db/index";
 import moment from "moment";
-import { Werchow, SGI, Camp, Serv } from "../../libs/config";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
     if (req.query.f && req.query.f === "operadores") {
-      const operadores = await SGI.operador.findMany({
-        where: {
-          estado: true,
-        },
-      });
+      const operadores = await sgi.query(
+        `
+        SELECT *
+        FROM operador
+        WHERE estado = true
+      `
+      );
+
+      await sgi.end();
+
       res.status(200).json(operadores);
     } else if (req.query.f && req.query.f === "ordenes sin rendir") {
-      const ordenesSinRendir = await Serv.$queryRaw`
+      const ordenesSinRendir = await serv.query(`
          
          SELECT 
                 SUC,
@@ -20,11 +25,13 @@ export default async function handler(req, res) {
          FROM USOS
          WHERE RENDIDO = 0
          AND ANULADO in (NULL, 0)
-         AND SUC = ${req.query.suc}
-         AND OPERADOR = ${req.query.user}
+         AND SUC = '${req.query.suc}'
+         AND OPERADOR = '${req.query.user}'
          GROUP BY SUC, FECHA
          ORDER BY FECHA DESC
-     `;
+     `);
+
+      await serv.end();
       res
         .status(200)
         .json(
@@ -33,7 +40,7 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "ordenes por dia") {
-      const ordenesPorDia = await Serv.$queryRaw`
+      const ordenesPorDia = await serv.query(`
          
          SELECT 
          
@@ -50,12 +57,14 @@ export default async function handler(req, res) {
 
         FROM USOS
         WHERE RENDIDO = 0
-        AND FECHA = ${req.query.fecha}
+        AND FECHA = '${moment(req.query.fecha).format("YYYY-MM-DD")}'
         AND ANULADO in (NULL, 0)
-        AND SUC = ${req.query.suc}
-        AND OPERADOR = ${req.query.user}
+        AND SUC = '${req.query.suc}'
+        AND OPERADOR = '${req.query.user}'
         GROUP BY SERVICIO
-    `;
+    `);
+
+      await serv.end();
       res
         .status(200)
         .json(
@@ -64,14 +73,17 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "check caja") {
-      const checkCaja = await Serv.$queryRaw`
+      const checkCaja = await serv.query(`
            
            SELECT 
                 FECHA                
             FROM CAJA 
-            WHERE FECHA = ${req.query.fecha}
-            AND OPERADOR = ${req.query.user}
-      `;
+            WHERE FECHA = '${moment(req.query.fecha).format("YYYY-MM-DD")}'
+            AND OPERADOR = '${req.query.user}'
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -80,7 +92,7 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "listado cajas") {
-      const checkCaja = await Serv.$queryRaw`
+      const checkCaja = await serv.query(`
            
            SELECT 
                 FECHA,
@@ -92,7 +104,7 @@ export default async function handler(req, res) {
                 WHERE C.FECHA = C1.FECHA
                 AND MOVIM = 'I'
                 AND DETALLE != 'SALDO INICIAL'
-                AND OPERADOR = ${req.query.operador}
+                AND OPERADOR = '${req.query.operador}'
                 ) 'INGRESOS',
                 
                 (
@@ -102,7 +114,7 @@ export default async function handler(req, res) {
                 WHERE C.FECHA = C2.FECHA
                 AND MOVIM = 'E'
                 AND DETALLE != 'VALORES A DEPOSITAR'
-                AND OPERADOR = ${req.query.operador}
+                AND OPERADOR = '${req.query.operador}'
                 ) 'EGRESOS',
                 
                 (
@@ -113,7 +125,7 @@ export default async function handler(req, res) {
                 WHERE C.FECHA = C1.FECHA
                 AND MOVIM = 'I'
                 AND DETALLE != 'SALDO INICIAL'
-                AND OPERADOR = ${req.query.operador}
+                AND OPERADOR = '${req.query.operador}'
                 )
                 -
                 (
@@ -123,16 +135,19 @@ export default async function handler(req, res) {
                 WHERE C.FECHA = C2.FECHA
                 AND MOVIM = 'E'
                 AND DETALLE != 'VALORES A DEPOSITAR'     
-                AND OPERADOR = ${req.query.operador}
+                AND OPERADOR = '${req.query.operador}'
                 )
                 )'VAL_DEPOSIT'
         
         FROM CAJA AS C
-        WHERE OPERADOR = ${req.query.operador}
+        WHERE OPERADOR = '${req.query.operador}'
         
         GROUP BY FECHA, OPERADOR
         ORDER BY FECHA DESC
-      `;
+      `);
+
+      await serv.end();
+
       res
         .status(200)
         .json(
@@ -141,7 +156,7 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer ingresos") {
-      const checkCaja = await Serv.$queryRaw`
+      const checkCaja = await serv.query(`
            
            SELECT 
                 DETALLE,
@@ -150,10 +165,12 @@ export default async function handler(req, res) {
             FROM CAJA 
             WHERE MOVIM = 'I'
             AND DETALLE != 'SALDO INICIAL'
-            AND FECHA = ${new Date(req.query.fecha)}
-            AND OPERADOR = ${req.query.operador}
+            AND FECHA = '${moment(req.query.fecha).format("YYYY-MM-DD")}'
+            AND OPERADOR = '${req.query.operador}'
             GROUP BY DETALLE
-      `;
+      `);
+
+      await serv.end();
       res
         .status(200)
         .json(
@@ -162,7 +179,7 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer egresos") {
-      const checkCaja = await Serv.$queryRaw`
+      const checkCaja = await serv.query(`
            
            SELECT 
                 CONCAT(DETALLE,"   -->   ", TIPO,"  N°:  " ,NUMERO ) as 'DETALLE',
@@ -171,10 +188,13 @@ export default async function handler(req, res) {
             FROM CAJA 
             WHERE MOVIM = 'E'
             AND DETALLE != 'VALORES A DEPOSITAR'
-            AND FECHA = ${new Date(req.query.fecha)}
-            AND OPERADOR = ${req.query.operador}
+            AND FECHA = '${moment(req.query.fecha).format("YYYY-MM-DD")}'
+            AND OPERADOR = '${req.query.operador}'
             
-      `;
+            
+      `);
+
+      await serv.end();
       res
         .status(200)
         .json(
@@ -183,7 +203,7 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer listado de control") {
-      const checkCaja = await Serv.$queryRaw`
+      const checkCaja = await serv.query(`
            
           SELECT
               FECHA,
@@ -192,16 +212,19 @@ export default async function handler(req, res) {
               NRO_DOC,
               SERVICIO,
               IMPORTE,
+              ANULADO,
               OPERADOR
           FROM
             USOS
           WHERE
-            FEC_CAJA = ${new Date(req.query.fecha)}
+            FEC_CAJA = '${moment(req.query.fecha).format("YYYY-MM-DD")}'
           AND
-            OPERADOR = ${req.query.operador}
+            OPERADOR = '${req.query.operador}'
           AND 
             ANULADO in (NULL, 0)
-      `;
+      `);
+
+      await serv.end();
       res
         .status(200)
         .json(
@@ -210,12 +233,14 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer cuentas") {
-      const mae = await Serv.$queryRaw`
+      const mae = await serv.query(`
           SELECT 
                *                               
           FROM subcta
-          WHERE MOVIM in (${req.query.movim}, 'A')
-`;
+          WHERE MOVIM in ('${req.query.movim}', 'A')
+`);
+
+      await serv.end();
 
       res
         .status(200)
@@ -225,11 +250,13 @@ export default async function handler(req, res) {
           )
         );
     } else if (req.query.f && req.query.f === "traer tipo facturas") {
-      const mae = await SGI.$queryRaw`
+      const mae = await sgi.query(`
           SELECT 
                *                               
           FROM tipo_facturas          
-`;
+`);
+
+      await sgi.end();
 
       res
         .status(200)
@@ -241,47 +268,83 @@ export default async function handler(req, res) {
     }
   } else if (req.method === "POST") {
     if (req.body.f && req.body.f === "reg caja") {
-      const regCaja = await Serv.CAJA.create({
-        data: {
-          SUCURSAL: req.body.SUCURSAL,
-          PUESTO: req.body.PUESTO,
-          CODIGO: parseInt(req.body.CODIGO),
-          MOVIM: req.body.MOVIM,
-          CUENTA: req.body.CUENTA,
-          IMPORTE: parseFloat(req.body.IMPORTE),
-          TIPO: req.body.TIPO,
-          SERIE: parseInt(req.body.SERIE),
-          NUMERO: parseInt(req.body.NUMERO),
-          CUIT: req.body.CUIT,
-          DETALLE: req.body.DETALLE,
-          DET_AUX: req.body.DET_AUX,
-          FECHA: new Date(req.body.FECHA),
-          FEC_COMP: req.body.FEC_COMP,
-          HORA: req.body.HORA,
-          ORIGEN: req.body.ORIGEN,
-          OPERADOR: req.body.OPERADOR,
-          ASIENTO: parseInt(req.body.ASIENTO),
-          EXENTO: req.body.EXENTO,
-          CANT_AFIL: parseInt(req.body.CANT_AFIL),
-          CAE: req.body.CAE,
-          VTO_CAE: req.body.VTO_CAE,
-        },
-      });
+      const regCaja = await serv.query(
+        `
+              INSERT INTO CAJA
+              (
+                SUCURSAL,
+                PUESTO,
+                CODIGO,
+                MOVIM,
+                CUENTA,
+                IMPORTE,
+                TIPO,
+                SERIE,
+                NUMERO,
+                CUIT,
+                DETALLE,
+                DET_AUX,
+                FECHA,
+                FEC_COMP,
+                HORA,
+                ORIGEN,
+                OPERADOR,
+                ASIENTO,
+                EXENTO,
+                CANT_AFIL,
+                CAE,
+                VTO_CAE
+              
+              )
+
+              VALUES
+              (
+                 '${req.body.SUCURSAL}',
+                 '${req.body.PUESTO}',
+                 ${parseInt(req.body.CODIGO)},
+                 '${req.body.MOVIM}',
+                 '${req.body.CUENTA}',
+                 ${parseFloat(req.body.IMPORTE)},
+                 '${req.body.TIPO}',
+                 ${parseInt(req.body.SERIE)},
+                 ${parseInt(req.body.NUMERO)},
+                 '${req.body.CUIT}',
+                 '${req.body.DETALLE}',
+                 '${req.body.DET_AUX}',
+                 '${moment(req.body.FECHA).format("YYYY-MM-DD")}',
+                 '${req.body.FEC_COMP}',
+                 '${req.body.HORA}',
+                 '${req.body.ORIGEN}',
+                 '${req.body.OPERADOR}',
+                 ${parseInt(req.body.ASIENTO)},
+                 '${req.body.EXENTO}',
+                 ${parseInt(req.body.CANT_AFIL)},
+                 '${req.body.CAE}',
+                 '${req.body.VTO_CAE}'
+
+              )
+          
+          `
+      );
+
+      await serv.end();
 
       res.status(200).json(regCaja);
     }
   } else if (req.method === "PUT") {
     if (req.body.f && req.body.f === "puntear rendido") {
-      const puntearUsosRendidos = await Serv.$queryRaw`
+      const puntearUsosRendidos = await serv.query(`
          
          UPDATE USOS
          SET 
             RENDIDO = 1,
-            FECHA_CIERRE = ${moment().format("YYYY-MM-DD")}
-         WHERE FECHA = ${req.body.fecha}   
-         AND OPERADOR = ${req.body.operador}   
-         AND SUC = ${req.body.suc}   
-   `;
+            FECHA_CIERRE = '${moment().format("YYYY-MM-DD")}'
+         WHERE FECHA = '${moment(req.body.fecha).format("YYYY-MM-DD")}'
+         AND OPERADOR = '${req.body.operador}'   
+         AND SUC = '${req.body.suc}'
+           `);
+
+      await serv.end();
       res
         .status(200)
         .json(

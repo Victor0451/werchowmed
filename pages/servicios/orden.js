@@ -211,6 +211,7 @@ const Orden = () => {
   };
 
   const traerPracticas = async (orden) => {
+    console.log(orden);
     await axios
       .get(`/api/servicios`, {
         params: {

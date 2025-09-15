@@ -1200,7 +1200,6 @@ const Emision = () => {
       SUC: sucur,
       ORDEN: nOrden,
       CONTRATO: socio.CONTRATO,
-      NRO_ADH: socio.ADHERENTES,
       NRO_DOC: socio.NRO_DOC,
       PLAN: socio.PLAN,
       EDAD: socio.EDAD,
@@ -1288,9 +1287,9 @@ const Emision = () => {
           setTimeout(() => {
             push(
               "/servicios/orden",
-              res.data.iduso,
-              res.data.NRO_DOC,
-              res.data.ORDEN,
+              res.data.insertId,
+              uso.NRO_DOC,
+              uso.ORDEN,
               "O"
             );
           }, 500);
@@ -1314,7 +1313,7 @@ const Emision = () => {
       DESTINO: "",
       COD_PRES: detalleMed.COD_PRES,
       IMPORTE: uso.IMPORTE,
-      ANULADO: false,
+      ANULADO: 0,
       OPERADOR: usu.usuario,
       OPE_ANU: 0,
       DIAGNOSTIC: "",
@@ -1504,7 +1503,6 @@ const Emision = () => {
       SUC: sucur,
       ORDEN: nOrden,
       CONTRATO: socio.CONTRATO,
-      NRO_ADH: socio.ADHERENTES,
       NRO_DOC: socio.NRO_DOC,
       PLAN: socio.PLAN,
       EDAD: socio.EDAD,
@@ -1537,9 +1535,9 @@ const Emision = () => {
           setTimeout(() => {
             push(
               "/servicios/orden",
-              res.data.iduso,
-              res.data.NRO_DOC,
-              res.data.ORDEN,
+              res.data.insertId,
+              uso.NRO_DOC,
+              uso.ORDEN,
               "P"
             );
           }, 5000);
@@ -1649,7 +1647,6 @@ const Emision = () => {
         SUC: sucur,
         ORDEN: nOrden,
         CONTRATO: socio.CONTRATO,
-        NRO_ADH: socio.ADHERENTES,
         NRO_DOC: socio.NRO_DOC,
         PLAN: socio.PLAN,
         EDAD: socio.EDAD,
@@ -1681,9 +1678,9 @@ const Emision = () => {
             setTimeout(() => {
               push(
                 "/servicios/orden",
-                res.data.iduso,
-                res.data.NRO_DOC,
-                res.data.ORDEN,
+                res.data.insertId,
+                uso.NRO_DOC,
+                uso.ORDEN,
                 "F"
               );
             }, 500);
@@ -1832,7 +1829,6 @@ const Emision = () => {
       SUC: sucur,
       ORDEN: nOrden,
       CONTRATO: socio.CONTRATO,
-      NRO_ADH: socio.ADHERENTES,
       NRO_DOC: socio.NRO_DOC,
       PLAN: socio.PLAN,
       EDAD: socio.EDAD,
@@ -1863,9 +1859,9 @@ const Emision = () => {
           setTimeout(() => {
             push(
               "/servicios/orden",
-              res.data.iduso,
-              res.data.NRO_DOC,
-              res.data.ORDEN,
+              res.data.insertId,
+              uso.NRO_DOC,
+              uso.ORDEN,
               "E"
             );
           }, 500);
@@ -1996,23 +1992,23 @@ const Emision = () => {
       });
   };
 
-  const registrarPlanOrto = async () => {
+  const registrarPlanOrto = async (i) => {
     const plan = {
       contrato: socio.CONTRATO,
       dni: socio.NRO_DOC,
       socio: `${socio.APELLIDOS}, ${socio.NOMBRES}`,
       fecha: moment().format("YYYY-MM-DD"),
-      total: planOrto.total,
-      pagado: planOrto.pago_inicial,
-      // saldo: parseFloat(planOrto.total) - parseFloat(planOrto.pago_inicial),
+      total: planOrto[i].total,
+      pagado: planOrto[i].pago_inicial,
+      // saldo: parseFloat(planOrto[i].total) - parseFloat(planOrto[i].pago_inicial),
       saldo: 0,
-      estado: true,
+      estado: 1,
       prestador: detalleMed.COD_PRES,
       prestador_nombre: detalleMed.NOMBRE,
       operador: usu.usuario,
       sucursal: sucur,
       plan: "ORTO",
-      contencion: false,
+      contencion: 0,
       empresa: empresa,
       f: "reg plan odontologico",
     };
@@ -2033,16 +2029,16 @@ const Emision = () => {
                 toastr.success("Plan registrado correctamente", "ATENCION");
 
                 regPlanVisitas(
-                  res2.data.idplansocio,
-                  planOrto.saldo,
-                  planOrto.cuotas,
+                  res2.data.insertId,
+                  planOrto[i].saldo,
+                  planOrto[i].cuotas,
                   "ORTO",
-                  planOrto.visitas,
-                  planOrto.pago_cuota,
-                  planOrto.pago_final
+                  planOrto[i].visitas,
+                  planOrto[i].pago_cuota,
+                  planOrto[i].pago_final
                 );
 
-                let accion = `Se registro plan implante dental ID: ${res2.data.idplansocio}, para el socio: ${plan.contrato} - ${plan.socio}, dni: ${plan.dni}. Con un monto de ${plan.total}`;
+                let accion = `Se registro plan implante dental ID: ${res2.data.insertId}, para el socio: ${plan.contrato} - ${plan.socio}, dni: ${plan.dni}. Con un monto de ${plan.total}`;
 
                 registrarHistoria(accion, usu.usuario);
 
@@ -2050,7 +2046,7 @@ const Emision = () => {
                   Router.push({
                     pathname: "/servicios/reciboplan",
                     query: {
-                      id: res2.data.idplansocio,
+                      id: res2.data.insertId,
                     },
                   });
                 }, 1000);
@@ -2104,7 +2100,7 @@ const Emision = () => {
       operador: usu.usuario,
       sucursal: sucur,
       plan: "CONT",
-      contencion: false,
+      contencion: 0,
       empresa: empresa,
       f: "reg plan odontologico",
     };
@@ -2125,7 +2121,7 @@ const Emision = () => {
                 toastr.success("Plan registrado correctamente", "ATENCION");
 
                 regPlanVisitas(
-                  res2.data.idplansocio,
+                  res2.data.insertId,
                   planImp.saldo,
                   planImp.cuotas,
                   "CONT",
@@ -2134,7 +2130,7 @@ const Emision = () => {
                   planImp.pago_final
                 );
 
-                let accion = `Se registro plan aparato de contencion dental ID: ${res2.data.idplansocio}, para el socio: ${plan.contrato} - ${plan.socio}, dni: ${plan.dni}. Con un monto de ${plan.total}`;
+                let accion = `Se registro plan aparato de contencion dental ID: ${res2.data.insertId}, para el socio: ${plan.contrato} - ${plan.socio}, dni: ${plan.dni}. Con un monto de ${plan.total}`;
 
                 registrarHistoria(accion, usu.usuario);
 
@@ -2142,7 +2138,7 @@ const Emision = () => {
                   Router.push({
                     pathname: "/servicios/reciboplan",
                     query: {
-                      id: res2.data.idplansocio,
+                      id: res2.data.insertId,
                     },
                   });
                 }, 1000);
@@ -2194,7 +2190,7 @@ const Emision = () => {
       nvisita: "",
       pago: 0,
       fecha: moment().format("YYYY-MM-DD"),
-      pagado: false,
+      pagado: 0,
       operador: usu.usuario,
       plan: tiPla,
       f: "reg plan visitas",

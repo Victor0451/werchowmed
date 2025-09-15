@@ -233,7 +233,7 @@ const ModalPlanOdontologico = ({
                                 type="button"
                                 className="btn btn-primary"
                                 data-dismiss="modal"
-                                onClick={registrarPlanOrto}
+                                onClick={() => registrarPlanOrto(index)}
                               >
                                 Iniciar Plan
                               </button>

@@ -83,7 +83,7 @@ const ListadoCajas = () => {
         params: {
           f: "traer ingresos",
           fecha: fecha,
-          operador: operador
+          operador: operador,
         },
       })
       .then((res) => {
