@@ -280,8 +280,9 @@ const GestionTurnos = () => {
           },
         })
         .then((res) => {
-          if (res.data) {
-            guardarPaciente(res.data);
+          console.log(res.data);
+          if (res.data[0]) {
+            guardarPaciente(res.data[0]);
             toastr.success("El paciente fue encontrado", "ATENCION");
             guardarCargaP(false);
           } else {

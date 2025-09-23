@@ -48,12 +48,12 @@ const Login = () => {
         };
 
         await axios.post(`/api/auth`, body, config).then((res) => {
-          if (res.data.user.medicos === true) {
+          if (res.data.user.medicos === 1) {
             let user = JSON.stringify(res.data.user);
             jsCookie.set("token", res.data.token, { expires: 1 });
             jsCookie.set("usuario", user, { expires: 1 });
             Router.push("/home");
-          } else if (res.data.user.medicos === false) {
+          } else if (res.data.user.medicos === 0) {
             toastr.info(
               "No tienes autorizacion para acceder al sistema de servicios medicos"
             );

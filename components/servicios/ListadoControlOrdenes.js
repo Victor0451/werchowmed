@@ -12,6 +12,7 @@ const ListadoControlOrdenes = ({
   calcTotales,
   sucur,
 }) => {
+  console.log(listado);
   return (
     <div className="container list mt-4 border border-dark p-4">
       <h3>
@@ -112,6 +113,23 @@ const ListadoControlOrdenes = ({
                     matchSorter(rows, filter.value, { keys: ["IMPORTE"] }),
                   filterAll: true,
                   width: "100",
+                },
+
+                {
+                  Header: "Estado",
+                  filterMethod: (filter, rows) =>
+                    matchSorter(rows, filter.value, { keys: ["ANULADO"] }),
+                  filterAll: true,
+                  width: "100",
+                  Cell: (row) => (
+                    <div>
+                      {row.original.ANULADO === 0 ? (
+                        <>ACTIVA</>
+                      ) : row.original.ANULADO === 1 ? (
+                        <>ANULADA</>
+                      ) : null}
+                    </div>
+                  ),
                 },
                 {
                   Header: "Operador",
