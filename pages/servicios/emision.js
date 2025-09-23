@@ -43,6 +43,8 @@ const Emision = () => {
   let nombreRef = React.createRef();
   let apellidoRef = React.createRef();
   let nroDocRef = React.createRef();
+  let edadRef = React.createRef();
+  let sexoRef = React.createRef();
 
   let codNoSocioRef = React.createRef();
 
@@ -1063,6 +1065,8 @@ const Emision = () => {
       NOMBRES: nombreRef.current.value,
       NACIMIENTO: nacimientoRef.current.value,
       EMPRESA: ficha[0].EMPRESA,
+      EDAD: edadRef.current.value,
+      SEXO: sexoRef.current.value,
       ESTADO: true,
       f: "reg adh provisorio",
     };
@@ -1075,6 +1079,10 @@ const Emision = () => {
       toastr.warning("Debes ingresar un apellido", "ATENCION");
     } else if (adh.NOMBRES === "") {
       toastr.warning("Debes ingresar un nombre", "ATENCION");
+    } else if (adh.EDAD === "") {
+      toastr.warning("Debes ingresar su edad", "ATENCION");
+    } else if (adh.SEXO === "") {
+      toastr.warning("Debes seleccionar su sexo", "ATENCION");
     } else {
       await axios
         .post(`/api/servicios`, adh)
@@ -2729,6 +2737,8 @@ const Emision = () => {
                         nombreRef={nombreRef}
                         apellidoRef={apellidoRef}
                         nroDocRef={nroDocRef}
+                        sexoRef={sexoRef}
+                        edadRef={edadRef}
                         regAdhProvi={regAdhProvi}
                         checkAdhProvi={checkAdhProvi}
                         habilita={habilita}

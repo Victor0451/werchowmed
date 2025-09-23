@@ -1,17 +1,17 @@
 import React from "react";
 
-
 const ModalAdhProvi = ({
   nacimientoRef,
   nombreRef,
   apellidoRef,
   nroDocRef,
+  sexoRef,
+  edadRef,
   regAdhProvi,
   checkAdhProvi,
   habilita,
   infoAdh,
 }) => {
-
   return (
     <div
       className="modal fade"
@@ -36,24 +36,19 @@ const ModalAdhProvi = ({
             </button>
           </div>
           <div className="modal-body p-4">
-
             <div className="row border border-dark p-4">
-
               <div className="col-md-12">
-
                 <div className="alert alert-info mt-4 text-center text-uppercase border border-dark">
-                  Podras realizar la carga provisoria del adherente para poder emitir la orden medica. La misma se impactara en el sistema posteriormente.
+                  Podras realizar la carga provisoria del adherente para poder
+                  emitir la orden medica. La misma se impactara en el sistema
+                  posteriormente.
                 </div>
-
               </div>
 
               <div className="col-md-4 mt-4">
-
                 <label>
                   <strong>
-                    <u>
-                      DNI
-                    </u>
+                    <u>DNI</u>
                   </strong>
                 </label>
 
@@ -63,98 +58,93 @@ const ModalAdhProvi = ({
                   ref={nroDocRef}
                   onBlur={checkAdhProvi}
                 />
-
               </div>
 
-              {
+              {habilita === false ? (
+                <>
+                  {infoAdh.length === 0 ? (
+                    <div className="col-md-8 alert alert-info border border-dark text-center text-uppercase mt-5 mb-4">
+                      Ingresa el DNI y presiona la tecla "TAB" para verificar si
+                      existe
+                    </div>
+                  ) : infoAdh.length > 0 ? (
+                    <div className="col-md-8 alert alert-warning border border-dark text-center text-uppercase mt-5 mb-4">
+                      El DNI ingresado pertenece al adherente:{" "}
+                      {infoAdh[0].APELLIDOS}, {infoAdh[0].NOMBRES}. Ficha N°{" "}
+                      {infoAdh[0].CONTRATO}
+                    </div>
+                  ) : null}
+                </>
+              ) : habilita === true ? (
+                <>
+                  <div className="col-md-4 mt-4">
+                    <label>
+                      <strong>
+                        <u>Nacimiento</u>
+                      </strong>
+                    </label>
 
-                habilita === false ? (
-                  <>
+                    <input
+                      className="form-control"
+                      type="date"
+                      ref={nacimientoRef}
+                    />
+                  </div>
 
-                    {infoAdh.length === 0 ? (
+                  <div className="col-md-4 mt-4">
+                    <label>
+                      <strong>
+                        <u>Apellido</u>
+                      </strong>
+                    </label>
 
-                      <div className="col-md-8 alert alert-info border border-dark text-center text-uppercase mt-5 mb-4">
-                        Ingresa el DNI y presiona la tecla "TAB" para verificar si existe
-                      </div>
+                    <input
+                      className="form-control"
+                      type="text"
+                      ref={apellidoRef}
+                    />
+                  </div>
 
-                    ) : infoAdh.length > 0 ? (
+                  <div className="col-md-4 mt-4">
+                    <label>
+                      <strong>
+                        <u>Nombre</u>
+                      </strong>
+                    </label>
 
-                      <div className="col-md-8 alert alert-warning border border-dark text-center text-uppercase mt-5 mb-4">
-                        El DNI ingresado pertenece al adherente: {infoAdh[0].APELLIDOS}, {infoAdh[0].NOMBRES}. Ficha N° {infoAdh[0].CONTRATO}
-                      </div>
+                    <input
+                      className="form-control"
+                      type="text"
+                      ref={nombreRef}
+                    />
+                  </div>
+                  <div className="col-md-4 mt-4">
+                    <label>
+                      <strong>
+                        <u>Edad</u>
+                      </strong>
+                    </label>
 
-                    ) : null}
+                    <input
+                      className="form-control"
+                      type="number"
+                      ref={edadRef}
+                    />
+                  </div>
+                  <div className="col-md-4 mt-4">
+                    <label>Sexo:</label>
 
-                  </>
-                ) : habilita === true ?
-                  (
-
-                    <>
-
-                      <div className="col-md-4 mt-4">
-
-                        <label>
-                          <strong>
-                            <u>
-                              Nacimiento
-                            </u>
-                          </strong>
-                        </label>
-
-                        <input
-                          className="form-control"
-                          type="date"
-                          ref={nacimientoRef}
-                        />
-
-                      </div>
-
-                      <div className="col-md-4 mt-4">
-
-                        <label>
-                          <strong>
-                            <u>
-                              Apellido
-                            </u>
-                          </strong>
-                        </label>
-
-                        <input
-                          className="form-control"
-                          type="text"
-                          ref={apellidoRef}
-                        />
-
-                      </div>
-
-                      <div className="col-md-4 mt-4">
-
-                        <label>
-                          <strong>
-                            <u>
-                              Nombre
-                            </u>
-                          </strong>
-                        </label>
-
-                        <input
-                          className="form-control"
-                          type="text"
-                          ref={nombreRef}
-                        />
-
-                      </div>
-
-                    </>
-
-                  ) : null
-
-              }
-
-
-
+                    <select className="custom-select" ref={sexoRef}>
+                      <option selected value="no">
+                        Selecciona una opcion
+                      </option>
+                      <option value="F">Femenino</option>
+                      <option value="M">Masculino</option>
+                    </select>
+                  </div>
+                </>
+              ) : null}
             </div>
-
           </div>
 
           <div className="modal-footer">
@@ -172,13 +162,10 @@ const ModalAdhProvi = ({
             >
               Cancelar
             </button>
-
           </div>
         </div>
       </div>
     </div>
-
-
   );
 };
 

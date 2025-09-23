@@ -1043,6 +1043,8 @@ export default async function handler(req, res) {
                 NOMBRES,
                 NACIMIENTO,
                 EMPRESA,
+                SEXO,
+                EDAD,
                 ESTADO
               )
 
@@ -1055,6 +1057,8 @@ export default async function handler(req, res) {
                  '${req.body.NOMBRES}',
                  '${moment(req.body.NACIMIENTO).format("YYYY-MM-DD")}',
                  '${req.body.EMPRESA}',
+                 '${req.body.SEXO}',
+                 '${req.body.EDAD}',
                  ${req.body.ESTADO}
               )
             `

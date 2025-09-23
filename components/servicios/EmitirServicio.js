@@ -63,6 +63,8 @@ const EmitirServicio = ({
   nombreRef,
   apellidoRef,
   nroDocRef,
+  sexoRef,
+  edadRef,
   regAdhProvi,
   checkAdhProvi,
   habilita,
@@ -75,7 +77,6 @@ const EmitirServicio = ({
   arancelEnfDomi,
   indexSel,
   priUsoBio,
- 
 }) => {
   if (!ficha) return <Spinner />;
 
@@ -432,6 +433,8 @@ const EmitirServicio = ({
         nombreRef={nombreRef}
         apellidoRef={apellidoRef}
         nroDocRef={nroDocRef}
+        sexoRef={sexoRef}
+        edadRef={edadRef}
         regAdhProvi={regAdhProvi}
         checkAdhProvi={checkAdhProvi}
         habilita={habilita}
