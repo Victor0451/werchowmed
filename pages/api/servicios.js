@@ -950,7 +950,14 @@ export default async function handler(req, res) {
           u.FECHA,
           u.HORA,
           u.NRO_DOC,
-          u.PRESTADO,
+           (
+              CASE
+              WHEN p.NOMBRE IS NULL 
+              THEN f.NOMBRE  
+              WHEN f.NOMBRE IS NULL 
+              THEN p.NOMBRE                
+              END
+              )'PRESTADO',
           u.SERVICIO,
           u.IMPORTE,         
           u.OPERADOR,
@@ -958,12 +965,19 @@ export default async function handler(req, res) {
         
         FROM
           USOS AS u
+        LEFT JOIN 
+          PRESTADO as p on p.COD_PRES = u.PRESTADO
+        LEFT JOIN 
+          FARMA as f on f.CODIGO = u.PRESTADO
         
         WHERE
           u.SUC = '${req.query.sucur}'
+        AND p.MODALIDAD = 'OFIC'
         AND u.FECHA BETWEEN '${moment(req.query.desde).format(
           "YYYY-MM-DD"
         )}' AND '${moment(req.query.hasta).format("YYYY-MM-DD")}'
+        
+    
         
         ORDER BY u.HORA DESC
               `);
