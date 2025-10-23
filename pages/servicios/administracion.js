@@ -659,13 +659,13 @@ function Administracion(props) {
           },
         })
         .then((res) => {
-          if (res.data) {
+          if (res.data[0]) {
             toastr.warning(
-              `El prestador que estas intenando registrar, ya existe --> COD: ${res.data.COD_PRES}, PRESTADOR: ${res.data.NOMBRE}`
+              `El prestador que estas intenando registrar, ya existe --> COD: ${res.data[0].COD_PRES}, PRESTADOR: ${res.data[0].NOMBRE}`
             );
 
             guardarAlertas(
-              `El prestador que estas intenando registrar, ya existe --> COD: ${res.data.COD_PRES}, PRESTADOR: ${res.data.NOMBRE}`
+              `El prestador que estas intenando registrar, ya existe --> COD: ${res.data[0].COD_PRES}, PRESTADOR: ${res.data[0].NOMBRE}`
             );
           } else {
             axios

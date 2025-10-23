@@ -1454,7 +1454,7 @@ export default async function handler(req, res) {
             PROMO,
             LIQUIDACION,
             PROMO1,
-            PROMO2,
+            PROMO2
           )
 
           VALUES
@@ -1466,7 +1466,7 @@ export default async function handler(req, res) {
              '${req.body.SUC}',
              '${req.body.DIRECCION}',
              '${req.body.LOCALIDAD}',
-             ${req.body.TELEFONO}',
+             '${req.body.TELEFONO}',
              '${req.body.HORARIO1}',
              '${req.body.HORARIO2}',
              '${req.body.MODALIDAD}',
