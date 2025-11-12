@@ -52,26 +52,21 @@ const ModalNuevoPrestador = ({
             </button>
           </div>
           <div className="modal-body p-4">
-            <div className="border border-dark p-4">
-              <div className="row  ">
-                <div className="col-md-12">
-                  <div className="alert alert-info  text-center text-uppercase border border-dark">
-                    Completa el formulario respetando los campos obligatorios
-                    para poder dar de alta al nuevo prestador.
-                  </div>{" "}
-                </div>
-              </div>
+            <div className="alert alert-info text-center text-uppercase">
+              Completa el formulario respetando los campos obligatorios para
+              poder dar de alta al nuevo prestador.
+            </div>
 
-              <div className="mt-4 border border-dark p-4">
+            <div className="card mt-4">
+              <div className="card-header">
                 <h4>
-                  <strong>
-                    <u>Datos del Prestador</u>
-                  </strong>
+                  <strong>Datos del Prestador</strong>
                 </h4>
-
-                <div className="row mt-4">
-                  <div className="col-md-2">
-                    <label>Codigo</label>
+              </div>
+              <div className="card-body">
+                <div className="row">
+                  <div className="form-group col-md-2">
+                    <label>Código</label>
                     <input
                       type="text"
                       className="form-control"
@@ -80,24 +75,24 @@ const ModalNuevoPrestador = ({
                     />
                   </div>
 
-                  <div className="col-md-3">
-                    <label>Sucursal: </label>
+                  <div className="form-group col-md-3">
+                    <label>Sucursal</label>
                     <select className="custom-select" ref={nuSucRef}>
-                      <option value="no">Selecciona una opcion</option>
+                      <option value="no">Selecciona una opción</option>
                       <option value="S.S. DE JUJUY">Casa Central</option>
                       <option value="OTERO">Otero</option>
-                      <option value="PALPALA">Palpala</option>
+                      <option value="PALPALA">Palpalá</option>
                       <option value="PERICO">Perico</option>
                       <option value="EL CARMEN">El Carmen</option>
                       <option value="SAN PEDRO">San Pedro</option>
-                      <option value="SAN MIGUEL">San Miguel</option>                      
+                      <option value="SAN MIGUEL">San Miguel</option>
                     </select>
                   </div>
 
-                  <div className="col-md-3 ">
-                    <label>Especialidades: </label>
+                  <div className="form-group col-md-3">
+                    <label>Especialidades</label>
                     <select className="custom-select" ref={nuEspRef}>
-                      <option value="no">Selecciona una opcion</option>
+                      <option value="no">Selecciona una opción</option>
                       {especialidades.map((m, index) => (
                         <option key={index} value={`${m.ESPECIAL}-${m.NOMBRE}`}>
                           {m.NOMBRE}
@@ -106,7 +101,7 @@ const ModalNuevoPrestador = ({
                     </select>
                   </div>
 
-                  <div className="col-md-4">
+                  <div className="form-group col-md-4">
                     <label>Apellido y Nombre</label>
                     <input
                       type="text"
@@ -116,8 +111,8 @@ const ModalNuevoPrestador = ({
                     />
                   </div>
 
-                  <div className="col-md-4 mt-4">
-                    <label>Telefono</label>
+                  <div className="form-group col-md-4">
+                    <label>Teléfono</label>
                     <input
                       type="number"
                       className="form-control"
@@ -125,8 +120,8 @@ const ModalNuevoPrestador = ({
                     />
                   </div>
 
-                  <div className="col-md-8 mt-4">
-                    <label>Direccion</label>
+                  <div className="form-group col-md-8">
+                    <label>Dirección</label>
                     <input
                       type="text"
                       className="form-control"
@@ -134,7 +129,7 @@ const ModalNuevoPrestador = ({
                     />
                   </div>
 
-                  <div className="col-md-6 mt-4">
+                  <div className="form-group col-md-6">
                     <label>Horario 1</label>
                     <input
                       type="text"
@@ -143,7 +138,7 @@ const ModalNuevoPrestador = ({
                     />
                   </div>
 
-                  <div className="col-md-6 mt-4">
+                  <div className="form-group col-md-6">
                     <label>Horario 2</label>
                     <input
                       type="text"
@@ -152,8 +147,8 @@ const ModalNuevoPrestador = ({
                     />
                   </div>
 
-                  <div className="col-md-3 mt-4">
-                    <label>Matricula</label>
+                  <div className="form-group col-md-3">
+                    <label>Matrícula</label>
                     <input
                       type="text"
                       className="form-control"
@@ -161,132 +156,105 @@ const ModalNuevoPrestador = ({
                     />
                   </div>
 
-                  <div className="col-md-3 mt-4">
-                    <label>Modalidad De Pago: </label>
+                  <div className="form-group col-md-3">
+                    <label>Modalidad De Pago</label>
                     <select className="custom-select" ref={nuModalidadRef}>
-                      <option value="no">Selecciona una opcion</option>
+                      <option value="no">Selecciona una opción</option>
                       <option value={"PAGA_EN_OFIC"}>En Oficina</option>
                       <option value={"PAGA_EN_PRES"}>Al Prestador</option>
                     </select>
                   </div>
 
-                  <div className="col-md-3 mt-4">
-                    <label>Promocion: </label>
+                  <div className="form-group col-md-3">
+                    <label>Promoción</label>
                     <select
                       className="custom-select"
                       ref={promoRef}
-                      onChange={() => {
-                        handlePromo();
-                      }}
+                      onChange={handlePromo}
                     >
-                      <option value="no">Selecciona una opcion</option>
+                      <option value="no">Selecciona una opción</option>
                       <option value={1}>Si</option>
                       <option value={0}>No</option>
                     </select>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <hr className="border border-dark mt-4 mb-4" />
-
-              <div className="mt-4 border border-dark p-4">
+            <div className="card mt-4">
+              <div className="card-header">
                 <h4>
-                  <strong>
-                    <u>Valores del Prestador</u>
-                  </strong>
+                  <strong>Valores del Prestador</strong>
                 </h4>
-
-                <div className="row mt-5 ">
+              </div>
+              <div className="card-body">
+                <div className="row">
                   {showProm === true ? (
                     <>
-                      <div className="col-md-4">
-                        <label>
-                          <u>Promo N°1:</u>
-                        </label>
-
+                      <div className="form-group col-md-4">
+                        <label>Promo N°1</label>
                         <input
                           type="number"
                           className="form-control"
                           ref={nuPromo1Ref}
                         />
-                      </div>
-
-                      <div className="col-md-8 mt-4">
-                        <div className="alert alert-info  border border-dark text-center text-uppercase">
+                        <small className="form-text text-muted">
                           Valor de la promocion N°1 que figura en la emision de
                           ordenes.
-                        </div>
+                        </small>
                       </div>
 
-                      <div className="col-md-4">
-                        <label>
-                          <u>Promo N°2:</u>
-                        </label>
-
+                      <div className="form-group col-md-4">
+                        <label>Promo N°2</label>
                         <input
                           type="number"
                           className="form-control"
                           ref={nuPromo2Ref}
                         />
-                      </div>
-
-                      <div className="col-md-8 mt-4">
-                        <div className="alert alert-info  border border-dark text-center text-uppercase">
+                        <small className="form-text text-muted">
                           Valor de la promocion N°2 que figura en la emision de
                           ordenes.
-                        </div>
+                        </small>
                       </div>
                     </>
                   ) : showProm === false ? null : null}
 
-                  <div className="col-md-4">
-                    <label>
-                      <u>Coseguro:</u>
-                    </label>
-
+                  <div className="form-group col-md-4">
+                    <label>Coseguro</label>
                     <input
                       type="number"
                       className="form-control"
                       ref={nuCoseguroRef}
                     />
-                  </div>
-
-                  <div className="col-md-8 mt-4">
-                    <div className="alert alert-info  border border-dark text-center text-uppercase">
+                    <small className="form-text text-muted">
                       Valor del coseguro que figura en la emision de ordenes, el
                       valor que debe abonar el afiliado en la Clinica Otero
-                    </div>
+                    </small>
                   </div>
 
-                  <div className="col-md-4">
-                    <label>
-                      <u>Honorario:</u>
-                    </label>
-
+                  <div className="form-group col-md-4">
+                    <label>Honorario</label>
                     <input
                       type="number"
                       className="form-control"
                       ref={nuLiquidacionRef}
                     />
-                  </div>
-
-                  <div className="col-md-8 mt-4">
-                    <div className="alert alert-info  border border-dark text-center text-uppercase">
+                    <small className="form-text text-muted">
                       Valor honorario con el cual se liquidan las consultas y
                       practicas del prestador.
-                    </div>
+                    </small>
                   </div>
                 </div>
               </div>
             </div>
             {errores ? (
-              <div className=" col-md-12 mt-4 alert alert-danger border border-dark text-center text-uppercase">
+              <div className="alert alert-danger text-center text-uppercase mt-4">
                 {errores}
               </div>
             ) : null}
 
             {alertas ? (
-              <div className=" col-md-12 mt-4 alert alert-info border border-dark text-center text-uppercase">
+              <div className="alert alert-warning text-center text-uppercase mt-4">
                 {alertas}
               </div>
             ) : null}

@@ -1444,7 +1444,7 @@ const Emision = () => {
       pra.CODIGOS === "30.05.05" &&
       priUso === 0
     ) {
-      pra.IMPORTE = 15000;
+      pra.IMPORTE = 20000;
     }
 
     //---------------------//
