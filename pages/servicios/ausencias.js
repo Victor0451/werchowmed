@@ -298,24 +298,40 @@ const Ausencias = () => {
       ) : usu ? (
         <>
           <Layout>
-            <FormRegAusencias
-              medicos={medicos}
-              medicoRef={medicoRef}
-              motivoRef={motivoRef}
-              desdeRef={desdeRef}
-              hastaRef={hastaRef}
-              observacionRef={observacionRef}
-              handleChange={handleChange}
-              errores={errores}
-              regAusencia={regAusencia}
-            />
+            <div
+              className="container-fluid p-4 min-vh-100"
+              style={{
+                background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
+              }}
+            >
+              <div className="row mb-4">
+                <div className="col-12">
+                  <h1 className="text-primary fw-bold">
+                    <i className="fa fa-user-times me-3"></i>
+                    Gestión de Ausencias
+                  </h1>
+                </div>
+              </div>
 
-            <ListadoAusencias
-              listado={listAusen}
-              imprimir={imprimir}
-              reincorporarAusencia={reincorporarAusencia}
-              eliminarAusencia={eliminarAusencia}
-            />
+              <FormRegAusencias
+                medicos={medicos}
+                medicoRef={medicoRef}
+                motivoRef={motivoRef}
+                desdeRef={desdeRef}
+                hastaRef={hastaRef}
+                observacionRef={observacionRef}
+                handleChange={handleChange}
+                errores={errores}
+                regAusencia={regAusencia}
+              />
+
+              <ListadoAusencias
+                listado={listAusen}
+                imprimir={imprimir}
+                reincorporarAusencia={reincorporarAusencia}
+                eliminarAusencia={eliminarAusencia}
+              />
+            </div>
           </Layout>
         </>
       ) : null}
