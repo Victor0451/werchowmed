@@ -25,7 +25,7 @@ const FormLiquidacion = ({
                         <u>Medico</u>
                     </label>
 
-                    <select className="custom-select" ref={medicoRef} >
+                    <select className="form-select" ref={medicoRef} >
                         <option value="no">Seleccionar Medico...</option>
                         <option value="C_BIO">Mendez, Mara</option>
                     </select>

@@ -20,258 +20,275 @@ const ListadoOrdenesEmitidas = ({
 }) => {
   if (!listado)
     return (
-      <>
-        <div className="container list border border-dark mt-4 p-4">
-          <h2 className="mb-4">
-            <strong>
-              <u>Generando Listado De Ordenes</u>
-            </strong>
-          </h2>
-
-          <Spinner />
+      <div className="container-fluid mt-4">
+        <div className="card shadow-sm">
+          <div className="card-header bg-primary text-white">
+            <h2 className="mb-0">
+              <i className="fa fa-spinner fa-spin me-2"></i>
+              Generando Listado de Órdenes
+            </h2>
+          </div>
+          <div className="card-body text-center py-5">
+            <Spinner />
+            <p className="text-muted mt-3">Cargando órdenes emitidas...</p>
+          </div>
         </div>
-      </>
+      </div>
     );
 
   return (
-    <div className="container list border border-dark mt-4 p-4">
-      <h2 className=" mb-4">
-        <strong>
-          {perfil === 1 || perfil === 3 ? (
-            <u>Listado de ordenes emitidas por todos los usuarios</u>
-          ) : perfil !== 1 || perfil !== 3 ? (
-            <>
-              <u>Listado de ordenes emitidas por</u>: {user}
-            </>
-          ) : null}
-        </strong>
-      </h2>
-
-      <div className="mt-4 mb-4 border border-dark p-4">
-        <div className="row">
-          <div className="col-md-4">
-            <h4 className="mt-4">
-              <strong>
-                <u>Resumen de ordenes por dia</u>
-              </strong>
-            </h4>
-          </div>
-          <div className="col-md-4">
-            <input type="date" className="mt-4 form-control" ref={fechaRef} />
-          </div>
-          <div className="col-md-2">
-            <button
-              className="btn btn-primary btn-block mt-4 "
-              onClick={ordenesDelDia}
-            >
-              Buscar
-            </button>
-          </div>
-          <div className="col-md-2">
-            <button
-              className="btn btn-success btn-block mt-4 "
-              onClick={() => {
-                guardarResu(false);
-                traerOrdenesEmitidas();
-              }}
-            >
-              Cargar Todas las Ordenes
-            </button>
-          </div>
+    <div className="container-fluid mt-4">
+      <div className="card shadow-sm">
+        <div className="card-header bg-primary text-white">
+          <h2 className="mb-0">
+            <i className="fa fa-file-text me-2"></i>
+            {perfil === 1 || perfil === 3 ? (
+              <>Listado de Órdenes Emitidas - Todos los Usuarios</>
+            ) : (
+              <>Listado de Órdenes Emitidas - {user}</>
+            )}
+          </h2>
         </div>
-        {errores ? (
-          <div className="mt-4 mb-4 text-center text-uppercase border border-dark alert alert-danger">
-            {errores}
+        <div className="card-body">
+          <div className="card shadow-sm mb-4">
+            <div className="card-header bg-light">
+              <h5 className="mb-0">
+                <i className="fa fa-calendar-day me-2"></i>
+                Resumen de Órdenes por Día
+              </h5>
+            </div>
+            <div className="card-body">
+              <div className="row g-3 align-items-end">
+                <div className="col-md-4">
+                  <label className="form-label fw-bold">
+                    Seleccionar Fecha
+                  </label>
+                  <input
+                    type="date"
+                    className="form-control form-control-lg"
+                    ref={fechaRef}
+                  />
+                </div>
+                <div className="col-md-2">
+                  <button
+                    className="btn btn-primary w-100"
+                    onClick={ordenesDelDia}
+                  >
+                    <i className="fa fa-search me-1"></i>
+                    Buscar
+                  </button>
+                </div>
+                <div className="col-md-3">
+                  <button
+                    className="btn btn-success w-100"
+                    onClick={() => {
+                      guardarResu(false);
+                      traerOrdenesEmitidas();
+                    }}
+                  >
+                    <i className="fa fa-list me-1"></i>
+                    Todas las Órdenes
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        ) : null}
+          {errores && (
+            <div className="alert alert-danger shadow-sm">
+              <i className="fa fa-exclamation-triangle me-2"></i>
+              <strong>Error:</strong> {errores}
+            </div>
+          )}
 
-        {resu === true ? (
-          <div
-            className="border border-dark alert alert-success mt-4 mb-4"
-            role="alert"
-          >
-            <h4 className="alert-heading">Resumen del dia</h4>
-
-            <hr />
-            <p className="mb-0 mt-2">
-              <strong>
-                <u>Total de ordenes</u>: {listado.length}
-              </strong>
-            </p>
-            <p className="mb-0 mt-2">
-              <strong>
-                <u>Monto total</u>: $ {totalImporte(listado)}
-              </strong>
-            </p>
-            <p className="mb-0 mt-4 text-uppercase text-center">
-              <strong>
-                En el listado de ordenes, se muestran las correspondientes al
-                dia seleccionado.
-              </strong>
-            </p>
-          </div>
-        ) : resu === false ? null : null}
+          {resu === true && (
+            <div className="alert alert-success shadow-sm">
+              <h5 className="alert-heading mb-3">
+                <i className="fa fa-chart-bar me-2"></i>
+                Resumen del Día
+              </h5>
+              <hr />
+              <div className="row text-center">
+                <div className="col-md-6">
+                  <div className="p-3 bg-light rounded">
+                    <h4 className="text-primary mb-1">{listado.length}</h4>
+                    <small className="text-muted">Total de Órdenes</small>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="p-3 bg-light rounded">
+                    <h4 className="text-success mb-1">
+                      ${totalImporte(listado)}
+                    </h4>
+                    <small className="text-muted">Monto Total</small>
+                  </div>
+                </div>
+              </div>
+              <p className="mb-0 mt-3 text-center">
+                <em>
+                  En el listado se muestran las órdenes correspondientes al día
+                  seleccionado.
+                </em>
+              </p>
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="mt-5 border border-dark p-2">
-        <ReactTable
-          data={listado}
-          filterable
-          defaultFilterMethod={(filter, row) => row[filter.id] === filter.value}
-          columns={[
-            {
-              Header: "Listado de Ordenes",
-              columns: [
-                {
-                  Header: "Fecha",
-                  id: "FECHA",
-                  accessor: (d) =>
-                    moment(d.FECHA).utcOffset("+0300").format("DD/MM/YYYY"),
-                  filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["FECHA"] }),
-                  filterAll: true,
-                },
-                {
-                  Header: "Orden",
-                  id: "ORDEN",
-                  accessor: (d) => d.ORDEN,
-                  filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["ORDEN"] }),
-                  filterAll: true,
-                },
-                {
-                  Header: "Socio",
-                  id: "CONTRATO",
-                  accessor: (d) => d.CONTRATO,
-                  filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["CONTRATO"] }),
-                  filterAll: true,
-                },
+      <div className="card shadow-sm mt-5 ">
+        <div className="card-header bg-light">
+          <h5 className="mb-0">
+            <i className="fa fa-table me-2"></i>
+            Listado de Órdenes Emitidas
+          </h5>
+        </div>
+        <div className="card-body p-0">
+          <ReactTable
+            data={listado}
+            filterable
+            defaultFilterMethod={(filter, row) =>
+              row[filter.id] === filter.value
+            }
+            columns={[
+              {
+                Header: "Listado de Ordenes",
+                columns: [
+                  {
+                    Header: "Fecha",
+                    id: "FECHA",
+                    accessor: (d) =>
+                      moment(d.FECHA).utcOffset("+0300").format("DD/MM/YYYY"),
+                    filterMethod: (filter, rows) =>
+                      matchSorter(rows, filter.value, { keys: ["FECHA"] }),
+                    filterAll: true,
+                    width: 120,
+                  },
 
-                {
-                  Header: "DNI",
-                  id: "NRO_DOC",
-                  accessor: (d) => d.NRO_DOC,
-                  filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["NRO_DOC"] }),
-                  filterAll: true,
-                },
-                {
-                  Header: "Servicio",
-                  id: "SERVICIO",
-                  accessor: (d) => d.SERVICIO,
-                  filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["SERVICIO"] }),
-                  filterAll: true,
-                },
-                {
-                  Header: "Importe",
-                  id: "IMPORTE",
-                  accessor: (d) => `$ ${d.IMPORTE.toFixed(2)}`,
-                  filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["IMPORTE"] }),
-                  filterAll: true,
-                },
+                  {
+                    Header: "Orden",
+                    id: "ORDEN",
+                    accessor: (d) => d.ORDEN,
+                    filterMethod: (filter, rows) =>
+                      matchSorter(rows, filter.value, { keys: ["ORDEN"] }),
+                    filterAll: true,
+                    width: 120,
+                  },
+                  {
+                    Header: "Socio",
+                    id: "CONTRATO",
+                    accessor: (d) => d.CONTRATO,
+                    filterMethod: (filter, rows) =>
+                      matchSorter(rows, filter.value, { keys: ["CONTRATO"] }),
+                    filterAll: true,
+                    width: 90,
+                  },
 
-                {
-                  Header: "Acciones",
-                  id: "acciones",
-                  filterAll: true,
+                  {
+                    Header: "DNI",
+                    id: "NRO_DOC",
+                    accessor: (d) => d.NRO_DOC,
+                    filterMethod: (filter, rows) =>
+                      matchSorter(rows, filter.value, { keys: ["NRO_DOC"] }),
+                    filterAll: true,
+                    width: 100,
+                  },
+                  {
+                    Header: "Servicio",
+                    id: "SERVICIO",
+                    accessor: (d) => d.SERVICIO,
+                    filterMethod: (filter, rows) =>
+                      matchSorter(rows, filter.value, { keys: ["SERVICIO"] }),
+                    filterAll: true,
+                    width: 90,
+                  },
+                  {
+                    Header: "Prestador",
+                    id: "PRESTADO",
+                    accessor: (d) => d.PRESTADO,
+                    filterMethod: (filter, rows) =>
+                      matchSorter(rows, filter.value, { keys: ["PRESTADO"] }),
+                    filterAll: true,
+                    width: 500,
+                  },
+                  {
+                    Header: "Importe",
+                    id: "IMPORTE",
+                    accessor: (d) => `$ ${d.IMPORTE.toFixed(2)}`,
+                    filterMethod: (filter, rows) =>
+                      matchSorter(rows, filter.value, { keys: ["IMPORTE"] }),
+                    filterAll: true,
+                    width: 200,
+                  },
+                  {
+                    Header: "Operador",
+                    id: "OPERADOR",
+                    accessor: (d) => `${d.OPERADOR}`,
+                    filterMethod: (filter, rows) =>
+                      matchSorter(rows, filter.value, { keys: ["OPERADOR"] }),
+                    filterAll: true,
+                    width: 120,
+                  },
+                  {
+                    Header: "Acciones",
+                    id: "acciones",
+                    filterAll: true,
+                    width: 120,
 
-                  Cell: (row) => (
-                    <div>
-                      {perfil === 1 || perfil === 3 ? (
-                        <>
-                          {row.original.SERVICIO === "ORDE" ? (
-                            <button
-                              className="btn btn-primary btn-sm"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                generarImpresion(
-                                  row.original.iduso,
-                                  row.original.NRO_DOC,
-                                  row.original.ORDEN,
-                                  "O"
-                                );
-                              }}
-                            >
-                              Imprimir
-                            </button>
-                          ) : row.original.SERVICIO === "FARM" ? (
-                            <button
-                              className="btn btn-primary btn-sm"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                generarImpresion(
-                                  row.original.iduso,
-                                  row.original.NRO_DOC,
-                                  row.original.ORDEN,
-                                  "F"
-                                );
-                              }}
-                            >
-                              Imprimir
-                            </button>
-                          ) : row.original.SERVICIO === "ENFE" ? (
-                            <button
-                              className="btn btn-primary btn-sm"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                generarImpresion(
-                                  row.original.iduso,
-                                  row.original.NRO_DOC,
-                                  row.original.ORDEN,
-                                  "E"
-                                );
-                              }}
-                            >
-                              Imprimir
-                            </button>
-                          ) : (
-                            <>
+                    Cell: (row) => (
+                      <div>
+                        {perfil === 1 || perfil === 3 ? (
+                          <>
+                            <div className="btn-group" role="group">
                               <button
-                                className="btn btn-primary btn-sm"
+                                className="btn btn-outline-primary btn-sm"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   generarImpresion(
                                     row.original.iduso,
                                     row.original.NRO_DOC,
                                     row.original.ORDEN,
-                                    "P"
+                                    row.original.SERVICIO === "ORDE"
+                                      ? "O"
+                                      : row.original.SERVICIO === "FARM"
+                                      ? "F"
+                                      : row.original.SERVICIO === "ENFE"
+                                      ? "E"
+                                      : "P"
                                   );
                                 }}
+                                title="Imprimir orden"
                               >
-                                Imprimir
+                                <i className="fa fa-print"></i>
                               </button>
-                            </>
-                          )}
 
-                          <button
-                            className="btn btn-danger btn-sm ml-1"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              anularOrdenes(
-                                row.original.ORDEN,
-                                row.original.SERVICIO,
-                                row.original.iduso
-                              );
-                            }}
-                          >
-                            Anular
-                          </button>
-                        </>
-                      ) : (
-                        "Sin Acciones."
-                      )}
-                    </div>
-                  ),
-                },
-              ],
-            },
-          ]}
-          defaultPageSize={20}
-          className="-striped -highlight"
-        />
+                              <button
+                                className="btn btn-outline-danger btn-sm"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  anularOrdenes(
+                                    row.original.ORDEN,
+                                    row.original.SERVICIO,
+                                    row.original.iduso
+                                  );
+                                }}
+                                title="Anular orden"
+                              >
+                                <i className="fa fa-ban"></i>
+                              </button>
+                            </div>
+                          </>
+                        ) : (
+                          <>"Sin Acciones."</>
+                        )}
+                      </div>
+                    ),
+                  },
+                ],
+              },
+            ]}
+            defaultPageSize={20}
+            className="-striped -highlight"
+          />
+        </div>
       </div>
     </div>
   );

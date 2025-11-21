@@ -12,17 +12,17 @@ const Opciones = ({
         <a
           href="#"
           role="button"
-          data-toggle="dropdown"
-          className="nav-link dropdown-toggle"
+          data-bs-toggle="dropdown"
+          className="nav-link dropdown-toggle d-flex align-items-center"
         >
+          <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style={{width: '32px', height: '32px'}}>
+            {userData.usuario ? userData.usuario.charAt(0).toUpperCase() : 'U'}
+          </div>
+          <span className="d-none d-md-inline">{userData.usuario}</span>
 
-          <span className="badge badge-light text-uppercase mr-2 ">
-            Bienvenido {userData.usuario}
-          </span>
+          {msj > 0 ? (<span className="badge bg-danger ms-1">{msj}</span>) : null}
 
-          {msj > 0 ? (<span className="badge badge-danger">{msj}</span>) : null}
-
-          {events > 0 ? (<span className="ml-1 badge badge-info">{events}</span>) : null}
+          {events > 0 ? (<span className="badge bg-info ms-1">{events}</span>) : null}
 
         </a>
         <ul className="dropdown-menu">
@@ -32,42 +32,39 @@ const Opciones = ({
               role="button"
               className="dropdown-item text-dark"
             >
-
+              <i className="fa fa-envelope me-2"></i>
               {msj > 0 ? (
                 <>
-                  Mail Interno <span className="badge badge-danger">{msj}</span>
+                  Mail Interno <span className="badge bg-danger">{msj}</span>
                 </>
               ) : (
                 <>
                   Mail Interno
                 </>
               )}
-
-
             </a>
           </li>
-          <hr />
+          <li><hr className="dropdown-divider" /></li>
           <li>
             <a
               href="/gestion/sucursales/tareas/calendario"
               className="dropdown-item text-dark"
             >
+              <i className="fa fa-calendar me-2"></i>
               {events > 0 ?
                 (
                   <>
-                    Calendario <span className="badge badge-info">{events}</span>
+                    Calendario <span className="badge bg-info">{events}</span>
                   </>
                 ) : (
                   <>
-                    Caledario
+                    Calendario
                   </>
                 )
-
               }
-
             </a>
           </li>
-          <hr />
+          <li><hr className="dropdown-divider" /></li>
           <li>
             <Logout />
           </li>

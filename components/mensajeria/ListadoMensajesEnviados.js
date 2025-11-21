@@ -87,10 +87,10 @@ const ListadoMensajesEnviados = ({
                                         <div>
                                             <button
                                                 className="btn btn-sm btn-info border mr-1"
-                                                data-toggle="modal"
-                                                data-placement="top"
+                                                data-bs-toggle="modal"
+                                                data-bs-placement="top"
                                                 title="Editar"
-                                                data-target="#leermsj"
+                                                data-bs-target="#leermsj"
                                                 onClick={() => {
                                                     guardarMensaje(row.original);
                                                     msjLeido(row.original.idmail)
@@ -105,8 +105,8 @@ const ListadoMensajesEnviados = ({
                                             {/* 
                                             <button
                                                 className="btn btn-sm btn-danger border mr-1"
-                                                data-toggle="tooltip"
-                                                data-placement="top"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
                                                 title="Eliminar"
                                                 onClick={() => eliminarTarea(row.original.idevents)}
                                             >

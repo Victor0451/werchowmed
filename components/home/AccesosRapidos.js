@@ -3,167 +3,154 @@ import React from "react";
 const AccesosRapidos = ({ usu }) => {
   if (!usu) return null;
 
+  const accesos = [
+    {
+      titulo: "Emisión de Órdenes Médicas",
+      icono: "fa-plus-circle",
+      color: "primary",
+      enlace: "/servicios/emision",
+      boton: "Generar",
+      descripcion: "Generar Órdenes de Enfermería, Farmacia, Consulta y Prácticas Médicas."
+    },
+    {
+      titulo: "Listado Órdenes Emitidas",
+      icono: "fa-list",
+      color: "success",
+      enlace: "/servicios/listadoordenes",
+      boton: "Ver Listado",
+      descripcion: "Listado de Órdenes Generadas"
+    },
+    {
+      titulo: "Gestión Turnos Médicos",
+      icono: "fa-clock",
+      color: "info",
+      enlace: "/servicios/gestionturnos",
+      boton: "Gestionar",
+      descripcion: "Gestionar turnos de prestadores médicos."
+    },
+    {
+      titulo: "Seguimiento Planes Odontológicos",
+      icono: "fa-tooth",
+      color: "warning",
+      enlace: "/servicios/seguimientoplan",
+      boton: "Buscar",
+      descripcion: "Gestión y seguimiento de planes Odontológicos."
+    },
+    {
+      titulo: "Gestionar Ausencias",
+      icono: "fa-calendar-times",
+      color: "secondary",
+      enlace: "/servicios/ausencias",
+      boton: "Gestionar",
+      descripcion: "Gestionar Ausencias (Vacaciones/Carpeta Médica)"
+    },
+    {
+      titulo: "Generar Caja",
+      icono: "fa-money-bill",
+      color: "success",
+      enlace: "/servicios/caja",
+      boton: "Generar",
+      descripcion: "Generar Caja Diaria"
+    },
+    {
+      titulo: "Listado de Prestadores",
+      icono: "fa-users",
+      color: "primary",
+      enlace: "/servicios/listadoprestadores",
+      boton: "Ver Listado",
+      descripcion: "Información de prestadores registrados"
+    },
+    {
+      titulo: "Registro de Tareas",
+      icono: "fa-tasks",
+      color: "info",
+      enlace: "/calendario/calendario",
+      boton: "Registrar",
+      descripcion: "Gestión de tareas diarias por parte del personal"
+    }
+  ];
+
+  const accesosAdmin = [
+    {
+      titulo: "Listado de Control",
+      icono: "fa-check-circle",
+      color: "danger",
+      enlace: "/servicios/control",
+      boton: "Ver Listado",
+      descripcion: "Generar Listados de Control"
+    },
+    {
+      titulo: "Listado Cajas Generadas",
+      icono: "fa-archive",
+      color: "warning",
+      enlace: "/servicios/listadocajas",
+      boton: "Ver Listado",
+      descripcion: "Listado de Cajas generadas"
+    },
+    {
+      titulo: "Portal Prestador",
+      icono: "fa-user-md",
+      color: "dark",
+      enlace: "/servicios/portalprestador",
+      boton: "Ingresar",
+      descripcion: "Portal virtual para que el prestador gestione sus órdenes médicas."
+    }
+  ];
+
   return (
-    <>
-      <div className="container p-4 border border-dark list mt-4">
-        <h4>
-          <u>Accesos Directos</u>
-        </h4>
-        <div className="mt-5 row d-flex justify-content-center">
-          <div className="card col-md-3 text-dark bg-ligth border border-dark   mb-3 ">
-            <div className="card-header">Emision de Ordenes Medicas</div>
-            <div className="card-body">
-              <a
-                className="btn btn-primary btn-block "
-                href="/servicios/emision"
-              >
-                Generar
-              </a>
-              <p className="card-text mt-2">
-                Generar Ordenes de Enfermeria, Farmacia, Consulta y Practicas
-                Medicas.
-              </p>
-            </div>
-          </div>{" "}
-          <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
-            <div className="card-header">Listado Ordenes Emitidas.</div>
-            <div className="card-body">
-              <a
-                className="btn btn-primary btn-block "
-                href="/servicios/listadoordenes"
-              >
-                Ver Listado
-              </a>
-              <p className="card-text mt-2">Listado de Ordenes Generadas</p>
-            </div>
-          </div>
-          <div className="card col-md-3 text-dark bg-ligth border border-dark  ml-2 mb-3 ">
-            <div className="card-header">Gestion Turnos Medicos</div>
-            <div className="card-body">
-              <a
-                className="btn btn-primary btn-block "
-                href="/servicios/gestionturnos"
-              >
-                Gestionar
-              </a>
-              <p className="card-text mt-2">
-                Gestionar turnos de prestadores medicos. (OTERO)
-              </p>
-            </div>
-          </div>{" "}
-          <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
-            <div className="card-header">Seguimiento Planes Odontologicos</div>
-            <div className="card-body">
-              <a
-                className="btn btn-primary btn-block "
-                href="/servicios/seguimientoplan"
-              >
-                Buscar
-              </a>
-              <p className="card-text mt-2">
-                Gestion y seguimiento de planes Odontologicos.
-              </p>
-            </div>
-          </div>
-          <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
-            <div className="card-header">
-              Gestionar Ausencia (Vacaciones/Carpeta Medica)
-            </div>
-            <div className="card-body">
-              <a
-                className="btn btn-primary btn-block "
-                href="/servicios/ausencias"
-              >
-                Gestionar
-              </a>
-              <p className="card-text mt-2">Gestionar Ausencias</p>
-            </div>
-          </div>
-          <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
-            <div className="card-header">Generar Caja</div>
-            <div className="card-body">
-              <a className="btn btn-primary btn-block " href="/servicios/caja">
-                Generar
-              </a>
-              <p className="card-text mt-2">Generar Caja Diaria</p>
-            </div>
-          </div>
-          <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
-            <div className="card-header">Listado de Prestadores</div>
-            <div className="card-body">
-              <a
-                className="btn btn-primary btn-block "
-                href="/servicios/listadoprestadores"
-              >
-                Ver Listado
-              </a>
-              <p className="card-text mt-2">
-                Información de prestadores registrados
-              </p>
-            </div>
-          </div>
-          <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
-            <div className="card-header">Registro de Tareas</div>
-            <div className="card-body">
-              <a
-                className="btn btn-primary btn-block "
-                href="/calendario/calendario"
-              >
-                Registrar
-              </a>
-              <p className="card-text mt-2">
-                Gestion de tareas diarias por parte del personal
-              </p>
-            </div>
-          </div>
-          {usu.perfil === 1 || usu.perfil === 3 ? (
-            <>
-              <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
-                <div className="card-header">Listado de Control.</div>
-                <div className="card-body">
-                  <a
-                    className="btn btn-primary btn-block "
-                    href="/servicios/control"
-                  >
-                    Ver Listado
-                  </a>
-                  <p className="card-text mt-2">Generar Listados de Control</p>
-                </div>
-              </div>
-
-              <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
-                <div className="card-header">Listado Cajas Generadas.</div>
-                <div className="card-body">
-                  <a
-                    className="btn btn-primary btn-block "
-                    href="/servicios/listadocajas"
-                  >
-                    Ver Listado
-                  </a>
-                  <p className="card-text mt-2">Listado de Cajas generadas</p>
-                </div>
-              </div>
-
-              <div className="card col-md-3 text-dark bg-ligth border border-dark ml-2  mb-3 ">
-                <div className="card-header">Portal Prestador</div>
-                <div className="card-body">
-                  <a
-                    className="btn btn-primary btn-block "
-                    href="/servicios/portalprestador"
-                  >
-                    Ingresar
-                  </a>
-                  <p className="card-text mt-2">
-                    Portar virtual para que el prestador gestione sus ordenes
-                    medicas.
-                  </p>
-                </div>
-              </div>
-            </>
-          ) : null}
+    <div className="container-fluid p-4 bg-white">
+      <div className="row mb-4">
+        <div className="col-12">
+          <h2 className="text-primary fw-bold text-center">
+            <i className="fa fa-rocket me-2"></i>Accesos Directos
+          </h2>
         </div>
       </div>
-    </>
+
+      <div className="row g-4 justify-content-center">
+        {accesos.map((acceso, index) => (
+          <div key={index} className="col-lg-3 col-md-4 col-sm-6">
+            <div className={`card h-100 shadow-sm border-0 bg-${acceso.color} text-white`}>
+              <div className="card-body text-center d-flex flex-column">
+                <div className="mb-3">
+                  <i className={`fa ${acceso.icono} fa-3x`}></i>
+                </div>
+                <h6 className="card-title fw-bold mb-3">{acceso.titulo}</h6>
+                <p className="card-text flex-grow-1 small">{acceso.descripcion}</p>
+                <a
+                  href={acceso.enlace}
+                  className="btn btn-light btn-sm mt-auto fw-bold"
+                >
+                  {acceso.boton}
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {usu.perfil === 1 || usu.perfil === 3 ? (
+          accesosAdmin.map((acceso, index) => (
+            <div key={`admin-${index}`} className="col-lg-3 col-md-4 col-sm-6">
+              <div className={`card h-100 shadow-sm border-0 bg-${acceso.color} text-white`}>
+                <div className="card-body text-center d-flex flex-column">
+                  <div className="mb-3">
+                    <i className={`fa ${acceso.icono} fa-3x`}></i>
+                  </div>
+                  <h6 className="card-title fw-bold mb-3">{acceso.titulo}</h6>
+                  <p className="card-text flex-grow-1 small">{acceso.descripcion}</p>
+                  <a
+                    href={acceso.enlace}
+                    className="btn btn-light btn-sm mt-auto fw-bold"
+                  >
+                    {acceso.boton}
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : null}
+      </div>
+    </div>
   );
 };
 

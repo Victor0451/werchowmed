@@ -45,7 +45,7 @@ const ModalNuevoPrestador = ({
             <button
               type="button"
               className="close"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
               aria-label="Close"
             >
               <span aria-hidden="true">&times;</span>
@@ -77,7 +77,7 @@ const ModalNuevoPrestador = ({
 
                   <div className="form-group col-md-3">
                     <label>Sucursal</label>
-                    <select className="custom-select" ref={nuSucRef}>
+                    <select className="form-select" ref={nuSucRef}>
                       <option value="no">Selecciona una opción</option>
                       <option value="S.S. DE JUJUY">Casa Central</option>
                       <option value="OTERO">Otero</option>
@@ -91,7 +91,7 @@ const ModalNuevoPrestador = ({
 
                   <div className="form-group col-md-3">
                     <label>Especialidades</label>
-                    <select className="custom-select" ref={nuEspRef}>
+                    <select className="form-select" ref={nuEspRef}>
                       <option value="no">Selecciona una opción</option>
                       {especialidades.map((m, index) => (
                         <option key={index} value={`${m.ESPECIAL}-${m.NOMBRE}`}>
@@ -158,7 +158,7 @@ const ModalNuevoPrestador = ({
 
                   <div className="form-group col-md-3">
                     <label>Modalidad De Pago</label>
-                    <select className="custom-select" ref={nuModalidadRef}>
+                    <select className="form-select" ref={nuModalidadRef}>
                       <option value="no">Selecciona una opción</option>
                       <option value={"PAGA_EN_OFIC"}>En Oficina</option>
                       <option value={"PAGA_EN_PRES"}>Al Prestador</option>
@@ -168,7 +168,7 @@ const ModalNuevoPrestador = ({
                   <div className="form-group col-md-3">
                     <label>Promoción</label>
                     <select
-                      className="custom-select"
+                      className="form-select"
                       ref={promoRef}
                       onChange={handlePromo}
                     >
@@ -271,7 +271,7 @@ const ModalNuevoPrestador = ({
             <button
               type="button"
               className="btn btn-danger"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
             >
               Cancelar
             </button>

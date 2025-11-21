@@ -40,8 +40,8 @@ const FormCajaPato = ({
         <div className="col-md-6">
           <button
             className="mt-4 mb-4 btn btn-primary"
-            data-toggle="modal"
-            data-target="#modalIngresos"
+            data-bs-toggle="modal"
+            data-bs-target="#modalIngresos"
             onClick={() => tarerCuentas("I")}
           >
             Agregar Ingreso
@@ -132,8 +132,8 @@ const FormCajaPato = ({
         <div className="col-md-6">
           <button
             className="mt-4 mb-4 btn btn-primary"
-            data-toggle="modal"
-            data-target="#modalEgresos"
+            data-bs-toggle="modal"
+            data-bs-target="#modalEgresos"
             onClick={() => tarerCuentas("E")}
           >
             Agregar Egresos

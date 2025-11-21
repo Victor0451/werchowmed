@@ -11,76 +11,89 @@ const FormGestionTurno = ({
   listTurno,
 }) => {
   return (
-    <div className="container border border-dark list mt-4 p-4">
-      <div className="row">
-        <div className="col-md-8">
-          <h2>
-            <strong>
-              <u>Gestion de Turnos Medicos</u>
-            </strong>
-          </h2>
-        </div>
-
-        <div className="col-md-4">
-          <button
-            className="btn btn-block btn-primary mt-1"
-            data-toggle="collapse"
-            data-target="#collapseTurnosMedicos"
-          >
-            Turnos Del Dia
-          </button>
-        </div>
-        <TurnosMedicosDelDia listTurno={listTurno} />
+    <div className="container-fluid p-4">
+      {/* Header */}
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h1 className="text-primary fw-bold mb-0">
+          <i className="fa fa-calendar-check me-2"></i>
+          Gestión de Turnos Médicos
+        </h1>
+        <button
+          className="btn btn-primary"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseTurnosMedicos"
+        >
+          <i className="fa fa-clock me-1"></i>
+          Ver Turnos del Día
+        </button>
       </div>
 
-      <div className="border border-dark p-4 mt-4">
-        <div className="row">
-          {medicos ? (
-            <div className="col-md-4">
-              <label>Doctor:</label>
+      {/* Today's Appointments */}
+      <TurnosMedicosDelDia listTurno={listTurno} />
 
-              <select className="custom-select" ref={medicoRef}>
-                <option value="no">Selecciona una opcion</option>
-                {medicos.map((m, index) => (
-                  <option key={index} value={m.COD_PRES}>
-                    {m.NOMBRE}
-                  </option>
-                ))}
+      {/* Search Form */}
+      <div className="card shadow-sm">
+        <div className="card-header bg-info text-white">
+          <h5 className="mb-0">
+            <i className="fa fa-search me-2"></i>
+            Buscar Turnos Disponibles
+          </h5>
+        </div>
+        <div className="card-body">
+          <div className="row align-items-end">
+            {medicos ? (
+              <div className="col-md-4">
+                <label className="form-label fw-bold">Prestador Médico</label>
+                <select className="form-select form-select-lg" ref={medicoRef}>
+                  <option value="no">Seleccionar médico...</option>
+                  {medicos.map((m, index) => (
+                    <option key={index} value={m.COD_PRES}>
+                      {m.NOMBRE}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ) : (
+              <div className="col-12">
+                <div className="alert alert-info text-center">
+                  <i className="fa fa-info-circle me-2"></i>
+                  No hay médicos registrados en el sistema
+                </div>
+              </div>
+            )}
+
+            <div className="col-md-3">
+              <label className="form-label fw-bold">Fecha</label>
+              <input type="date" className="form-control form-control-lg" ref={diaRef} />
+            </div>
+
+            <div className="col-md-3">
+              <label className="form-label fw-bold">Turno</label>
+              <select className="form-select form-select-lg" ref={turnoRef}>
+                <option value="no">Seleccionar turno...</option>
+                <option value="Mañana">Mañana</option>
+                <option value="Tarde">Tarde</option>
               </select>
             </div>
-          ) : (
-            <div className="col-md-4 alert alert-info  border border-dark text-center text-uppercase">
-              No hay medicos registrados
+
+            <div className="col-md-2">
+              <button
+                className="btn btn-info btn-lg w-100"
+                onClick={buscarListadoTurnos}
+              >
+                <i className="fa fa-search me-1"></i>
+                Buscar
+              </button>
             </div>
-          )}
-
-          <div className="col-md-3">
-            <label>Dia:</label>
-
-            <input type="date" className="form-control" ref={diaRef} />
           </div>
 
-          <div className="col-md-3">
-            <label>Turno:</label>
-
-            <select className="custom-select" ref={turnoRef}>
-              <option value="no">Selecciona una opcion</option>
-              <option value="Mañana">Mañana</option>
-              <option value="Tarde">Tarde</option>
-            </select>
-          </div>
-
-          <div className="col-md-2 mt-2">
-            <button className="btn btn-info mt-4" onClick={buscarListadoTurnos}>
-              Buscar
-            </button>
-          </div>
-
-          {errores ? (
-            <div className="col-md-12 mt-4 border border-dark text-center text-uppercase alert alert-danger">
+          {/* Error Display */}
+          {errores && (
+            <div className="alert alert-danger mt-3 text-center">
+              <i className="fa fa-exclamation-triangle me-2"></i>
               {errores}
             </div>
-          ) : null}
+          )}
         </div>
       </div>
     </div>

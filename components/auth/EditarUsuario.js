@@ -14,95 +14,103 @@ const EditarUsuario = ({
   if (!username) return <Spinner />;
 
   return (
-    <div className="container border border-dark list mt-4 p-4 col-md-10">
-      <h1 className="  mb-4">
-        <strong>
-          <u>Editar de Usuarios</u>
-        </strong>
-      </h1>
+    <div className="container-fluid mt-4">
+      <div className="row justify-content-center">
+        <div className="col-md-10 col-lg-8">
+          <div className="card shadow-sm">
+            <div className="card-header bg-primary text-white">
+              <h1 className="mb-0">
+                <i className="fa fa-user-edit me-2"></i>
+                Edición de Usuarios
+              </h1>
+            </div>
+            <div className="card-body">
+              <form onSubmit={editUsuario}>
+                <div className="row g-3">
+                  <div className="col-md-6">
+                    <label className="form-label fw-bold">Usuario</label>
+                    <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      placeholder="Usuario"
+                      name="usuario"
+                      defaultValue={username.usuario}
+                      ref={usuarioRef}
+                    />
+                  </div>
 
-      <form className=" mt-4 border border-dark p-4" onSubmit={editUsuario}>
-        <div className="row">
-          <div className="form-group col-md-6">
-            <label>Usuario</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Usuario"
-              name="usuario"
-              defaultValue={username.usuario}
-              ref={usuarioRef}
-            />
-          </div>
+                  <div className="col-md-6">
+                    <label className="form-label fw-bold">Contraseña</label>
+                    <input
+                      type="password"
+                      className="form-control form-control-lg"
+                      placeholder="Contraseña"
+                      name="contrasena"
+                      defaultValue={username.contrasena}
+                      ref={contrasenaRef}
+                    />
+                  </div>
 
-          <div className="form-group col-md-6">
-            <label>Contraseña</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Contrasena"
-              name="contrasena"
-              defaultValue={username.contrasena}
-              ref={contrasenaRef}
-            />
-          </div>
+                  <div className="col-md-6">
+                    <label className="form-label fw-bold">Nombre</label>
+                    <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      placeholder="Nombre"
+                      name="nombre"
+                      defaultValue={username.nombre}
+                      ref={nombreRef}
+                    />
+                  </div>
 
-          <div className="form-group col-md-6">
-            <label>Nombre</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Nombre"
-              name="nombre"
-              defaultValue={username.nombre}
-              ref={nombreRef}
-            />
-          </div>
+                  <div className="col-md-6">
+                    <label className="form-label fw-bold">Apellido</label>
+                    <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      placeholder="Apellido"
+                      name="apellido"
+                      defaultValue={username.apellido}
+                      ref={apellidoRef}
+                    />
+                  </div>
 
-          <div className="form-group col-md-6">
-            <label>Apellido</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Apellido"
-              name="apellido"
-              defaultValue={username.apellido}
-              ref={apellidoRef}
-            />
-          </div>
+                  <div className="col-md-6">
+                    <label className="form-label fw-bold">Perfil</label>
+                    <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      placeholder="Perfil"
+                      name="perfil"
+                      defaultValue={username.perfil}
+                      ref={perfilRef}
+                    />
+                  </div>
 
-          <div className="form-group col-md-6">
-            <label>Prerfil</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Prerfil"
-              name="apellido"
-              defaultValue={username.perfil}
-              ref={perfilRef}
-            />
-          </div>
+                  <div className="col-md-6">
+                    <label className="form-label fw-bold">Código</label>
+                    <input
+                      type="number"
+                      className="form-control form-control-lg"
+                      placeholder="Código"
+                      name="codigo"
+                      defaultValue={username.codigo}
+                      ref={codigoRef}
+                    />
+                  </div>
 
-          <div className="form-group col-md-6">
-            <label>Codigo</label>
-            <input
-              type="number"
-              className="form-control"
-              placeholder="Codigo"
-              name="apellido"
-              defaultValue={username.codigo}
-              ref={codigoRef}
-
-            />
-          </div>
-
-          <div className="col-md-12">
-            <button type="submit" className="btn btn-primary  btn-block mt-4">
-              Registrar
-            </button>
+                  <div className="col-12 text-center mt-4">
+                    <button type="submit" className="btn btn-success btn-lg px-5">
+                      <i className="fa fa-save me-2"></i>
+                      Actualizar Usuario
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

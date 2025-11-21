@@ -22,7 +22,7 @@ const CentroDeMensajeria = ({
                 <div className="card">
                     <div className="card-header" id="headingOne">
                         <h2 className="mb-0">
-                            <button className="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <button className="btn btn-block text-left" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 <strong>
                                     Bandeja de Entrada
                                 </strong>
@@ -50,7 +50,7 @@ const CentroDeMensajeria = ({
                 <div className="card">
                     <div className="card-header" id="headingTwo">
                         <h2 className="mb-0">
-                            <button className="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <button className="btn btn-block text-left collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                 <strong>
                                     Mail Enviados
                                 </strong>

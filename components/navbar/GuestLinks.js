@@ -2,12 +2,9 @@ import React from "react";
 
 const GuestLinks = () => {
   return (
-    <div
-      className="collapse navbar-collapse d-flex justify-content-end"
-      id="navbarColor02"
-    >
-      <span className="badge badge-danger text-uppercase">
-        Debes iniciar sesion
+    <div className="d-flex justify-content-end w-100">
+      <span className="badge bg-danger text-uppercase">
+        Debes iniciar sesión
       </span>
     </div>
   );

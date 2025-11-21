@@ -51,50 +51,39 @@ const Navbar = ({ sucur }) => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      {!sucur ? (
-        <a className="navbar-brand" href="/home">
-          <u>Serv. Medicos</u>
-        </a>
-      ) : (
-        <a className="navbar-brand" href="/home">
-          <u>Sucursal</u>:
-          {sucur === "W" ? (
-            <> Casa Central</>
-          ) : sucur === "L" ? (
-            <> Palpala</>
-          ) : sucur === "R" ? (
-            <> Perico</>
-          ) : sucur === "C" ? (
-            <> El Carmen</>
-          ) : sucur === "M" ? (
-            <> Monterrico</>
-          ) : sucur === "P" ? (
-            <> San Pedro</>
-          ) : sucur === "O" ? (
-            <> Clinica Otero</>
-          ) : null}
-        </a>
-      )}
+    <nav className="navbar navbar-expand-lg navbar-dark" style={{background: 'linear-gradient(90deg, #0065D1 0%, #003975 100%)'}}>
+      <div className="container-fluid">
+        <div className="d-flex align-items-center">
+          {!sucur ? (
+            <a className="navbar-brand me-3" href="/home">
+              <strong>Serv. Médicos</strong>
+            </a>
+          ) : (
+            <a className="navbar-brand me-3" href="/home">
+              <strong>Sucursal:</strong> {sucur === "W" ? "Casa Central" : sucur === "L" ? "Palpala" : sucur === "R" ? "Perico" : sucur === "C" ? "El Carmen" : sucur === "M" ? "Monterrico" : sucur === "P" ? "San Pedro" : sucur === "O" ? "Clínica Otero" : ""}
+            </a>
+          )}
+        </div>
 
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarTogglerDemo02"
-        aria-controls="navbarTogglerDemo02"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
+        <button
+          className="navbar-toggler ms-auto"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+          aria-controls="navbarContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-      <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-        {userData.id ? (
-          <AuthLinks userData={userData} msj={msj} events={events} />
-        ) : (
-          <GuestLinks />
-        )}
+        <div className="collapse navbar-collapse" id="navbarContent">
+          {userData.id ? (
+            <AuthLinks userData={userData} msj={msj} events={events} />
+          ) : (
+            <GuestLinks />
+          )}
+        </div>
       </div>
     </nav>
   );

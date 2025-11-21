@@ -47,7 +47,7 @@ const FormNewEvent = ({
           <label>
             <u>Operador</u>
           </label>
-          <select label="Operador" className="custom-select" ref={operadorRef}>
+          <select label="Operador" className="form-select" ref={operadorRef}>
             <option value="no">Selecciona un operador</option>
             {operadores.map((f, index) => (
               <option key={index} value={f.operador}>
@@ -63,7 +63,7 @@ const FormNewEvent = ({
           </label>
           <select
             label="Prioridad"
-            className="custom-select"
+            className="form-select"
             ref={prioridadRef}
           >
             <option value="no">Selecciona una prioridad</option>

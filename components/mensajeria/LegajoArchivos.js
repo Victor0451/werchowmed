@@ -51,8 +51,8 @@ const LegajoArchivos = ({
                     <img
                       src={`${ip}api/archivos/mails/archivo/${archivo.adjunto}`}
                       className="archivos p-4 "
-                      data-toggle="modal"
-                      data-target="#imgModal"
+                      data-bs-toggle="modal"
+                      data-bs-target="#imgModal"
                       onClick={() => guardarArchi(archivo.adjunto)}
                     />
 
@@ -86,7 +86,7 @@ const LegajoArchivos = ({
               <button
                 type="button"
                 className="close"
-                data-dismiss="modal"
+                data-bs-dismiss="modal"
                 aria-label="Close"
               >
                 <span aria-hidden="true">&times;</span>

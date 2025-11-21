@@ -84,8 +84,8 @@ const OpcionesServicios = ({
               <p className="card-text">Emitir Orden de Farmacia</p>
               <button
                 className="btn btn-primary btn-sm rounded"
-                data-toggle="modal"
-                data-target="#modalFarmacia"
+                data-bs-toggle="modal"
+                data-bs-target="#modalFarmacia"
               >
                 Generar
               </button>
@@ -104,8 +104,8 @@ const OpcionesServicios = ({
               <p className="card-text">Emitir Consulta Medica</p>
               <button
                 className="btn btn-primary btn-sm rounded"
-                data-toggle="modal"
-                data-target="#modalConsulta"
+                data-bs-toggle="modal"
+                data-bs-target="#modalConsulta"
                 onClick={() => verificarUso("C", socio.GRUPO, socio.CONTRATO)}
               >
                 Generar
@@ -125,8 +125,8 @@ const OpcionesServicios = ({
               <p className="card-text">Emitir Orden de Practicas</p>
               <button
                 className="btn btn-primary btn-sm rounded"
-                data-toggle="modal"
-                data-target="#modalPractica"
+                data-bs-toggle="modal"
+                data-bs-target="#modalPractica"
                 onClick={() => verificarUso("P", socio.GRUPO, socio.CONTRATO)}
               >
                 Generar
@@ -147,8 +147,8 @@ const OpcionesServicios = ({
               <p className="card-text">Emitir Orden de Enfermeria</p>
               <button
                 className="btn btn-primary btn-sm rounded"
-                data-toggle="modal"
-                data-target="#modalEnfermeria"
+                data-bs-toggle="modal"
+                data-bs-target="#modalEnfermeria"
               >
                 Generar
               </button>
@@ -170,8 +170,8 @@ const OpcionesServicios = ({
               </p>
               <button
                 className="btn btn-primary btn-sm rounded"
-                data-toggle="modal"
-                data-target="#modalPlanOrtodoncia"
+                data-bs-toggle="modal"
+                data-bs-target="#modalPlanOrtodoncia"
               >
                 Generar
               </button>

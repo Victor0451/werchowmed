@@ -22,7 +22,7 @@ const ModalActPractica = ({ row, nuevoImportePrac, actValorPractica }) => {
             <button
               type="button"
               className="close"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
               aria-label="Close"
             >
               <span aria-hidden="true">&times;</span>
@@ -111,14 +111,14 @@ const ModalActPractica = ({ row, nuevoImportePrac, actValorPractica }) => {
               type="button"
               className="btn btn-primary"
               onClick={actValorPractica}
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
             >
               Actualizar
             </button>
             <button
               type="button"
               className="btn btn-danger"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
             >
               Cancelar
             </button>

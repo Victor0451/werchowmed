@@ -175,90 +175,81 @@ const home = () => {
       ) : usu ? (
         <>
           <Layout>
-            <div className="container p-4 border border-dark list mt-4">
-              <div className="row">
+            <div className="container-fluid p-4 min-vh-100" style={{background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'}}>
+              <div className="row mb-4">
                 <div className="col-md-8">
-                  <h2 className="mt-2 mb-4">
-                    <strong>
-                      <u>Sistema de Servicios Medicos</u>
-                    </strong>
-                  </h2>
+                  <h1 className="text-primary fw-bold">
+                    Sistema de Servicios Médicos
+                  </h1>
                 </div>
-                <div className="col-md-4 d-flex justify-content-end">
-                  <img src="/img/logo.png" className="mt-2 werchowlogo" />
+                <div className="col-md-4 text-end">
+                  <img src="/img/logo.png" className="werchowlogo" alt="Logo" />
                 </div>
               </div>
 
-              <div className="border border-dark mt-4 mb-4 p-2">
-                <div className="row d-flex justify-content-center">
-                  <div className="col-md-6">
-                    <h4>
-                      <u>Calendario de visitas - Plan Ortodoncia</u>
-                    </h4>
-                  </div>
-
-                  <div className="col-md-4">
-                    <button
-                      className="btn btn-block btn-primary mt-1"
-                      data-toggle="collapse"
-                      data-target="#collapseWidthExample"
-                    >
-                      Ver Turnos
-                    </button>
+              <div className="row g-4">
+                <div className="col-lg-12">
+                  <div className="card shadow">
+                    <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                      <h5 className="mb-0">Calendario de Visitas - Plan Ortodoncia</h5>
+                      <button
+                        className="btn btn-light btn-sm"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseWidthExample"
+                      >
+                        Ver Turnos
+                      </button>
+                    </div>
+                    <div className="card-body">
+                      <Calendario
+                        eventSelected={eventSelected}
+                        visitas={visitas}
+                        detVisi={detVisi}
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <Calendario
-                  eventSelected={eventSelected}
-                  visitas={visitas}
-                  detVisi={detVisi}
-                />
-              </div>
-
-              <div className="border border-dark mt-4 mb-4 p-2">
-                <div className="row d-flex justify-content-center">
-                  <div className="col-md-6">
-                    <h4>
-                      <u>Turnos Medicos del Dia</u>
-                    </h4>
+                <div className="col-lg-6">
+                  <div className="card shadow">
+                    <div className="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                      <h5 className="mb-0">Turnos Médicos del Día</h5>
+                      <button
+                        className="btn btn-light btn-sm"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseTurnosMedicos"
+                      >
+                        Ver Turnos
+                      </button>
+                    </div>
+                    <div className="card-body">
+                      <TurnosMedicosDelDia listTurno={listTurno} />
+                    </div>
                   </div>
+                </div>
 
-                  <div className="col-md-4">
-                    <button
-                      className="btn btn-block btn-primary mt-1"
-                      data-toggle="collapse"
-                      data-target="#collapseTurnosMedicos"
-                    >
-                      Ver Turnos
-                    </button>
+                <div className="col-lg-6">
+                  <div className="card shadow">
+                    <div className="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                      <h5 className="mb-0">Prestadores con Licencia</h5>
+                      <button
+                        className="btn btn-light btn-sm"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseAusenciasPrestadores"
+                      >
+                        Ver Licencias
+                      </button>
+                    </div>
+                    <div className="card-body">
+                      <AusenciasPrestadores listado={listAusen} />
+                    </div>
                   </div>
-                  <TurnosMedicosDelDia listTurno={listTurno} />
                 </div>
               </div>
-
-              <div className="border border-dark mt-4 mb-4 p-2">
-                <div className="row d-flex justify-content-center">
-                  <div className="col-md-6">
-                    <h4>
-                      <u>Prestadores con Licencia</u>
-                    </h4>
-                  </div>
-
-                  <div className="col-md-4">
-                    <button
-                      className="btn btn-block btn-primary mt-1"
-                      data-toggle="collapse"
-                      data-target="#collapseAusenciasPrestadores"
-                    >
-                      Ver Licencias
-                    </button>
-                  </div>
-                  <AusenciasPrestadores listado={listAusen} />
-                </div>
-              </div>
+               <AccesosRapidos usu={usu} />
             </div>
 
-            <AccesosRapidos usu={usu} />
+           
           </Layout>
         </>
       ) : null}

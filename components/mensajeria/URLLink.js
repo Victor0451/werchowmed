@@ -9,11 +9,11 @@ const URLLink = ({
     return (
         <div key={index}>
             {f === 'nuevo' ? (
-                <div className="badge badge-dark ml-1" >
+                <div className="badge bg-dark ml-1" >
                     {`Link de la caja generada`}
                 </div>
             ) : f === 'leer' ? (
-                <div className="badge badge-dark ml-1" >
+                <div className="badge bg-dark ml-1" >
                     <a href={`${url}`}>
                         {`Link de la caja generada`}
                     </a>

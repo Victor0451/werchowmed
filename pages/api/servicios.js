@@ -599,14 +599,17 @@ export default async function handler(req, res) {
         const listadoOrdenes = await serv.query(`
          
          SELECT 
-                iduso,
-                FECHA, 
-                ORDEN, 
-                CONTRATO,
-                NRO_DOC,
-                SERVICIO,
-                IMPORTE
-            FROM USOS
+                U.iduso,
+                U.FECHA, 
+                U.ORDEN, 
+                U.CONTRATO,
+                U.NRO_DOC,
+                U.SERVICIO,
+                U.IMPORTE,
+                P.NOMBRE AS PRESTADO,                
+                U.OPERADOR
+            FROM USOS as U
+            LEFT JOIN PRESTADO AS P ON P.COD_PRES = U.PRESTADO
             WHERE ANULADO in (NULL, 0) 
             ORDER BY iduso DESC
     `);
