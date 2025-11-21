@@ -16,11 +16,14 @@ import jsCookie from "js-cookie";
 import Router from "next/router";
 
 const home = () => {
-  const { isLoading } = useUser();
+  const { isLoading, user } = useUser();
+  const usu = user;
+
   const [listTurno, guardarListTurno] = useState([]);
   const [visitas, guardarVisitas] = useState([]);
   const [detVisi, guardarDetVisi] = useState(null);
   const [listAusen, guardarAusen] = useState([]);
+  const [showWelcomeBanner, setShowWelcomeBanner] = useState(false);
 
   const traerInfo = async () => {
     if (!jsCookie.get("sucur")) {
@@ -160,22 +163,54 @@ const home = () => {
     }
   };
 
-  const { usu } = useWerchow();
+  // Check if user is authenticated via cookies
+  const isAuthenticated = () => {
+    return jsCookie.get("usuario") && jsCookie.get("token");
+  };
 
-  useSWR("/api/turnos", traerInfo);
+  useSWR(isAuthenticated() && usu ? "/api/turnos" : null, traerInfo);
+
+  // Welcome banner for version 6.0
+  useEffect(() => {
+    const welcomeShown = localStorage.getItem("v6_welcome_shown");
+
+    if (!isAuthenticated() && !welcomeShown);
+    {
+      // Add a small delay to ensure DOM is ready
+      const timer = setTimeout(() => {
+        setShowWelcomeBanner(true);
+      }, 1500);
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleCloseBanner = () => {
+    setShowWelcomeBanner(false);
+    localStorage.setItem("v6_welcome_shown", "true");
+  };
 
   if (isLoading === true) return <Skeleton />;
-
-  return (
-    <>
-      {!usu ? (
-        <Layout>
-          <Redirect />
-        </Layout>
-      ) : usu ? (
+  else if (!isAuthenticated())
+    return (
+      <Layout>
+        <Redirect />
+      </Layout>
+    );
+  else if (!usu)
+    // Wait for user context to load
+    return <Skeleton />;
+  else
+    return (
+      <>
         <>
           <Layout>
-            <div className="container-fluid p-4 min-vh-100" style={{background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'}}>
+            <div
+              className="container-fluid p-4 min-vh-100"
+              style={{
+                background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
+              }}
+            >
               <div className="row mb-4">
                 <div className="col-md-8">
                   <h1 className="text-primary fw-bold">
@@ -187,11 +222,77 @@ const home = () => {
                 </div>
               </div>
 
+              {/* Welcome Banner Version 6.0 */}
+              {showWelcomeBanner && (
+                <div
+                  className="alert alert-primary alert-dismissible fade show shadow-sm mb-4 border-0"
+                  role="alert"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #007bff 0%, #0056b3 100%)",
+                    color: "white",
+                    animation: "pulse 2s infinite",
+                  }}
+                >
+                  <div className="d-flex align-items-center">
+                    <i
+                      className="fa fa-star fa-2x me-3"
+                      style={{ animation: "spin 3s linear infinite" }}
+                    ></i>
+                    <div className="flex-grow-1">
+                      <h5 className="alert-heading mb-1">
+                        <strong>¡Bienvenido a la Versión 6.0!</strong>
+                      </h5>
+                      <p className="mb-2">
+                        <strong>
+                          Sistema de Emisión de Órdenes Médicas - Renovado y
+                          Modernizado
+                        </strong>
+                      </p>
+                      <div className="row g-2">
+                        <div className="col-md-6">
+                          <small>
+                            <i className="fa fa-palette me-1"></i>
+                            Interfaz completamente renovada con Bootstrap 5
+                          </small>
+                        </div>
+                        <div className="col-md-6">
+                          <small>
+                            <i className="fa fa-mobile me-1"></i>
+                            Diseño responsive y optimización móvil
+                          </small>
+                        </div>
+                        <div className="col-md-6">
+                          <small>
+                            <i className="fa fa-print me-1"></i>
+                            Impresión profesional de documentos médicos
+                          </small>
+                        </div>
+                        <div className="col-md-6">
+                          <small>
+                            <i className="fa fa-shield me-1"></i>
+                            Mejor seguridad y validaciones robustas
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-close btn-close-white"
+                    onClick={handleCloseBanner}
+                    aria-label="Close"
+                  ></button>
+                </div>
+              )}
+
               <div className="row g-4">
                 <div className="col-lg-12">
                   <div className="card shadow">
                     <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                      <h5 className="mb-0">Calendario de Visitas - Plan Ortodoncia</h5>
+                      <h5 className="mb-0">
+                        Calendario de Visitas - Plan Ortodoncia
+                      </h5>
                       <button
                         className="btn btn-light btn-sm"
                         data-bs-toggle="collapse"
@@ -246,15 +347,12 @@ const home = () => {
                   </div>
                 </div>
               </div>
-               <AccesosRapidos usu={usu} />
+              <AccesosRapidos usu={usu} />
             </div>
-
-           
           </Layout>
         </>
-      ) : null}
-    </>
-  );
+      </>
+    );
 };
 
 export default home;

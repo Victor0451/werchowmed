@@ -454,59 +454,81 @@ const Caja = () => {
       ) : usu ? (
         <>
           <Layout>
-            <NuevaCaja
-              listado={ordenes}
-              traerOrdenesPorDia={traerOrdenesPorDia}
-              flag={flag}
-            />
-
-            {ingresos ? (
-              <>
-                <div id="caja">
-                  <FormCaja
-                    ingresos={ingresos}
-                    errores={errores}
-                    egresos={egresos}
-                    cuentas={cuentas}
-                    tipoFac={tipoFac}
-                    descripcionIRef={descripcionIRef}
-                    serieIRef={serieIRef}
-                    nFacturaIRef={nFacturaIRef}
-                    importeIRef={importeIRef}
-                    descripcionERef={descripcionERef}
-                    serieERef={serieERef}
-                    nFacturaERef={nFacturaERef}
-                    importeERef={importeERef}
-                    cuitIRef={cuitIRef}
-                    cuitERef={cuitERef}
-                    regEgreso={regEgreso}
-                    regIngreso={regIngreso}
-                    calcTotalMovimientos={calcTotalMovimientos}
-                    tarerCuentas={tarerCuentas}
-                    handleChange={handleChange}
-                    eliminarImpuPrecargado={eliminarImpuPrecargado}
-                  />
+            <div
+              className="container-fluid p-4 min-vh-100"
+              style={{
+                background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
+              }}
+            >
+              <div className="row mb-4">
+                <div className="col-12">
+                  <h1 className="text-primary fw-bold">
+                    <i className="fa fa-cash-register me-3"></i>
+                    Gestión de Caja
+                  </h1>
                 </div>
+              </div>
 
-                <div className=" container list mt-4 border border-dark p-4">
-                  <h3>
-                    <strong>
-                      <u>Opciones</u>
-                    </strong>
-                  </h3>
-                  <div className="row border border-dark p-4 mt-4">
-                    <div className="col-md-12 d-flex justify-content-center">
-                      <button
-                        className=" btn btn-success mr-1 "
-                        onClick={regCaja}
-                      >
-                        Registar Movimientos
-                      </button>
+              <NuevaCaja
+                listado={ordenes}
+                traerOrdenesPorDia={traerOrdenesPorDia}
+                flag={flag}
+              />
+
+              {ingresos ? (
+                <>
+                  <div id="caja">
+                    <FormCaja
+                      ingresos={ingresos}
+                      errores={errores}
+                      egresos={egresos}
+                      cuentas={cuentas}
+                      tipoFac={tipoFac}
+                      descripcionIRef={descripcionIRef}
+                      serieIRef={serieIRef}
+                      nFacturaIRef={nFacturaIRef}
+                      importeIRef={importeIRef}
+                      descripcionERef={descripcionERef}
+                      serieERef={serieERef}
+                      nFacturaERef={nFacturaERef}
+                      importeERef={importeERef}
+                      cuitIRef={cuitIRef}
+                      cuitERef={cuitERef}
+                      regEgreso={regEgreso}
+                      regIngreso={regIngreso}
+                      calcTotalMovimientos={calcTotalMovimientos}
+                      tarerCuentas={tarerCuentas}
+                      handleChange={handleChange}
+                      eliminarImpuPrecargado={eliminarImpuPrecargado}
+                    />
+                  </div>
+
+                  <div className="row g-4 mt-2">
+                    <div className="col-12">
+                      <div className="card shadow-sm">
+                        <div className="card-header bg-success text-white">
+                          <h5 className="mb-0">
+                            <i className="fa fa-cogs me-2"></i>
+                            Acciones de Caja
+                          </h5>
+                        </div>
+                        <div className="card-body">
+                          <div className="d-flex justify-content-center">
+                            <button
+                              className="btn btn-success px-5 py-3"
+                              onClick={regCaja}
+                            >
+                              <i className="fa fa-save me-2"></i>
+                              Registrar Movimientos
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </>
-            ) : null}
+                </>
+              ) : null}
+            </div>
           </Layout>
         </>
       ) : null}

@@ -12,86 +12,81 @@ const FormNewEvent = ({
   prioridadRef,
 }) => {
   return (
-    <div className="container border border-dark p-4 mt-4 list">
-      <h2>
-        <strong>
-          <u>Nueva Tarea</u>
-        </strong>
-      </h2>
-
-      <div className="row border border-dark p-4 mt-4">
-        <div className="col-md-3">
-          <label>
-            <u>Inicio</u>
-          </label>
-          <input
-            className="form-control"
-            label="Inicio"
-            type="text"
-            value={moment(datosEv.start).format("DD/MM/YYYY HH:mm")}
-          />
+    <div className="p-4">
+      <div className="card shadow-sm border-0">
+        <div className="card-header bg-success text-white">
+          <h5 className="mb-0">
+            <i className="fa fa-plus-circle me-2"></i>
+            Nueva Tarea
+          </h5>
         </div>
+        <div className="card-body">
+          <div className="row g-3">
+            <div className="col-md-3">
+              <label className="form-label fw-semibold">Inicio</label>
+              <input
+                className="form-control"
+                type="text"
+                value={moment(datosEv.start).format("DD/MM/YYYY HH:mm")}
+                readOnly
+              />
+            </div>
 
-        <div className="col-md-3">
-          <label>
-            <u>Fin</u>
-          </label>
-          <input
-            className="form-control"
-            type="text"
-            value={moment(datosEv.end).format("DD/MM/YYYY HH:mm")}
-          />
-        </div>
+            <div className="col-md-3">
+              <label className="form-label fw-semibold">Fin</label>
+              <input
+                className="form-control"
+                type="text"
+                value={moment(datosEv.end).format("DD/MM/YYYY HH:mm")}
+                readOnly
+              />
+            </div>
 
-        <div className="col-md-3">
-          <label>
-            <u>Operador</u>
-          </label>
-          <select label="Operador" className="form-select" ref={operadorRef}>
-            <option value="no">Selecciona un operador</option>
-            {operadores.map((f, index) => (
-              <option key={index} value={f.operador}>
-                {f.operador}
-              </option>
-            ))}
-          </select>
-        </div>
+            <div className="col-md-3">
+              <label className="form-label fw-semibold">Operador</label>
+              <select className="form-select" ref={operadorRef}>
+                <option value="no">Selecciona un operador</option>
+                {operadores.map((f, index) => (
+                  <option key={index} value={f.operador}>
+                    {f.operador}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-        <div className="col-md-3">
-          <label>
-            <u>Prioridad</u>
-          </label>
-          <select
-            label="Prioridad"
-            className="form-select"
-            ref={prioridadRef}
-          >
-            <option value="no">Selecciona una prioridad</option>
-            <option value={1}>Normal</option>
-            <option value={2}>Importante</option>
-            <option value={3}>Urgente</option>
-          </select>
-        </div>
+            <div className="col-md-3">
+              <label className="form-label fw-semibold">Prioridad</label>
+              <select className="form-select" ref={prioridadRef}>
+                <option value="no">Selecciona una prioridad</option>
+                <option value={1}>Normal</option>
+                <option value={2}>Importante</option>
+                <option value={3}>Urgente</option>
+              </select>
+            </div>
 
-        <div className="col-md-12 mt-4">
-          <label>
-            <u>Tarea</u>
-          </label>
-          <textarea
-            rows={10}
-            label="Tarea"
-            ref={tareaRef}
-            className="form-control"
-          />
+            <div className="col-md-12">
+              <label className="form-label fw-semibold">Descripción de la Tarea</label>
+              <textarea
+                rows={6}
+                ref={tareaRef}
+                className="form-control"
+                placeholder="Describe detalladamente la tarea a realizar..."
+              />
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="d-flex justify-content-end mt-5">
-        <button className="mr-1 btn btn-primary" onClick={postEvent}>
-          Registrar Tarea
-        </button>
-        <button className="btn btn-danger" onClick={cerrarEvento}>
-          Cerrar
-        </button>
+        <div className="card-footer bg-light">
+          <div className="d-flex justify-content-end gap-2">
+            <button className="btn btn-success px-4" onClick={postEvent}>
+              <i className="fa fa-save me-2"></i>
+              Registrar Tarea
+            </button>
+            <button className="btn btn-outline-secondary px-4" onClick={cerrarEvento}>
+              <i className="fa fa-times me-2"></i>
+              Cancelar
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -29,26 +29,32 @@ const FormCajaPato = ({
   eliminarImpuPrecargado,
 }) => {
   return (
-    <div className="mt-4 container border border-dark list p-4">
-      <h4>
-        <strong>
-          <u>Caja Otero</u>: {moment().format("DD/MM/YYYY")}
-        </strong>
-      </h4>
-
-      <div className="row mt-4 border border-dark p-2">
+    <div className="row g-4">
+      <div className="col-12">
+        <div className="card shadow-sm">
+          <div className="card-header bg-info text-white">
+            <h4 className="mb-0">
+              <i className="fa fa-cash-register me-2"></i>
+              Caja Otero - {moment().format("DD/MM/YYYY")}
+            </h4>
+          </div>
+          <div className="card-body">
+            <div className="row g-4">
         <div className="col-md-6">
-          <button
-            className="mt-4 mb-4 btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#modalIngresos"
-            onClick={() => tarerCuentas("I")}
-          >
-            Agregar Ingreso
-          </button>
+          <div className="d-flex justify-content-center mb-4">
+            <button
+              className="btn btn-success px-4 py-3"
+              data-bs-toggle="modal"
+              data-bs-target="#modalIngresos"
+              onClick={() => tarerCuentas("I")}
+            >
+              <i className="fa fa-plus-circle me-2"></i>
+              Agregar Ingreso
+            </button>
+          </div>
 
           {ingresos.length !== 0 ? (
-            <div className="list">
+            <div className="table-responsive">
               <ReactTable
                 data={ingresos}
                 filterable
@@ -57,16 +63,18 @@ const FormCajaPato = ({
                 }
                 columns={[
                   {
-                    Header: "Ingresos",
+                    Header: "Ingresos Registrados",
                     columns: [
                       {
                         Header: "#",
                         filterAll: false,
-                        width: 50,
-                        Cell: (row) => <div>{row.index + 1}</div>,
+                        width: 60,
+                        Cell: (row) => (
+                          <div className="text-center fw-semibold">{row.index + 1}</div>
+                        ),
                       },
                       {
-                        Header: "Servicio/Descripcion",
+                        Header: "Servicio/Descripción",
                         id: "DETALLE",
                         accessor: (d) => d.DETALLE,
                         filterMethod: (filter, rows) =>
@@ -74,9 +82,14 @@ const FormCajaPato = ({
                             keys: ["DETALLE"],
                           }),
                         filterAll: true,
+                        Cell: (row) => (
+                          <div className="text-truncate" style={{maxWidth: '200px'}} title={row.value}>
+                            {row.value}
+                          </div>
+                        ),
                       },
                       {
-                        Header: "Ordenes",
+                        Header: "Órdenes",
                         id: "CANTIDAD",
                         accessor: (d) => d.CANTIDAD,
                         filterMethod: (filter, rows) =>
@@ -84,6 +97,11 @@ const FormCajaPato = ({
                             keys: ["CANTIDAD"],
                           }),
                         filterAll: true,
+                        Cell: (row) => (
+                          <div className="text-center">
+                            <span className="badge bg-primary">{row.value}</span>
+                          </div>
+                        ),
                       },
                       {
                         Header: "Importe",
@@ -94,19 +112,25 @@ const FormCajaPato = ({
                             keys: ["IMPORTE"],
                           }),
                         filterAll: true,
+                        Cell: (row) => (
+                          <div className="text-end fw-semibold text-success">
+                            ${parseFloat(row.value).toFixed(2)}
+                          </div>
+                        ),
                       },
                       {
                         Header: "Acciones",
                         id: "ACCIONES",
                         filterAll: true,
-
+                        width: 100,
                         Cell: (row, index) => (
-                          <div>
+                          <div className="text-center">
                             <button
-                              className="btn btn-danger btn-sm"
+                              className="btn btn-outline-danger btn-sm"
                               onClick={() => eliminarImpuPrecargado(index, "I")}
+                              title="Eliminar ingreso"
                             >
-                              <i className="fa fa-trash" aria-hidden="true"></i>{" "}
+                              <i className="fa fa-trash"></i>
                             </button>
                           </div>
                         ),
@@ -118,29 +142,36 @@ const FormCajaPato = ({
                 className="-striped -highlight"
               />
 
-              <div className="mt-4 border border-dark alert alert-info text-center text-uppercase">
-                Total de Ingresos: ${calcTotalMovimientos(ingresos, "I")}
+              <div className="alert alert-success border-0 shadow-sm text-center mt-3">
+                <h6 className="mb-0">
+                  <i className="fa fa-arrow-up me-2"></i>
+                  Total de Ingresos: <strong>${calcTotalMovimientos(ingresos, "I")}</strong>
+                </h6>
               </div>
             </div>
           ) : (
-            <div className="mt-4 border border-dark alert alert-info text-center text-uppercase">
+            <div className="alert alert-secondary border-0 shadow-sm text-center">
+              <i className="fa fa-info-circle me-2"></i>
               No hay ingresos registrados
             </div>
           )}
         </div>
 
         <div className="col-md-6">
-          <button
-            className="mt-4 mb-4 btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#modalEgresos"
-            onClick={() => tarerCuentas("E")}
-          >
-            Agregar Egresos
-          </button>
+          <div className="d-flex justify-content-center mb-4">
+            <button
+              className="btn btn-danger px-4 py-3"
+              data-bs-toggle="modal"
+              data-bs-target="#modalEgresos"
+              onClick={() => tarerCuentas("E")}
+            >
+              <i className="fa fa-minus-circle me-2"></i>
+              Agregar Egreso
+            </button>
+          </div>
 
           {egresos.length !== 0 ? (
-            <div className="list">
+            <div className="table-responsive">
               <ReactTable
                 data={egresos}
                 filterable
@@ -149,13 +180,15 @@ const FormCajaPato = ({
                 }
                 columns={[
                   {
-                    Header: "Egresos",
+                    Header: "Egresos Registrados",
                     columns: [
                       {
                         Header: "#",
                         filterAll: false,
-                        width: 50,
-                        Cell: (row) => <div>{row.index + 1}</div>,
+                        width: 60,
+                        Cell: (row) => (
+                          <div className="text-center fw-semibold">{row.index + 1}</div>
+                        ),
                       },
                       {
                         Header: "Detalle",
@@ -166,15 +199,22 @@ const FormCajaPato = ({
                             keys: ["DETALLE"],
                           }),
                         filterAll: true,
+                        Cell: (row) => (
+                          <div className="text-truncate" style={{maxWidth: '150px'}} title={row.value}>
+                            {row.value}
+                          </div>
+                        ),
                       },
                       {
                         Header: "Factura",
                         id: "FACTURA",
                         filterAll: true,
-
+                        width: 120,
                         Cell: (row) => (
-                          <div>
-                            {row.original.SERIE} - {row.original.NUMERO}
+                          <div className="text-center">
+                            <small className="text-muted">
+                              {row.original.SERIE}-{row.original.NUMERO}
+                            </small>
                           </div>
                         ),
                       },
@@ -187,19 +227,25 @@ const FormCajaPato = ({
                             keys: ["IMPORTE"],
                           }),
                         filterAll: true,
+                        Cell: (row) => (
+                          <div className="text-end fw-semibold text-danger">
+                            ${parseFloat(row.value).toFixed(2)}
+                          </div>
+                        ),
                       },
                       {
                         Header: "Acciones",
                         id: "ACCIONES",
                         filterAll: true,
-
+                        width: 100,
                         Cell: (row, index) => (
-                          <div>
+                          <div className="text-center">
                             <button
-                              className="btn btn-danger btn-sm"
+                              className="btn btn-outline-danger btn-sm"
                               onClick={() => eliminarImpuPrecargado(index, "E")}
+                              title="Eliminar egreso"
                             >
-                              <i className="fa fa-trash" aria-hidden="true"></i>{" "}
+                              <i className="fa fa-trash"></i>
                             </button>
                           </div>
                         ),
@@ -211,19 +257,33 @@ const FormCajaPato = ({
                 className="-striped -highlight"
               />
 
-              <div className="mt-4 border border-dark alert alert-info text-center text-uppercase">
-                Total de Egresos: ${calcTotalMovimientos(egresos, "E")}
+              <div className="alert alert-danger border-0 shadow-sm text-center mt-3">
+                <h6 className="mb-0">
+                  <i className="fa fa-arrow-down me-2"></i>
+                  Total de Egresos: <strong>${calcTotalMovimientos(egresos, "E")}</strong>
+                </h6>
               </div>
             </div>
           ) : (
-            <div className="mt-4 border border-dark alert alert-info text-center text-uppercase">
-              No hay Egresos registrados
+            <div className="alert alert-secondary border-0 shadow-sm text-center">
+              <i className="fa fa-info-circle me-2"></i>
+              No hay egresos registrados
             </div>
           )}
         </div>
-        <div className="col-md-12 mt-4 border border-dark alert alert-info text-center text-uppercase">
-          Valores a Depositar: $
-          {calcTotalMovimientos(ingresos, "I") - calcTotalMovimientos(egresos, "E") }
+              <div className="col-12">
+                <div className="alert alert-success border-0 shadow-sm text-center">
+                  <h5 className="mb-0">
+                    <i className="fa fa-coins me-2"></i>
+                    Valores a Depositar: $
+                    <strong className="fs-4">
+                      {calcTotalMovimientos(ingresos, "I") - calcTotalMovimientos(egresos, "E")}
+                    </strong>
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
