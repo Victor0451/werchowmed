@@ -49,8 +49,8 @@ const BuscarSocio = ({
               <button
                 type="submit"
                 className="btn btn-primary btn-block "
-                data-toggle="modal"
-                data-target="#exampleModal1"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal1"
               >
                 Buscar
               </button>
@@ -84,8 +84,8 @@ const BuscarSocio = ({
               <button
                 type="submit"
                 className="btn btn-primary btn-block "
-                data-toggle="modal"
-                data-target="#exampleModal1"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal1"
               >
                 Buscar
               </button>
@@ -119,8 +119,8 @@ const BuscarSocio = ({
               <button
                 type="submit"
                 className="btn btn-primary btn-block "
-                data-toggle="modal"
-                data-target="#exampleModal"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
               >
                 Buscar
               </button>
@@ -155,7 +155,7 @@ const BuscarSocio = ({
               <button
                 type="button"
                 className="close"
-                data-dismiss="modal"
+                data-bs-dismiss="modal"
                 aria-label="Close"
               >
                 <span aria-hidden="true">&times;</span>
@@ -168,7 +168,7 @@ const BuscarSocio = ({
               <button
                 type="button"
                 className="btn btn-primary btn-block"
-                data-dismiss="modal"
+                data-bs-dismiss="modal"
               >
                 Cerrar
               </button>
@@ -196,7 +196,7 @@ const BuscarSocio = ({
               <button
                 type="button"
                 className="close"
-                data-dismiss="modal"
+                data-bs-dismiss="modal"
                 aria-label="Close"
               >
                 <span aria-hidden="true">&times;</span>
@@ -232,7 +232,7 @@ const BuscarSocio = ({
               <button
                 type="button"
                 className="btn btn-danger"
-                data-dismiss="modal"
+                data-bs-dismiss="modal"
               >
                 Cerrar
               </button>

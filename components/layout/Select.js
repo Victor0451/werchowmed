@@ -8,7 +8,7 @@ const Select = ({ label, listado, ref }) => {
           <u>{label}</u>
         </strong>
       </label>
-      <select className="custom-select" ref={ref}>
+      <select className="form-select" ref={ref}>
         <option selected>Selecciona un {label}</option>
         {listado ? (
           <>

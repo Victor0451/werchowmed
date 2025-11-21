@@ -73,8 +73,8 @@ const ListadoActPracticas = ({ practicasPres, guardarRow }) => {
                   <div>
                     <button
                       className="btn btn-warning btn-sm"
-                      data-toggle="modal"
-                      data-target="#ModalActPractica"
+                      data-bs-toggle="modal"
+                      data-bs-target="#ModalActPractica"
                       onClick={() => {
                         guardarRow(row.original);
                       }}

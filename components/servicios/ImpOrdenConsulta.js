@@ -16,289 +16,140 @@ const ImpOrdenConsulta = ({
   if (!socio || !orden) return <Spinner />;
 
   return (
-    <div className=" p-2 borderImp list">
-      <div className="row">
-        <div className="col-md-8">
+    <div className="border border-2 border-primary rounded p-2 bg-white" style={{maxWidth: '1000px', margin: '0 auto', fontSize: '0.75rem', lineHeight: '1.2'}}>
+      {/* Header */}
+      <div className="d-flex justify-content-between align-items-start mb-2">
+        <div>
           {flag && flag === "E" ? (
-            <h2 className="mt-2 mb-2">
-              <strong>
-                <u>Subsidio Enfermeria</u>
-              </strong>
-            </h2>
+            <h4 className="text-primary mb-0 fw-bold">Subsidio Enfermería</h4>
           ) : flag && flag === "F" ? (
-            <h2 className="mt-2 mb-2">
-              <strong>
-                <u>Subsidio Farmacia</u>
-              </strong>
-            </h2>
+            <h4 className="text-primary mb-0 fw-bold">Subsidio Farmacia</h4>
           ) : (
-            <h2 className="mt-2 mb-2">
-              <strong>
-                <u>Subsidio Medico</u>
-              </strong>
-            </h2>
+            <h4 className="text-primary mb-0 fw-bold">Subsidio Médico</h4>
           )}
         </div>
-        <div className="mt-2 col-md-4 d-flex justify-content-end">
+        <div>
           {orden.EMPRESA === "SM" ? (
-            <img src="/img/logoSM.png" className="smlogo" />
+            <img src="/img/logoSM.png" style={{width: '80px', height: '60px'}} alt="Logo SM" />
           ) : (
-            <img src="/img/logo.png" className="werchowlogo" />
+            <img src="/img/logo.png" style={{width: '80px', height: '60px'}} alt="Logo Werchow" />
           )}
         </div>
       </div>
 
-      <div className="mt-2 borderImp p-2 row">
-        <div className="row  col-md-8">
-          <div className="col-md-12">
-            <strong>
-              <u>Beneficiario</u>: {socio.APELLIDOS}, {socio.NOMBRES}
-            </strong>
-          </div>
-
-          <div className="mt-2 col-md-12">
-            <strong>
-              <u>N° Socio</u>: {socio.CONTRATO}
-            </strong>
-          </div>
-
-          <div className="mt-2 col-md-12">
-            <strong>
-              <u>Edad</u>: {moment().diff(socio.NACIMIENTO, "years")}
-            </strong>
+      {/* Beneficiary and Order Info */}
+      <div className="row g-1 mb-2">
+        <div className="col-md-8">
+          <div className="bg-light p-1 rounded">
+            <div><strong>Beneficiario:</strong> {socio.APELLIDOS}, {socio.NOMBRES}</div>
+            <div><strong>N° Socio:</strong> {socio.CONTRATO} | <strong>Edad:</strong> {moment().diff(socio.NACIMIENTO, "years")} años</div>
           </div>
         </div>
-
-        <div className="row col-md-4">
-          <div className="col-md-12">
-            <strong>
-              <u>Fecha</u>:{" "}
-              {moment(orden.FECHA).utcOffset("+0300").format("DD/MM/YYYY")}
-            </strong>
+        <div className="col-md-4">
+          <div className="bg-light p-1 rounded">
+            <div><strong>Fecha:</strong> {moment(orden.FECHA).utcOffset("+0300").format("DD/MM/YYYY")}</div>
+            <div><strong>N° Orden:</strong> {orden.ORDEN} | <strong>Arancel: $</strong>
+              {practicas.length > 0 ? calcularTotalPracticas(practicas) :
+               enfermeria.length > 0 ? enfermeria[0].IMPORTE : orden.IMPORTE}
+            </div>
           </div>
-
-          <div className="mt-2 col-md-12">
-            <strong>
-              <u>N° Orden</u>: {orden.ORDEN}
-            </strong>
-          </div>
-
-          {practicas.length > 0 ? (
-            <div className="mt-2 col-md-12">
-              <strong>
-                <u>Arancel</u>: $ {calcularTotalPracticas(practicas)}
-              </strong>
-            </div>
-          ) : enfermeria.length > 0 ? (
-            <div className="mt-2 col-md-12">
-              <strong>
-                <u>Arancel</u>: $ {enfermeria[0].IMPORTE}
-              </strong>
-            </div>
-          ) : (
-            <div className="mt-2 col-md-12">
-              <strong>
-                <u>Arancel</u>: $ {orden.IMPORTE}
-              </strong>
-            </div>
-          )}
-          {/* 
-          <div className="mt-2 col-md-12">
-            <strong>
-              <u>SIN ARANCEL DIFERENCIAL</u>
-            </strong>
-          </div> */}
         </div>
       </div>
 
+      {/* Service-specific sections */}
       {flag && flag === "F" ? (
-        <>
-          <div className="mt-2 d-flex justify-content-between text-center border-bottom  border-dark descr">
-            <div className="col-4">
-              <strong>DNI Beneficiario</strong>
-            </div>
-            <div className="col-4">
-              <strong>Descuento de:</strong>
-            </div>
-            <div className="col-4">
-              <strong>Prestador</strong>
-            </div>
+        <div className="mb-1">
+          <div className="bg-light p-1 rounded">
+            <strong>Farmacia:</strong> {farmaNom.length > 0 ? farmaNom[0].NOMBRE : ''} |
+            <strong> Descuento:</strong> {farmacia.length > 0 ? `${farmacia[0].MODO} - Hasta 2 medicamentos` : ''}
           </div>
-
-          <div className="d-flex justify-content-between border-bottom text-center descr">
-            <div className="col-4 ">{socio.NRO_DOC}</div>
-            {farmacia.length > 0 ? (
-              <div className="col-4">
-                {" "}
-                {farmacia[0].MODO} - HASTA DOS (2) MEDICAMENTOS
-              </div>
-            ) : null}
-
-            {farmaNom.length > 0 ? (
-              <div className="col-4">FARMACIA {farmaNom[0].NOMBRE}</div>
-            ) : null}
-          </div>
-        </>
+        </div>
       ) : flag && flag === "E" ? (
-        <>
-          <div className="mt-2 d-flex justify-content-between text-center border-bottom  border-dark descr">
-            <div className="col-4">
-              <strong>DNI Beneficiario</strong>
-            </div>
-            <div className="col-4">
-              <strong>Prestacion:</strong>
-            </div>
-            <div className="col-4">
-              <strong>Prestador</strong>
-            </div>
+        <div className="mb-1">
+          <div className="bg-light p-1 rounded">
+            <strong>Prestación:</strong> {enfermeria.length > 0 ? `${enfermeria[0].PRACTICA} - ${enfermeria[0].CANTIDAD} unidades` : ''} |
+            <strong> Prestador:</strong> {enfermeria.length > 0 ? enfermeria[0].NOMBRE : ''}
           </div>
-
-          <div className="d-flex justify-content-between border-bottom text-center descr">
-            <div className="col-4 ">{socio.NRO_DOC}</div>
-            {enfermeria.length > 0 ? (
-              <>
-                <div className="col-4">
-                  {" "}
-                  {enfermeria[0].PRACTICA} --- {enfermeria[0].CANTIDAD}{" "}
-                  Unidades.
-                </div>
-
-                <div className="col-4">{enfermeria[0].NOMBRE}</div>
-              </>
-            ) : null}
-          </div>
-        </>
+        </div>
       ) : (
         <>
-          <h4 className="mt-2 mb-2">
-            <strong>
-              <u>Prestador</u>
-            </strong>
-          </h4>
-
-          <div className="d-flex justify-content-between text-center border-bottom  border-dark descr">
-            <div className="col-1">
-              <strong>DNI Beneficiario</strong>
-            </div>
-            <div className="col-2">
-              <strong>Prestador</strong>
-            </div>
-            <div className="col-3">
-              <strong>Direccion</strong>
-            </div>
-            <div className="col-1">
-              <strong>Telefonos</strong>
-            </div>
-            <div className="col-5">
-              <strong>Atencion</strong>
-            </div>
+          {/* Provider Information */}
+          <div className="mb-1">
+            {!medico ? (
+              <div className="bg-light p-1 rounded small text-muted">Información del prestador no disponible</div>
+            ) : (
+              <div className="bg-light p-1 rounded small">
+                <strong>Prestador:</strong> {medico.NOMBRE} | <strong>Dirección:</strong> {medico.DIRECCION} | <strong>Tel:</strong> {medico.TELEFONOS} | <strong>Horario:</strong> {medico.HORARIO1}-{medico.HORARIO2}
+              </div>
+            )}
           </div>
 
-          {!medico ? null : (
-            <div className="d-flex justify-content-between border-bottom text-center descr">
-              <div className="col-1 ">{orden.NRO_DOC}</div>
-              <div className="col-2">{medico.NOMBRE}</div>
-              <div className="col-3">{medico.DIRECCION}</div>
-              <div className="col-1">{medico.TELEFONOS}</div>
-              <div className="col-5">
-                {medico.HORARIO1} - {medico.HORARIO2}
+          {/* Practices List */}
+          {practicas.length > 0 && (
+            <div className="mb-1">
+              <div className="table-responsive">
+                <table className="table table-sm table-bordered mb-0">
+                  <thead className="table-light">
+                    <tr>
+                      <th className="p-1">#</th>
+                      <th className="p-1">Código</th>
+                      <th className="p-1">Descripción</th>
+                      <th className="p-1">Importe</th>
+                      <th className="p-1">Cant.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {practicas.map((p, index) => (
+                      <tr key={index}>
+                        <td className="p-1">{index + 1}</td>
+                        <td className="p-1">{p.COD_PRAC}</td>
+                        <td className="p-1">{p.DESCRIP}</td>
+                        <td className="p-1">${p.IMPORTE}</td>
+                        <td className="p-1">{p.CANT_PRA}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr className="table-info fw-bold">
+                      <td colSpan="4" className="text-end p-1">Total:</td>
+                      <td className="p-1">${calcularTotalPracticas(practicas)}</td>
+                    </tr>
+                  </tfoot>
+                </table>
               </div>
             </div>
           )}
-
-          {practicas.length > 0 ? (
-            <>
-              <h4 className="mt-2 mb-2">
-                <strong>
-                  <u>Listado De Practicas</u>
-                </strong>
-              </h4>
-
-              <div className="d-flex justify-content-between text-center border-bottom  border-dark descr ">
-                <div className="col-1">
-                  {" "}
-                  <strong>#</strong>
-                </div>
-                <div className="col-2">
-                  {" "}
-                  <strong>Codigo</strong>
-                </div>
-                <div className="col-6">
-                  <strong>Descripcion</strong>
-                </div>
-                <div className="col-2">
-                  <strong>Importe</strong>
-                </div>
-                <div className="col-1">
-                  <strong>Cantidad</strong>
-                </div>
-              </div>
-
-              {practicas.map((p, index) => (
-                <div className="d-flex justify-content-between border-bottom text-center descr">
-                  <div className="col-1" key={index}>
-                    {index + 1}
-                  </div>
-                  <div className="col-2 descr">{p.COD_PRAC}</div>
-                  <div className="col-6">{p.DESCRIP}</div>
-                  <div className="col-2">$ {p.IMPORTE}</div>
-                  <div className="col-1">{p.CANT_PRA}</div>
-                </div>
-              ))}
-
-              <div className=" mt-2 border border-dark alert alert-info text-center text-uppercase">
-                $ {calcularTotalPracticas(practicas)}
-              </div>
-            </>
-          ) : null}
         </>
       )}
 
-      <div className="row mt-2 col-md-4">
-        <div className="col-md-12">
-          <strong>
-            <u>Fecha de Atencion</u>:
-          </strong>
-        </div>
-
-        <div className="mt-2 col-md-12">
-          <strong>
-            <u>Fecha de Vencimiento</u>:{" "}
-            {moment(orden.FECHA)
-              .utcOffset("+0300")
-              .add(1, "M")
-              .format("DD/MM/YYYY")}
-          </strong>
+      {/* Dates and Validity */}
+      <div className="mb-1">
+        <div className="bg-light p-1 rounded small">
+          <strong>Fecha de Atención:</strong> ____________________ |
+          <strong>Fecha de Vencimiento:</strong> {moment(orden.FECHA)
+            .utcOffset("+0300")
+            .add(1, "M")
+            .format("DD/MM/YYYY")}
         </div>
       </div>
-      <br />
 
-      <div className=" mt-2">
-        <div className="row d-flex justify-content-between p-2">
-          <div className="col-4 text-center mt-2">
-            <br />
-            <p>-----------------------------</p>
-            <label>Firma del Afiliado</label>
+      {/* Signatures */}
+      <div className="border-top pt-1">
+        <div className="row text-center small">
+          <div className="col-4">
+            <div className="border-bottom border-2 mt-3 mb-1" style={{height: '30px'}}></div>
+            <div>Firma Afiliado</div>
           </div>
-          <div className="col-4 text-center mt-2">
-            <br />
-            <p>-----------------------------</p>
-            <label>Aclaracion</label>
+          <div className="col-4">
+            <div className="border-bottom border-2 mt-3 mb-1" style={{height: '30px'}}></div>
+            <div>Aclaración</div>
           </div>
-
-          {flag && flag === "F" ? (
-            <div className="col-4 text-center mt-2">
-              <br />
-              <p>-----------------------------</p>
-              <label>Firma/Sello de la Farmacia</label>
+          <div className="col-4">
+            <div className="border-bottom border-2 mt-3 mb-1" style={{height: '30px'}}></div>
+            <div>
+              {flag && flag === "F" ? "Firma Farmacia" : "Firma Médico"}
             </div>
-          ) : (
-            <div className="col-4 text-center mt-2">
-              <br />
-              <p>-----------------------------</p>
-              <label>Firma/Sello del Medico</label>
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

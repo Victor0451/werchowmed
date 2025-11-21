@@ -22,255 +22,248 @@ const ModalConsulta = ({
       className="modal fade"
       id="modalConsulta"
       tabIndex="-1"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="modalConsultaLabel"
       aria-hidden="true"
     >
-      <div className="modal-dialog  modal-xl">
+      <div className="modal-dialog modal-xl">
         <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">
-              Orden de Consulta para: {socio.APELLIDOS}, {socio.NOMBRES}
+          <div className="modal-header bg-primary text-white">
+            <h5 className="modal-title" id="modalConsultaLabel">
+              <i className="fa fa-stethoscope me-2"></i>
+              Orden de Consulta - {socio.APELLIDOS}, {socio.NOMBRES}
             </h5>
             <button
               type="button"
-              className="close"
-              data-dismiss="modal"
+              className="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
-          <div className="modal-body p-4">
-            <div className="alert alert-info border border-dark text-center text-uppercase mb-4">
-              Esta es la orden de consulta n° {priUso + 1} del mes
+          <div className="modal-body">
+            <div className="alert alert-info shadow-sm mb-4">
+              <i className="fa fa-info-circle me-2"></i>
+              Esta es la orden de consulta <strong>n° {priUso + 1}</strong> del mes
             </div>
 
-            <div className="row border border-dark list p-4">
-              {!sucursales ? (
-                <div className="alert alert-info border border-dark col-md-4 text-center text-uppercase">
-                  Cargando Sucursales...
-                </div>
-              ) : (
-                <div className="col-md-4">
-                  <label>Sucursal:</label>
-
-                  <select className="custom-select" ref={sucursalRef}>
-                    <option value="no">Selecciona una opcion</option>
-                    {sucursales.map((s, index) => (
-                      <option key={index} value={s.codigo}>
-                        {s.sucursal}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              {!espec ? (
-                <div className="alert alert-info border border-dark col-md-4 text-center text-uppercase">
-                  Selecciona una Sucursal Para Traer las Especialidades
-                </div>
-              ) : (
-                <div className="col-md-4">
-                  <label>Especialidades:</label>
-
-                  <select
-                    className="custom-select"
-                    ref={especialidadRef}
-                    onChange={() => traerMedicosPorSuc("C")}
-                  >
-                    <option selected value="no">
-                      Selecciona una opcion
-                    </option>
-                    {espec.map((s, index) => (
-                      <option key={index} value={s.ESPECIAL}>
-                        {s.NOMBRE}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              {!medicos ? (
-                <div className="alert alert-info border border-dark col-md-4 text-center text-uppercase">
-                  Selecciona una Especialidad Para Traer Medicos
-                </div>
-              ) : (
-                <div className="col-md-4">
-                  {detalleMed ? (
-                    <label>
-                      Medicos: {""}
-                      <strong>Valor Consulta ${detalleMed.CON_PAGA}</strong>
-                    </label>
+            <div className="card shadow-sm mb-4">
+              <div className="card-header bg-light">
+                <h6 className="mb-0">
+                  <i className="fa fa-map-marker me-2"></i>
+                  Seleccionar Ubicación y Especialidad
+                </h6>
+              </div>
+              <div className="card-body">
+                <div className="row g-3">
+                  {!sucursales ? (
+                    <div className="col-md-4">
+                      <div className="alert alert-info text-center">
+                        <i className="fa fa-spinner fa-spin me-2"></i>
+                        Cargando sucursales...
+                      </div>
+                    </div>
                   ) : (
-                    <label>Medicos:</label>
+                    <div className="col-md-4">
+                      <label className="form-label fw-bold">Sucursal</label>
+                      <select className="form-select form-select-lg" ref={sucursalRef}>
+                        <option value="no">Seleccionar sucursal...</option>
+                        {sucursales.map((s, index) => (
+                          <option key={index} value={s.codigo}>
+                            {s.sucursal}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   )}
 
-                  <select
-                    className="custom-select"
-                    ref={medicoRef}
-                    onChange={() => traerDetalleMedSelec("C")}
-                  >
-                    <option selected value="no">
-                      Selecciona una opcion
-                    </option>
-                    {medicos.map((s, index) => (
-                      <option key={index} value={s.COD_PRES}>
-                        {s.NOMBRE}
-                      </option>
-                    ))}
-                  </select>
+                  {!espec ? (
+                    <div className="col-md-4">
+                      <div className="alert alert-warning text-center">
+                        <i className="fa fa-exclamation-triangle me-2"></i>
+                        Seleccione una sucursal para ver especialidades
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="col-md-4">
+                      <label className="form-label fw-bold">Especialidad</label>
+                      <select
+                        className="form-select form-select-lg"
+                        ref={especialidadRef}
+                        onChange={() => traerMedicosPorSuc("C")}
+                      >
+                        <option value="no">Seleccionar especialidad...</option>
+                        {espec.map((s, index) => (
+                          <option key={index} value={s.ESPECIAL}>
+                            {s.NOMBRE}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {!medicos ? (
+                    <div className="col-md-4">
+                      <div className="alert alert-warning text-center">
+                        <i className="fa fa-user-md me-2"></i>
+                        Seleccione una especialidad para ver médicos
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="col-md-4">
+                      <label className="form-label fw-bold">
+                        Médico
+                        {detalleMed && (
+                          <span className="badge bg-success ms-2">
+                            ${detalleMed.CON_PAGA}
+                          </span>
+                        )}
+                      </label>
+                      <select
+                        className="form-select form-select-lg"
+                        ref={medicoRef}
+                        onChange={() => traerDetalleMedSelec("C")}
+                      >
+                        <option value="no">Seleccionar médico...</option>
+                        {medicos.map((s, index) => (
+                          <option key={index} value={s.COD_PRES}>
+                            {s.NOMBRE}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
 
-            {detalleMed.COD_PRES ? (
-              <>
-                <hr className="mt-4 mb-4" />
-
-                <div className="border border-dark p-4">
-                  <h4>
-                    <u>Detalle del Medico</u>
-                  </h4>
-
-                  <div className="row border border-dark p-4 mt-4">
+            {detalleMed.COD_PRES && (
+              <div className="card shadow-sm">
+                <div className="card-header bg-success text-white">
+                  <h6 className="mb-0">
+                    <i className="fa fa-user-md me-2"></i>
+                    Detalles del Médico
+                  </h6>
+                </div>
+                <div className="card-body">
+                  <div className="row g-3">
                     <div className="col-md-4">
-                      <label>
-                        <u>Dr</u>
-                      </label>
+                      <label className="form-label fw-bold">Nombre del Médico</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control bg-light"
                         value={detalleMed.NOMBRE}
+                        readOnly
                       />
                     </div>
 
                     <div className="col-md-8">
-                      <label>
-                        <u>Horarios</u>
-                      </label>
+                      <label className="form-label fw-bold">Horarios de Atención</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control bg-light"
                         value={`${detalleMed.HORARIO1} - ${detalleMed.HORARIO2}`}
+                        readOnly
                       />
                     </div>
 
-                    <div className="col-md-4 mt-4">
-                      <label>
-                        <u>Telefono</u>
-                      </label>
+                    <div className="col-md-4">
+                      <label className="form-label fw-bold">Teléfono</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control bg-light"
                         value={detalleMed.TELEFONOS}
+                        readOnly
                       />
                     </div>
 
-                    <div className="col-md-8 mt-4">
-                      <label>
-                        <u>Direccion</u>
-                      </label>
+                    <div className="col-md-8">
+                      <label className="form-label fw-bold">Dirección</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control bg-light"
                         value={detalleMed.DIRECCION}
+                        readOnly
                       />
                     </div>
 
-                    <div className="col-md-2 mt-4 mb-4">
-                      <label>
-                        <strong>
-                          <u>¿ Tiene I.S.J ?</u>
-                        </strong>
-                      </label>
-                      <br />
-                      <div className="form-check ">
-                        <input
-                          className="form-check-input "
-                          type="radio"
-                          id="covid"
-                          name="motivo"
-                          value="option1"
-                          onClick={() => selector("si")}
-                        />
-                        <label className="form-check-label" for="covid">
-                          Si
-                        </label>
-                      </div>
-
-                      <div className="form-check ">
-                        <input
-                          className="form-check-input "
-                          type="radio"
-                          id="otro"
-                          name="motivo"
-                          value="option1"
-                          onClick={() => selector("no")}
-                          defaultChecked={true}
-                        />
-                        <label className="form-check-label" for="otro">
-                          No
-                        </label>
+                    <div className="col-md-4">
+                      <label className="form-label fw-bold">¿Tiene I.S.J?</label>
+                      <div className="d-flex gap-3">
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            id="isj-si"
+                            name="isj"
+                            onClick={() => selector("si")}
+                          />
+                          <label className="form-check-label" htmlFor="isj-si">
+                            Sí
+                          </label>
+                        </div>
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            id="isj-no"
+                            name="isj"
+                            onClick={() => selector("no")}
+                            defaultChecked
+                          />
+                          <label className="form-check-label" htmlFor="isj-no">
+                            No
+                          </label>
+                        </div>
                       </div>
                     </div>
+                  </div>
 
-                    {detalleMed.AUSENTE && detalleMed.AUSENTE === 1 ? (
-                      <div className="col-md-12 d-flex justify-content-end mt-4">
-                        <div className="mt-4 alert alert-warning text-center text-uppercase border border-dark">
-                          <strong>
-                            {" "}
-                            El prestador {detalleMed.NOMBRE} se encuentra de
-                            licencia (Vacaciones/Carpeta Medica). No se pueden
-                            generar ordenes a su nombre.
-                          </strong>
-                        </div>
-                      </div>
-                    ) : null}
-
-                    {isj === true ? (
-                      <div className="border border-dark alert alert-info text-center text-uppercase col-md-12">
-                        Al presentar la orden de I.S.J. se le descontara $350 al
-                        monto total de esta orden de consulta.
-                      </div>
-                    ) : null}
-
-                    {isj === true && priUso > 1 ? (
-                      <div className="col-md-12 d-flex justify-content-end mt-4">
-                        <div className="mt-4 alert alert-info text-center text-uppercase border border-dark">
-                          <u>Coseguro</u>: ${importeOrden() - 350}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="col-md-12 d-flex justify-content-end mt-4">
-                        <div className="mt-4 alert alert-info text-center text-uppercase border border-dark">
-                          <u>Coseguro</u>: ${importeOrden()}
-                        </div>
+                  {/* Alerts */}
+                  <div className="mt-3">
+                    {detalleMed.AUSENTE && detalleMed.AUSENTE === 1 && (
+                      <div className="alert alert-danger">
+                        <i className="fa fa-exclamation-triangle me-2"></i>
+                        <strong>Atención:</strong> El prestador {detalleMed.NOMBRE} se encuentra de licencia
+                        (Vacaciones/Carpeta Médica). No se pueden generar órdenes a su nombre.
                       </div>
                     )}
+
+                    {isj === true && (
+                      <div className="alert alert-info">
+                        <i className="fa fa-info-circle me-2"></i>
+                        Al presentar la orden de I.S.J. se le descontará $350 al monto total de esta orden de consulta.
+                      </div>
+                    )}
+
+                    <div className="alert alert-success text-center">
+                      <i className="fa fa-calculator me-2"></i>
+                      <strong>Coseguro: $</strong>
+                      {isj === true && priUso > 1 ? importeOrden() - 350 : importeOrden()}
+                    </div>
                   </div>
                 </div>
-              </>
-            ) : null}
+              </div>
+            )}
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer bg-light">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              <i className="fa fa-times me-1"></i>
+              Cancelar
+            </button>
             {detalleMed.AUSENTE && detalleMed.AUSENTE === 1 ? null : (
               <button
                 type="button"
                 className="btn btn-primary"
-                data-dismiss="modal"
+                data-bs-dismiss="modal"
                 onClick={() => registrarOrdenUsos()}
               >
-                Imprimir
+                <i className="fa fa-print me-1"></i>
+                Imprimir Orden
               </button>
             )}
-
-            <button
-              type="button"
-              className="btn btn-danger"
-              data-dismiss="modal"
-            >
-              Cancelar
-            </button>
           </div>
         </div>
       </div>

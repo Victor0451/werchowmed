@@ -143,8 +143,8 @@ const DetallePlanSocio = ({
                         {row.original.pagado === 1 ? (
                           <button
                             className="btn btn-secondary btn-sm"
-                            data-toggle="modal"
-                            data-target="#modalReciboPagoVisita"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalReciboPagoVisita"
                             onClick={() => {
                               datosVisita(row.original);
                             }}

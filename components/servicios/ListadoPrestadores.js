@@ -7,31 +7,36 @@ import ExportarPrestadores from "./ExportarPrestadores";
 
 const ListadoPrestadores = ({ listado }) => {
   return (
-    <div className="container list mt-4 border border-dark  p-4">
-      {listado.length === 0 ? (
-        <div className="col-md-12 mt-4 border border-dark text-center text-uppercase alert alert-info">
-          No hay prestadores registrados, {""}
-        </div>
-      ) : (
-        <div className="border border-dark mt-4 p-4 mb-4 ">
-          <div className="row ">
-            <div className="col-md-6">
-              <h2 className="mt-4 mb-4">
-                <u>Listado de Prestadores</u>
-              </h2>
-            </div>
-
-            <div className="col-md-6">
-              <div className="mt-4 mb-4 d-flex justify-content-end">
-                <ExportarPrestadores listado={listado} />
-              </div>
-            </div>
+    <div className="container-fluid mt-4">
+      <div className="card shadow-sm">
+        <div className="card-header bg-primary text-white">
+          <div className="d-flex justify-content-between align-items-center">
+            <h2 className="mb-0">
+              <i className="fa fa-users me-2"></i>
+              Listado de Prestadores
+            </h2>
+            {listado && listado.length > 0 && (
+              <ExportarPrestadores listado={listado} />
+            )}
           </div>
         </div>
-      )}
-
-      <div className="border border-dark p-2">
-        <ReactTable
+        <div className="card-body">
+          {listado && listado.length === 0 ? (
+            <div className="alert alert-info text-center">
+              <i className="fa fa-info-circle fa-2x mb-2"></i>
+              <h5>No hay prestadores registrados</h5>
+              <p className="mb-0">Los prestadores aparecerán aquí una vez que sean dados de alta en el sistema.</p>
+            </div>
+          ) : (
+            <div className="card shadow-sm">
+              <div className="card-header bg-light">
+                <h6 className="mb-0">
+                  <i className="fa fa-table me-2"></i>
+                  Información de Prestadores
+                </h6>
+              </div>
+              <div className="card-body p-0">
+                <ReactTable
           data={listado}
           filterable
           defaultFilterMethod={(filter, row) => row[filter.id] === filter.value}
@@ -65,7 +70,7 @@ const ListadoPrestadores = ({ listado }) => {
                   filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["NOMBRE"] }),
                   filterAll: true,
-                  width: 300,
+                  width: 500,
                 },
 
                 {
@@ -119,6 +124,10 @@ const ListadoPrestadores = ({ listado }) => {
           defaultPageSize={15}
           className="-striped -highlight"
         />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

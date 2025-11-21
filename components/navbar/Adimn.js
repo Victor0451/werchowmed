@@ -4,79 +4,57 @@ import { ip } from "../../config/config";
 const Adimn = ({ userData }) => {
   return (
     <ul className="navbar-nav">
-      <li>
-        <a href="/servicios/emision" className="nav-link dropdown-toggle">
-          Emision de Ordenes
+      <li className="nav-item">
+        <a href="/servicios/emision" className="nav-link">
+          <i className="fa fa-plus-circle me-1"></i> Emisión de Órdenes
         </a>
       </li>
-      <li>
-        <a
-          href="/servicios/listadoordenes"
-          className="nav-link dropdown-toggle"
-        >
-          List. Ordenes
+
+      <li className="nav-item dropdown">
+        <a className="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+          <i className="fa fa-list me-1"></i> Listados
+        </a>
+        <ul className="dropdown-menu">
+          <li><a className="dropdown-item" href="/servicios/listadoordenes"><i className="fa fa-file-text me-2"></i> Órdenes</a></li>
+          <li><a className="dropdown-item" href="/servicios/listadoprestadores"><i className="fa fa-users me-2"></i> Prestadores</a></li>
+          {userData.perfil === 1 || userData.perfil === 3 ? (
+            <>
+              <li><a className="dropdown-item" href="/servicios/control"><i className="fa fa-check-circle me-2"></i> Control</a></li>
+              <li><a className="dropdown-item" href="/servicios/listadocajas"><i className="fa fa-archive me-2"></i> Cajas</a></li>
+            </>
+          ) : null}
+        </ul>
+      </li>
+
+      <li className="nav-item dropdown">
+        <a className="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+          <i className="fa fa-cogs me-1"></i> Gestión
+        </a>
+        <ul className="dropdown-menu">
+          <li><a className="dropdown-item" href="/servicios/gestionturnos"><i className="fa fa-clock me-2"></i> Turnos</a></li>
+          <li><a className="dropdown-item" href="/servicios/seguimientoplan"><i className="fa fa-tooth me-2"></i> Plan Ortodoncia</a></li>
+          <li><a className="dropdown-item" href="/servicios/ausencias"><i className="fa fa-calendar-times me-2"></i> Ausencias</a></li>
+        </ul>
+      </li>
+
+      <li className="nav-item">
+        <a href="/servicios/caja" className="nav-link">
+          <i className="fa fa-money-bill me-1"></i> Generar Caja
         </a>
       </li>
-      <li>
-        <a
-          href="/servicios/listadoprestadores"
-          className="nav-link dropdown-toggle"
-        >
-          List. Prest.
+
+      <li className="nav-item">
+        <a href="/calendario/calendario" className="nav-link">
+          <i className="fa fa-tasks me-1"></i> Registrar Tareas
         </a>
       </li>
-      <li>
-        <a href="/servicios/gestionturnos" className="nav-link dropdown-toggle">
-          Gestion Turnos
-        </a>
-      </li>
-      <li>
-        <a
-          href="/servicios/seguimientoplan"
-          className="nav-link dropdown-toggle"
-        >
-          Seg. Plan Ortodoncia
-        </a>
-      </li>
-      <li>
-        <a href="/servicios/ausencias" className="nav-link dropdown-toggle">
-          Gestion Ausencia
-        </a>
-      </li>
-      <li>
-        <a href="/servicios/caja" className="nav-link dropdown-toggle">
-          Gen. Caja
-        </a>
-      </li>
-      <li>
-        <a href="/calendario/calendario" className="nav-link dropdown-toggle">
-          Reg. Tareas
-        </a>
-      </li>
+
       {userData.perfil === 1 || userData.perfil === 3 ? (
-        <>
-          <li>
-            <a href="/servicios/control" className="nav-link dropdown-toggle">
-              List. Control
-            </a>
-          </li>
-          <li>
-            <a
-              href="/servicios/listadocajas"
-              className="nav-link dropdown-toggle"
-            >
-              Listado Cajas
-            </a>
-          </li>
-          <li>
-            <a
-              href="/servicios/administracion"
-              className="nav-link dropdown-toggle"
-            >
-              Administracion
-            </a>
-          </li>
-        </>
+        <li className="nav-item">
+          <a href="/servicios/administracion" className="nav-link">
+            <i className="fa fa-user-shield me-1"></i> Administración
+          </a>
+        </li>
       ) : null}
     </ul>
   );

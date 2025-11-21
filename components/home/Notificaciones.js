@@ -28,7 +28,7 @@ const Notificaciones = ({
                             {orde > 0 ? (
 
                                 <div>
-                                    <span className="badge badge-danger">{orde}</span>
+                                    <span className="badge bg-danger">{orde}</span>
                                 </div>
                             ) : null}
 
@@ -41,7 +41,7 @@ const Notificaciones = ({
 
                             {prest > 0 ? (
                                 <div>
-                                    <span className="badge badge-danger">{prest}</span>
+                                    <span className="badge bg-danger">{prest}</span>
                                 </div>
                             ) : null}
 
@@ -54,7 +54,7 @@ const Notificaciones = ({
 
                             {msj > 0 ? (
                                 <div>
-                                    <span className="badge badge-danger">{msj}</span>
+                                    <span className="badge bg-danger">{msj}</span>
                                 </div>
 
                             ) : null}

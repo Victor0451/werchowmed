@@ -229,7 +229,7 @@ const seguimientoplan = () => {
                 <>
                   <ListadoPlanes listado={plan} traerPlanVisi={traerPlanVisi} />
 
-                  {planVisit ? (
+                  
                     <ModalPlanSeleccionado
                       planSel={planSel}
                       planVisit={planVisit}
@@ -237,7 +237,7 @@ const seguimientoplan = () => {
                       pagoRef={pagoRef}
                       datosVisita={datosVisita}
                     />
-                  ) : null}
+                  
                 </>
               ) : null}
 

@@ -7,7 +7,7 @@ const DestinatarioBadge = ({
 }) => {
     return (
         <div key={index}>
-            <div className="badge badge-dark ml-1" onClick={() => eliminarDestino(index)}>
+            <div className="badge bg-dark ml-1" onClick={() => eliminarDestino(index)}>
                 {`${dest} X `}
             </div>
         </div>

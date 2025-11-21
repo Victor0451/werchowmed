@@ -29,7 +29,7 @@ const FormRegAusencias = ({
               </label>
 
               <select
-                className="custom-select"
+                className="form-select"
                 ref={medicoRef}
                 onChange={() => {
                   handleChange();
@@ -54,7 +54,7 @@ const FormRegAusencias = ({
               <u>Motivo</u>:
             </label>
 
-            <select className="custom-select" ref={motivoRef}>
+            <select className="form-select" ref={motivoRef}>
               <option value="no">Selecciona una opcion</option>
               <option value={`Vacaciones`}>Vacaciones</option>
               <option value={`Carpeta Medica`}>Carpeta Medica</option>

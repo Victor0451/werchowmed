@@ -269,6 +269,8 @@ const GestionTurnos = () => {
   const buscarPaciente = async () => {
     let dni = dniRef.current.value;
 
+    console.log(dni);
+
     if (dni === "") {
       toastr.error("Debes ingresar el DNI del paciente", "ATENCION");
     } else {
@@ -279,8 +281,8 @@ const GestionTurnos = () => {
             dni: dni,
           },
         })
+
         .then((res) => {
-          console.log(res.data);
           if (res.data[0]) {
             guardarPaciente(res.data[0]);
             toastr.success("El paciente fue encontrado", "ATENCION");

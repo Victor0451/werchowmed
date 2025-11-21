@@ -17,7 +17,7 @@ const GastoLuto = ({ plan, alta, cantadh }) => {
           <button
             type="button"
             className="close"
-            data-dismiss="alert"
+            data-bs-dismiss="alert"
             aria-label="Close"
           >
             <span aria-hidden="true">&times;</span>

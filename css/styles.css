@@ -10,6 +10,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   /* background: radial-gradient(#EFEFEF 0%, #C1C1C1 100%); */
+  
 }
 
 .certFondo {
@@ -32,7 +33,7 @@ body {
   height: 100% !important;
 }
 
-.sr-only {
+.visually-hidden {
   color: #333 !important;
 }
 
@@ -63,21 +64,19 @@ body {
   transition: 0s;
 }
 
+/* Modern container with subtle shadow */
 .container {
-  box-shadow: 1px 1px 39px 6px rgba(0, 0, 0, 0.39);
-  -webkit-box-shadow: 1px 1px 39px 6px rgba(0, 0, 0, 0.39);
-  -moz-box-shadow: 1px 1px 39px 6px rgba(0, 0, 0, 0.39);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn {
-  border-radius: 15px !important;
-  opacity: 1;
-  transition: opacity 0.5s ease 0s;
+  border-radius: 8px !important;
+  transition: all 0.3s ease;
 }
 
 .btn:hover {
-  opacity: 0.6;
-  color: black;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .butlist {  
@@ -136,10 +135,8 @@ body {
 }
 
 .border {
-  border-radius: 15px !important;
-
-
-
+  border-radius: 12px !important;
+  border: 1px solid #dee2e6 !important;
 }
 
 .verticalScroll {
@@ -168,17 +165,30 @@ body {
 }
 
 .table {
-  font-size: 10px !important;
+  font-size: 0.875rem !important;
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+  color: #495057;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
 }
 
 .tenca {
-  background: steelblue !important;
-  color: black;
-  font-size: 10px !important;
+  background: #007bff !important;
+  color: white !important;
+  font-size: 0.875rem !important;
+  font-weight: 600;
 }
 
 tr {
-  line-height: 10px !important;
+  line-height: 1.5 !important;
 }
 
 .legales {
@@ -223,21 +233,47 @@ tr {
 
 
 input:read-only {
-  background: rgb(151, 148, 148) !important;
-  color: black !important;
+  background: #f8f9fa !important;
+  color: #6c757d !important;
+  border: 1px solid #dee2e6 !important;
+  border-radius: 6px !important;
 }
 
 input {
   background: white !important;
   color: black !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 6px !important;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input:focus {
+  border-color: #80bdff !important;
+  outline: 0 !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
 }
 
 /* MENU Y SUB MENU */
 .navbar {
-  font-size: small !important;
-  height: 50px;
-
+  font-size: 0.9rem !important;
+  min-height: 60px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+.navbar-brand {
+  font-size: 1.1rem !important;
+  font-weight: bold;
+}
+
+/* Quick Access Cards Hover Effect */
+ /* .card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+} 
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}  */
 
 .dropdown-submenu {
   position: relative;
@@ -452,12 +488,18 @@ input {
 
 /*--------------------------------------------*/
 
-@media (max-width: 580px) {
+@media (max-width: 768px) {
   .navbar {
-    text-transform: uppercase;
-    font-weight: 20px;
-    font-size: 0.7rem;
-    height: 100%;
-    /* background: rgba(3, 36, 66, 0.685) !important; */
+    font-size: 0.8rem;
+    height: 50px;
+  }
+
+  .werchowlogo {
+    width: 50px;
+    height: 45px;
+  }
+
+  .table {
+    font-size: 0.75rem !important;
   }
 }

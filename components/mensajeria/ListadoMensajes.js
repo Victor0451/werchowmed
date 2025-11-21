@@ -34,8 +34,8 @@ const ListadoMensajes = ({
         <div className="col-md-8 d-flex justify-content-end">
           <button
             className="btn btn-info"
-            data-toggle="modal"
-            data-target="#nuevomsj"
+            data-bs-toggle="modal"
+            data-bs-target="#nuevomsj"
           >
             Nuevo Mensaje
           </button>
@@ -84,10 +84,10 @@ const ListadoMensajes = ({
                     <div>
                       <button
                         className="btn btn-sm btn-info border mr-1"
-                        data-toggle="modal"
-                        data-placement="top"
+                        data-bs-toggle="modal"
+                        data-bs-placement="top"
                         title="Editar"
-                        data-target="#leermsj"
+                        data-bs-target="#leermsj"
                         onClick={() => {
                           guardarMensaje(row.original);
                           msjLeido(row.original.idmail);
@@ -99,8 +99,8 @@ const ListadoMensajes = ({
                       {/* 
                                             <button
                                                 className="btn btn-sm btn-danger border mr-1"
-                                                data-toggle="tooltip"
-                                                data-placement="top"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
                                                 title="Eliminar"
                                                 onClick={() => eliminarTarea(row.original.idevents)}
                                             >

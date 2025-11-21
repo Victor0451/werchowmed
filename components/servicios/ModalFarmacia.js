@@ -17,114 +17,126 @@ const ModalFarmacia = ({
       className="modal fade"
       id="modalFarmacia"
       tabIndex="-1"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="modalFarmaciaLabel"
       aria-hidden="true"
     >
-      <div className="modal-dialog  modal-xl">
+      <div className="modal-dialog modal-xl">
         <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">
-              Orden de Farmacia para: {socio.APELLIDOS}, {socio.NOMBRES}
+          <div className="modal-header bg-primary text-white">
+            <h5 className="modal-title" id="modalFarmaciaLabel">
+              <i className="fa fa-pills me-2"></i>
+              Orden de Farmacia - {socio.APELLIDOS}, {socio.NOMBRES}
             </h5>
             <button
               type="button"
-              className="close"
-              data-dismiss="modal"
+              className="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
-          <div className="modal-body p-4">
-            <div className="alert alert-info border border-dark mt-4 mb-4 text-center text-uppercase">
-              Este es el uso <strong>N°{usosFarm + 1}</strong> del socio para el
-              prestador de farmacia seleccionado
+          <div className="modal-body">
+            <div className="alert alert-info shadow-sm mb-4">
+              <i className="fa fa-hashtag me-2"></i>
+              Este es el uso <strong>N°{usosFarm + 1}</strong> del socio para el prestador de farmacia seleccionado
             </div>
 
-            <div className="row border border-dark list p-4">
-              {farmacias ? (
-                <>
-                  <div className="col-md-4">
-                    <label>Farmacias:</label>
-
-                    <select
-                      className="custom-select"
-                      ref={farmaciaRef}
-                      onChange={(value) => gestionDescuento(value)}
-                    >
-                      <option selected value="no">
-                        Selecciona una opcion
-                      </option>
-
-                      {farmacias.map((f, index) => (
-                        <option key={index} value={`${f.CODIGO}-${f.DESC}`}>
-                          {f.NOMBRE}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="d-flex justify-content-end">
-                      <button
-                        className="mt-2 btn btn-primary btn-sm "
-                        onClick={selDescuento}
-                      >
-                        Calc. Descuento
-                      </button>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="alert alert-info border border-dark col-md-4 text-center text-uppercase">
-                  Cargando las farmacias..
-                </div>
-              )}
-
-              <div className="col-md-4">
-                <label>Modalidad:</label>
-
-                <select className="custom-select" ref={modalidadRef}>
-                  <option selected value="no">
-                    Selecciona una opcion
-                  </option>
-                  <option value="1">Particular</option>
-                  <option value="2">Complemento</option>
-                </select>
+            <div className="card shadow-sm">
+              <div className="card-header bg-light">
+                <h6 className="mb-0">
+                  <i className="fa fa-cog me-2"></i>
+                  Configurar Orden de Farmacia
+                </h6>
               </div>
+              <div className="card-body">
+                <div className="row g-3">
+                  {farmacias ? (
+                    <div className="col-md-4">
+                      <label className="form-label fw-bold">Farmacia</label>
+                      <select
+                        className="form-select form-select-lg"
+                        ref={farmaciaRef}
+                        onChange={(value) => gestionDescuento(value)}
+                      >
+                        <option value="no">Seleccionar farmacia...</option>
+                        {farmacias.map((f, index) => (
+                          <option key={index} value={`${f.CODIGO}-${f.DESC}`}>
+                            {f.NOMBRE}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="d-flex justify-content-end mt-2">
+                        <button
+                          className="btn btn-outline-primary btn-sm"
+                          onClick={selDescuento}
+                        >
+                          <i className="fa fa-calculator me-1"></i>
+                          Calcular Descuento
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="col-md-4">
+                      <div className="alert alert-info text-center">
+                        <i className="fa fa-spinner fa-spin me-2"></i>
+                        Cargando farmacias...
+                      </div>
+                    </div>
+                  )}
 
-              {descFarma ? (
-                <div className="col-md-4">
-                  <label>Descuento:</label>
+                  <div className="col-md-4">
+                    <label className="form-label fw-bold">Modalidad</label>
+                    <select className="form-select form-select-lg" ref={modalidadRef}>
+                      <option value="no">Seleccionar modalidad...</option>
+                      <option value="1">Particular</option>
+                      <option value="2">Complemento</option>
+                    </select>
+                  </div>
 
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={`${descFarma}`}
-                    ref={descuentoRef}
-                    readOnly
-                  />
+                  {descFarma ? (
+                    <div className="col-md-4">
+                      <label className="form-label fw-bold">Descuento Aplicado</label>
+                      <div className="input-group">
+                        <input
+                          type="text"
+                          className="form-control form-control-lg bg-light"
+                          value={`${descFarma}`}
+                          ref={descuentoRef}
+                          readOnly
+                        />
+                        <span className="input-group-text">
+                          <i className="fa fa-percent"></i>
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="col-md-4">
+                      <div className="alert alert-warning">
+                        <i className="fa fa-exclamation-triangle me-2"></i>
+                        Haga clic en "Calcular Descuento" para ver el tipo de descuento que corresponde al afiliado con este prestador.
+                      </div>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className="alert alert-info border border-dark col-md-4 text-center text-uppercase">
-                  Haz Click en "Dalc. Sescuento", para ver que tipo de descuento
-                  le corresponde al afiliado con este prestador.
-                </div>
-              )}
+              </div>
             </div>
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer bg-light">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              <i className="fa fa-times me-1"></i>
+              Cancelar
+            </button>
             <button
               type="button"
               className="btn btn-primary"
               onClick={registrarFarmaciaUso}
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
             >
-              Imprimir
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              data-dismiss="modal"
-            >
-              Cancelar
+              <i className="fa fa-print me-1"></i>
+              Imprimir Orden
             </button>
           </div>
         </div>

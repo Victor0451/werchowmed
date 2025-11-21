@@ -16,152 +16,149 @@ const ModalAdhProvi = ({
     <div
       className="modal fade"
       id="ModalAdhProvi"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
+      tabIndex="-1"
+      aria-labelledby="modalAdhProviLabel"
       aria-hidden="true"
     >
-      <div className="modal-dialog  modal-xl">
+      <div className="modal-dialog modal-xl">
         <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">
-              Formulario Adhrente Provisorio
+          <div className="modal-header bg-warning text-dark">
+            <h5 className="modal-title" id="modalAdhProviLabel">
+              <i className="fa fa-user-plus me-2"></i>
+              Adherente Provisorio
             </h5>
             <button
               type="button"
-              className="close"
-              data-dismiss="modal"
+              className="btn-close"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
-          <div className="modal-body p-4">
-            <div className="row border border-dark p-4">
-              <div className="col-md-12">
-                <div className="alert alert-info mt-4 text-center text-uppercase border border-dark">
-                  Podras realizar la carga provisoria del adherente para poder
-                  emitir la orden medica. La misma se impactara en el sistema
-                  posteriormente.
+          <div className="modal-body">
+            <div className="alert alert-info shadow-sm mb-4">
+              <i className="fa fa-info-circle me-2"></i>
+              Podrás realizar la carga provisoria del adherente para poder
+              emitir la orden médica. La misma se impactará en el sistema
+              posteriormente.
+            </div>
+
+            <div className="card shadow-sm">
+              <div className="card-body">
+                <div className="row g-3">
+                  <div className="col-md-4">
+                    <label className="form-label fw-bold">DNI</label>
+                    <input
+                      className="form-control form-control-lg"
+                      type="number"
+                      placeholder="Ingrese DNI"
+                      ref={nroDocRef}
+                      onBlur={checkAdhProvi}
+                    />
+                  </div>
+
+                  {habilita === false ? (
+                    <div className="col-md-8">
+                      {infoAdh.length === 0 ? (
+                        <div className="alert alert-info text-center mt-4">
+                          <i className="fa fa-search me-2"></i>
+                          Ingresa el DNI y presiona la tecla "TAB" para
+                          verificar si existe
+                        </div>
+                      ) : infoAdh.length > 0 ? (
+                        <div className="alert alert-warning">
+                          <i className="fa fa-user-check me-2"></i>
+                          <strong>Adherente encontrado:</strong>{" "}
+                          {infoAdh[0].APELLIDOS}, {infoAdh[0].NOMBRES}
+                          <br />
+                          <small>Ficha N° {infoAdh[0].CONTRATO}</small>
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : habilita === true ? (
+                    <>
+                      <div className="col-md-12">
+                        <hr className="my-4" />
+                        <h6 className="text-primary mb-3">
+                          <i className="fa fa-plus-circle me-2"></i>
+                          Datos del Nuevo Adherente
+                        </h6>
+                      </div>
+
+                      <div className="col-md-3">
+                        <label className="form-label fw-bold">
+                          Fecha de Nacimiento
+                        </label>
+                        <input
+                          className="form-control"
+                          type="date"
+                          ref={nacimientoRef}
+                        />
+                      </div>
+
+                      <div className="col-md-3">
+                        <label className="form-label fw-bold">Apellido</label>
+                        <input
+                          className="form-control"
+                          type="text"
+                          placeholder="Ingrese apellido"
+                          ref={apellidoRef}
+                        />
+                      </div>
+
+                      <div className="col-md-3">
+                        <label className="form-label fw-bold">Nombre</label>
+                        <input
+                          className="form-control"
+                          type="text"
+                          placeholder="Ingrese nombre"
+                          ref={nombreRef}
+                        />
+                      </div>
+
+                      <div className="col-md-2">
+                        <label className="form-label fw-bold">Edad</label>
+                        <input
+                          className="form-control"
+                          type="number"
+                          placeholder="Edad"
+                          ref={edadRef}
+                        />
+                      </div>
+
+                      <div className="col-md-2">
+                        <label className="form-label fw-bold">Sexo</label>
+                        <select className="form-select" ref={sexoRef}>
+                          <option value="no">Seleccionar...</option>
+                          <option value="F">Femenino</option>
+                          <option value="M">Masculino</option>
+                        </select>
+                      </div>
+                    </>
+                  ) : null}
                 </div>
               </div>
+            </div>
 
-              <div className="col-md-4 mt-4">
-                <label>
-                  <strong>
-                    <u>DNI</u>
-                  </strong>
-                </label>
-
-                <input
-                  className="form-control"
-                  type="number"
-                  ref={nroDocRef}
-                  onBlur={checkAdhProvi}
-                />
-              </div>
-
-              {habilita === false ? (
-                <>
-                  {infoAdh.length === 0 ? (
-                    <div className="col-md-8 alert alert-info border border-dark text-center text-uppercase mt-5 mb-4">
-                      Ingresa el DNI y presiona la tecla "TAB" para verificar si
-                      existe
-                    </div>
-                  ) : infoAdh.length > 0 ? (
-                    <div className="col-md-8 alert alert-warning border border-dark text-center text-uppercase mt-5 mb-4">
-                      El DNI ingresado pertenece al adherente:{" "}
-                      {infoAdh[0].APELLIDOS}, {infoAdh[0].NOMBRES}. Ficha N°{" "}
-                      {infoAdh[0].CONTRATO}
-                    </div>
-                  ) : null}
-                </>
-              ) : habilita === true ? (
-                <>
-                  <div className="col-md-4 mt-4">
-                    <label>
-                      <strong>
-                        <u>Nacimiento</u>
-                      </strong>
-                    </label>
-
-                    <input
-                      className="form-control"
-                      type="date"
-                      ref={nacimientoRef}
-                    />
-                  </div>
-
-                  <div className="col-md-4 mt-4">
-                    <label>
-                      <strong>
-                        <u>Apellido</u>
-                      </strong>
-                    </label>
-
-                    <input
-                      className="form-control"
-                      type="text"
-                      ref={apellidoRef}
-                    />
-                  </div>
-
-                  <div className="col-md-4 mt-4">
-                    <label>
-                      <strong>
-                        <u>Nombre</u>
-                      </strong>
-                    </label>
-
-                    <input
-                      className="form-control"
-                      type="text"
-                      ref={nombreRef}
-                    />
-                  </div>
-                  <div className="col-md-4 mt-4">
-                    <label>
-                      <strong>
-                        <u>Edad</u>
-                      </strong>
-                    </label>
-
-                    <input
-                      className="form-control"
-                      type="number"
-                      ref={edadRef}
-                    />
-                  </div>
-                  <div className="col-md-4 mt-4">
-                    <label>Sexo:</label>
-
-                    <select className="custom-select" ref={sexoRef}>
-                      <option selected value="no">
-                        Selecciona una opcion
-                      </option>
-                      <option value="F">Femenino</option>
-                      <option value="M">Masculino</option>
-                    </select>
-                  </div>
-                </>
+            <div className="modal-footer bg-light">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                <i className="fa fa-times me-1"></i>
+                Cancelar
+              </button>
+              {habilita === true ? (
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={regAdhProvi}
+                >
+                  <i className="fa fa-save me-1"></i>
+                  Registrar Adherente
+                </button>
               ) : null}
             </div>
-          </div>
-
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={regAdhProvi}
-            >
-              Registrar
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              data-dismiss="modal"
-            >
-              Cancelar
-            </button>
           </div>
         </div>
       </div>

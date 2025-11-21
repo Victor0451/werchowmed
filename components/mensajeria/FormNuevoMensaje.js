@@ -54,7 +54,7 @@ const FormNuevoMensaje = ({
                                         Elegir Destinatario
                                     </u>
                                 </label>
-                                <select className="custom-select" ref={destinatarioRef}>
+                                <select className="form-select" ref={destinatarioRef}>
                                     <option value="no" selected>
                                         Selecciona el destinatario
                                     </option>
@@ -138,7 +138,7 @@ const FormNuevoMensaje = ({
                                         Cajas Generadas
                                     </u>
                                 </label>
-                                <select className="custom-select" ref={urlRef}>
+                                <select className="form-select" ref={urlRef}>
                                     <option value="no" selected>
                                         Selecciona Caja
                                     </option>

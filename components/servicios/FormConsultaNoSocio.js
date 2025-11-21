@@ -37,7 +37,7 @@ const FormConsultaNoSocio = ({
           <div className="col-md-4">
             <label>Sucursal:</label>
 
-            <select className="custom-select" ref={sucursalRef}>
+            <select className="form-select" ref={sucursalRef}>
               <option value="no">Selecciona una opcion</option>
               {sucursales.map((s, index) => (
                 <option key={index} value={s.codigo}>
@@ -57,7 +57,7 @@ const FormConsultaNoSocio = ({
             <label>Especialidades:</label>
 
             <select
-              className="custom-select"
+              className="form-select"
               ref={especialidadRef}
               onChange={() => traerMedicosPorSuc("C")}
             >
@@ -81,7 +81,7 @@ const FormConsultaNoSocio = ({
           <div className="col-md-4">
             <label>Medicos:</label>
             <select
-              className="custom-select"
+              className="form-select"
               ref={medicoRef}
               onChange={() => traerDetalleMedSelec("C")}
             >

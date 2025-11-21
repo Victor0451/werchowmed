@@ -35,7 +35,7 @@ const ModalEnfermeria = ({
             <button
               type="button"
               className="close"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
               aria-label="Close"
             >
               <span aria-hidden="true">&times;</span>
@@ -52,7 +52,7 @@ const ModalEnfermeria = ({
                   <label>Sucursal:</label>
 
                   <select
-                    className="custom-select"
+                    className="form-select"
                     ref={sucursalRefE}
                     onChange={traerEnfer}
                   >
@@ -76,7 +76,7 @@ const ModalEnfermeria = ({
                   <label>Prestador:</label>
 
                   <select
-                    className="custom-select"
+                    className="form-select"
                     ref={medicoRefE}
                     onChange={() => traerDetalleMedSelec("E")}
                   >
@@ -237,14 +237,14 @@ const ModalEnfermeria = ({
               type="button"
               className="btn btn-primary"
               onClick={registrarEnfermeriaUso}
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
             >
               Imprimir
             </button>
             <button
               type="button"
               className="btn btn-danger"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
             >
               Cancelar
             </button>

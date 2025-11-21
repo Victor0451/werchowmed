@@ -29,164 +29,172 @@ const ModalPractica = ({
       className="modal fade"
       id="modalPractica"
       tabIndex="-1"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="modalPracticaLabel"
       aria-hidden="true"
     >
-      <div className="modal-dialog  modal-xl">
+      <div className="modal-dialog modal-xl">
         <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">
-              Orden de Consulta para: {socio.APELLIDOS}, {socio.NOMBRES}
+          <div className="modal-header bg-success text-white">
+            <h5 className="modal-title" id="modalPracticaLabel">
+              <i className="fa fa-flask me-2"></i>
+              Prácticas Médicas - {socio.APELLIDOS}, {socio.NOMBRES}
             </h5>
             <button
               type="button"
-              className="close"
-              data-dismiss="modal"
+              className="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
-          <div className="modal-body p-4">
-            <div className="alert alert-info border border-dark text-center text-uppercase mb-4">
-              El afiliado tiene {priUsoBio} Practicas Bioquimicas registradas en
-              el mes
+          <div className="modal-body">
+            <div className="alert alert-info shadow-sm mb-3">
+              <i className="fa fa-vial me-2"></i>
+              <strong>Prácticas Bioquímicas del mes:</strong> {priUsoBio}
             </div>
 
-            <div className="alert alert-info border border-dark text-center text-uppercase mb-4">
-              El afiliado tiene {priUso} Practicas en general registradas en el
-              mes
+            <div className="alert alert-primary shadow-sm mb-4">
+              <i className="fa fa-clipboard-list me-2"></i>
+              <strong>Prácticas generales del mes:</strong> {priUso}
             </div>
 
-            <div className="row border border-dark list p-4">
-              {!sucursales ? (
-                <div className="alert alert-info border border-dark col-md-4 text-center text-uppercase">
-                  Cargando Sucursales...
-                </div>
-              ) : (
-                <div className="col-md-4">
-                  <label>Sucursal:</label>
-
-                  <select className="custom-select" ref={sucursalRefP}>
-                    <option value="no">Selecciona una opcion</option>
-                    {sucursales.map((s, index) => (
-                      <option key={index} value={s.codigo}>
-                        {s.sucursal}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              {!espec ? (
-                <div className="alert alert-info border border-dark col-md-4 text-center text-uppercase">
-                  Selecciona una Sucursal Para Traer las Especialidades
-                </div>
-              ) : (
-                <div className="col-md-4">
-                  <label>Especialidades:</label>
-
-                  <select
-                    className="custom-select"
-                    ref={especialidadRefP}
-                    onChange={() => traerMedicosPorSuc("P")}
-                  >
-                    <option selected value="no">
-                      Selecciona una opcion
-                    </option>
-                    {espec.map((s, index) => (
-                      <option key={index} value={s.ESPECIAL}>
-                        {s.NOMBRE}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              {!medicos ? (
-                <div className="alert alert-info border border-dark col-md-4 text-center text-uppercase">
-                  Selecciona una Especialidad Para Traer Medicos
-                </div>
-              ) : (
-                <div className="col-md-4">
-                  {detalleMed ? (
-                    <label>
-                      Medicos: {""}
-                      <strong>Valor Consulta ${detalleMed.CON_PAGA}</strong>
-                    </label>
+            <div className="card shadow-sm mb-4">
+              <div className="card-header bg-light">
+                <h6 className="mb-0">
+                  <i className="fa fa-map-marker me-2"></i>
+                  Seleccionar Ubicación y Especialidad
+                </h6>
+              </div>
+              <div className="card-body">
+                <div className="row g-3">
+                  {!sucursales ? (
+                    <div className="col-md-4">
+                      <div className="alert alert-info text-center">
+                        <i className="fa fa-spinner fa-spin me-2"></i>
+                        Cargando sucursales...
+                      </div>
+                    </div>
                   ) : (
-                    <label>Medicos:</label>
+                    <div className="col-md-4">
+                      <label className="form-label fw-bold">Sucursal</label>
+                      <select className="form-select form-select-lg" ref={sucursalRefP}>
+                        <option value="no">Seleccionar sucursal...</option>
+                        {sucursales.map((s, index) => (
+                          <option key={index} value={s.codigo}>
+                            {s.sucursal}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   )}
-                  <select
-                    className="custom-select"
-                    ref={medicoRefP}
-                    onChange={() => traerDetalleMedSelec("P")}
-                  >
-                    <option selected value="no">
-                      Selecciona una opcion
-                    </option>
-                    {medicos.map((s, index) => (
-                      <option key={index} value={s.COD_PRES}>
-                        {s.NOMBRE}
-                      </option>
-                    ))}
-                  </select>
+
+                  {!espec ? (
+                    <div className="col-md-4">
+                      <div className="alert alert-warning text-center">
+                        <i className="fa fa-exclamation-triangle me-2"></i>
+                        Seleccione una sucursal para ver especialidades
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="col-md-4">
+                      <label className="form-label fw-bold">Especialidad</label>
+                      <select
+                        className="form-select form-select-lg"
+                        ref={especialidadRefP}
+                        onChange={() => traerMedicosPorSuc("P")}
+                      >
+                        <option value="no">Seleccionar especialidad...</option>
+                        {espec.map((s, index) => (
+                          <option key={index} value={s.ESPECIAL}>
+                            {s.NOMBRE}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {!medicos ? (
+                    <div className="col-md-4">
+                      <div className="alert alert-warning text-center">
+                        <i className="fa fa-user-md me-2"></i>
+                        Seleccione una especialidad para ver médicos
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="col-md-4">
+                      <label className="form-label fw-bold">
+                        Médico
+                        {detalleMed && (
+                          <span className="badge bg-success ms-2">
+                            ${detalleMed.CON_PAGA}
+                          </span>
+                        )}
+                      </label>
+                      <select
+                        className="form-select form-select-lg"
+                        ref={medicoRefP}
+                        onChange={() => traerDetalleMedSelec("P")}
+                      >
+                        <option value="no">Seleccionar médico...</option>
+                        {medicos.map((s, index) => (
+                          <option key={index} value={s.COD_PRES}>
+                            {s.NOMBRE}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
 
-            {detalleMed ? (
+            {detalleMed && detalleMed.COD_PRES &&(
               <>
-                <hr className="mt-4 mb-4" />
-
-                <div className="row">
-                  <div className=" border border-dark p-4 col-md-12">
-                    <h4>
-                      <u>Detalle del Medico</u>
-                    </h4>
-
-                    <div className="row border border-dark p-4 mt-4">
-                      <div className="col-md-12">
-                        <label>
-                          <u>Dr</u>
-                        </label>
+                <div className="card shadow-sm mb-4">
+                  <div className="card-header bg-info text-white">
+                    <h6 className="mb-0">
+                      <i className="fa fa-user-md me-2"></i>
+                      Detalles del Médico
+                    </h6>
+                  </div>
+                  <div className="card-body">
+                    <div className="row g-3">
+                      <div className="col-md-6">
+                        <label className="form-label fw-bold">Nombre del Médico</label>
                         <input
                           type="text"
-                          className="form-control"
+                          className="form-control bg-light"
                           value={detalleMed.NOMBRE}
+                          readOnly
                         />
                       </div>
 
-                      <div className="mt-4 col-md-12">
-                        <label>
-                          <u>Horarios</u>
-                        </label>
+                      <div className="col-md-6">
+                        <label className="form-label fw-bold">Horarios de Atención</label>
                         <input
                           type="text"
-                          className="form-control"
+                          className="form-control bg-light"
                           value={`${detalleMed.HORARIO1} - ${detalleMed.HORARIO2}`}
+                          readOnly
                         />
                       </div>
 
-                      <div className="col-md-12 mt-4">
-                        <label>
-                          <u>Telefono</u>
-                        </label>
+                      <div className="col-md-6">
+                        <label className="form-label fw-bold">Teléfono</label>
                         <input
                           type="text"
-                          className="form-control"
+                          className="form-control bg-light"
                           value={detalleMed.TELEFONOS}
+                          readOnly
                         />
                       </div>
 
-                      <div className="col-md-12 mt-4">
-                        <label>
-                          <u>Direccion</u>
-                        </label>
+                      <div className="col-md-6">
+                        <label className="form-label fw-bold">Dirección</label>
                         <input
                           type="text"
-                          className="form-control"
+                          className="form-control bg-light"
                           value={detalleMed.DIRECCION}
+                          readOnly
                         />
                       </div>
                     </div>
@@ -194,65 +202,92 @@ const ModalPractica = ({
                 </div>
 
                 {socio.GRUPO === 66 || socio.GRUPO === 55 ? (
-                  <div className="alert alert-info text-center text-uppercase mt-4 mb-4 border border-dark">
-                    Este socio dispone de {8 - nFisio} sesiones de fisioterapia
-                    bonificadas al 100%
+                  <div className="alert alert-success shadow-sm mb-4">
+                    <i className="fa fa-heartbeat me-2"></i>
+                    <strong>Beneficio Especial:</strong> Este socio dispone de {8 - nFisio} sesiones de fisioterapia bonificadas al 100%
                   </div>
                 ) : null}
 
-                <ListadoPracticas
-                  listado={practicas}
-                  agregarPractica={agregarPractica}
-                  cantidadRefP={cantidadRefP}
-                />
+                <div className="row g-4">
+                  <div className="col-lg-12">
+                    <div className="card shadow-sm">
+                      <div className="card-header bg-light">
+                        <h6 className="mb-0">
+                          <i className="fa fa-list me-2"></i>
+                          Prácticas Disponibles
+                        </h6>
+                      </div>
+                      <div className="card-body p-0">
+                        <ListadoPracticas
+                          listado={practicas}
+                          agregarPractica={agregarPractica}
+                          cantidadRefP={cantidadRefP}
+                        />
+                      </div>
+                    </div>
+                  </div>
 
-                <div className="mt-4 border border-dark p-1">
-                  <ListadoPracticasAgregadas
-                    listado={pracSocio}
-                    eliminarPracticaPrecargado={eliminarPracticaPrecargado}
-                    cantidadRefP={cantidadRefP}
-                  />
+                  <div className="col-lg-12">
+                    <div className="card shadow-sm">
+                      <div className="card-header bg-warning text-dark">
+                        <h6 className="mb-0">
+                          <i className="fa fa-shopping-cart me-2"></i>
+                          Prácticas Seleccionadas
+                        </h6>
+                      </div>
+                      <div className="card-body p-0">
+                        <ListadoPracticasAgregadas
+                          listado={pracSocio}
+                          eliminarPracticaPrecargado={eliminarPracticaPrecargado}
+                          cantidadRefP={cantidadRefP}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {socio.GRUPO === 66 ||
-                (socio.GRUPO === 55 && nFisio >= 0 && nFisio < 8) ? (
-                  <div>
-                    <div className=" mt-4 border border-dark alert alert-info text-center text-uppercase">
-                      Total Practicas: ${calcularTotalPracticas(pracSocio, "I")}
+                <div className="card shadow-sm mt-4">
+                  <div className="card-body">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div className="alert alert-primary text-center mb-0">
+                          <i className="fa fa-calculator fa-2x mb-2"></i>
+                          <h5 className="mb-1">Total Prácticas</h5>
+                          <strong className="fs-4">${calcularTotalPracticas(pracSocio, "I")}</strong>
+                        </div>
+                      </div>
+                      {(socio.GRUPO === 66 || socio.GRUPO === 55) && nFisio >= 0 && nFisio < 8 && (
+                        <div className="col-md-12">
+                          <div className="alert alert-success text-center mb-0">
+                            <i className="fa fa-star fa-2x mb-2"></i>
+                            <h5 className="mb-1">Sesiones Bonificadas</h5>
+                            <strong className="fs-4">{8 - nFisio} restantes</strong>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <div className=" mt-4 border border-dark alert alert-info text-center text-uppercase">
-                      Este socio dispone de {8 - nFisio} sesiones de
-                      fisioterapia bonificadas al 100%.
-                    </div>
                   </div>
-                ) : socio.GRUPO === 66 ||
-                  (socio.GRUPO === 55 && nFisio === 8) ? (
-                  <div className=" mt-4 border border-dark alert alert-info text-center text-uppercase">
-                    Total Practicas: ${calcularTotalPracticas(pracSocio, "I")}
-                  </div>
-                ) : (
-                  <div className=" mt-4 border border-dark alert alert-info text-center text-uppercase">
-                    Total Practicas: ${calcularTotalPracticas(pracSocio, "I")}
-                  </div>
-                )}
+                </div>
               </>
-            ) : null}
+            )}
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer bg-light">
             <button
               type="button"
-              className="btn btn-primary"
-              data-dismiss="modal"
-              onClick={registrarPracticaUso}
+              className="btn btn-secondary"
+              data-bs-dismiss="modal"
             >
-              Imprimir
+              <i className="fa fa-times me-1"></i>
+              Cancelar
             </button>
             <button
               type="button"
-              className="btn btn-danger"
-              data-dismiss="modal"
+              className="btn btn-success"
+              data-bs-dismiss="modal"
+              onClick={registrarPracticaUso}
             >
-              Cancelar
+              <i className="fa fa-print me-1"></i>
+              Imprimir Orden
             </button>
           </div>
         </div>

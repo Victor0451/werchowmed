@@ -24,224 +24,208 @@ const BuscarSocio = ({
   SeleccionarSM,
 }) => {
   return (
-    <div className="container border border-dark list mt-4 p-4">
-      <div className="row">
-        <div className="col-md-8">
-          <h2 className="mt-2 mb-4">
-            <strong>
-              <u>Emision de {titulo}</u>
-            </strong>
-          </h2>
-        </div>
-        <div className="col-md-4 d-flex justify-content-end">
+    <div className="container-fluid p-4">
+      {/* Header */}
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h1 className="text-primary fw-bold mb-0">
+          <i className="fa fa-file-medical me-2"></i>
+          Emisión de {titulo}
+        </h1>
+        <div>
           {emp && emp === "W" ? (
-            <img src="/img/logo.png" className="mt-2 werchowlogo" />
+            <img src="/img/logo.png" className="werchowlogo" alt="Werchow" />
           ) : emp && emp === "M" ? (
-            <img src="/img/logom.jpg" className="mutuallogo" />
+            <img src="/img/logom.jpg" className="mutuallogo" alt="Mutual" />
           ) : null}
         </div>
       </div>
 
-      <div className="border border-dark mt-4 mb-4 p-2">
-        <div className="row d-flex justify-content-center">
-          <div className="col-md-4">
-            <h4>
-              <u>Codigos de Consultas Gratuitas</u>
-            </h4>
-          </div>
-
-          <div className="col-md-3">
-            <label>
-              <u>Ingresa el codigo</u>
-            </label>
-
-            <input
-              type={"number"}
-              className="form-control"
-              ref={codNoSocioRef}
-            />
-          </div>
-
-          <div className="col-md-3">
-            <button
-              className="btn btn-block btn-primary mt-4 "
-              onClick={consultarCodigo}
-            >
-              Generar Consulta
-            </button>
+      {/* Free Consultation Codes */}
+      <div className="card shadow-sm mb-4">
+        <div className="card-header bg-info text-white">
+          <h5 className="mb-0">
+            <i className="fa fa-gift me-2"></i>
+            Códigos de Consultas Gratuitas
+          </h5>
+        </div>
+        <div className="card-body">
+          <div className="row align-items-end">
+            <div className="col-md-6">
+              <label className="form-label fw-bold">Código de Consulta</label>
+              <input
+                type="number"
+                className="form-control form-control-lg"
+                placeholder="Ingrese el código"
+                ref={codNoSocioRef}
+              />
+            </div>
+            <div className="col-md-6">
+              <button
+                className="btn btn-info btn-lg w-100"
+                onClick={consultarCodigo}
+              >
+                <i className="fa fa-plus-circle me-2"></i>
+                Generar Consulta
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-4 border border-dark p-4 ">
-        <form>
-          <h2 className=" mb-4">
-            <strong>
-              <u>Buscar Socio</u>
-            </strong>
-          </h2>
-
-          <div className="border border-dark p-4">
-            <h4>
-              <u>Buscar por N° de Socio</u>
-            </h4>
-            <div className="row mb-4 mt-4">
-              <div className="form-group col-md-4">
-                <label>
-                  <strong>
-                    {" "}
-                    <u> N° de Ficha: </u>
-                  </strong>
-                </label>
+      {/* Member Search */}
+      <div className="card shadow-sm">
+        <div className="card-header bg-primary text-white">
+          <h4 className="mb-0">
+            <i className="fa fa-search me-2"></i>
+            Buscar Socio
+          </h4>
+        </div>
+        <div className="card-body">
+          {/* Search by Contract Number */}
+          <div className="mb-4">
+            <h5 className="text-primary mb-3">
+              <i className="fa fa-id-card me-2"></i>
+              Por Número de Socio
+            </h5>
+            <div className="row align-items-end">
+              <div className="col-md-4">
+                <label className="form-label fw-bold">Número de Ficha</label>
                 <input
                   type="text"
-                  className="form-control"
-                  placeholder="Ficha"
-                  name="contrato"
+                  className="form-control form-control-lg"
+                  placeholder="Ingrese ficha"
                   ref={contratoRef}
                 />
               </div>
-
-              <div className="form-group col-md-2 mt-4">
-                <button
-                  className="btn btn-block btn-primary"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    buscarTitular();
-                  }}
-                >
-                  Werchow
-                </button>
-              </div>
-              <div className="form-group col-md-2 mt-4">
-                <button
-                  className="btn btn-block btn-primary"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    buscarTitularM();
-                  }}
-                >
-                  Mutual
-                </button>
-              </div>
-              <div className="form-group col-md-2 mt-4">
-                <button
-                  className="btn btn-block btn-secondary"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    buscarTitularSM();
-                  }}
-                >
-                  San Miguel
-                </button>
-              </div>
-              {errores && (
-                <div className="mt-2 form-group alert alert-danger col-md-12 text-center text-uppercase">
-                  {errores}
+              <div className="col-md-8">
+                <div className="d-flex gap-2">
+                  <button
+                    className="btn btn-outline-primary flex-fill"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      buscarTitular();
+                    }}
+                  >
+                    <i className="fa fa-building me-1"></i>
+                    Werchow
+                  </button>
+                  <button
+                    className="btn btn-outline-success flex-fill"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      buscarTitularM();
+                    }}
+                  >
+                    <i className="fa fa-users me-1"></i>
+                    Mutual
+                  </button>
+                  <button
+                    className="btn btn-outline-secondary flex-fill"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      buscarTitularSM();
+                    }}
+                  >
+                    <i className="fa fa-shield me-1"></i>
+                    San Miguel
+                  </button>
                 </div>
-              )}
+              </div>
             </div>
           </div>
-        </form>
 
-        <hr className="mt-4 mb-4" />
+          <hr />
 
-        <form>
-          <div className="border border-dark p-4">
-            <h4>
-              <u>Buscar por N° de DNI</u>
-            </h4>
-            <div className="row mb-4 mt-4">
-              <div className="form-group col-md-4">
-                <label>
-                  <strong>
-                    {" "}
-                    <u> DNI: </u>
-                  </strong>
-                </label>
+          {/* Search by DNI */}
+          <div className="mb-4">
+            <h5 className="text-primary mb-3">
+              <i className="fa fa-address-card me-2"></i>
+              Por Número de DNI
+            </h5>
+            <div className="row align-items-end">
+              <div className="col-md-4">
+                <label className="form-label fw-bold">DNI</label>
                 <input
                   type="number"
-                  className="form-control"
-                  placeholder="DNI"
-                  name="contrato"
+                  className="form-control form-control-lg"
+                  placeholder="Ingrese DNI"
                   ref={dniRef}
                 />
               </div>
-
-              <div className="form-group col-md-2 mt-4">
-                <button
-                  className="btn btn-block btn-primary"
-                  onClick={buscarTitularDni}
-                >
-                  Werchow
-                </button>
-              </div>
-              <div className="form-group col-md-2 mt-4">
-                <button
-                  className="btn btn-block btn-primary"
-                  onClick={buscarTitularDniM}
-                >
-                  Mutual
-                </button>
-              </div>
-              <div className="form-group col-md-2 mt-4">
-                <button
-                  className="btn btn-block btn-secondary"
-                  onClick={buscarTitularDniSM}
-                >
-                  San Miguel
-                </button>
-              </div>
-              {errores && (
-                <div className="mt-2 form-group alert alert-danger col-md-12 text-center text-uppercase">
-                  {errores}
+              <div className="col-md-8">
+                <div className="d-flex gap-2">
+                  <button
+                    className="btn btn-outline-primary flex-fill"
+                    onClick={buscarTitularDni}
+                  >
+                    <i className="fa fa-building me-1"></i>
+                    Werchow
+                  </button>
+                  <button
+                    className="btn btn-outline-success flex-fill"
+                    onClick={buscarTitularDniM}
+                  >
+                    <i className="fa fa-users me-1"></i>
+                    Mutual
+                  </button>
+                  <button
+                    className="btn btn-outline-secondary flex-fill"
+                    onClick={buscarTitularDniSM}
+                  >
+                    <i className="fa fa-shield me-1"></i>
+                    San Miguel
+                  </button>
                 </div>
-              )}
-            </div>
-          </div>
-        </form>
-
-        <hr className="mt-4 mb-4" />
-
-        <div className="">
-          <div className="border border-dark p-4">
-            <h4>
-              <u>Buscar por Apellido y Nombre</u>
-            </h4>
-
-            <div className="row mt-4 mb-4 d-flex justify-content-center">
-              <div className="form-group col-md-4 mt-4">
-                <button
-                  className="btn btn-block btn-primary"
-                  data-toggle="modal"
-                  data-target="#listSocio"
-                  onClick={() => listSocios()}
-                >
-                  Werchow
-                </button>
-              </div>
-              <div className="form-group col-md-4 mt-4">
-                <button
-                  className="btn btn-block btn-primary"
-                  data-toggle="modal"
-                  data-target="#listSocio"
-                  onClick={() => listSociosM()}
-                >
-                  Mutual
-                </button>
-              </div>
-              <div className="form-group col-md-4 mt-4">
-                <button
-                  className="btn btn-block btn-secondary"
-                  data-toggle="modal"
-                  data-target="#listSocio"
-                  onClick={() => listSociosSM()}
-                >
-                  San Miguel
-                </button>
               </div>
             </div>
           </div>
+
+          <hr />
+
+          {/* Search by Name */}
+          <div className="mb-0">
+            <h5 className="text-primary mb-3">
+              <i className="fa fa-user-friends me-2"></i>
+              Por Apellido y Nombre
+            </h5>
+            <div className="d-flex gap-3 justify-content-center">
+              <button
+                className="btn btn-primary btn-lg"
+                data-bs-toggle="modal"
+                data-bs-target="#listSocio"
+                onClick={() => listSocios()}
+              >
+                <i className="fa fa-building me-2"></i>
+                Werchow
+              </button>
+              <button
+                className="btn btn-success btn-lg"
+                data-bs-toggle="modal"
+                data-bs-target="#listSocio"
+                onClick={() => listSociosM()}
+              >
+                <i className="fa fa-users me-2"></i>
+                Mutual
+              </button>
+              <button
+                className="btn btn-secondary btn-lg"
+                data-bs-toggle="modal"
+                data-bs-target="#listSocio"
+                onClick={() => listSociosSM()}
+              >
+                <i className="fa fa-shield me-2"></i>
+                San Miguel
+              </button>
+            </div>
+          </div>
+
+          {/* Error Display */}
+          {errores && (
+            <div className="alert alert-danger mt-3 text-center">
+              <i className="fa fa-exclamation-triangle me-2"></i>
+              {errores}
+            </div>
+          )}
         </div>
       </div>
 

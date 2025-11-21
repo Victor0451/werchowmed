@@ -24,7 +24,7 @@ const ModalNuevoMensaje = ({
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title" id="exampleModalLabel">Redactar Mensaje</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" className="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -50,7 +50,7 @@ const ModalNuevoMensaje = ({
 
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                        <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
 
                     </div>
                 </div>

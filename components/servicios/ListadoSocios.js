@@ -24,7 +24,7 @@ const ListadoSocios = ({
             <button
               type="button"
               className="close"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
               aria-label="Close"
             >
               <span aria-hidden="true">&times;</span>
@@ -124,7 +124,7 @@ const ListadoSocios = ({
                             {row.original.EMPRESA === "WERCHOW" ? (
                               <button
                                 className="btn btn-sm btn-info"
-                                data-dismiss="modal"
+                                data-bs-dismiss="modal"
                                 onClick={() =>
                                   Seleccionar(row.original.CONTRATO)
                                 }
@@ -134,7 +134,7 @@ const ListadoSocios = ({
                             ) : row.original.EMPRESA === "MUTUAL" ? (
                               <button
                                 className="btn btn-sm btn-info"
-                                data-dismiss="modal"
+                                data-bs-dismiss="modal"
                                 onClick={() =>
                                   SeleccionarM(row.original.CONTRATO)
                                 }
@@ -144,7 +144,7 @@ const ListadoSocios = ({
                             ) : row.original.EMPRESA === "SAN MIGUEL" ? (
                               <button
                                 className="btn btn-sm btn-info"
-                                data-dismiss="modal"
+                                data-bs-dismiss="modal"
                                 onClick={() =>
                                   SeleccionarSM(row.original.CONTRATO)
                                 }
@@ -168,7 +168,7 @@ const ListadoSocios = ({
             <button
               type="button"
               className="btn btn-danger"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
             >
               Cerrar
             </button>
