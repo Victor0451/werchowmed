@@ -154,9 +154,9 @@ const ImpOrdenConsulta = ({
                 <strong>Beneficiario:</strong> {socio.APELLIDOS},{" "}
                 {socio.NOMBRES}
               </div>
-              <div>
+              <div className="mt-2">
                 <strong>N° Socio:</strong> {socio.CONTRATO} |{" "}
-                <strong>Edad:</strong>{" "}
+                <strong>DNI:</strong> {socio.NRO_DOC} | <strong>Edad:</strong>{" "}
                 {moment().diff(socio.NACIMIENTO, "years")} años
               </div>
             </div>
@@ -167,7 +167,7 @@ const ImpOrdenConsulta = ({
                 <strong>Fecha:</strong>{" "}
                 {moment(orden.FECHA).utcOffset("+0300").format("DD/MM/YYYY")}
               </div>
-              <div>
+              <div className="mt-2">
                 <strong>N° Orden:</strong> {orden.ORDEN} |{" "}
                 <strong>Arancel: $</strong>
                 {practicas.length > 0
@@ -231,14 +231,14 @@ const ImpOrdenConsulta = ({
                     <div className="col-md-3">
                       <div className="d-flex ">
                         <i className="fa fa-phone text-info me-2"></i>
-                        
+
                         <strong>Tel:</strong>
                         <span className="ms-1">{medico.TELEFONOS}</span>
                       </div>
                     </div>
                     <div className="col-md-3">
                       <div className="d-flex ">
-                       <i className="fa fa-clock-o text-warning me-2"></i>
+                        <i className="fa fa-clock-o text-warning me-2"></i>
                         <strong>Horario:</strong>
                         <span className="ms-1">
                           {medico.HORARIO1}-{medico.HORARIO2}
@@ -309,21 +309,21 @@ const ImpOrdenConsulta = ({
           <div className="row text-center small">
             <div className="col-4">
               <div
-                className="border-bottom border-2 mt-2 mb-1"
+                className="border-bottom border-2 mt-4 mb-1"
                 style={{ height: "25px" }}
               ></div>
               <div className="small">Firma Afiliado</div>
             </div>
             <div className="col-4">
               <div
-                className="border-bottom border-2 mt-2 mb-1"
+                className="border-bottom border-2 mt-4 mb-1"
                 style={{ height: "25px" }}
               ></div>
               <div className="small">Aclaración</div>
             </div>
             <div className="col-4">
               <div
-                className="border-bottom border-2 mt-2 mb-1"
+                className="border-bottom border-2 mt-4 mb-1"
                 style={{ height: "25px" }}
               ></div>
               <div className="small">
