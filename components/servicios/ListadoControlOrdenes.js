@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactTable from "react-table";
 import matchSorter from "match-sorter";
 import moment from "moment";
@@ -12,6 +12,8 @@ const ListadoControlOrdenes = ({
   calcTotales,
   sucur,
 }) => {
+  const [openPopover, setOpenPopover] = useState(null);
+
   return (
     <div className="container-fluid mt-4">
       <div className="card shadow-sm">
@@ -139,14 +141,52 @@ const ListadoControlOrdenes = ({
 
                           {
                             Header: "Importe",
-                            id: "IMPORTE",
-                            accessor: (d) => `$${d.IMPORTE}`,
                             filterMethod: (filter, rows) =>
-                              matchSorter(rows, filter.value, {
-                                keys: ["IMPORTE"],
-                              }),
+                              matchSorter(rows, filter.value, { keys: ["IMPORTE"] }),
                             filterAll: true,
-                            width: "100",
+                            width: 100,
+                            Cell: (row) => (
+                              <div className="text-center position-relative">
+                                <button
+                                  className="btn btn-link btn-sm p-0 text-decoration-none font-weight-bold"
+                                  onClick={() =>
+                                    setOpenPopover(
+                                      openPopover === row.index ? null : row.index
+                                    )
+                                  }
+                                >
+                                  {`$${row.original.IMPORTE}`}
+                                </button>
+                                {openPopover === row.index && (
+                                  <div
+                                    className="position-relative bg-dark text-white p-2 rounded shadow"
+                                    style={{
+                                      top: "100%",
+                                      left: "50%",
+                                      transform: "translateX(-50%)",
+                                      marginTop: "8px",
+                                      zIndex: 1050,
+                                      whiteSpace: "nowrap",
+                                      fontSize: "0.85rem",
+                                    }}
+                                  >
+                                    <span>${row.original.IMP_LIQ}</span>
+                                    <div
+                                      className="position-absolute"
+                                      style={{
+                                        bottom: "100%",
+                                        left: "50%",
+                                        marginLeft: "-5px",
+                                        borderWidth: "5px",
+                                        borderStyle: "solid",
+                                        borderColor: "transparent transparent #212529 transparent",
+                                      }}
+                                    ></div>
+                                  </div>
+                                )
+                                }
+                              </div>
+                            ),
                           },
 
                           {
@@ -251,7 +291,7 @@ const ListadoControlOrdenes = ({
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

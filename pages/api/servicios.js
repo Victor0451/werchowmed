@@ -962,7 +962,14 @@ export default async function handler(req, res) {
               END
               )'PRESTADO',
           u.SERVICIO,
-          u.IMPORTE,         
+          (
+            CASE
+            WHEN p.MODALIDAD = 'PRES'
+            THEN 0
+            ELSE u.IMPORTE
+            END
+          ) as 'IMPORTE',      
+          u.IMP_LIQ,           
           u.OPERADOR,
           u.ANULADO           
         
@@ -974,8 +981,7 @@ export default async function handler(req, res) {
           FARMA as f on f.CODIGO = u.PRESTADO
         
         WHERE
-          u.SUC = '${req.query.sucur}'
-        AND p.MODALIDAD = 'OFIC'
+          u.SUC = '${req.query.sucur}'        
         AND u.FECHA BETWEEN '${moment(req.query.desde).format(
           "YYYY-MM-DD"
         )}' AND '${moment(req.query.hasta).format("YYYY-MM-DD")}'
