@@ -85,7 +85,6 @@ const Control = () => {
           },
         })
         .then((res) => {
-          console.log(res.data);
           guardarListado(res.data);
         })
         .catch((error) => {
@@ -204,6 +203,13 @@ const Control = () => {
     let total = 0;
 
     if (campo === "VALOR") {
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].ANULADO === 0) {
+          total += parseFloat(arr[i].IMPORTE);
+        }
+      }
+      return total.toFixed(2);
+    } else if (campo === "IMPORTE") {
       for (let i = 0; i < arr.length; i++) {
         total += parseFloat(arr[i].IMPORTE);
       }
