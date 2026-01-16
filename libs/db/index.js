@@ -9,6 +9,17 @@ export const werchow = serverlessMysql({
     password: process.env.PASSWORD,
   },
 });
+
+export const sanvalentin = serverlessMysql({
+  config: {
+    host: process.env.HOST,
+    port: process.env.PORT,
+    database: process.env.SANVALENTIN,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+  },
+});
+
 export const sgi = serverlessMysql({
   config: {
     host: process.env.HOST,

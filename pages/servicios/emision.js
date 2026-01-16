@@ -9,12 +9,23 @@ import moment from "moment-timezone";
 import axios from "axios";
 import toastr from "toastr";
 import Router from "next/router";
-import { confirmAlert } from "react-confirm-alert"; // Import
+import { confirmAlert } from "react-confirm-alert";
 import BuscarSocio from "../../components/servicios/BuscarSocio";
 import EmitirServicio from "../../components/servicios/EmitirServicio";
 import { registrarHistoria } from "../../utils/funciones";
 import ModalHistorialUsos from "../../components/servicios/ModalHistorialUsos";
 import jsCookie from "js-cookie";
+import {
+  buscarTitularPorContrato,
+  buscarTitularPorDni,
+  obtenerAdherentesPorEmpresa,
+  obtenerPagosPorEmpresa,
+  obtenerPagosBancariosPorEmpresa,
+  esGrupoMoroso,
+  esGrupoTarjeta,
+  esGrupoPolicia,
+  determinarTipoPago,
+} from "../../libs/helpers/emisionHelpers";
 
 const Emision = () => {
   let contratoRef = React.createRef();
@@ -91,6 +102,7 @@ const Emision = () => {
 
   // FUNCIONES SOCIO
 
+  // Función unificada para buscar titular por contrato
   const buscarTitular = async (hc) => {
     guardarFicha(null);
     guardarErrores(null);
@@ -98,113 +110,47 @@ const Emision = () => {
     guardarAdhs(null);
     guardarEmpresa("");
 
-    let contrato = "";
+    const contrato = hc || contratoRef.current.value;
 
-    if (hc) {
-      contrato = hc;
-    } else {
-      contrato = contratoRef.current.value;
+    if (!contrato) {
+      guardarErrores("Debes Ingresar Un Numero De Contrato");
+      return;
     }
 
-    if (contrato === "") {
-      guardarErrores("Debes Ingresar Un Numero De Contrato");
-    } else {
-      await axios
-        .get(`/api/socios`, {
-          params: {
-            f: "maestro contrato",
-            ficha: contrato,
-          },
-        })
-        .then((res) => {
-          if (res.data.length === 0) {
-            toastr.error(
-              "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
-              "ATENCION"
-            );
-            const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
-            guardarErrores(errores);
-          } else {
-            guardarEmpresa("W");
+    try {
+      const { ficha, empresa } = await buscarTitularPorContrato(contrato);
 
-            guardarFlag(true);
+      if (!ficha) {
+        toastr.error(
+          "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
+          "ATENCION"
+        );
+        guardarErrores("EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA");
+        return;
+      }
 
-            setInterval(() => {
-              traerNOrden(usu.sucursal);
-            }, 1000);
+      // Configurar estado
+      guardarEmpresa(empresa);
+      guardarFlag(true);
+      guardarFicha(ficha);
 
-            let ficha = res.data;
+      // Iniciar actualización de orden
+      setInterval(() => {
+        traerNOrden(usu.sucursal);
+      }, 1000);
 
-            guardarFicha(ficha);
+      // Traer adherentes según empresa
+      await traerAdherentesPorEmpresa(ficha[0].CONTRATO, empresa);
 
-            traerAdhs(ficha[0].CONTRATO);
-
-            if (
-              ficha[0].GRUPO === 666 ||
-              ficha[0].GRUPO === 1001 ||
-              ficha[0].GRUPO === 1005 ||
-              ficha[0].GRUPO === 1006 ||
-              ficha[0].GRUPO === 3444 ||
-              ficha[0].GRUPO === 3666 ||
-              ficha[0].GRUPO === 3777 ||
-              ficha[0].GRUPO === 3888 ||
-              ficha[0].GRUPO === 3999 ||
-              ficha[0].GRUPO === 4004 ||
-              ficha[0].GRUPO === 7777 ||
-              ficha[0].GRUPO === 8500
-            ) {
-              toastr.warning(
-                "¡¡CUIDADO!!, El socio pertenece a un grupo moroso",
-                "ATENCION"
-              );
-
-              confirmAlert({
-                title: "ATENCION",
-                message: `El socio ${ficha[0].CONTRATO} - ${ficha[0].APELLIDOS}, ${ficha[0].NOMBRES} esta en estado moroso (¡¡¡GRUPO ${ficha[0].GRUPO}!!!), por tal motivo todos sus servicios medicos estan suspendidos hasta regularizar su situacion.`,
-                buttons: [
-                  {
-                    label: "OK",
-                    onClick: () => {
-                      Router.reload();
-                    },
-                  },
-                  // {
-                  //   label: 'No',
-                  //   onClick: () => alert('Click No')
-                  // }
-                ],
-              });
-            } else if (
-              ficha[0].GRUPO === 3400 ||
-              ficha[0].GRUPO === 3600 ||
-              ficha[0].GRUPO === 3700 ||
-              ficha[0].GRUPO === 3800 ||
-              ficha[0].GRUPO === 3900 ||
-              ficha[0].GRUPO === 4000 ||
-              ficha[0].GRUPO > 5000
-            ) {
-              toastr.warning(
-                `El socio usa tarjeta como medio de pago - grupo ${ficha[0].GRUPO}`,
-                "ATENCION"
-              );
-              traerPagosBco(ficha[0].CONTRATO);
-            } else if (ficha[0].GRUPO === 6) {
-              toastr.warning(
-                `El socio es policia - grupo ${ficha[0].GRUPO}`,
-                "ATENCION"
-              );
-              traerPagosBco(ficha[0].CONTRATO);
-            } else if (ficha[0].GRUPO === 1000) {
-              traerPagos(ficha[0].CONTRATO);
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // Validar grupo y traer pagos
+      await procesarGrupoYPagos(ficha[0], empresa);
+    } catch (error) {
+      console.error(error);
+      toastr.error("Error al buscar el titular", "ATENCION");
     }
   };
 
+  // Función unificada para buscar titular por DNI
   const buscarTitularDni = async (e) => {
     e.preventDefault();
 
@@ -214,528 +160,105 @@ const Emision = () => {
     guardarAdhs(null);
     guardarEmpresa("");
 
-    if (dniRef.current.value !== "") {
-      let dni = dniRef.current.value;
+    const dni = dniRef.current.value;
 
-      await axios
-        .get(`/api/socios`, {
-          params: {
-            f: "maestro",
-            dni: dni,
-          },
-        })
-        .then((res) => {
-          if (res.data.length === 0) {
-            toastr.error(
-              "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
-              "ATENCION"
-            );
-            const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
-            guardarErrores(errores);
-          } else {
-            guardarEmpresa("W");
+    if (!dni) {
+      guardarErrores("Debes Ingresar Un Numero De DNI");
+      return;
+    }
 
-            guardarFlag(true);
+    try {
+      const { ficha, empresa } = await buscarTitularPorDni(dni);
 
-            setInterval(() => {
-              traerNOrden(usu.sucursal);
-            }, 1000);
+      if (!ficha) {
+        toastr.error(
+          "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
+          "ATENCION"
+        );
+        guardarErrores("EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA");
+        return;
+      }
 
-            let ficha = res.data;
+      // Configurar estado
+      guardarEmpresa(empresa);
+      guardarFlag(true);
+      guardarFicha(ficha);
 
-            guardarFicha(ficha);
+      // Iniciar actualización de orden
+      setInterval(() => {
+        traerNOrden(usu.sucursal);
+      }, 1000);
 
-            traerAdhs(ficha[0].CONTRATO);
+      // Traer adherentes según empresa
+      await traerAdherentesPorEmpresa(ficha[0].CONTRATO, empresa);
 
-            if (
-              ficha[0].GRUPO === 1001 ||
-              ficha[0].GRUPO === 1005 ||
-              ficha[0].GRUPO === 1006 ||
-              ficha[0].GRUPO === 3444 ||
-              ficha[0].GRUPO === 3666 ||
-              ficha[0].GRUPO === 3777 ||
-              ficha[0].GRUPO === 3888 ||
-              ficha[0].GRUPO === 3999 ||
-              ficha[0].GRUPO === 4004 ||
-              ficha[0].GRUPO === 7777 ||
-              ficha[0].GRUPO === 8500
-            ) {
-              toastr.warning(
-                "¡¡CUIDADO!!, El socio pertenece a un grupo moroso",
-                "ATENCION"
-              );
-
-              confirmAlert({
-                title: "ATENCION",
-                message: `El socio ${ficha[0].CONTRATO} - ${ficha[0].APELLIDOS}, ${ficha[0].NOMBRES} esta en estado moroso, por tal motivo todos sus servicios estan en dados de baja.`,
-                buttons: [
-                  {
-                    label: "OK",
-                    onClick: () => {
-                      Router.reload();
-                    },
-                  },
-                  // {
-                  //   label: 'No',
-                  //   onClick: () => alert('Click No')
-                  // }
-                ],
-              });
-            } else if (
-              ficha[0].GRUPO === 3400 ||
-              ficha[0].GRUPO === 3600 ||
-              ficha[0].GRUPO === 3700 ||
-              ficha[0].GRUPO === 3800 ||
-              ficha[0].GRUPO === 3900 ||
-              ficha[0].GRUPO === 4000 ||
-              ficha[0].GRUPO > 5000
-            ) {
-              toastr.warning(
-                `El socio usa tarjeta como medio de pago - grupo ${ficha.grupo}`,
-                "ATENCION"
-              );
-              traerPagosBco(ficha[0].CONTRATO);
-            } else {
-              traerPagos(ficha[0].CONTRATO);
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else if (contratoRef.current.value === "") {
-      const errores = "Debes Ingresar Un Numero De Contrato";
-      guardarErrores(errores);
+      // Validar grupo y traer pagos
+      await procesarGrupoYPagos(ficha[0], empresa);
+    } catch (error) {
+      console.error(error);
+      toastr.error("Error al buscar el titular", "ATENCION");
     }
   };
 
-  const buscarTitularM = async (hc) => {
-    guardarFicha(null);
-    guardarErrores(null);
-    guardarPagos(null);
-    guardarAdhs(null);
-    guardarEmpresa("");
+  // Alias para mantener compatibilidad
+  const buscarTitularM = buscarTitular;
+  const buscarTitularSM = buscarTitular;
+  const buscarTitularDniM = buscarTitularDni;
+  const buscarTitularDniSM = buscarTitularDni;
 
-    let contrato = "";
 
-    if (hc) {
-      contrato = hc;
-    } else {
-      contrato = contratoRef.current.value;
-    }
+  // Helper functions for processing groups and payments
+  const procesarGrupoYPagos = async (ficha, empresa) => {
+    if (esGrupoMoroso(ficha.GRUPO)) {
+      toastr.warning(
+        "¡¡CUIDADO!!, El socio pertenece a un grupo moroso",
+        "ATENCION"
+      );
 
-    if (contrato === "") {
-      guardarErrores("Debes Ingresar Un Numero De Contrato");
-    } else {
-      await axios
-        .get(`/api/socios`, {
-          params: {
-            f: "mutual contrato",
-            ficha: contrato,
+      confirmAlert({
+        title: "ATENCION",
+        message: `El socio ${ficha.CONTRATO} - ${ficha.APELLIDOS}, ${ficha.NOMBRES} esta en estado moroso (¡¡¡GRUPO ${ficha.GRUPO}!!!), por tal motivo todos sus servicios medicos estan suspendidos hasta regularizar su situacion.`,
+        buttons: [
+          {
+            label: "OK",
+            onClick: () => {
+              Router.reload();
+            },
           },
-        })
-        .then((res) => {
-          if (res.data.length === 0) {
-            toastr.error(
-              "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
-              "ATENCION"
-            );
-            const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
-            guardarErrores(errores);
-          } else {
-            guardarEmpresa("M");
+        ],
+      });
+    } else if (esGrupoTarjeta(ficha.GRUPO) || esGrupoPolicia(ficha.GRUPO)) {
+      const mensaje = esGrupoPolicia(ficha.GRUPO)
+        ? `El socio es policia - grupo ${ficha.GRUPO}`
+        : `El socio usa tarjeta como medio de pago - grupo ${ficha.GRUPO}`;
 
-            guardarFlag(true);
+      toastr.warning(mensaje, "ATENCION");
 
-            setInterval(() => {
-              traerNOrden(usu.sucursal);
-            }, 1000);
-
-            let ficha = res.data;
-
-            guardarFicha(ficha);
-
-            traerAdhsM(ficha[0].CONTRATO);
-
-            if (
-              ficha[0].GRUPO === 1001 ||
-              ficha[0].GRUPO === 1005 ||
-              ficha[0].GRUPO === 1006 ||
-              ficha[0].GRUPO === 3444 ||
-              ficha[0].GRUPO === 3666 ||
-              ficha[0].GRUPO === 3777 ||
-              ficha[0].GRUPO === 3888 ||
-              ficha[0].GRUPO === 3999 ||
-              ficha[0].GRUPO === 4004 ||
-              ficha[0].GRUPO === 8500
-            ) {
-              toastr.warning(
-                "¡¡CUIDADO!!, El socio pertenece a un grupo moroso",
-                "ATENCION"
-              );
-
-              confirmAlert({
-                title: "ATENCION",
-                message: `El socio ${ficha[0].CONTRATO} - ${ficha[0].APELLIDOS}, ${ficha[0].NOMBRES} esta en estado moroso, por tal motivo todos sus servicios estan en dados de baja.`,
-                buttons: [
-                  {
-                    label: "OK",
-                    onClick: () => {
-                      Router.reload();
-                    },
-                  },
-                  // {
-                  //   label: 'No',
-                  //   onClick: () => alert('Click No')
-                  // }
-                ],
-              });
-            } else if (
-              ficha[0].GRUPO === 3400 ||
-              ficha[0].GRUPO === 3600 ||
-              ficha[0].GRUPO === 3700 ||
-              ficha[0].GRUPO === 3800 ||
-              ficha[0].GRUPO === 3900 ||
-              ficha[0].GRUPO === 4000 ||
-              ficha[0].GRUPO > 5000
-            ) {
-              toastr.warning(
-                `El socio usa tarjeta como medio de pago - grupo ${ficha[0].GRUPO}`,
-                "ATENCION"
-              );
-              traerPagosBcoM(ficha[0].CONTRATO);
-            } else if (ficha[0].GRUPO === 6) {
-              toastr.warning(
-                `El socio es policia - grupo ${ficha[0].GRUPO}`,
-                "ATENCION"
-              );
-              traerPagosBcoM(ficha[0].CONTRATO);
-            } else if (ficha[0].GRUPO === 1000) {
-              traerPagosM(ficha[0].CONTRATO);
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      try {
+        const pagos = await obtenerPagosBancariosPorEmpresa(ficha.CONTRATO, empresa);
+        guardarPagos(pagos);
+      } catch (error) {
+        console.error(error);
+        toastr.error("Error al traer los pagos bancarios", "ATENCION");
+      }
+    } else if (ficha.GRUPO === 1000) {
+      try {
+        const pagos = await obtenerPagosPorEmpresa(ficha.CONTRATO, empresa);
+        guardarPagos(pagos);
+      } catch (error) {
+        console.error(error);
+        toastr.error("Error al traer los pagos", "ATENCION");
+      }
     }
   };
 
-  const buscarTitularDniM = async (e) => {
-    e.preventDefault();
-
-    guardarFicha(null);
-    guardarErrores(null);
-    guardarPagos(null);
-    guardarAdhs(null);
-    guardarEmpresa("");
-
-    if (dniRef.current.value !== "") {
-      let dni = dniRef.current.value;
-
-      await axios
-        .get(`/api/socios`, {
-          params: {
-            f: "mutual",
-            dni: dni,
-          },
-        })
-        .then((res) => {
-          if (res.data.length === 0) {
-            toastr.error(
-              "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
-              "ATENCION"
-            );
-            const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
-            guardarErrores(errores);
-          } else {
-            guardarEmpresa("M");
-
-            guardarFlag(true);
-
-            setInterval(() => {
-              traerNOrden(usu.sucursal);
-            }, 1000);
-
-            let ficha = res.data;
-
-            guardarFicha(ficha);
-
-            traerAdhsM(ficha[0].CONTRATO);
-
-            if (
-              ficha[0].GRUPO === 1001 ||
-              ficha[0].GRUPO === 1005 ||
-              ficha[0].GRUPO === 1006 ||
-              ficha[0].GRUPO === 3444 ||
-              ficha[0].GRUPO === 3666 ||
-              ficha[0].GRUPO === 3777 ||
-              ficha[0].GRUPO === 3888 ||
-              ficha[0].GRUPO === 3999 ||
-              ficha[0].GRUPO === 4004
-            ) {
-              toastr.warning(
-                "¡¡CUIDADO!!, El socio pertenece a un grupo moroso",
-                "ATENCION"
-              );
-
-              confirmAlert({
-                title: "ATENCION",
-                message: `El socio ${ficha[0].CONTRATO} - ${ficha[0].APELLIDOS}, ${ficha[0].NOMBRES} esta en estado moroso, por tal motivo todos sus servicios estan en dados de baja.`,
-                buttons: [
-                  {
-                    label: "OK",
-                    onClick: () => {
-                      Router.reload();
-                    },
-                  },
-                  // {
-                  //   label: 'No',
-                  //   onClick: () => alert('Click No')
-                  // }
-                ],
-              });
-            } else if (
-              ficha[0].GRUPO === 3400 ||
-              ficha[0].GRUPO === 3600 ||
-              ficha[0].GRUPO === 3700 ||
-              ficha[0].GRUPO === 3800 ||
-              ficha[0].GRUPO === 3900 ||
-              ficha[0].GRUPO === 4000
-            ) {
-              toastr.warning(
-                `El socio usa tarjeta como medio de pago - grupo ${ficha.grupo}`,
-                "ATENCION"
-              );
-              traerPagosBcoM(ficha[0].CONTRATO);
-            } else {
-              traerPagosM(ficha[0].CONTRATO);
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else if (contratoRef.current.value === "") {
-      const errores = "Debes Ingresar Un Numero De Contrato";
-      guardarErrores(errores);
-    }
-  };
-
-  const buscarTitularSM = async (hc) => {
-    guardarFicha(null);
-    guardarErrores(null);
-    guardarPagos(null);
-    guardarAdhs(null);
-    guardarEmpresa("");
-
-    let contrato = "";
-
-    if (hc) {
-      contrato = hc;
-    } else {
-      contrato = contratoRef.current.value;
-    }
-
-    if (contrato === "") {
-      guardarErrores("Debes Ingresar Un Numero De Contrato");
-    } else {
-      await axios
-        .get(`/api/socios`, {
-          params: {
-            f: "san miguel contrato",
-            ficha: contrato,
-          },
-        })
-        .then((res) => {
-          if (res.data.length === 0) {
-            toastr.error(
-              "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
-              "ATENCION"
-            );
-            const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
-            guardarErrores(errores);
-          } else {
-            guardarEmpresa("SM");
-            guardarFlag(true);
-
-            setInterval(() => {
-              traerNOrden(usu.sucursal);
-            }, 1000);
-
-            let ficha = res.data;
-
-            guardarFicha(ficha);
-
-            traerAdhsSM(ficha[0].CONTRATO);
-
-            if (
-              ficha[0].GRUPO === 666 ||
-              ficha[0].GRUPO === 1001 ||
-              ficha[0].GRUPO === 1005 ||
-              ficha[0].GRUPO === 1006 ||
-              ficha[0].GRUPO === 3444 ||
-              ficha[0].GRUPO === 3666 ||
-              ficha[0].GRUPO === 3777 ||
-              ficha[0].GRUPO === 3888 ||
-              ficha[0].GRUPO === 3999 ||
-              ficha[0].GRUPO === 4004 ||
-              ficha[0].GRUPO === 7777 ||
-              ficha[0].GRUPO === 8500
-            ) {
-              toastr.warning(
-                "¡¡CUIDADO!!, El socio pertenece a un grupo moroso",
-                "ATENCION"
-              );
-
-              confirmAlert({
-                title: "ATENCION",
-                message: `El socio ${ficha[0].CONTRATO} - ${ficha[0].APELLIDOS}, ${ficha[0].NOMBRES} esta en estado moroso (¡¡¡GRUPO ${ficha[0].GRUPO}!!!), por tal motivo todos sus servicios medicos estan suspendidos hasta regularizar su situacion.`,
-                buttons: [
-                  {
-                    label: "OK",
-                    onClick: () => {
-                      Router.reload();
-                    },
-                  },
-                  // {
-                  //   label: 'No',
-                  //   onClick: () => alert('Click No')
-                  // }
-                ],
-              });
-            } else if (
-              ficha[0].GRUPO === 3400 ||
-              ficha[0].GRUPO === 3600 ||
-              ficha[0].GRUPO === 3700 ||
-              ficha[0].GRUPO === 3800 ||
-              ficha[0].GRUPO === 3900 ||
-              ficha[0].GRUPO === 4000 ||
-              ficha[0].GRUPO > 5000
-            ) {
-              toastr.warning(
-                `El socio usa tarjeta como medio de pago - grupo ${ficha[0].GRUPO}`,
-                "ATENCION"
-              );
-              traerPagosBcoSM(ficha[0].CONTRATO);
-            } else if (ficha[0].GRUPO === 6) {
-              toastr.warning(
-                `El socio es policia - grupo ${ficha[0].GRUPO}`,
-                "ATENCION"
-              );
-              traerPagosBcoSM(ficha[0].CONTRATO);
-            } else if (ficha[0].GRUPO === 1000) {
-              traerPagosSM(ficha[0].CONTRATO);
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-
-  const buscarTitularDniSM = async (e) => {
-    e.preventDefault();
-
-    guardarFicha(null);
-    guardarErrores(null);
-    guardarPagos(null);
-    guardarAdhs(null);
-    guardarEmpresa("");
-
-    if (dniRef.current.value !== "") {
-      let dni = dniRef.current.value;
-
-      await axios
-        .get(`/api/socios`, {
-          params: {
-            f: "san miguel",
-            dni: dni,
-          },
-        })
-        .then((res) => {
-          if (res.data.length === 0) {
-            toastr.error(
-              "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
-              "ATENCION"
-            );
-            const errores = "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA";
-            guardarErrores(errores);
-          } else {
-            guardarEmpresa("SM");
-
-            guardarFlag(true);
-
-            setInterval(() => {
-              traerNOrden(usu.sucursal);
-            }, 1000);
-
-            let ficha = res.data;
-
-            guardarFicha(ficha);
-
-            traerAdhsSM(ficha[0].CONTRATO);
-
-            if (
-              ficha[0].GRUPO === 1001 ||
-              ficha[0].GRUPO === 1005 ||
-              ficha[0].GRUPO === 1006 ||
-              ficha[0].GRUPO === 3444 ||
-              ficha[0].GRUPO === 3666 ||
-              ficha[0].GRUPO === 3777 ||
-              ficha[0].GRUPO === 3888 ||
-              ficha[0].GRUPO === 3999 ||
-              ficha[0].GRUPO === 4004 ||
-              ficha[0].GRUPO === 7777 ||
-              ficha[0].GRUPO === 8500
-            ) {
-              toastr.warning(
-                "¡¡CUIDADO!!, El socio pertenece a un grupo moroso",
-                "ATENCION"
-              );
-
-              confirmAlert({
-                title: "ATENCION",
-                message: `El socio ${ficha[0].CONTRATO} - ${ficha[0].APELLIDOS}, ${ficha[0].NOMBRES} esta en estado moroso, por tal motivo todos sus servicios estan en dados de baja.`,
-                buttons: [
-                  {
-                    label: "OK",
-                    onClick: () => {
-                      Router.reload();
-                    },
-                  },
-                  // {
-                  //   label: 'No',
-                  //   onClick: () => alert('Click No')
-                  // }
-                ],
-              });
-            } else if (
-              ficha[0].GRUPO === 3400 ||
-              ficha[0].GRUPO === 3600 ||
-              ficha[0].GRUPO === 3700 ||
-              ficha[0].GRUPO === 3800 ||
-              ficha[0].GRUPO === 3900 ||
-              ficha[0].GRUPO === 4000 ||
-              ficha[0].GRUPO > 5000
-            ) {
-              toastr.warning(
-                `El socio usa tarjeta como medio de pago - grupo ${ficha.grupo}`,
-                "ATENCION"
-              );
-              traerPagosBcoSM(ficha[0].CONTRATO);
-            } else {
-              traerPagosSM(ficha[0].CONTRATO);
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else if (contratoRef.current.value === "") {
-      const errores = "Debes Ingresar Un Numero De Contrato";
-      guardarErrores(errores);
+  const traerAdherentesPorEmpresa = async (contrato, empresa) => {
+    try {
+      const adherentes = await obtenerAdherentesPorEmpresa(contrato, empresa);
+      guardarAdhs(adherentes);
+    } catch (error) {
+      console.error(error);
+      toastr.error("Error al traer los adherentes", "ATENCION");
     }
   };
 
@@ -1231,7 +754,7 @@ const Emision = () => {
       f: "reg uso",
     };
 
-    if (detalleMed.PROMO === 1 && detalleMed.OTERO === 0) {
+    if (detalleMed.PROMO === 1 && detalleMed.OTERO === 0 && empresa !== "SM") {
       if (priUso === 0) {
         if (socio.GRUPO === 55 || socio.GRUPO === 66) {
           uso.IMPORTE = 0;
@@ -1251,7 +774,7 @@ const Emision = () => {
           uso.IMPORTE = detalleMed.CON_PAGA;
         }
       }
-    } else if (detalleMed.PROMO === 1 && detalleMed.OTERO === 1) {
+    } else if (detalleMed.PROMO === 1 && detalleMed.OTERO === 1 && empresa !== "SM") {
       if (priUso === 0) {
         if (socio.GRUPO === 55 || socio.GRUPO === 66) {
           uso.IMPORTE = 0;
@@ -1413,7 +936,7 @@ const Emision = () => {
     }
     // -----------------
 
-    // AUMENTO POR CANTIDAD DE USOS
+    // AUMENTO POR CANTIDAD DE USOS MARA MENDEZ
 
     if (detalleMed.COD_PRES === "C_BIO") {
       if (priUsoBio === 1) {
@@ -1433,21 +956,52 @@ const Emision = () => {
     // ahora es solo para cabrera en la otero
 
     if (
-      detalleMed.OTERO === 1 &&
+      (detalleMed.OTERO === 1 || detalleMed.OTERO === true) &&
       detalleMed.COD_PRES === "C_OCB" &&
       pra.DESCRIP.match(/ECOGRAFIA.*/) &&
       priUso === 0
     ) {
       pra.IMPORTE = 7000;
     } else if (
-      detalleMed.OTERO === 1 &&
+      (detalleMed.OTERO === 1 || detalleMed.OTERO === true) &&
       pra.CODIGOS === "30.05.05" &&
       priUso === 0
     ) {
       pra.IMPORTE = 20000;
+    } else if (
+      (detalleMed.OTERO === 1 || detalleMed.OTERO === true) &&
+      pra.CODIGOS.includes("25.01.01") &&
+      !(socio.GRUPO === 66 || socio.GRUPO === 55) &&
+      priUso === 0
+    ) {
+      pra.IMPORTE = 2500;
+    } else if (
+      (detalleMed.OTERO === 1 || detalleMed.OTERO === true) &&
+      pra.CODIGOS.includes("08.10.10") &&
+      priUso === 0
+    ) {
+      pra.IMPORTE = 7000;
+    } else if (
+      (detalleMed.OTERO === 1 || detalleMed.OTERO === true) &&
+      (pra.CODIGOS.includes("22.01.01") || pra.CODIGOS.includes("15.01.06")) &&
+      priUso === 0
+    ) {
+      pra.IMPORTE = 11000;
     }
 
     //---------------------//
+
+    // Excepción para Cito y Colpo juntos
+    const esCito = pra.CODIGOS.includes("15.01.06");
+    const esColpo = pra.CODIGOS.includes("22.01.01");
+
+    let tienePareja = false;
+
+    if (esCito) {
+      tienePareja = pracSocio.some(p => p.CODIGOS.includes("22.01.01"));
+    } else if (esColpo) {
+      tienePareja = pracSocio.some(p => p.CODIGOS.includes("15.01.06"));
+    }
 
     let encontrado = false;
 
@@ -1468,9 +1022,46 @@ const Emision = () => {
             "Es solo una ecografia en promocion por mes y por grupo familiar.",
             "ATENCION"
           );
-        } else if (pra.CODIGOS === "30.05.05" && priUso === 0) {
           toastr.warning(
             "Es solo una consulta + MOD 81 en promocion por mes y por grupo familiar.",
+            "ATENCION"
+          );
+        } else if (
+          detalleMed.OTERO === 1 &&
+          pra.CODIGOS === "25.01.01" &&
+          !(socio.GRUPO === 66 || socio.GRUPO === 55) &&
+          priUso === 0
+        ) {
+          toastr.warning(
+            "Es solo una sesión de Fisioterapia en promocion por mes y por socio.",
+            "ATENCION"
+          );
+        } else if (
+          detalleMed.OTERO === 1 &&
+          pra.CODIGOS === "08.10.10" &&
+          priUso === 0
+        ) {
+          toastr.warning(
+            "Es solo una sesión de Quiropraxia en promocion por mes y por socio.",
+            "ATENCION"
+          );
+        } else if (
+          (detalleMed.OTERO === 1 || detalleMed.OTERO === true) &&
+          (pra.CODIGOS.includes("22.01.01") || pra.CODIGOS.includes("15.01.06")) &&
+          priUso === 0 &&
+          !tienePareja
+        ) {
+          toastr.warning(
+            "Es solo un Cito/Colpo en promocion por mes y por socio (o ambos juntos).",
+            "ATENCION"
+          );
+        } else if (
+          detalleMed.OTERO === 1 &&
+          pra.CODIGOS === "17.01.01" &&
+          priUso === 0
+        ) {
+          toastr.warning(
+            "Es solo un Electrocardiograma en promocion por mes y por socio.",
             "ATENCION"
           );
         } else {
@@ -2076,7 +1667,7 @@ const Emision = () => {
             buttons: [
               {
                 label: "OK",
-                onClick: () => {},
+                onClick: () => { },
               },
               // {
               //   label: 'No',
@@ -2168,7 +1759,7 @@ const Emision = () => {
             buttons: [
               {
                 label: "OK",
-                onClick: () => {},
+                onClick: () => { },
               },
               // {
               //   label: 'No',
@@ -2469,7 +2060,7 @@ const Emision = () => {
   };
 
   const importeOrden = () => {
-    if (detalleMed.PROMO === 1 && detalleMed.OTERO === 0) {
+    if (detalleMed.PROMO === 1 && detalleMed.OTERO === 0 && empresa !== "SM") {
       if (priUso === 0) {
         if (socio.GRUPO === 55 || socio.GRUPO === 66) {
           const importe = 0;
@@ -2489,7 +2080,7 @@ const Emision = () => {
 
         return importe;
       }
-    } else if (detalleMed.PROMO === 1 && detalleMed.OTERO === 1) {
+    } else if (detalleMed.PROMO === 1 && detalleMed.OTERO === 1 && empresa !== "SM") {
       if (priUso === 0) {
         if (socio.GRUPO === 55 || socio.GRUPO === 66) {
           const importe = 0;

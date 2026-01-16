@@ -5,6 +5,7 @@ import jsCookie from "js-cookie";
 import toastr from "toastr";
 import Router, { useRouter } from "next/router";
 import ImpOrdenConsulta from "../../components/servicios/ImpOrdenConsulta";
+import { buscarSocioPorDni } from "../../libs/helpers/sociosApi";
 
 const Orden = () => {
   const [orden, guardarOrden] = useState(null);
@@ -19,144 +20,35 @@ const Orden = () => {
   let router = useRouter();
 
   const traerSocio = async (dni) => {
-    await axios
-      .get(`/api/socios`, {
-        params: {
-          f: "maestro",
-          dni: dni,
-        },
-      })
-      .then((res) => {
-        if (res.data[0]) {
-          guardarSocio(res.data[0]);
-        } else if (!res.data[0]) {
-          axios
-            .get(`/api/socios`, {
-              params: {
-                f: "mutual",
-                dni: dni,
-              },
-            })
-            .then((resM) => {
-              if (resM.data[0]) {
-                guardarSocio(resM.data[0]);
-              } else if (!resM.data[0]) {
-                axios
-                  .get(`/api/socios`, {
-                    params: {
-                      f: "mae adh",
-                      dni: dni,
-                    },
-                  })
-                  .then((resA) => {
-                    if (resA.data[0]) {
-                      guardarSocio(resA.data[0]);
-                    } else if (!resA.data[0]) {
-                      axios
-                        .get(`/api/socios`, {
-                          params: {
-                            f: "mut adh",
-                            dni: dni,
-                          },
-                        })
-                        .then((resAM) => {
-                          if (resAM.data[0]) {
-                            guardarSocio(resAM.data[0]);
-                          } else if (!resAM.data[0]) {
-                            axios
-                              .get(`/api/servicios`, {
-                                params: {
-                                  f: "traer adh provi dni",
-                                  dni: dni,
-                                },
-                              })
-                              .then((resAP) => {
-                                if (resAP.data.length > 0) {
-                                  guardarSocio(resAP.data[0]);
-                                } else if (!resAP.data[0]) {
-                                  axios
-                                    .get(`/api/socios`, {
-                                      params: {
-                                        f: "san miguel",
-                                        dni: dni,
-                                      },
-                                    })
-                                    .then((resSM) => {
-                                      if (resSM.data.length > 0) {
-                                        guardarSocio(resSM.data[0]);
-                                      } else if (!resSM.data[0]) {
-                                        axios
-                                          .get(`/api/socios`, {
-                                            params: {
-                                              f: "adh san miguel dni",
-                                              dni: dni,
-                                            },
-                                          })
-                                          .then((resSMAd) => {
-                                            if (resSMAd.data.length > 0) {
-                                              guardarSocio(resSMAd.data[0]);
-                                            }
-                                          })
-                                          .catch((error) => {
-                                            console.log(error);
-                                            toastr.error(
-                                              "Ocurrio un error al traer al socio",
-                                              "ATENCION"
-                                            );
-                                          });
-                                      }
-                                    })
-                                    .catch((error) => {
-                                      console.log(error);
-                                      toastr.error(
-                                        "Ocurrio un error al traer al socio",
-                                        "ATENCION"
-                                      );
-                                    });
-                                } else {
-                                  toastr.warning(
-                                    "No se encuentra el beneficiario",
-                                    "ATENCION"
-                                  );
-                                }
-                              })
-                              .catch((error) => {
-                                console.log(error);
-                                toastr.error(
-                                  "Ocurrio un error al traer al socio",
-                                  "ATENCION"
-                                );
-                              });
-                          }
-                        })
-                        .catch((error) => {
-                          console.log(error);
-                          toastr.error(
-                            "Ocurrio un error al traer al socio",
-                            "ATENCION"
-                          );
-                        });
-                    }
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                    toastr.error(
-                      "Ocurrio un error al traer al socio",
-                      "ATENCION"
-                    );
-                  });
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-              toastr.error("Ocurrio un error al traer al socio", "ATENCION");
-            });
+    try {
+      const socioEncontrado = await buscarSocioPorDni(dni);
+
+      if (socioEncontrado) {
+        guardarSocio(socioEncontrado);
+      } else {
+        // Intentar buscar en adherentes provisorios (sistema legacy)
+        try {
+          const resAP = await axios.get(`/api/servicios`, {
+            params: {
+              f: "traer adh provi dni",
+              dni: dni,
+            },
+          });
+
+          if (resAP.data && resAP.data.length > 0) {
+            guardarSocio(resAP.data[0]);
+          } else {
+            toastr.warning("No se encuentra el beneficiario", "ATENCIÓN");
+          }
+        } catch (error) {
+          console.log(error);
+          toastr.warning("No se encuentra el beneficiario", "ATENCIÓN");
         }
-      })
-      .catch((error) => {
-        console.log(error);
-        toastr.error("Ocurrio un error al traer al socio", "ATENCION");
-      });
+      }
+    } catch (error) {
+      console.log(error);
+      toastr.error("Ocurrió un error al traer al socio", "ATENCIÓN");
+    }
   };
 
   const traerOrden = async (iduso) => {

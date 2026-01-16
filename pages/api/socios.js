@@ -1,892 +1,238 @@
+import { isValidTenant } from "../../libs/tenants/config";
 import {
-  werchow,
-  sgi,
-  serv,
-  sep,
-  camp,
-  arch,
-  club,
-  sanmiguel,
-} from "../../libs/db/index";
-import moment from "moment";
+  getMaestroByDni,
+  getMaestroByContrato,
+  getMaestroTitulares,
+  getMutualByDni,
+  getMutualByContrato,
+  getMutualTitulares,
+  getAdherentesByContrato,
+  getAdherentesByDni,
+  getMutualAdhByContrato,
+  getMutualAdhByDni,
+  getGrupo,
+  getPagos,
+  getPagosBco,
+  getUsos,
+} from "../../libs/controllers/sociosController";
 
+/**
+ * Serializa BigInt a string para JSON
+ */
+function serializeBigInt(data) {
+  return JSON.stringify(data, (key, value) =>
+    typeof value === "bigint" ? value.toString() : value
+  );
+}
+
+/**
+ * Valida que un parámetro sea un DNI válido
+ */
+function isValidDni(dni) {
+  return dni && /^\d{7,8}$/.test(dni);
+}
+
+/**
+ * Valida que un parámetro sea un contrato válido
+ */
+function isValidContrato(contrato) {
+  return contrato && /^\d+$/.test(contrato);
+}
+
+/**
+ * API Handler para endpoints de socios
+ * Soporta múltiples tenants: werchow, sanmiguel, sanvalentin
+ */
 export default async function handler(req, res) {
-  if (req.method === "GET") {
-    if (req.query.f && req.query.f === "maestro") {
-      const mae = await werchow.query(`
-            SELECT
-                m.CONTRATO, 
-                m.GRUPO, 
-                m.SUCURSAL, 
-                m.NRO_DOC, 
-                m.APELLIDOS,
-                m.NOMBRES, 
-                m.ALTA, 
-                m.VIGENCIA, 
-                m.DOM_LAB, 
-                m.PLAN,
-                m.SUB_PLAN, 
-                m.CALLE, 
-                m.NRO_CALLE,
-                m.BARRIO, 
-                m.NACIMIENTO, 
-                m.TELEFONO, 
-                m.MOVIL, 
-                m.MAIL, 
-                c.IMPORTE, 
-                m.PRODUCTOR, 
-                m.LOCALIDAD, 
-                m.DOM_LAB , 
-                m.TSEG , 
-                "T" as "perfil", 
-                o.NOMBRE "OBRA_SOC",
-                o.CODIGO "COD_OBRA", 
-                m.ADHERENTES, 
-                TIMESTAMPDIFF(YEAR,m.NACIMIENTO,CURDATE()) "EDAD",  
-                m.SEXO,
-                CASE 
-                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                    ELSE  null
-                END 'EMPRESA'                        
-                FROM maestro as m
-                INNER JOIN cuo_fija as c on c.CONTRATO = m.CONTRATO
-                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
-                WHERE m.NRO_DOC = ${req.query.dni}
+  // Solo permitir GET
+  if (req.method !== "GET") {
+    return res.status(405).json({ error: "Método no permitido" });
+  }
 
-    `);
+  const { f, tenant, dni, ficha, contrato, grupo, empre } = req.query;
 
-      await werchow.end();
+  // Validar que se especifique una función
+  if (!f) {
+    return res.status(400).json({ error: "Parámetro 'f' (función) requerido" });
+  }
 
-      res
-        .status(200)
-        .json(
-          JSON.stringify(mae, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "maestro contrato") {
-      const mae = await werchow.query(`
-            SELECT
-                m.CONTRATO, 
-                m.GRUPO, 
-                m.SUCURSAL, 
-                m.NRO_DOC, 
-                m.APELLIDOS,
-                m.NOMBRES, 
-                m.ALTA, 
-                m.VIGENCIA, 
-                m.DOM_LAB, 
-                m.PLAN,
-                m.SUB_PLAN, 
-                m.CALLE, 
-                m.NRO_CALLE,
-                m.BARRIO, 
-                m.NACIMIENTO, 
-                m.TELEFONO, 
-                m.MOVIL, 
-                m.MAIL, 
-                c.IMPORTE, 
-                m.PRODUCTOR, 
-                m.LOCALIDAD, 
-                m.DOM_LAB , 
-                m.TSEG , 
-                "T" as "perfil", 
-                o.NOMBRE "OBRA_SOC",
-                o.CODIGO "COD_OBRA", 
-                m.ADHERENTES, 
-                TIMESTAMPDIFF(YEAR,m.NACIMIENTO,CURDATE()) "EDAD",  
-                m.SEXO,
-                CASE 
-                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                    ELSE  null
-                END 'EMPRESA'                        
-                FROM maestro as m
-                INNER JOIN cuo_fija as c on c.CONTRATO = m.CONTRATO
-                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
-                WHERE m.CONTRATO = ${req.query.ficha}
+  try {
+    // ==================== MAESTRO ====================
+    if (f === "maestro") {
+      if (!tenant) return res.status(400).json({ error: "Parámetro 'tenant' requerido" });
+      if (!isValidTenant(tenant)) return res.status(400).json({ error: `Tenant '${tenant}' no válido` });
+      if (!isValidDni(dni)) return res.status(400).json({ error: "DNI inválido" });
 
-    `);
-
-      await werchow.end();
-      res
-        .status(200)
-        .json(
-          JSON.stringify(mae, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "adh") {
-      const adh = await werchow.query(`
-          SELECT
-                a.CONTRATO, 
-                a.SUCURSAL, 
-                a.NRO_DOC, 
-                a.NACIMIENTO,             
-                a.SEXO,
-                a.APELLIDOS, 
-                a.NOMBRES, 
-                a.ALTA, 
-                a.VIGENCIA, 
-                a.NACIMIENTO,
-                m.GRUPO,
-                o.NOMBRE "OBRA_SOC",
-                o.CODIGO "COD_OBRA",                 
-                TIMESTAMPDIFF(YEAR,a.NACIMIENTO,CURDATE()) "EDAD",                
-                CASE 
-                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                    ELSE  null
-                END 'EMPRESA'    ,
-                "A" as "perfil",
-                a.BAJA,
-                a.EDAD 'FALLE',
-                a.PLAN
-                FROM adherent as a
-                INNER JOIN maestro as m on a.CONTRATO = m.CONTRATO                  
-                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
-                WHERE a.CONTRATO = ${req.query.ficha}
-                AND a.BAJA IS NULL
-                
-
-    `);
-
-      await werchow.end();
-
-      res
-        .status(200)
-        .json(
-          JSON.stringify(adh, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "mutual") {
-      const mut = await werchow.query(`
-                    SELECT
-                        m.CONTRATO, 
-                        m.GRUPO, 
-                        m.SUCURSAL, 
-                        m.NRO_DOC, 
-                        m.APELLIDOS,
-                        m.NOMBRES, 
-                        m.ALTA, 
-                        m.VIGENCIA, 
-                        m.DOM_LAB, 
-                        m.PLAN,
-                        m.SUB_PLAN, 
-                        m.CALLE, 
-                        m.NRO_CALLE,
-                        m.BARRIO, 
-                        m.NACIMIENTO, 
-                        m.TELEFONO, 
-                        m.MOVIL, 
-                        m.MAIL, 
-                        c.IMPORTE, 
-                        m.PRODUCTOR, 
-                        m.LOCALIDAD, 
-                        m.DOM_LAB , 
-                        m.TSEG , 
-                        "T" as "perfil", 
-                        o.NOMBRE "OBRA_SOC",
-                        o.CODIGO "COD_OBRA", 
-                        m.ADHERENTES, 
-                        TIMESTAMPDIFF(YEAR,m.NACIMIENTO,CURDATE()) "EDAD",  
-                        m.SEXO,
-                        CASE 
-                            WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                            WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                            ELSE  null
-                        END 'EMPRESA'                        
-                        FROM mutual as m
-                        INNER JOIN cuo_mutual as c on c.CONTRATO = m.CONTRATO
-                        INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
-                        WHERE m.NRO_DOC = ${req.query.dni}
-
-            `);
-
-      await werchow.end();
-
-      res
-        .status(200)
-        .json(
-          JSON.stringify(mut, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "mutual contrato") {
-      const mut = await werchow.query(`
-                    SELECT
-                        m.CONTRATO, 
-                        m.GRUPO, 
-                        m.SUCURSAL, 
-                        m.NRO_DOC, 
-                        m.APELLIDOS,
-                        m.NOMBRES, 
-                        m.ALTA, 
-                        m.VIGENCIA, 
-                        m.DOM_LAB, 
-                        m.PLAN,
-                        m.SUB_PLAN, 
-                        m.CALLE, 
-                        m.NRO_CALLE,
-                        m.BARRIO, 
-                        m.NACIMIENTO, 
-                        m.TELEFONO, 
-                        m.MOVIL, 
-                        m.MAIL, 
-                        c.IMPORTE, 
-                        m.PRODUCTOR, 
-                        m.LOCALIDAD, 
-                        m.DOM_LAB , 
-                        m.TSEG , 
-                        "T" as "perfil", 
-                        o.NOMBRE "OBRA_SOC",
-                        o.CODIGO "COD_OBRA", 
-                        m.ADHERENTES, 
-                        TIMESTAMPDIFF(YEAR,m.NACIMIENTO,CURDATE()) "EDAD",  
-                        m.SEXO,
-                        CASE 
-                            WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                            WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                            ELSE  null
-                        END 'EMPRESA'                        
-                        FROM mutual as m
-                        INNER JOIN cuo_mutual as c on c.CONTRATO = m.CONTRATO
-                        INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
-                        WHERE m.CONTRATO = ${req.query.ficha}
-
-            `);
-
-      await werchow.end();
-
-      res
-        .status(200)
-        .json(
-          JSON.stringify(mut, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "werchow titulares") {
-      const mut = await werchow.query(`
-                      SELECT
-                          m.CONTRATO, 
-                          m.GRUPO, 
-                          m.SUCURSAL, 
-                          m.NRO_DOC, 
-                          m.APELLIDOS,
-                          m.NOMBRES, 
-                          m.ALTA, 
-                          m.VIGENCIA, 
-                          m.DOM_LAB, 
-                          m.PLAN,
-                          m.SUB_PLAN, 
-                          m.CALLE, 
-                          m.NRO_CALLE,
-                          m.BARRIO, 
-                          m.NACIMIENTO, 
-                          m.TELEFONO, 
-                          m.MOVIL, 
-                          m.MAIL, 
-                          c.IMPORTE, 
-                          m.PRODUCTOR, 
-                          m.LOCALIDAD, 
-                          m.DOM_LAB , 
-                          m.TSEG , 
-                          "T" as "perfil", 
-                          o.NOMBRE "OBRA_SOC",
-                          o.CODIGO "COD_OBRA", 
-                          m.ADHERENTES, 
-                          TIMESTAMPDIFF(YEAR,m.NACIMIENTO,CURDATE()) "EDAD",  
-                          m.SEXO,
-                          CASE 
-                              WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                              WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                              ELSE  null
-                          END 'EMPRESA'                        
-                          FROM maestro as m
-                          INNER JOIN cuo_fija as c on c.CONTRATO = m.CONTRATO
-                          INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC                         
-  
-              `);
-
-      await werchow.end();
-
-      res
-        .status(200)
-        .json(
-          JSON.stringify(mut, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "mutual titulares") {
-      const mut = await werchow.query(`
-                      SELECT
-                          m.CONTRATO, 
-                          m.GRUPO, 
-                          m.SUCURSAL, 
-                          m.NRO_DOC, 
-                          m.APELLIDOS,
-                          m.NOMBRES, 
-                          m.ALTA, 
-                          m.VIGENCIA, 
-                          m.DOM_LAB, 
-                          m.PLAN,
-                          m.SUB_PLAN, 
-                          m.CALLE, 
-                          m.NRO_CALLE,
-                          m.BARRIO, 
-                          m.NACIMIENTO, 
-                          m.TELEFONO, 
-                          m.MOVIL, 
-                          m.MAIL, 
-                          c.IMPORTE, 
-                          m.PRODUCTOR, 
-                          m.LOCALIDAD, 
-                          m.DOM_LAB , 
-                          m.TSEG , 
-                          "T" as "perfil", 
-                          o.NOMBRE "OBRA_SOC",
-                          o.CODIGO "COD_OBRA", 
-                          m.ADHERENTES, 
-                          TIMESTAMPDIFF(YEAR,m.NACIMIENTO,CURDATE()) "EDAD",  
-                          m.SEXO,
-                          CASE 
-                              WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                              WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                              ELSE  null
-                          END 'EMPRESA'                        
-                          FROM mutual as m
-                          INNER JOIN cuo_mutual as c on c.CONTRATO = m.CONTRATO
-                          INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC                         
-  
-              `);
-
-      await werchow.end();
-
-      res
-        .status(200)
-        .json(
-          JSON.stringify(mut, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "san miguel titulares") {
-      const mut = await sanmiguel.query(`
-                      SELECT
-                          m.CONTRATO, 
-                          m.GRUPO, 
-                          m.SUCURSAL, 
-                          m.NRO_DOC, 
-                          m.APELLIDOS,
-                          m.NOMBRES, 
-                          m.ALTA, 
-                          m.VIGENCIA, 
-                          m.DOM_LAB, 
-                          m.PLAN,                          
-                          m.CALLE, 
-                          m.NRO_CALLE,
-                          m.BARRIO, 
-                          m.NACIMIENTO, 
-                          m.TELEFONO, 
-                          m.MOVIL, 
-                          m.MAIL, 
-                          c.IMPORTE, 
-                          m.PRODUCTOR, 
-                          m.LOCALIDAD, 
-                          m.DOM_LAB ,                           
-                          "T" as "perfil", 
-                          o.NOMBRE "OBRA_SOC",
-                          o.CODIGO "COD_OBRA", 
-                          m.ADHERENTES, 
-                          TIMESTAMPDIFF(YEAR,m.NACIMIENTO,CURDATE()) "EDAD",  
-                          m.SEXO,
-                          CASE 
-                              WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                              WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                              WHEN m.EMPRESA = "SM" THEN  "SAN MIGUEL"
-                              ELSE  null
-                          END 'EMPRESA'                        
-                          FROM maestro as m
-                          INNER JOIN cuo_fija as c on c.CONTRATO = m.CONTRATO
-                          INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC                         
-  
-              `);
-
-      await sanmiguel.end();
-
-      res
-        .status(200)
-        .json(
-          JSON.stringify(mut, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "mutual adh") {
-      const mutAdh = await werchow.query(`
-        SELECT
-                a.CONTRATO, 
-                a.SUCURSAL, 
-                a.NRO_DOC, 
-                a.NACIMIENTO,             
-                a.SEXO,
-                a.APELLIDOS, 
-                a.NOMBRES, 
-                a.ALTA, 
-                a.VIGENCIA, 
-                a.NACIMIENTO,
-                m.GRUPO,
-                o.NOMBRE "OBRA_SOC",
-                o.CODIGO "COD_OBRA",                 
-                TIMESTAMPDIFF(YEAR,a.NACIMIENTO,CURDATE()) "EDAD",                
-                CASE 
-                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                    ELSE  null
-                END 'EMPRESA'    ,
-                "A" as "perfil",
-                a.BAJA,
-                a.EDAD 'FALLE',
-                a.PLAN
-                FROM mutual_adh as a
-                INNER JOIN mutual as m on a.CONTRATO = m.CONTRATO                  
-                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
-                WHERE a.CONTRATO = ${req.query.contrato}
-                AND BAJA IS NULL
-
-    `);
-
-      await werchow.end();
-      res
-        .status(200)
-        .json(
-          JSON.stringify(mutAdh, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "mae adh") {
-      const maeAdh = await werchow.query(`
-            SELECT
-                a.CONTRATO, 
-                a.SUCURSAL, 
-                a.NRO_DOC, 
-                a.NACIMIENTO,             
-                a.SEXO,
-                a.APELLIDOS, 
-                a.NOMBRES, 
-                a.ALTA, 
-                a.VIGENCIA, 
-                a.NACIMIENTO,
-                m.GRUPO,
-                o.NOMBRE "OBRA_SOC",
-                o.CODIGO "COD_OBRA",                 
-                TIMESTAMPDIFF(YEAR,a.NACIMIENTO,CURDATE()) "EDAD",                
-                CASE 
-                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                    ELSE  null
-                END 'EMPRESA'    ,
-                "A" as "perfil",
-                a.EDAD 'FALLE',
-                a.PLAN
-                FROM adherent as a
-                INNER JOIN maestro as m on a.CONTRATO = m.CONTRATO                  
-                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
-                WHERE a.NRO_DOC = ${req.query.dni}
-                AND BAJA IS NULL
-
-    `);
-
-      await werchow.end();
-
-      res
-        .status(200)
-        .json(
-          JSON.stringify(maeAdh, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "mut adh") {
-      const mutAdh = await werchow.query(`
-            SELECT
-                a.CONTRATO, 
-                a.SUCURSAL, 
-                a.NRO_DOC, 
-                a.NACIMIENTO,             
-                a.SEXO,
-                a.APELLIDOS, 
-                a.NOMBRES, 
-                a.ALTA, 
-                a.VIGENCIA, 
-                a.NACIMIENTO,
-                m.GRUPO,
-                o.NOMBRE "OBRA_SOC",
-                o.CODIGO "COD_OBRA",                 
-                TIMESTAMPDIFF(YEAR,a.NACIMIENTO,CURDATE()) "EDAD",                
-                CASE 
-                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                    ELSE  null
-                END 'EMPRESA'    ,
-                "A" as "perfil",
-                a.EDAD 'FALLE',
-                a.PLAN
-                FROM mutual_adh as a
-                INNER JOIN mutual as m on a.CONTRATO = m.CONTRATO                  
-                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
-                WHERE a.NRO_DOC = ${req.query.dni}
-                AND BAJA IS NULL
-
-    `);
-
-      await werchow.end();
-
-      res
-        .status(200)
-        .json(
-          JSON.stringify(mutAdh, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "san miguel contrato") {
-      const mae = await sanmiguel.query(`
-            SELECT
-                m.CONTRATO, 
-                m.GRUPO, 
-                m.SUCURSAL, 
-                m.NRO_DOC, 
-                m.APELLIDOS,
-                m.NOMBRES, 
-                m.ALTA, 
-                m.VIGENCIA, 
-                m.DOM_LAB, 
-                m.PLAN,
-                m.CALLE, 
-                m.NRO_CALLE,
-                m.BARRIO, 
-                m.NACIMIENTO, 
-                m.TELEFONO, 
-                m.MOVIL, 
-                m.MAIL, 
-                c.IMPORTE, 
-                m.PRODUCTOR, 
-                m.LOCALIDAD, 
-                m.DOM_LAB ,               
-                "T" as "perfil", 
-                o.NOMBRE "OBRA_SOC",
-                o.CODIGO "COD_OBRA", 
-                m.ADHERENTES, 
-                TIMESTAMPDIFF(YEAR,m.NACIMIENTO,CURDATE()) "EDAD",  
-                m.SEXO,
-                CASE 
-                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                    WHEN m.EMPRESA = "SM" THEN  "SAN MIGUEL"
-                    ELSE  null
-                END 'EMPRESA'                        
-                FROM maestro as m
-                INNER JOIN cuo_fija as c on c.CONTRATO = m.CONTRATO
-                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
-                WHERE m.CONTRATO = ${req.query.ficha}
-
-    `);
-
-      await sanmiguel.end();
-      res
-        .status(200)
-        .json(
-          JSON.stringify(mae, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
+      const data = await getMaestroByDni(tenant, dni);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
     }
-    if (req.query.f && req.query.f === "san miguel") {
-      const mae = await sanmiguel.query(`
-            SELECT
-                m.CONTRATO, 
-                m.GRUPO, 
-                m.SUCURSAL, 
-                m.NRO_DOC, 
-                m.APELLIDOS,
-                m.NOMBRES, 
-                m.ALTA, 
-                m.VIGENCIA, 
-                m.DOM_LAB, 
-                m.PLAN,               
-                m.CALLE, 
-                m.NRO_CALLE,
-                m.BARRIO, 
-                m.NACIMIENTO, 
-                m.TELEFONO, 
-                m.MOVIL, 
-                m.MAIL, 
-                c.IMPORTE, 
-                m.PRODUCTOR, 
-                m.LOCALIDAD, 
-                m.DOM_LAB ,                 
-                "T" as "perfil", 
-                o.NOMBRE "OBRA_SOC",
-                o.CODIGO "COD_OBRA", 
-                m.ADHERENTES, 
-                TIMESTAMPDIFF(YEAR,m.NACIMIENTO,CURDATE()) "EDAD",  
-                m.SEXO,
-                CASE 
-                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                    WHEN m.EMPRESA = "SM" THEN  "SAN MIGUEL"
-                    ELSE  null
-                END 'EMPRESA'                        
-                FROM maestro as m
-                INNER JOIN cuo_fija as c on c.CONTRATO = m.CONTRATO
-                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
-                WHERE m.NRO_DOC = ${req.query.dni}
 
-    `);
+    if (f === "maestro contrato") {
+      if (!tenant) return res.status(400).json({ error: "Parámetro 'tenant' requerido" });
+      if (!isValidTenant(tenant)) return res.status(400).json({ error: `Tenant '${tenant}' no válido` });
+      if (!isValidContrato(ficha)) return res.status(400).json({ error: "Contrato inválido" });
 
-      await sanmiguel.end();
-
-      res
-        .status(200)
-        .json(
-          JSON.stringify(mae, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "adh san miguel") {
-      const adh = await sanmiguel.query(`
-          SELECT
-                a.CONTRATO, 
-                a.SUCURSAL, 
-                a.NRO_DOC, 
-                a.NACIMIENTO,             
-                a.SEXO,
-                a.APELLIDOS, 
-                a.NOMBRES, 
-                a.ALTA, 
-                a.VIGENCIA, 
-                a.NACIMIENTO,
-                m.GRUPO,
-                o.NOMBRE "OBRA_SOC",
-                o.CODIGO "COD_OBRA",                 
-                TIMESTAMPDIFF(YEAR,a.NACIMIENTO,CURDATE()) "EDAD",                
-                CASE 
-                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                    ELSE  null
-                END 'EMPRESA'    ,
-                "A" as "perfil",
-                a.BAJA,
-                a.EDAD 'FALLE',
-                a.PLAN
-                FROM adherent as a
-                INNER JOIN maestro as m on a.CONTRATO = m.CONTRATO                  
-                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
-                WHERE a.CONTRATO = ${req.query.ficha}
-                AND BAJA IS NULL
-
-    `);
-
-      await sanmiguel.end();
-
-      res
-        .status(200)
-        .json(
-          JSON.stringify(adh, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "adh san miguel dni") {
-      const mutAdh = await sanmiguel.query(`
-            SELECT
-                a.CONTRATO, 
-                a.SUCURSAL, 
-                a.NRO_DOC, 
-                a.NACIMIENTO,             
-                a.SEXO,
-                a.APELLIDOS, 
-                a.NOMBRES, 
-                a.ALTA, 
-                a.VIGENCIA, 
-                a.NACIMIENTO,
-                m.GRUPO,
-                o.NOMBRE "OBRA_SOC",
-                o.CODIGO "COD_OBRA",                 
-                TIMESTAMPDIFF(YEAR,a.NACIMIENTO,CURDATE()) "EDAD",                
-                CASE 
-                    WHEN m.EMPRESA = "W" THEN  "WERCHOW"
-                    WHEN m.EMPRESA = "M" THEN  "MUTUAL"
-                    ELSE  null
-                END 'EMPRESA'    ,
-                "A" as "perfil",
-                a.EDAD 'FALLE',
-                a.PLAN
-                FROM adherent as a
-                INNER JOIN maestro as m on a.CONTRATO = m.CONTRATO                  
-                INNER JOIN obra_soc as o on o.CODIGO = m.OBRA_SOC
-                WHERE a.NRO_DOC = ${req.query.dni}
-                AND BAJA IS NULL
-
-    `);
-
-      await sanmiguel.end();
-      res
-        .status(200)
-        .json(
-          JSON.stringify(mutAdh, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-    } else if (req.query.f && req.query.f === "traer grupo") {
-      const grup = await werchow.query(`
-            SELECT
-                CODIGO,
-                DESCRIP                
-            FROM grupos 
-            WHERE CODIGO = ${req.query.grupo}
-                
-
-    `);
-
-      await werchow.end();
-
-      res.status(200).json(grup);
-    } else if (req.query.f && req.query.f === "traer pagos") {
-      if (req.query.empre === "WERCHOW") {
-        const pagos = await werchow.query(
-          `
-                SELECT *
-                FROM pagos
-                WHERE CONTRATO = ${parseInt(req.query.ficha)}
-                AND MOVIM = 'P'
-                ORDER BY DIA_PAG DESC
-          `
-        );
-
-        await werchow.end();
-
-        res.status(200).json(pagos);
-      } else if (req.query.empre === "MUTUAL") {
-        const pagos = await werchow.query(
-          `
-                SELECT *
-                FROM pagos_mutual
-                WHERE CONTRATO = ${parseInt(req.query.ficha)}
-                AND MOVIM = 'P'
-                ORDER BY DIA_PAG DESC
-          `
-        );
-
-        await werchow.end();
-
-        res.status(200).json(pagos);
-      } else if (req.query.empre === "SAN MIGUEL") {
-        const pagos = await sanmiguel.query(
-          `
-                SELECT *
-                FROM pagos
-                WHERE CONTRATO = ${parseInt(req.query.ficha)}
-                AND MOVIM = 'P'
-                ORDER BY DIA_PAG DESC
-          `
-        );
-
-        await sanmiguel.end();
-
-        res.status(200).json(pagos);
-      }
-    } else if (req.query.f && req.query.f === "traer pagosb") {
-      if (req.query.empre === "WERCHOW") {
-        const pagos = await werchow.query(
-          `
-          SELECT *
-          FROM pago_bco
-          WHERE CONTRATO = ${parseInt(req.query.ficha)}  
-          ORDER BY DIA_PAGO DESC
-          `
-        );
-        await werchow.end();
-        res.status(200).json(pagos);
-      } else if (req.query.empre === "MUTUAL") {
-        const pagos = await werchow.query(
-          `
-                SELECT *
-                FROM pago_bcom
-                WHERE CONTRATO = ${parseInt(req.query.ficha)}                
-                ORDER BY DIA_PAGO DESC
-          `
-        );
-
-        await werchow.end();
-        res.status(200).json(pagos);
-      } else if (req.query.empre === "SAN MIGUEL") {
-        const pagos = await sanmiguel.query(
-          `
-                SELECT *
-                FROM pago_bco
-                WHERE CONTRATO = ${parseInt(req.query.ficha)}                
-                ORDER BY DIA_PAGO DESC
-          `
-        );
-
-        await sanmiguel.end();
-        res.status(200).json(pagos);
-      }
-    } else if (req.query.f && req.query.f === "traer usos") {
-      const usos = await serv.query(`
-         
-         SELECT
-          u.CONTRATO,
-          u.FECHA,
-          u.HORA,
-          u.NRO_DOC,
-          p.NOMBRE,
-          u.SERVICIO,
-          u.IMPORTE,
-          u.ANULADO,
-          'WEB' AS SISTEMA,
-          u.ORDEN
-        FROM
-          USOS AS u
-        INNER JOIN PRESTADO AS p ON p.COD_PRES = u.PRESTADO
-        WHERE
-          u.CONTRATO = ${parseInt(req.query.contrato)}
-        ORDER BY u.FECHA DESC
-              `);
-
-      await serv.end();
-
-      const usosFa = await serv.query(`
-         
-         SELECT
-          u.CONTRATO,
-          u.FECHA,
-          u.HORA,
-          u.NRO_DOC,
-          p.NOMBRE,
-          u.SERVICIO,
-          u.IMPORTE,
-          u.ANULADO,
-          'FOX' AS SISTEMA,
-          u.ORDEN
-        FROM
-          USOSFA AS u
-        INNER JOIN PRESTADO AS p ON p.COD_PRES = u.PRESTADO
-        WHERE
-          u.CONTRATO = ${parseInt(req.query.contrato)}
-        ORDER BY u.FECHA DESC
-`);
-
-      await serv.end();
-
-      let historial = usos.concat(usosFa);
-
-      res
-        .status(200)
-        .json(
-          JSON.stringify(historial, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
+      const data = await getMaestroByContrato(tenant, ficha);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
     }
+
+    if (f === "werchow titulares" || f === "san miguel titulares") {
+      const tenantName = f === "werchow titulares" ? "werchow" : "sanmiguel";
+      const data = await getMaestroTitulares(tenantName);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
+    }
+
+    // ==================== MUTUAL ====================
+    if (f === "mutual") {
+      if (!isValidDni(dni)) return res.status(400).json({ error: "DNI inválido" });
+
+      const data = await getMutualByDni("werchow", dni);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
+    }
+
+    if (f === "mutual contrato") {
+      if (!isValidContrato(ficha)) return res.status(400).json({ error: "Contrato inválido" });
+
+      const tenantToUse = tenant || "werchow";
+      const data = await getMutualByContrato(tenantToUse, ficha);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
+    }
+
+    if (f === "mutual titulares") {
+      const data = await getMutualTitulares("werchow");
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
+    }
+
+    // ==================== ADHERENTES ====================
+    if (f === "adh") {
+      if (!isValidContrato(ficha)) return res.status(400).json({ error: "Contrato inválido" });
+
+      const data = await getAdherentesByContrato("werchow", ficha);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
+    }
+
+    if (f === "mae adh") {
+      if (!isValidDni(dni)) return res.status(400).json({ error: "DNI inválido" });
+
+      const data = await getAdherentesByDni("werchow", dni);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
+    }
+
+    if (f === "mutual adh") {
+      if (!isValidContrato(contrato)) return res.status(400).json({ error: "Contrato inválido" });
+
+      const data = await getMutualAdhByContrato("werchow", contrato);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
+    }
+
+    if (f === "mut adh") {
+      if (!isValidDni(dni)) return res.status(400).json({ error: "DNI inválido" });
+
+      const data = await getMutualAdhByDni("werchow", dni);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
+    }
+
+    // ==================== SAN MIGUEL ====================
+    if (f === "san miguel") {
+      if (!isValidDni(dni)) return res.status(400).json({ error: "DNI inválido" });
+
+      const data = await getMaestroByDni("sanmiguel", dni);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
+    }
+
+    if (f === "san miguel contrato") {
+      if (!isValidContrato(ficha)) return res.status(400).json({ error: "Contrato inválido" });
+
+      const data = await getMaestroByContrato("sanmiguel", ficha);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
+    }
+
+    if (f === "adh san miguel") {
+      if (!isValidContrato(ficha)) return res.status(400).json({ error: "Contrato inválido" });
+
+      const data = await getAdherentesByContrato("sanmiguel", ficha);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
+    }
+
+    if (f === "adh san miguel dni") {
+      if (!isValidDni(dni)) return res.status(400).json({ error: "DNI inválido" });
+
+      const data = await getAdherentesByDni("sanmiguel", dni);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
+    }
+
+    // ==================== GRUPOS ====================
+    if (f === "traer grupo") {
+      if (!grupo) return res.status(400).json({ error: "Parámetro 'grupo' requerido" });
+
+      const data = await getGrupo("werchow", grupo);
+      return res.status(200).json(data);
+    }
+
+    // ==================== PAGOS ====================
+    if (f === "traer pagos") {
+      if (!isValidContrato(ficha)) return res.status(400).json({ error: "Contrato inválido" });
+      if (!empre) return res.status(400).json({ error: "Parámetro 'empre' requerido" });
+
+      let tenantName, tipo;
+
+      if (empre === "WERCHOW") {
+        tenantName = "werchow";
+        tipo = "maestro";
+      } else if (empre === "MUTUAL") {
+        // Mutual = San Valentín
+        tenantName = "sanvalentin";
+        tipo = "maestro";
+      } else if (empre === "SAN MIGUEL") {
+        tenantName = "sanmiguel";
+        tipo = "maestro";
+      } else {
+        return res.status(400).json({ error: "Empresa no válida" });
+      }
+
+      const data = await getPagos(tenantName, ficha, tipo);
+      return res.status(200).json(data);
+    }
+
+    if (f === "traer pagosb") {
+      if (!isValidContrato(ficha)) return res.status(400).json({ error: "Contrato inválido" });
+      if (!empre) return res.status(400).json({ error: "Parámetro 'empre' requerido" });
+
+      let tenantName, tipo;
+
+      if (empre === "WERCHOW") {
+        tenantName = "werchow";
+        tipo = "maestro";
+      } else if (empre === "MUTUAL") {
+        // Mutual = San Valentín
+        tenantName = "sanvalentin";
+        tipo = "maestro";
+      } else if (empre === "SAN MIGUEL") {
+        tenantName = "sanmiguel";
+        tipo = "maestro";
+      } else {
+        return res.status(400).json({ error: "Empresa no válida" });
+      }
+
+      const data = await getPagosBco(tenantName, ficha, tipo);
+      return res.status(200).json(data);
+    }
+
+    // ==================== USOS ====================
+    if (f === "traer usos") {
+      if (!isValidContrato(contrato)) return res.status(400).json({ error: "Contrato inválido" });
+
+      const data = await getUsos(contrato);
+      return res.status(200).json(JSON.parse(serializeBigInt(data)));
+    }
+
+    // Función no reconocida
+    return res.status(400).json({ error: `Función '${f}' no válida` });
+  } catch (error) {
+    console.error("Error en /api/socios:", error);
+    return res.status(500).json({
+      error: "Error interno del servidor",
+      message: error.message,
+    });
   }
 }
