@@ -200,11 +200,269 @@ const Emision = () => {
     }
   };
 
-  // Alias para mantener compatibilidad
-  const buscarTitularM = buscarTitular;
-  const buscarTitularSM = buscarTitular;
-  const buscarTitularDniM = buscarTitularDni;
-  const buscarTitularDniSM = buscarTitularDni;
+  // Función específica para buscar titular por contrato en Werchow
+  const buscarTitularW = async (hc) => {
+    guardarFicha(null);
+    guardarErrores(null);
+    guardarPagos(null);
+    guardarAdhs(null);
+    guardarEmpresa("");
+
+    const contrato = hc || contratoRef.current.value;
+
+    if (!contrato) {
+      guardarErrores("Debes Ingresar Un Numero De Contrato");
+      return;
+    }
+
+    try {
+      const { ficha, empresa } = await buscarTitularPorContrato(contrato, "werchow");
+
+      if (!ficha) {
+        toastr.error(
+          "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
+          "ATENCION"
+        );
+        guardarErrores("EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA");
+        return;
+      }
+
+      guardarEmpresa(empresa);
+      guardarFlag(true);
+      guardarFicha(ficha);
+
+      setInterval(() => {
+        traerNOrden(usu.sucursal);
+      }, 1000);
+
+      await traerAdherentesPorEmpresa(ficha[0].CONTRATO, empresa);
+      await procesarGrupoYPagos(ficha[0], empresa);
+    } catch (error) {
+      console.error(error);
+      toastr.error("Error al buscar el titular", "ATENCION");
+    }
+  };
+
+  // Función específica para buscar titular por contrato en Mutual (San Valentín)
+  const buscarTitularM = async (hc) => {
+    guardarFicha(null);
+    guardarErrores(null);
+    guardarPagos(null);
+    guardarAdhs(null);
+    guardarEmpresa("");
+
+    const contrato = hc || contratoRef.current.value;
+
+    if (!contrato) {
+      guardarErrores("Debes Ingresar Un Numero De Contrato");
+      return;
+    }
+
+    try {
+      const { ficha, empresa } = await buscarTitularPorContrato(contrato, "sanvalentin");
+
+      if (!ficha) {
+        toastr.error(
+          "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
+          "ATENCION"
+        );
+        guardarErrores("EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA");
+        return;
+      }
+
+      guardarEmpresa(empresa);
+      guardarFlag(true);
+      guardarFicha(ficha);
+
+      setInterval(() => {
+        traerNOrden(usu.sucursal);
+      }, 1000);
+
+      await traerAdherentesPorEmpresa(ficha[0].CONTRATO, empresa);
+      await procesarGrupoYPagos(ficha[0], empresa);
+    } catch (error) {
+      console.error(error);
+      toastr.error("Error al buscar el titular", "ATENCION");
+    }
+  };
+
+  // Función específica para buscar titular por contrato en San Miguel
+  const buscarTitularSM = async (hc) => {
+    guardarFicha(null);
+    guardarErrores(null);
+    guardarPagos(null);
+    guardarAdhs(null);
+    guardarEmpresa("");
+
+    const contrato = hc || contratoRef.current.value;
+
+    if (!contrato) {
+      guardarErrores("Debes Ingresar Un Numero De Contrato");
+      return;
+    }
+
+    try {
+      const { ficha, empresa } = await buscarTitularPorContrato(contrato, "sanmiguel");
+
+      if (!ficha) {
+        toastr.error(
+          "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
+          "ATENCION"
+        );
+        guardarErrores("EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA");
+        return;
+      }
+
+      guardarEmpresa(empresa);
+      guardarFlag(true);
+      guardarFicha(ficha);
+
+      setInterval(() => {
+        traerNOrden(usu.sucursal);
+      }, 1000);
+
+      await traerAdherentesPorEmpresa(ficha[0].CONTRATO, empresa);
+      await procesarGrupoYPagos(ficha[0], empresa);
+    } catch (error) {
+      console.error(error);
+      toastr.error("Error al buscar el titular", "ATENCION");
+    }
+  };
+
+  // Función específica para buscar titular por DNI en Werchow
+  const buscarTitularDniW = async (e) => {
+    e.preventDefault();
+
+    guardarFicha(null);
+    guardarErrores(null);
+    guardarPagos(null);
+    guardarAdhs(null);
+    guardarEmpresa("");
+
+    const dni = dniRef.current.value;
+
+    if (!dni) {
+      guardarErrores("Debes Ingresar Un Numero De DNI");
+      return;
+    }
+
+    try {
+      const { ficha, empresa } = await buscarTitularPorDni(dni, "werchow");
+
+      if (!ficha) {
+        toastr.error(
+          "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
+          "ATENCION"
+        );
+        guardarErrores("EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA");
+        return;
+      }
+
+      guardarEmpresa(empresa);
+      guardarFlag(true);
+      guardarFicha(ficha);
+
+      setInterval(() => {
+        traerNOrden(usu.sucursal);
+      }, 1000);
+
+      await traerAdherentesPorEmpresa(ficha[0].CONTRATO, empresa);
+      await procesarGrupoYPagos(ficha[0], empresa);
+    } catch (error) {
+      console.error(error);
+      toastr.error("Error al buscar el titular", "ATENCION");
+    }
+  };
+
+  // Función específica para buscar titular por DNI en Mutual (San Valentín)
+  const buscarTitularDniM = async (e) => {
+    e.preventDefault();
+
+    guardarFicha(null);
+    guardarErrores(null);
+    guardarPagos(null);
+    guardarAdhs(null);
+    guardarEmpresa("");
+
+    const dni = dniRef.current.value;
+
+    if (!dni) {
+      guardarErrores("Debes Ingresar Un Numero De DNI");
+      return;
+    }
+
+    try {
+      const { ficha, empresa } = await buscarTitularPorDni(dni, "sanvalentin");
+
+      if (!ficha) {
+        toastr.error(
+          "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
+          "ATENCION"
+        );
+        guardarErrores("EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA");
+        return;
+      }
+
+      guardarEmpresa(empresa);
+      guardarFlag(true);
+      guardarFicha(ficha);
+
+      setInterval(() => {
+        traerNOrden(usu.sucursal);
+      }, 1000);
+
+      await traerAdherentesPorEmpresa(ficha[0].CONTRATO, empresa);
+      await procesarGrupoYPagos(ficha[0], empresa);
+    } catch (error) {
+      console.error(error);
+      toastr.error("Error al buscar el titular", "ATENCION");
+    }
+  };
+
+  // Función específica para buscar titular por DNI en San Miguel
+  const buscarTitularDniSM = async (e) => {
+    e.preventDefault();
+
+    guardarFicha(null);
+    guardarErrores(null);
+    guardarPagos(null);
+    guardarAdhs(null);
+    guardarEmpresa("");
+
+    const dni = dniRef.current.value;
+
+    if (!dni) {
+      guardarErrores("Debes Ingresar Un Numero De DNI");
+      return;
+    }
+
+    try {
+      const { ficha, empresa } = await buscarTitularPorDni(dni, "sanmiguel");
+
+      if (!ficha) {
+        toastr.error(
+          "EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA",
+          "ATENCION"
+        );
+        guardarErrores("EL NUMERO DE FICHA NO EXISTE O ESTA DADA DE BAJA");
+        return;
+      }
+
+      guardarEmpresa(empresa);
+      guardarFlag(true);
+      guardarFicha(ficha);
+
+      setInterval(() => {
+        traerNOrden(usu.sucursal);
+      }, 1000);
+
+      await traerAdherentesPorEmpresa(ficha[0].CONTRATO, empresa);
+      await procesarGrupoYPagos(ficha[0], empresa);
+    } catch (error) {
+      console.error(error);
+      toastr.error("Error al buscar el titular", "ATENCION");
+    }
+  };
 
 
   // Helper functions for processing groups and payments
@@ -376,6 +634,7 @@ const Emision = () => {
         params: {
           ficha: contrato,
           f: "adh",
+          tenant: "werchow",
         },
       })
       .then((res) => {
@@ -488,7 +747,7 @@ const Emision = () => {
   };
 
   const Seleccionar = async (contrato) => {
-    buscarTitular(contrato);
+    buscarTitularW(contrato);
   };
 
   const SeleccionarM = async (contrato) => {
@@ -642,6 +901,7 @@ const Emision = () => {
           params: {
             f: "mae adh",
             dni: dni,
+            tenant: "werchow",
           },
         })
         .then((res) => {
@@ -672,6 +932,7 @@ const Emision = () => {
           params: {
             f: "mut adh",
             dni: dni,
+            tenant: "sanvalentin",
           },
         })
         .then((res) => {
@@ -2249,8 +2510,8 @@ const Emision = () => {
                   dniRef={dniRef}
                   buscarTitularM={buscarTitularM}
                   buscarTitularDniM={buscarTitularDniM}
-                  buscarTitular={buscarTitular}
-                  buscarTitularDni={buscarTitularDni}
+                  buscarTitular={buscarTitularW}
+                  buscarTitularDni={buscarTitularDniW}
                   errores={errores}
                   titulo={"Ordenes, consultas y farmacia"}
                   emp={"W"}

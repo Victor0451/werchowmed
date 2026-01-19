@@ -62,8 +62,8 @@ export function buildMaestroQuery(tenantName, searchBy = "dni") {
             ${baseFields},
             ${empresaCase}
         FROM ${maestro} AS m
-        INNER JOIN ${cuoFija} AS c ON c.CONTRATO = m.CONTRATO
-        INNER JOIN ${obraSoc} AS o ON o.CODIGO = m.OBRA_SOC
+        LEFT JOIN ${cuoFija} AS c ON c.CONTRATO = m.CONTRATO
+        LEFT JOIN ${obraSoc} AS o ON o.CODIGO = m.OBRA_SOC
         ${whereClause}
     `;
 
@@ -118,8 +118,8 @@ export function buildMutualQuery(tenantName, searchBy = "dni") {
             ${baseFields},
             ${empresaCase}
         FROM ${maestro} AS m
-        INNER JOIN ${cuoFija} AS c ON c.CONTRATO = m.CONTRATO
-        INNER JOIN ${obraSoc} AS o ON o.CODIGO = m.OBRA_SOC
+        LEFT JOIN ${cuoFija} AS c ON c.CONTRATO = m.CONTRATO
+        LEFT JOIN ${obraSoc} AS o ON o.CODIGO = m.OBRA_SOC
         ${whereClause}
     `;
 
@@ -162,8 +162,8 @@ export function buildAdherentQuery(tenantName, searchBy = "contrato") {
             a.EDAD AS FALLE,
             a.PLAN
         FROM ${adherent} AS a
-        INNER JOIN ${maestro} AS m ON a.CONTRATO = m.CONTRATO                  
-        INNER JOIN ${obraSoc} AS o ON o.CODIGO = m.OBRA_SOC
+        LEFT JOIN ${maestro} AS m ON a.CONTRATO = m.CONTRATO                  
+        LEFT JOIN ${obraSoc} AS o ON o.CODIGO = m.OBRA_SOC
         ${whereClause}
     `;
 
@@ -207,8 +207,8 @@ export function buildMutualAdhQuery(tenantName, searchBy = "contrato") {
             a.EDAD AS FALLE,
             a.PLAN
         FROM ${adherent} AS a
-        INNER JOIN ${maestro} AS m ON a.CONTRATO = m.CONTRATO                  
-        INNER JOIN ${obraSoc} AS o ON o.CODIGO = m.OBRA_SOC
+        LEFT JOIN ${maestro} AS m ON a.CONTRATO = m.CONTRATO                  
+        LEFT JOIN ${obraSoc} AS o ON o.CODIGO = m.OBRA_SOC
         ${whereClause}
     `;
 
@@ -262,8 +262,8 @@ export function buildAllMaestroQuery(tenantName) {
             ${baseFields},
             ${empresaCase}
         FROM ${table} AS m
-        INNER JOIN ${cuoTable} AS c ON c.CONTRATO = m.CONTRATO
-        INNER JOIN ${obraSoc} AS o ON o.CODIGO = m.OBRA_SOC
+        LEFT JOIN ${cuoTable} AS c ON c.CONTRATO = m.CONTRATO
+        LEFT JOIN ${obraSoc} AS o ON o.CODIGO = m.OBRA_SOC
     `;
 
     return sql;

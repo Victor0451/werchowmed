@@ -86,20 +86,22 @@ export default async function handler(req, res) {
     if (f === "mutual") {
       if (!isValidDni(dni)) return res.status(400).json({ error: "DNI inválido" });
 
-      const data = await getMutualByDni("werchow", dni);
+      // Mutual siempre usa San Valentín
+      const data = await getMutualByDni("sanvalentin", dni);
       return res.status(200).json(JSON.parse(serializeBigInt(data)));
     }
 
     if (f === "mutual contrato") {
       if (!isValidContrato(ficha)) return res.status(400).json({ error: "Contrato inválido" });
 
-      const tenantToUse = tenant || "werchow";
-      const data = await getMutualByContrato(tenantToUse, ficha);
+      // Mutual siempre usa San Valentín
+      const data = await getMutualByContrato("sanvalentin", ficha);
       return res.status(200).json(JSON.parse(serializeBigInt(data)));
     }
 
     if (f === "mutual titulares") {
-      const data = await getMutualTitulares("werchow");
+      // Mutual siempre usa San Valentín
+      const data = await getMutualTitulares("sanvalentin");
       return res.status(200).json(JSON.parse(serializeBigInt(data)));
     }
 
@@ -107,28 +109,36 @@ export default async function handler(req, res) {
     if (f === "adh") {
       if (!isValidContrato(ficha)) return res.status(400).json({ error: "Contrato inválido" });
 
-      const data = await getAdherentesByContrato("werchow", ficha);
+      const tenantToUse = tenant || "werchow";
+      if (!isValidTenant(tenantToUse)) return res.status(400).json({ error: `Tenant '${tenantToUse}' no válido` });
+
+      const data = await getAdherentesByContrato(tenantToUse, ficha);
       return res.status(200).json(JSON.parse(serializeBigInt(data)));
     }
 
     if (f === "mae adh") {
       if (!isValidDni(dni)) return res.status(400).json({ error: "DNI inválido" });
 
-      const data = await getAdherentesByDni("werchow", dni);
+      const tenantToUse = tenant || "werchow";
+      if (!isValidTenant(tenantToUse)) return res.status(400).json({ error: `Tenant '${tenantToUse}' no válido` });
+
+      const data = await getAdherentesByDni(tenantToUse, dni);
       return res.status(200).json(JSON.parse(serializeBigInt(data)));
     }
 
     if (f === "mutual adh") {
       if (!isValidContrato(contrato)) return res.status(400).json({ error: "Contrato inválido" });
 
-      const data = await getMutualAdhByContrato("werchow", contrato);
+      // Mutual siempre usa San Valentín
+      const data = await getMutualAdhByContrato("sanvalentin", contrato);
       return res.status(200).json(JSON.parse(serializeBigInt(data)));
     }
 
     if (f === "mut adh") {
       if (!isValidDni(dni)) return res.status(400).json({ error: "DNI inválido" });
 
-      const data = await getMutualAdhByDni("werchow", dni);
+      // Mutual siempre usa San Valentín
+      const data = await getMutualAdhByDni("sanvalentin", dni);
       return res.status(200).json(JSON.parse(serializeBigInt(data)));
     }
 
@@ -165,7 +175,10 @@ export default async function handler(req, res) {
     if (f === "traer grupo") {
       if (!grupo) return res.status(400).json({ error: "Parámetro 'grupo' requerido" });
 
-      const data = await getGrupo("werchow", grupo);
+      const tenantToUse = tenant || "werchow";
+      if (!isValidTenant(tenantToUse)) return res.status(400).json({ error: `Tenant '${tenantToUse}' no válido` });
+
+      const data = await getGrupo(tenantToUse, grupo);
       return res.status(200).json(data);
     }
 

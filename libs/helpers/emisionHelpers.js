@@ -3,16 +3,32 @@ import { buscarSocioPorContrato, obtenerAdherentes, obtenerPagos, obtenerPagosBa
 
 /**
  * Helper para buscar titular por contrato con lógica de empresa
- * Intenta buscar en Werchow Maestro, luego Mutual, luego San Miguel
+ * Si se especifica tenantEspecifico, busca solo en ese tenant
+ * Si no, intenta buscar en Werchow Maestro, luego Mutual, luego San Miguel
  * @param {string} contrato - Número de contrato
+ * @param {string} [tenantEspecifico] - Tenant específico: 'werchow', 'sanvalentin', 'sanmiguel'
  * @returns {Promise<{ficha: object|null, empresa: string}>}
  */
-export async function buscarTitularPorContrato(contrato) {
+export async function buscarTitularPorContrato(contrato, tenantEspecifico = null) {
     if (!contrato || !/^\d+$/.test(contrato)) {
         throw new Error("Debes ingresar un número de contrato válido");
     }
 
     try {
+        // Si se especifica un tenant, buscar solo en ese tenant
+        if (tenantEspecifico) {
+            const resultado = await buscarSocioPorContrato(contrato, tenantEspecifico, "maestro");
+            if (resultado) {
+                let empresa = "";
+                if (tenantEspecifico === "werchow") empresa = "W";
+                else if (tenantEspecifico === "sanvalentin") empresa = "M";
+                else if (tenantEspecifico === "sanmiguel") empresa = "SM";
+                return { ficha: [resultado], empresa };
+            }
+            return { ficha: null, empresa: "" };
+        }
+
+        // Búsqueda secuencial en todos los tenants
         // 1. Intentar Werchow Maestro
         const werchowMaestro = await buscarSocioPorContrato(contrato, "werchow", "maestro");
         if (werchowMaestro) {
@@ -40,15 +56,47 @@ export async function buscarTitularPorContrato(contrato) {
 
 /**
  * Helper para buscar titular por DNI con lógica de empresa
+ * Si se especifica tenantEspecifico, busca solo en ese tenant
+ * Si no, intenta buscar en todos los tenants secuencialmente
  * @param {string} dni - DNI a buscar
+ * @param {string} [tenantEspecifico] - Tenant específico: 'werchow', 'sanvalentin', 'sanmiguel'
  * @returns {Promise<{ficha: object|null, empresa: string}>}
  */
-export async function buscarTitularPorDni(dni) {
+export async function buscarTitularPorDni(dni, tenantEspecifico = null) {
     if (!dni || !/^\d{7,8}$/.test(dni)) {
         throw new Error("DNI inválido. Debe tener 7-8 dígitos.");
     }
 
     try {
+        // Si se especifica un tenant, buscar solo en ese tenant
+        if (tenantEspecifico) {
+            let response;
+            let empresa = "";
+
+            if (tenantEspecifico === "werchow") {
+                response = await axios.get("/api/socios", {
+                    params: { f: "maestro", tenant: "werchow", dni },
+                });
+                empresa = "W";
+            } else if (tenantEspecifico === "sanvalentin") {
+                response = await axios.get("/api/socios", {
+                    params: { f: "mutual", dni },
+                });
+                empresa = "M";
+            } else if (tenantEspecifico === "sanmiguel") {
+                response = await axios.get("/api/socios", {
+                    params: { f: "maestro", tenant: "sanmiguel", dni },
+                });
+                empresa = "SM";
+            }
+
+            if (response && response.data && response.data.length > 0) {
+                return { ficha: response.data, empresa };
+            }
+            return { ficha: null, empresa: "" };
+        }
+
+        // Búsqueda secuencial en todos los tenants
         // 1. Werchow Maestro
         const werchowMaestro = await axios.get("/api/socios", {
             params: { f: "maestro", tenant: "werchow", dni },

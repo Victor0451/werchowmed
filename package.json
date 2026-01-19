@@ -1,6 +1,6 @@
 {
   "name": "werchowmedicos",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "private": true,
   "scripts": {
     "dev": "NODE_OPTIONS=--openssl-legacy-provider next dev -p $PORT",

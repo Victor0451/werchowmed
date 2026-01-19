@@ -1,5 +1,39 @@
 # Changelog
 
+## [6.0.4] - 2026-01-19
+
+### Critical Fixes
+- **🔧 Búsqueda Multi-Tenant Corregida**: Solucionado problema crítico donde todos los botones de búsqueda (Werchow, Mutual, San Miguel) estaban buscando exclusivamente en Werchow debido a funciones alias que apuntaban a la misma implementación genérica.
+
+### Backend (API)
+- **Adherentes**: Endpoints `adh` y `mae adh` ahora aceptan parámetro `tenant` opcional (default: werchow)
+- **Mutual Corregido**: Todos los endpoints de Mutual ahora usan correctamente `sanvalentin`:
+  - `f: "mutual"` (búsqueda por DNI)
+  - `f: "mutual contrato"` (búsqueda por contrato)
+  - `f: "mutual titulares"` (listado completo) - **Fix principal del listado de apellidos**
+  - `f: "mutual adh"` (adherentes por contrato)
+  - `f: "mut adh"` (adherentes por DNI)
+- **Grupos**: Endpoint `traer grupo` ahora acepta parámetro `tenant` opcional
+- **Adherentes Provisorios**: Funciones `checkAdhProvi` y `traerAdhs` actualizadas para pasar el tenant correcto
+
+### Frontend (Emisión)
+- **Funciones Específicas por Tenant**: Creadas 6 funciones específicas reemplazando aliases:
+  - `buscarTitularW()`, `buscarTitularM()`, `buscarTitularSM()` (búsqueda por contrato)
+  - `buscarTitularDniW()`, `buscarTitularDniM()`, `buscarTitularDniSM()` (búsqueda por DNI)
+- **Helpers Mejorados**: Funciones `buscarTitularPorContrato()` y `buscarTitularPorDni()` ahora aceptan parámetro `tenantEspecifico` opcional
+
+### Database Queries
+- **LEFT JOIN en lugar de INNER JOIN**: Cambiados todos los joins en queries SQL para permitir retornar socios aunque no tengan:
+  - Cuota fija (`cuo_fija`)
+  - Obra social (`obra_soc`)
+- **Solución San Miguel**: Socios 220+ ahora son encontrables (problema: faltaban registros en tablas relacionadas)
+
+### Impact
+- ✅ Cada botón de búsqueda ahora busca exclusivamente en su tenant
+- ✅ Listado de apellidos de San Valentín (Mutual) funciona correctamente
+- ✅ Mejora significativa en tasa de éxito de búsquedas (menos "socio no encontrado")
+- ✅ Compatibilidad hacia atrás mantenida con defaults inteligentes
+
 ## [6.0.3] - 2026-01-16
 
 ### Features
